@@ -9,7 +9,7 @@ from paulie.common.pauli import (
 def get_graph_view(nodes, commutators=[]):
     vertices = []
     edge_labels = {}
-    edges = [];
+    edges = []
     for nodeA in nodes:
         vertices.append(get_pauli_string(nodeA))
         for nodeB in nodes:

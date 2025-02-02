@@ -21,13 +21,13 @@ def plot_graph(vertices, edges, edge_labels = None):
 
 
 def plot_graph_by_nodes(nodes, commutators=[]):
-    v,e,l = get_graph_view(nodes, commutators)
-    return plot_graph(v,e,l)
+    vertices, edges, edge_labels = get_graph_view(nodes, commutators)
+    return plot_graph(vertices, edges, edge_labels)
 
 
 def plot_graphByStringNodes(nodes, commutators=[]):
-    v,e,l = get_graph_view(get_array_pauli_arrays(nodes), get_array_pauli_arrays(commutators))
-    return plot_graph(v,e,l)
+    vertices, edges, edge_labels = get_graph_view(get_array_pauli_arrays(nodes), get_array_pauli_arrays(commutators))
+    return plot_graph(vertices, edges, edge_labels)
 
 
 def animationGraph(record: RecordGraph, interval=1000, repeat=False, storage=None):
@@ -60,7 +60,6 @@ def animationGraph(record: RecordGraph, interval=1000, repeat=False, storage=Non
 # debug - debbuging
 # record - recording 
 def _transform_to_canonics(generators, size = 0, debug=False, record=None, initGraph=False):
-    bytGenerators = []
     if size == 0:
         bitGenerators = get_array_pauli_arrays(generators)
     else:

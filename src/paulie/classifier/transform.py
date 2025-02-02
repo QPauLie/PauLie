@@ -324,7 +324,7 @@ def transform_to_canonic(nodes, debug=False, record=None):
         if len(canonic) < 3:
             recording_graph(record, canonic)
         if is_exception:
-            print_nodes(debug, nodes, f"nodes after exception")
+            print_nodes(debug, nodes, "nodes after exception")
 
     return shape, canonic
 

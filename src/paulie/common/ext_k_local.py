@@ -1,4 +1,4 @@
-from paulie.common.pauli import get_I, get_pauli_array, get_pauli_string, inc_pauli_array, is_sub_in_array
+from paulie.common.pauli import get_I, get_Y, get_pauli_array, get_pauli_string, inc_pauli_array, is_sub_in_array
 from paulie.common.algebras import get_algebra_generators
 from paulie.common.nested import get_nested_nodes_in_algebra
 
@@ -47,9 +47,9 @@ def gen_k_local_ext(n, p, converter = None, used = []):
     k = 0
     while(k <= np):
         left = get_I(k)
-        left_one = getY(k)
+        left_one = get_Y(k)
         right = get_I(np-k)
-        right_one = getY(np-k)
+        right_one = get_Y(np-k)
         isFinish = False  
         while isFinish is False:
              gen = get_I(0)

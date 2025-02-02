@@ -268,6 +268,6 @@ class Shape(Debug):
               if type_graph == "B3":
                  algebras.append(f"su({2**(n2+2)})")
               if type_graph == "None":
-                 algebras.append(f"u(1)")
+                 algebras.append("u(1)")
 
           return " + ".join(algebras)

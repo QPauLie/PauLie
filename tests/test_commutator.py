@@ -9,7 +9,7 @@ from paulie.common.pauli import (
 
 
 def test_commmutator():
-    I = get_pauli_array("I")
+    I = get_pauli_array("I")   # noqa
     X = get_pauli_array("X")
     Y = get_pauli_array("Y")
     Z = get_pauli_array("Z")
@@ -42,7 +42,7 @@ def test_commmutator():
     assert(commutator(X, commutator(Y, Z))) == I
 
     XI = get_pauli_array("XI")
-    IX = get_pauli_array("IX")
+    get_pauli_array("IX")
     assert is_commutate(XI, XI)
 
     XY = get_pauli_array("XY")

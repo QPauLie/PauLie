@@ -13,7 +13,7 @@ def print_nodes(debug, nodes, title = ""):
     print(f"----{title}----{len(nodes)}---")
     for node in nodes:
         print_node(debug, node)
-    print(f"-------------------")
+    print("-------------------")
 
 
 class Debug:
