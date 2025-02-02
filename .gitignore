@@ -16,6 +16,8 @@ env/
 env/*
 src/PauLie.egg-info/
 src/PauLie.egg-info/*
+.venv/
+.venv/*
 
 # Mac OS X
 *.DS_Store

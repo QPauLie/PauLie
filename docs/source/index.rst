@@ -21,4 +21,5 @@ Paulistrings.
    :caption: Project Links
 
    Github <https://github.com/AmanieOxana/PauLie>
+   Discord <https://discord.gg/unitary-fund-764231928676089909>
 

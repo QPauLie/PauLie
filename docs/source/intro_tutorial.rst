@@ -89,7 +89,7 @@ Furthermore, determining moments of circuits can be significantly simplified whe
 All these applications are to be added as functionalities of :code:`paulie` in the future.
 
 Finding an efficent way to transform the inital graph into a canonical graph is non-trivial.
-The current implementation in worst case has a exponential scaling in the number of generators, but we
+The current implementation in worst case has a exponential scaling in the number of independent generators, but we
 hope to improve it to a polynomial scaling.
 
 

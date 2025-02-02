@@ -21,7 +21,7 @@ Package source code
 
 #### 2. docs
 sphinx documentation
-https://amanieoxana.github.io/PauLie/
+https://qpaulie.github.io/PauLie/
 
 #### 3. examples
 Examples of use
