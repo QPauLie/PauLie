@@ -25,12 +25,12 @@ def plot_graph_by_nodes(nodes, commutators=[]):
     return plot_graph(vertices, edges, edge_labels)
 
 
-def plot_graphByStringNodes(nodes, commutators=[]):
+def plot_graph_by_string_nodes(nodes, commutators=[]):
     vertices, edges, edge_labels = get_graph_view(get_array_pauli_arrays(nodes), get_array_pauli_arrays(commutators))
     return plot_graph(vertices, edges, edge_labels)
 
 
-def animationGraph(record: RecordGraph, interval=1000, repeat=False, storage=None):
+def animation_graph(record: RecordGraph, interval=1000, repeat=False, storage=None):
    graph = nx.Graph()
    fig, ax = plt.subplots(figsize=(6,4))
    def clear():
@@ -84,7 +84,7 @@ def get_algebra(generators, size=0):
 # size - Generator extensions to size size
 def animation_anti_commutation_graph(generators, size=0, storage=None, interval=1000, initGraph=False):
     record = RecordGraph()
-    animationGraph(record, storage=storage, interval=interval)
+    animation_graph(record, storage=storage, interval=interval)
 
 
 # Plot anti-commutation graph after tranform graph to canonic

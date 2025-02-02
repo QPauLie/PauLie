@@ -5,7 +5,6 @@ def print_node(debug, node, title=""):
     if debug:
         print(f"{title} {get_pauli_string(node)}")
 
-### print array nodes
 def print_nodes(debug, nodes, title = ""):
     if debug is False:
         return
@@ -25,6 +24,7 @@ class Debug:
               if title != "":
                   print(f"{title}")
               print(f"{get_pauli_string(node)}")
+
       def print_nodes(self, nodes, title=""):
           if self.debug:
               if title != "":
