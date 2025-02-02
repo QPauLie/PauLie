@@ -13,6 +13,16 @@ Once you have `poetry` installed, run:
 poetry install
 poetry shell
 ```
+Notes for Windows.
+If there are errors installing dependent packages, then you need to configure the poetry installation environment in the folder.
+```sh
+poetry config virtualenvs.in-project true
+```
+There is no need to launch poetry shell.
+To activate use
+```sh
+poetry env activate
+```
 
 ### Description
 
