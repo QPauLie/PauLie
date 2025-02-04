@@ -34,5 +34,5 @@ def get_algebra_generators(name: str) -> list[str]:
     return G_lie[name]
 
 
-def get_algebra() -> dict[str, list[str]]:
+def get_algebra_dict() -> dict[str, list[str]]:
     return G_lie

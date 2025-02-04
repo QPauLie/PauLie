@@ -1,4 +1,4 @@
-from paulie.helpers.drawing import animation_anti_commutation_graph
+from paulie.application.animation import animation_anti_commutation_graph
 
 
 if __name__ == "__main__":

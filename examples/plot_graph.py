@@ -1,5 +1,5 @@
 from paulie.common.ext_k_local import get_k_local_string_algebra_generators
-from paulie.helpers.drawing import plot_anti_commutation_graph
+from paulie.application.plot import plot_anti_commutation_graph
 
 
 if __name__ == "__main__":

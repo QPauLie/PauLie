@@ -1,4 +1,4 @@
-from paulie.helpers.drawing import get_algebra
+from paulie.application.classify import get_algebra
 
 
 if __name__ == "__main__":
