@@ -1,8 +1,8 @@
 from paulie.common.pauli import (
     get_array_pauli_arrays, 
     get_pauli_string,
-    is_commutate,
-    multi_pauli_arrays,
+    is_commutative,
+    multiply_pauli_arrays,
 )
 
 
@@ -14,8 +14,8 @@ def get_graph_view(nodes, commutators=[]):
         vertices.append(get_pauli_string(nodeA))
         for nodeB in nodes:
             if nodeA < nodeB:
-                if is_commutate(nodeA, nodeB) is False:
-                    nodeC = multi_pauli_arrays(nodeA, nodeB)
+                if is_commutative(nodeA, nodeB) is False:
+                    nodeC = multiply_pauli_arrays(nodeA, nodeB)
                     if len(commutators) == 0 or nodeC in commutators:
                         edges.append((get_pauli_string(nodeA), get_pauli_string(nodeB)))
                         edge_labels[(get_pauli_string(nodeA), get_pauli_string(nodeB))] = get_pauli_string(nodeC)

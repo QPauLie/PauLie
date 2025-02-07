@@ -1,10 +1,9 @@
-from paulie.common.algebras import get_algebra_generators
+from paulie.common.algebras import G_LIE
 from paulie.application.charges import non_commuting_charges
-from paulie.common.pauli import commutant
 
 
-#a_8, a_9 posses non-commuting charges for all n
-generators = get_algebra_generators("a8")
+# a_8, a_9 posses non-commuting charges for all n
+generators = G_LIE["a8"]
 assert len(non_commuting_charges(generators)) != 0
-generators = get_algebra_generators("a9")
+generators = G_LIE["a9"]
 assert len(non_commuting_charges(generators)) != 0

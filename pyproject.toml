@@ -15,6 +15,7 @@ networkx = "^3.3"
 bitarray = "^3.0.0"
 memory-profiler = "^0.61.0"
 matplotlib = "^3.10.0"
+ruff = "^0.9.5"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.9.4"

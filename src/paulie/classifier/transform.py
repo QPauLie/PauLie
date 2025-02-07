@@ -2,7 +2,7 @@ import queue
 import random
 
 from paulie.classifier.shape import Shape
-from paulie.common.pauli import is_commutate, multi_pauli_arrays
+from paulie.common.pauli import is_commutative, multiply_pauli_arrays
 from paulie.graphs.subgraphs import get_subgraphs
 from paulie.helpers.printing import print_node, print_nodes
 from paulie.helpers.recording import recording_graph
@@ -13,7 +13,7 @@ def get_lits(lighting, nodes):
     lits = []
     for node in nodes:
         if node != lighting:
-           if is_commutate(lighting, node) is False:
+           if is_commutative(lighting, node) is False:
                lits.append(node)
     return lits
 
@@ -108,7 +108,7 @@ def reconstruct_if_not_connection(shape, lighting, canonic, debug):
 
         if is_appended:
             last = canonic[len(canonic)]
-            if is_commutate(lighting, last) is False:
+            if is_commutative(lighting, last) is False:
                 shape.clear_prohibiteds_for_pop()
                 return  canonic, is_attachable
             else:
@@ -155,7 +155,7 @@ def append_to_canonic(shape, lighting, canonic, debug, record=None):
             canonic.append(lighting)
             return canonic, True
         for lit in lits:
-             contractor = multi_pauli_arrays(lighting, lit)
+             contractor = multiply_pauli_arrays(lighting, lit)
              if contractor in canonic:
                  return canonic, True
 
@@ -171,10 +171,10 @@ def get_untoggleables(lighting, lits):
     if len(lits) == 1:
         return None, None
     for litA in lits:
-        contractor = multi_pauli_arrays(lighting, litA)
+        contractor = multiply_pauli_arrays(lighting, litA)
         for litB in lits:
              if litB != litA:
-                 if is_commutate(contractor, litB) is False:
+                 if is_commutative(contractor, litB) is False:
                      return litA, litB
     return None, None
 
