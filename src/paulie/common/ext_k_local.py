@@ -6,7 +6,7 @@ from paulie.common.pauli import (
     inc_pauli_array,
     is_sub_in_array,
 )
-from paulie.common.algebras import G_LIE
+from paulie.common.algebras import get_lie_algebra
 from paulie.common.nested import get_nested_nodes_in_algebra
 from typing import Generator
 
@@ -70,9 +70,9 @@ def gen_k_local_generators(n: int, generators: list[str]) -> Generator[list[int]
 
 
 def gen_k_local_algebra_generators(n: int, name: str) -> Generator[list[int], None, None]:
-    """Generates k-local algebra generators from `G_LIE`."""
+    """Generates k-local algebra generators."""
     used = []
-    for g in G_LIE[name]:
+    for g in get_lie_algebra()[name]:
         yield from gen_k_local_by_string(n, g, used=used)
 
 
@@ -116,7 +116,7 @@ def get_k_local_algebra_generators(n: int, name: str) -> list[list[int]]:
 def gen_k_local_string_algebra_generators(n: int, name: str) -> Generator[str, None, None]:
     """Generates k-local algebra generators as strings."""
     used = []
-    for g in G_LIE[name]:
+    for g in get_lie_algebra()[name]:
         yield from gen_k_local_string(n, g, used=used)
 
 

@@ -29,3 +29,8 @@ G_LIE: dict[str, list[str]] = {
     "b3": ["XI", "YI", "IX", "IY"],  # b3
     "b4": ["XX", "XY", "XZ", "XI", "IX", "IY", "IZ"],  # b4
 }
+
+
+def get_lie_algebra() -> dict[str, list[str]]:
+    """Returns the dictionary of generators of Lie algebras."""
+    return G_LIE
