@@ -15,7 +15,7 @@ def get_nested(p: bitarray) -> list[list[bitarray]]:
     n = len(p) // 2
     return [
         [a.copy(), b.copy()]
-        for a, b in combinations(gen_all_nodes(n), 2)
+        for a, b in combinations([g.copy() for g in gen_all_nodes(n)], 2)
         if a != p and b != p and not is_commutative(a, b) and multiply_pauli_arrays(a, b) == p
     ]
 

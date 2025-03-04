@@ -95,6 +95,7 @@ def get_k_local_generators(n: int, generators: list[str]) -> list[list[int]]:
     """Returns k-local operators as a list."""
     return list(gen_k_local_generators(n, generators))
 
+               
 
 def gen_k_local_string_generators(n: int, generators: list[str]) -> Generator[str, None, None]:
     """Generates k-local operators as strings."""

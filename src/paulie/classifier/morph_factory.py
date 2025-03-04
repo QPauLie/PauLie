@@ -1,5 +1,5 @@
 from paulie.helpers.printing import Debug
-from paulie.common.pauli import get_pauli_string, get_pauli_array, multi_pauli_arrays, is_commutate
+from paulie.common.pauli import get_pauli_string, get_pauli_array, multiply_pauli_arrays, is_commutative
 from paulie.helpers.recording import recording_graph
 from paulie.classifier.classification import Morph
 import sys, os, traceback
@@ -47,7 +47,7 @@ class MorphFactory(Debug):
           return Morph(self.legs)
 
       def lit(self, lighting, vertix):
-          lighting = multi_pauli_arrays(lighting, vertix)
+          lighting = multiply_pauli_arrays(lighting, vertix)
           if self.is_included(lighting):
               raise DependentException()
           return lighting
@@ -59,7 +59,7 @@ class MorphFactory(Debug):
           lits = []
           for v in vertices:
               if v != lighting:
-                  if is_commutate(lighting, v) is False:
+                  if is_commutative(lighting, v) is False:
                       lits.append(v)
           return lits
 
@@ -137,7 +137,7 @@ class MorphFactory(Debug):
               else:
                   q = v
               if p is not None and q is not None:
-                  return multi_pauli_arrays(p, q), p
+                  return multiply_pauli_arrays(p, q), p
           return None, None
 
       def _gen_two_legs(self):
@@ -771,8 +771,8 @@ class MorphFactory(Debug):
                   raise AppendedException
               g = long_leg[len(long_leg) - 2]
               omega = self.get_one_vertix()
-              pq = multi_pauli_arrays(omega, lighting)
-              new_g = multi_pauli_arrays(pq, g)
+              pq = multiply_pauli_arrays(omega, lighting)
+              new_g = multiply_pauli_arrays(pq, g)
               self.remove(last_v)
               self.append(lighting, center)
               self.replace(g, new_g)
