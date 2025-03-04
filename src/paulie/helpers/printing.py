@@ -1,41 +1,65 @@
-from paulie.common.pauli import get_pauli_string
+from paulie.common.pauli import get_pauli_string, get_pauli_array
 
 
-def print_node(debug, node, title=""):
+
+def print_vertix(debug, vertix, title=""):
     if debug:
-        print(f"{title} {get_pauli_string(node)}")
+        print(f"{title} {get_pauli_string(vertix)}")
 
-def print_nodes(debug, nodes, title = ""):
+def print_vertices(debug, vertices, title = ""):
     if debug is False:
         return
 
-    print(f"----{title}----{len(nodes)}---")
-    for node in nodes:
-        print_node(debug, node)
+    print(f"----{title}--lenght = {len(vertices)}")
+    for v in vertices:
+        print_vertix(debug, v)
+    print("-------------------")
+
+
+def print_lit_vertices(debug, vertices, lits, title = ""):
+    if debug is False:
+        return
+
+    print(f"----{title}--lenght = {len(vertices)}")
+    for v in vertices:
+        title = ""
+        if v in lits:
+            title = "*"
+        print_vertix(debug, v, title)
     print("-------------------")
 
 
 class Debug:
       def __init__(self, debug):
           self.debug = debug
-     
-      def print_node(self, node, title=""):
-          if self.debug:
-              if title != "":
-                  print(f"{title}")
-              print(f"{get_pauli_string(node)}")
+          self.save_debug = debug
 
-      def print_nodes(self, nodes, title=""):
-          if self.debug:
-              if title != "":
-                  print(f"{title}")
-              else:
-                  print("--------------------")
-              for node in nodes:
-                  self.print_node(node)
-              print("--------------------")
+      def get_debug(self):
+           return self.debug
+     
+      def set_debug(self, debug):
+          self.debug = debug
+
+      def debuging(self):
+          self.debug = True
+
+      def restore(self):
+          self.debug = self.save_debug
+
+      def print_vertix(self, vertix, title=""):
+          print_vertix(self.debug, vertix, title)
+
+
+      def print_vertices(self, vertices, title=""):
+          print_vertices(self.debug, vertices, title)
 
       def print_title(self, title):
           if self.debug:
               if title != "":
                   print(f"{title}")
+
+      def print_lit_vertices(self, vertices, lits, title = ""):
+          print_lit_vertices(self.debug, vertices, lits, title)
+
+      def is_pauli_string(self, vertix, paulistring):
+          return get_pauli_array(paulistring) == vertix
