@@ -126,11 +126,11 @@ def is_sub_in_array(sub: bitarray, a: bitarray, pos: int = 0) -> bool:
 def gen_all_nodes(n: int):
     """Generator yielding all possible Pauli bitarrays of size `2*n`."""
     a = get_I(n)
-    yield a
+    yield a.copy()
     last = get_Y(n)
     while True:
         a = inc_pauli_array(a)
-        yield a
+        yield a.copy()
         if a == last:
             break
 
