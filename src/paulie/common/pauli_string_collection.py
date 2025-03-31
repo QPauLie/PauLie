@@ -3,9 +3,11 @@ Collection of Pauli strings
 """
 from paulie.common.pauli_string import PauliString
 from paulie.common.all_pauli_strings import get_all_pauli_strings
+from paulie.common.get_graph import get_graph
 import networkx as nx
 from paulie.classifier.classification import Classification
 from paulie.classifier.morph_factory import MorphFactory
+from paulie.classifier.recording_morph_factory import RecordingMorphFactory
 
 class PauliStringCollection:
     """
@@ -22,6 +24,7 @@ class PauliStringCollection:
         self.generators = []
         self.classification = None
         self.debug = debug
+        self.record = None
         if len(generators) == 0:
             return
 
@@ -33,16 +36,27 @@ class PauliStringCollection:
             self.generators.append(g)
 
     def get(self)->list[PauliString]:
-        """
-        Get an array of Pauli strings
-        """
+        """Get an array of Pauli strings"""
         return self.generators
 
     def set_debug(self, debug):
+        """ Set debug flag"""
         self.debug = debug
 
     def get_debug(self):
+        """Get debug flag"""
         return self.debug
+
+    def set_record(self, record):
+        """ Set record 
+            Args:
+                 record - record of the classification algorithm
+        """
+
+        self.record = record
+
+    def get_record(self):
+        return self.record
 
     def __str__(self) -> str:
         """Convert PauliStringCollection to readable string (e.g., "XYZI, YYYS")"""
@@ -189,19 +203,8 @@ class PauliStringCollection:
 
         Returns the vertices, edges, and labels of edges
         """
-        vertices = []
-        edge_labels = {}
-        edges = []
-        for a in self.generators:
-            vertices.append(str(a))
-            for b in self.generators:
-                if a < b:
-                    if not a|b:
-                        c = a^b
-                        if len(generators) == 0 or c in generators:
-                            edges.append((str(a), str(b)))
-                            edge_labels[(str(a), str(b))] = str(c)
-        return vertices, edges, edge_labels
+        return get_graph(self.generators, commutators=generators)
+
 
     def _convert(self, generators: list[str])->"PauliStringCollection":
         """ Convert list of string to List of PauliString"""
@@ -221,7 +224,11 @@ class PauliStringCollection:
         subgraphs = self.get_subgraphs()
         self.classification = Classification()
         for subgraph in subgraphs:
-            morph_factory = MorphFactory()
+            if not self.record:
+                morph_factory = MorphFactory()
+            else:
+                morph_factory = RecordingMorphFactory(record = self.record)
+
             self.classification.add(morph_factory.build(subgraph).get_morph())
         return self.classification
 

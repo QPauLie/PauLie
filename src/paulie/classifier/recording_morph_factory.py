@@ -1,8 +1,7 @@
 from paulie.helpers.printing import Debug
 from paulie.helpers.recording import recording_graph
-from paulie.classifier.classification import Morph
-import sys
-import traceback
+from paulie.classifier.classification import Morph, Classification
+import sys, os, traceback
 
 class AppendedException(Exception):
     pass
@@ -16,7 +15,7 @@ class DependentException(Exception):
 class NotConnectedException(Exception):
     pass
 
-class MorphFactory(Debug):
+class RecordingMorphFactory(Debug):
       def __init__(self, debug = False, record=None):
           super().__init__(debug)
           self.legs = [] # center is zero leg
@@ -50,6 +49,8 @@ class MorphFactory(Debug):
       def lit(self, lighting, vertix):
           lighting = lighting@vertix
           if self.is_included(lighting):
+              recording_graph(self.record, lighting=lighting, dependent=lighting, title=f"Dependent: {lighting}")
+
               raise DependentException()
           return lighting
 
@@ -140,8 +141,8 @@ class MorphFactory(Debug):
               else:
                   q = v
               if p is not None and q is not None:
-                  return p@q, p
-          return None, None
+                  return p@q, p, q
+          return None, None, None
 
       def _gen_two_legs(self):
           if self.is_empty_legs():
@@ -177,6 +178,7 @@ class MorphFactory(Debug):
       def _gen_long_legs(self):
           if self.is_empty_legs():
               raise Exception("No legs")
+          is_long = False
           for i in range(len(self.legs)-1, 1, -1):
               if len(self.legs) > 2:
                   yield self.legs[i]
@@ -216,25 +218,34 @@ class MorphFactory(Debug):
       def append_to_center(self, lighting):
           center = self.get_center()
           if len(self.legs) == 1:
+              recording_graph(self.record, lighting=lighting, lits=[center], title=f"Step I: {lighting}")
+              recording_graph(self.record, lighting=lighting, lits=[center], appending=center, title=f"Step I: {lighting}")
               self.append(lighting, center)
               return 
 
           vertices = self.get_vertices()
           lits = self.get_lits(lighting, vertices)
+          recording_graph(self.record, lighting=lighting, lits=lits, title=f"Step I: {lighting}")
 
           if len(lits) == 1:
               if center in lits:
                  self.append(lighting, center)
-                 return
+                 recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), appending=center, title=f"Step I: {lighting}")
+                 return                                                                        
               else:
                   lighting = self.lit(lighting, lits[0])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=lits[0], title=f"Step I: {lighting}")
                   lighting = self.lit(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step I: {lighting}")
                   self.append(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), appending=center, title=f"Step I: {lighting}")
                   return
 
           if len(lits) == 2:
               lighting = self.lit(lighting, center)
+              recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step I: {lighting}")
               self.append(lighting, center)
+              recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), appending=center, title=f"Step I: {lighting}")
               return
           raise NotConnectedException()
 
@@ -348,6 +359,7 @@ class MorphFactory(Debug):
       def _append_three_graph(self):
           lighting = self.get_lighting()
           self.print_vertix(lighting, "Check and build graph with three vertices")
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), title=f"Step I: {lighting}")
 
           if self.is_empty():
               self.set_center(lighting)
@@ -367,20 +379,39 @@ class MorphFactory(Debug):
 
           lighting = self.get_lighting()
           self.print_vertix(lighting, "Build graph with different one leg state")
-          pq, p = self.get_PQ(lighting)
+          pq, p, q = self.get_PQ(lighting)
+          #recording_graph(self.record, lighting=lighting, lits=[center], appending=center, title=f"StepII: {lighting}")
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), title=f"Step II: {lighting}")
+
           if pq is not None:
+              recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), p=p, q=q, title=f"Step II: {lighting}")
               lits = self.get_lits(lighting)
+              replacing = []
+              for lit in lits:
+                  if lit != p:
+                      replacing.append(lit)
+              recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), replacing_vertices=replacing, title=f"Step II: {lighting}")
+
               for lit in lits:
                   if lit != p:
                       v = pq@lit
                       self.replace(lit, v)
+                      replacing.append(lit)
+              recording_graph(self.record, collection=self.get_vertices(),lighting=lighting, lits=self.get_lits(lighting), title=f"Step II: {lighting}")
+
               self.append(lighting, p)
               long_leg = self.get_long_leg()
 
               if len(long_leg) > 4:
+                  removing = []
                   for i in range(4, len(long_leg)):
                       self.append_delayed(long_leg[i])
+                      removing.append(long_leg[i]) 
+                  if len(removing) > 0:
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), removing_vertices=removing, title=f"Step II: {lighting}")
                   self.remove(long_leg[4])
+
+              recording_graph(self.record, collection=self.get_vertices(), lighting=lighting, lits=self.get_lits(lighting), appending=p, title=f"Step II: {lighting}")
 
               raise AppendedException
 
@@ -392,6 +423,7 @@ class MorphFactory(Debug):
           lighting = self.get_lighting()
           self.print_vertix(lighting, "Append fast")
           center = self.get_center()
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), title=f"Step append fast: {lighting}")
 
           two_legs = self.get_two_legs()
           long_leg = self.get_long_leg()
@@ -416,6 +448,8 @@ class MorphFactory(Debug):
           lighting = self.get_lighting()
 
           self.print_vertix(lighting, "Lit only long leg")
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), title=f"Step III: {lighting}")
+
           omega = self.get_one_vertix()
           center = self.get_center()
           center_lits = self.get_lits(lighting, [center])
@@ -424,7 +458,10 @@ class MorphFactory(Debug):
           if omega in lits:
               if center not in center_lits:
                   lighting = self.lit(lighting, omega)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=omega, title=f"Step III: {lighting}")
+
               lighting = self.lit(lighting, center)
+              recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step III: {lighting}")
 
           two_legs = self.get_two_legs()
           long_leg = self.get_long_leg()
@@ -448,9 +485,14 @@ class MorphFactory(Debug):
               center_lits = self.get_lits(lighting, [center])
               if center in center_lits:
                   lighting = self.lit(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step III: {lighting}")
+
                   lighting = self.lit(lighting, long_leg[0])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[0], title=f"Step III: {lighting}")
                   lighting = self.lit(lighting, omega)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=omega, title=f"Step III: {lighting}")
                   lighting = self.lit(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step III: {lighting}")
               else:
                   for leg in two_legs:
                       lits = self.get_lits(lighting, leg)
@@ -458,13 +500,19 @@ class MorphFactory(Debug):
                       v1 = leg[1]
                       if v1 in lits and v0 not in lits:
                           lighting = self.lit(lighting, v1)
+                          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v1, title=f"Step III: {lighting}")
                           lits.append(v0)
                       if v0 in lits:
                           lighting = self.lit(lighting, v0)
+                          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v0, title=f"Step III: {lighting}")
                           lighting = self.lit(lighting, center)
+                          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step III: {lighting}")
                           lighting = self.lit(lighting, long_leg[0])
+                          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[0], title=f"Step III: {lighting}")
                           lighting = self.lit(lighting, omega)
+                          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=omega, title=f"Step III: {lighting}")
                           lighting = self.lit(lighting, center)
+                          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step III: {lighting}")
                           break
 
 
@@ -475,12 +523,14 @@ class MorphFactory(Debug):
           if 1 not in lit_indexes:
               if 0 in lit_indexes:
                   lighting = self.lit(lighting, long_leg[0])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[0], title=f"Step III: {lighting}")
               else:
                   if len(lit_indexes) == 0:
                       raise NotConnectedException()
                   first_lit = lit_indexes[0]
                   for i in range(first_lit, 1, -1):
                       lighting = self.lit(lighting, long_leg[i])
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[i], title=f"Step III: {lighting}")
 
 
           long_v0 = long_leg[0]
@@ -492,30 +542,44 @@ class MorphFactory(Debug):
               v1 = leg[1]
               if v0 in lits and v1 not in lits:
                   lighting = self.lit(lighting, v0)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v0, title=f"Step III: {lighting}")
                   lits.append(v1)
               if v0 not in lits and v1 in lits:
                   lighting = self.lit(lighting, v1)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v1, title=f"Step III: {lighting}")
                   lits.append(v0)
 
               if v0 in lits and v1 in lits:
                   center_lits = self.get_lits(lighting, [center])
                   if center in center_lits:
                       lighting = self.lit(lighting, center)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step III: {lighting}")
                       #omega is lited
                       lighting = self.lit(lighting, v1)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v1, title=f"Step III: {lighting}")
                       lighting = self.lit(lighting, v0)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v0, title=f"Step III: {lighting}")
                       lighting = self.lit(lighting, omega)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=omega, title=f"Step III: {lighting}")
                       lighting = self.lit(lighting, center)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step III: {lighting}")
                   else:
                       long_lits = self.get_lits(lighting, [long_leg[0]])
                       if len(long_lits) == 0:
                           lighting = self.lit(lighting, long_v1)
+                          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_v1, title=f"Step III: {lighting}")
                       lighting = self.lit(lighting, long_v0)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_v0, title=f"Step III: {lighting}")
                       lighting = self.lit(lighting, center)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step III: {lighting}")
                       lighting = self.lit(lighting, omega)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=omega, title=f"Step III: {lighting}")
                       lighting = self.lit(lighting, v1)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v1, title=f"Step III: {lighting}")
                       lighting = self.lit(lighting, v0)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v0, title=f"Step III: {lighting}")
                       lighting = self.lit(lighting, center)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step III: {lighting}")
 
           self.print_state(lighting)
           self.set_lighting(lighting)
@@ -523,6 +587,7 @@ class MorphFactory(Debug):
 
       def _lit_center(self):
           lighting = self.get_lighting()
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), title=f"Step IV: {lighting}")
           self.print_vertix(lighting, "Liting center")
           center = self.get_center()
           center_lits = self.get_lits(lighting, [center])
@@ -533,6 +598,7 @@ class MorphFactory(Debug):
               first_lit = lit_indexes[0]
               for i in range(first_lit, -1, -1):
                   lighting = self.lit(lighting, long_leg[i])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[i], title=f"Step IV: {lighting}")
           self.print_state(lighting)
           self.set_lighting(lighting)
           return self
@@ -540,6 +606,7 @@ class MorphFactory(Debug):
 
       def _reduce_long_leg_more_than_one_lits(self):
           lighting = self.get_lighting()
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), title=f"Step IV: {lighting}")
           self.print_vertix(lighting, "Reduce long leg lits")
           omega = self.get_one_vertix()
           center = self.get_center()
@@ -550,10 +617,8 @@ class MorphFactory(Debug):
               lits = self.get_lits(lighting, long_leg)
               if len(lits) == 0:
                   self.append(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), appending=center, title=f"Step IV: {lighting}")
                   raise AppendedException()
-
-
-
 
               if len(lits) == 1:
                   if long_leg[0] == lits[0] or long_leg[len(long_leg) - 1] == lits[0]:
@@ -562,9 +627,14 @@ class MorphFactory(Debug):
                   if long_leg[0] != lits[0]:
                       lit_indexes = self.get_lit_indexes(long_leg, lits)
                       if lit_indexes[0] < len(long_leg) - 1:
+                          removing = []
                           for i in range(lit_indexes[0] + 1, len(long_leg)):
                               self.append_delayed(long_leg[i])
+                              removing.append(long_leg[i])
+                          if len(removing) > 0:
+                              recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), removing_vertices=removing, title=f"Step IV: {lighting}")
                           self.remove(long_leg[lit_indexes[0] + 1])
+                          recording_graph(self.record, collection=self.get_vertices(), lighting=lighting, lits=self.get_lits(lighting), title=f"Step IV: {lighting}")
                       break
 
               if len(lits) == 2:
@@ -580,6 +650,8 @@ class MorphFactory(Debug):
               if first > 0 and first + 1 != second:
                   for i in range(second, first - 1, -1): ## maybe + 1
                       lighting = self.lit(lighting, long_leg[i])
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[i], title=f"Step IV: {lighting}")
+
               lits = self.get_lits(lighting, long_leg)
               if len(lits) == 1:
                   if long_leg[0] == lits[0] or long_leg[len(long_leg) - 1] == lits[0]:
@@ -588,9 +660,14 @@ class MorphFactory(Debug):
                   if long_leg[0] != lits[0]:
                       lit_indexes = self.get_lit_indexes(long_leg, lits)
                       if lit_indexes[0] < len(long_leg) - 1:
+                          removing = []
                           for i in range(lit_indexes[0] + 1, len(long_leg)):
                               self.append_delayed(long_leg[i])
+                              removing.append(long_leg[i])
+                          if len(removing) > 0:
+                              recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), removing_vertices=removing, title=f"Step IV: {lighting}")
                           self.remove(long_leg[lit_indexes[0] + 1])
+                          recording_graph(self.record, collection=self.get_vertices(), lighting=lighting, lits=self.get_lits(lighting), title=f"Step IV: {lighting}")
                       break
 
 
@@ -601,6 +678,7 @@ class MorphFactory(Debug):
                   if first != 0:
                      for i in range(first, 0, -1):
                          lighting = self.lit(lighting, long_leg[i])
+                         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[i], title=f"Step IV: {lighting}")
 
                      lits = self.get_lits(lighting, long_leg)
 
@@ -612,29 +690,31 @@ class MorphFactory(Debug):
 
               if v0 in lits:
                   lighting = self.lit(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step IV: {lighting}")
                   lighting = self.lit(lighting, omega)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=omega, title=f"Step IV: {lighting}")
                   lits = self.get_lits(lighting, long_leg)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg, title=f"Step IV: {lighting}")
                   lit_indexes = self.get_lit_indexes(long_leg, lits)
                   first = lit_indexes[0]
                   for i in range(first, -1, -1):
                       lighting = self.lit(lighting, long_leg[i])
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[i], title=f"Step IV: {lighting}")
 
                   lighting = self.lit(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step IV: {lighting}")
 
 
           self.print_state(lighting)
           self.set_lighting(lighting)
           return self
 
-
-
-
-
-
       def _append_long_leg_first_and_center_lit(self):
 
           lighting = self.get_lighting()
           self.print_vertix(lighting, "Append long leg with first lit and center")
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), title=f"Step V: {lighting}")
+
           omega = self.get_one_vertix()
           center = self.get_center()
           lits = self.get_lits(lighting, [center, omega])
@@ -648,6 +728,7 @@ class MorphFactory(Debug):
               #lit only center
               self.print_state(lighting)
               self.append(lighting, center)
+              recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), appending=center, title=f"Step V: {lighting}")
               raise AppendedException
 
           lit_indexes = self.get_lit_indexes(long_leg, lits)
@@ -664,7 +745,9 @@ class MorphFactory(Debug):
               if is_can_connect_to_end:
                   for v in long_leg:
                       lighting = self.lit(lighting, v)
+                      recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v, title=f"Step V: {lighting}")
                   self.append(lighting, long_leg[len(long_leg)-1])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), appending=long_leg[len(long_leg)-1], title=f"Step V: {lighting}")
                   raise AppendedException
               else:
                   two_legs = self.get_two_legs()
@@ -672,29 +755,54 @@ class MorphFactory(Debug):
                   v0 = two_leg[0]
                   v1 = two_leg[1]
                   lighting = self.lit(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, v0)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v0, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, omega)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=omega, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, long_leg[0])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[0], title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, v1)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v1, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, v0)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v0, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, long_leg[1])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[1], title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, long_leg[0])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[0], title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, long_leg[2])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[2], title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, long_leg[1])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[1], title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, long_leg[3])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[3], title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, long_leg[2])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[2], title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, omega)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=omega, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, long_leg[0])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[0], title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, long_leg[1])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[1], title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, v0)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v0, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, v1)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v1, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, long_leg[0])
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[0], title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, v0)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=v0, title=f"Step V: {lighting}")
                   lighting = self.lit(lighting, center)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step V: {lighting}")
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), appending=center, title=f"Step V: {lighting}")
                   self.append(lighting, center)
                   raise AppendedException
 
@@ -707,6 +815,7 @@ class MorphFactory(Debug):
       def _append_long_leg_only_last_lit(self):
           lighting = self.get_lighting()
           self.print_vertix(lighting, "Append if long leg last and center are lited")
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), title=f"Step VI: {lighting}")
           center = self.get_center()
           long_leg = self.get_long_leg()
 
@@ -716,22 +825,37 @@ class MorphFactory(Debug):
               last_v = long_leg[len(long_leg) - 1]
               if len(long_leg) == 1:
                   lighting = self.lit(lighting, last_v)
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=last_v, title=f"Step VI: {lighting}")
+                  recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), appending=last_v, title=f"Step VI: {lighting}")
                   self.append(lighting, last_v)
                   raise AppendedException
               g = long_leg[len(long_leg) - 2]
               omega = self.get_one_vertix()
               pq = omega@lighting
               new_g = pq@g
+              recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), removing_vertices=[last_v], title=f"Step VI: {lighting}")
+
               self.remove(last_v)
+              recording_graph(self.record, collection=self.get_vertices(), lighting=lighting, lits=self.get_lits(lighting), title=f"Step VI: {lighting}")
+              recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), appending=center, title=f"Step VI: {lighting}")
               self.append(lighting, center)
+              recording_graph(self.record, collection=self.get_vertices(), lighting=lighting, lits=self.get_lits(lighting), title=f"Step VI: {lighting}")
+              recording_graph(self.record, lighting=last_v, lits=self.get_lits(lighting), replacing_vertices=[g], title=f"Step VI: {lighting}")
               self.replace(g, new_g)
-              self.append(last_v, lighting)
+              recording_graph(self.record, collection=self.get_vertices(), lighting=last_v, lits=self.get_lits(lighting), title=f"Step VI: {lighting}")
               long_leg = self.get_long_leg()
               if len(long_leg) > 4:
+                  removing = []
                   for i in range(4, len(long_leg)):
                       self.append_delayed(long_leg[i])
+                      removing.append(long_leg[i])
+                  if len(removing) > 0:
+                      recording_graph(self.record, lighting=last_v, lits=self.get_lits(lighting), removing_vertices=removing, title=f"Step VI: {lighting}")
+
                   self.remove(long_leg[4])
 
+              recording_graph(self.record, collection=self.get_vertices(), lighting=last_v, lits=self.get_lits(lighting), appending=lighting, title=f"Step VI: {lighting}")
+              self.append(last_v, lighting)
               raise AppendedException
 
 
@@ -743,16 +867,23 @@ class MorphFactory(Debug):
       def _append_long_leg_last_and_first_lit(self):
           lighting = self.get_lighting()
           self.print_vertix(lighting, "Append if long leg last, first and center are lited")
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), title=f"Step VII: {lighting}")
           omega = self.get_one_vertix()
           center = self.get_center()
           long_leg = self.get_long_leg()
           first_v = long_leg[0]
           for i in range(len(long_leg)-1, 0, -1):
               lighting = self.lit(lighting, long_leg[i])
+              recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=long_leg[i], title=f"Step VII: {lighting}")
           lighting = self.lit(lighting, center)
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step VII: {lighting}")
           lighting = self.lit(lighting, omega)
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=omega, title=f"Step VII: {lighting}")
           lighting = self.lit(lighting, first_v)
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=first_v, title=f"Step VII: {lighting}")
           lighting = self.lit(lighting, center)
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), contracting=center, title=f"Step VII: {lighting}")
+          recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting), appending=center, title=f"Step VII: {lighting}")
           self.append(lighting, center)
           raise AppendedException
 
@@ -764,7 +895,7 @@ class MorphFactory(Debug):
           self.set_lighting(lighting)
           self._append_three_graph()
           self._append_one_legs_in_different_state()
-          self._append_fast()
+          #self._append_fast()
           self._lit_only_long_leg()
           self._lit_center()
           self._reduce_long_leg_more_than_one_lits()
@@ -798,6 +929,7 @@ class MorphFactory(Debug):
               raise DebugException()
 
           if number is not None:
+              vertices = self.get_vertices()
               if number <= len(self.get_vertices()):
                   self.print_state(lighting)
                   raise DebugException()
@@ -809,13 +941,15 @@ class MorphFactory(Debug):
       #def unlit_two_legs(morph, lighting)
       def build(self, generators):
           """Transform a connected graph to a cononic type."""
-          #self.debuging()
 
           if len(generators) == 0:
               return self
 
           vertices = generators.get_queue().get()
           self.set_debug(generators.get_debug())
+          #self.debuging()
+          recording_graph(self.record, collection=vertices, title=f"Original graph", init=True)
+
           self.print_vertices(vertices, "init")
           #self.recording(vertices=vertices)
           unappended = []
@@ -824,9 +958,11 @@ class MorphFactory(Debug):
           #self.set_debug_vertix("ZYIIII")
           while len(vertices) > 0:
               lighting = vertices[0]
+              #if len(self.get_vertices()) > 0:
+              recording_graph(self.record, collection=self.get_vertices(), lighting=lighting, title=f"Adding: {lighting}")
               vertices.remove(lighting)
               try:
-                  #self.debugbreak(number=8, lighting = lighting)
+                  #self.debugbreak(number=4, lighting = lighting)
                   self._pipeline(lighting)
               except AppendedException:
                   vertices = self.restore_delayed(vertices)
@@ -855,9 +991,13 @@ class MorphFactory(Debug):
                       self.restore()
                   unappended.append(lighting)
 
+          classification = Classification()
+          classification.add(self.get_morph())
+
+          recording_graph(self.record, collection=self.get_vertices(), title=f"Algebra: {classification.get_algebra()}")
 
           self.print_state()
-          self.print_vertices(unappended, "unappended")
-          self.print_vertices(self.dependents, "dependents")
+          self.print_vertices(unappended, f"unappended")
+          self.print_vertices(self.dependents, f"dependents")
           return self
 
