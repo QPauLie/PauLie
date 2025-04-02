@@ -1,10 +1,9 @@
 import pytest
-from paulie.common.pauli_string_factory import get_pauli_string as p, PauliStringType, set_factory
+from paulie.common.pauli_string_factory import get_pauli_string as p
 
 @pytest.fixture(scope="module")
 def pauli_setup():
     """Set up Pauli operators for testing."""
-    set_factory(PauliStringType.BITARRAY)
     return {
         "I": p("I"),
         "X": p("X"),

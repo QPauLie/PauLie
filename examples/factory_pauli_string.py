@@ -1,8 +1,4 @@
-from paulie.common.pauli_string_factory import (
-    PauliStringType, 
-    set_factory,
-    get_pauli_string as p
-   )
+from paulie.common.pauli_string_factory import get_pauli_string as p
 from paulie.common.algebras import get_lie_algebra
 
 
@@ -28,8 +24,6 @@ if __name__ == "__main__":
 
     print_k_local(["XXZ", "YX"], 4)
     print_k_local_by_algebra("a5", 4)
-    print("bitarray implementation")
-    set_factory(PauliStringType.BITARRAY)
     print_k_local(["IX", "ZXI"], 5)
     print_k_local_by_algebra("b3", 4)
 

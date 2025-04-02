@@ -1,4 +1,4 @@
-from paulie.common.pauli_string_factory import get_pauli_string, PauliStringType, set_factory
+from paulie.common.pauli_string_factory import get_pauli_string
 from paulie.application.pauli_compiler import pauli_compiler, nested_adjoint 
 
 
@@ -133,8 +133,4 @@ def test_pauli_compiler():
 
 
 if __name__ == "__main__":
-    print("np implementation")
-    test_pauli_compiler()
-    set_factory(PauliStringType.BITARRAY)
-    print("bitarray implementation")
     test_pauli_compiler()

@@ -1,4 +1,4 @@
-from paulie.common.pauli_string_factory import get_pauli_string as p, PauliStringType, set_factory 
+from paulie.common.pauli_string_factory import get_pauli_string as p
 from paulie.common.all_pauli_strings import get_random_list
 from time import perf_counter
 from itertools import combinations
@@ -19,34 +19,18 @@ def perfomence_commutator_pauliarray(g1):
 
 if __name__ == "__main__":
 #    set_factory(PauliStringType.BITARRAY)
-    print(f"{p("XXZ")}")
-    print(f"{p("ZZX")}")
-    print(f"{p("YZX")}")
 #    exit()
     g = get_random_list(100, 1000)
     g1 = p(g)
     start_time = perf_counter()
     perfomence_mult(g1)
     end_time = perf_counter()
-    print(f"np @ time {end_time - start_time: 0.4f} sec.")
+    print(f"@ time {end_time - start_time: 0.4f} sec.")
 
     start_time = perf_counter()
     perfomence_check_comm(g1)
     end_time = perf_counter()
-    print(f"np | time {end_time - start_time: 0.4f} sec.")
-
-
-    set_factory(PauliStringType.BITARRAY)
-    g1 = p(g)
-    start_time = perf_counter()
-    perfomence_mult(g1)
-    end_time = perf_counter()
-    print(f"bitarray @ time {end_time - start_time: 0.4f} sec.")
-
-    start_time = perf_counter()
-    perfomence_check_comm(g1)
-    end_time = perf_counter()
-    print(f"bitarray | time {end_time - start_time: 0.4f} sec.")
+    print(f"| time {end_time - start_time: 0.4f} sec.")
 
     paulis = PauliArray.from_labels(g)
 

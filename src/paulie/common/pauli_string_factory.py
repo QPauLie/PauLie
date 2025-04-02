@@ -1,64 +1,7 @@
 """Pauli's String Factory. Responsible for creating instances of Pauli strings of various implementations"""
-import enum
-from paulie.common.np_pauli_string import NPPauliString
-from paulie.common.bitarray_pauli_string import BitArrayPauliString
 from paulie.common.pauli_string import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
 from typing import Generator
-
-
-class PauliStringType(enum.Enum):
-      """Pauli string implementation types."""
-      NP = 0 # numpy implemebtation
-      BITARRAY = 1  # bitarray implementation
-      PAULIARRAY = 2  # pauliarray implementation
-
-
-class PauliStringFactory:
-    """Pauli's String Factory. Responsible for creating instances of Pauli strings of various implementations"""
-
-    def __init__(self, type_string: PauliStringType = PauliStringType.NP):
-        """
-        Factory initialization
-        """
-        self.type_string = type_string
-
-    def set_type(self, type_string: PauliStringType):
-        """
-        Set Pauli string implementation type
-        """
-        self.type_string = type_string
-
-    def build(self, n: int=None, pauli_str: str=None):
-        """
-        Create an instance of a Pauli string of a given implementation
-        Args: n - lenght of Pauli string
-              pauli_str - string representation of Pauli string
-        """
-        if self.type_string == PauliStringType.NP:
-            return NPPauliString(pauli_str=pauli_str, n=n)
-        elif self.type_string == PauliStringType.BITARRAY:
-            return BitArrayPauliString(pauli_str=pauli_str,n=n)
-
-
-"""
-Current factory instance
-"""
-_factory = PauliStringFactory()
-
-def get_factory() -> PauliStringFactory:
-    """
-    Get the current instance of the factory
-    """
-    return _factory
-
-def set_factory(type_string: PauliStringType):
-    """
-    Set Pauli string implementation type
-    Args: type_string - Pauli string implementation types
-    """
-
-    _factory.set_type(type_string)
 
 def get_identity(n: int):
     """
@@ -66,7 +9,7 @@ def get_identity(n: int):
     Args: n - lenght of Pauli string
     returns identity
     """
-    return _factory.build(n=n)
+    return PauliString(n=n)
 
 def get_pauli_string(o, n:int = None):
     """
@@ -79,10 +22,10 @@ def get_pauli_string(o, n:int = None):
     Given n, the collection is expanded as k-local. Where k is the maximum length of a Pauli string in a given collection
     """
     if isinstance(o, str):
-        return _factory.build(pauli_str=o, n=n)
+        return PauliString(pauli_str=o, n=n)
     if isinstance(o, PauliString):
-        return _factory.build(pauli_str=str(o), n=n)
-    generators = PauliStringCollection([_factory.build(pauli_str=p) if isinstance(p, str) else _factory.build(pauli_str=str(p)) for p in o])
+        return o
+    generators = PauliStringCollection([PauliString(pauli_str=p) if isinstance(p, str) else PauliString(pauli_str=str(p)) for p in o])
     if n is not None:
         return PauliStringCollection(list(gen_k_local_generators(n, generators.get())))
     return generators
