@@ -9,4 +9,4 @@ def animation_anti_commutation_graph(generators: PauliStringCollection, storage=
     record = RecordGraph()
     generators.set_record(record)
     generators.get_class()
-    animation_graph(record)
+    animation_graph(record, interval=interval, storage=storage)
