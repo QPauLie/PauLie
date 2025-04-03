@@ -22,6 +22,8 @@ examples/data
 examples/data/*
 __pycache__/
 .pytest_cache/
+debugging/
+debugging/*
 
 # Mac OS X
 *.DS_Store
