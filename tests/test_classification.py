@@ -20,9 +20,9 @@ def test_multiple_algebra_equivalences(generators1, generators2, should_equal):
         assert algebra1 != algebra2, f"Expected {generators1} and {generators2} to represent different algebras"
 
 def test_explicit_algebras():
-    assert get_algebra(p(["XX", "YY", "ZZ", "ZY"])) == "u(1)+2*so(2)" # Example III.8
-    assert get_algebra(p(["XY"])) == "u(1)" # Example I.4
-    assert get_algebra(p(["XY"], n = 3)) == "so(3)"
+    assert p(["XX", "YY", "ZZ", "ZY"]).get_class().is_algebra("u(1)+2*so(2)") # Example III.8
+    assert p(["XY"]).get_class().is_algebra("u(1)") # Example I.4
+    assert p(["XY"], n = 3).get_class().is_algebra("so(3)")
 
 
 
