@@ -225,10 +225,6 @@ class PauliString:
         """Get a subsystem of this Pauli string"""
         return PauliString(bits=self.bits[2*start:2*start+2*length])
 
-    def get_list_subsystem(self, start: int = 0, length: int = 1) -> list["PauliString"]:
-        """Get a list of Pauli string subsystems"""
-        return [self.get_subsystem(i, length) for i in range(0, len(self), length)]
-
     def set_subsystem(self, position: int, pauli_string):
         """
         Set subsystem value
