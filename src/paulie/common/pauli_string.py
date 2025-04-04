@@ -34,7 +34,7 @@ class PauliString:
              self.bits = bitarray()
              self.bits.encode(CODEC, pauli_str)
              if n is not None and n > len(self):
-                 o = self + BitArrayPauliString(n = n - len(self))
+                 o = self + PauliString(n = n - len(self))
                  self.bits = o.bits.copy()
         self.bits_even = self.bits[::2]
         self.bits_odd  = self.bits[1::2]
