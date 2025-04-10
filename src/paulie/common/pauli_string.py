@@ -2,7 +2,6 @@
 from bitarray import bitarray
 from bitarray.util import count_and
 from paulie.common.pauli_string_parser import pauli_string_parser
-from paulie.common.all_pauli_strings import get_all_pauli_strings
 from itertools import combinations
 
 CODEC = {
@@ -295,6 +294,8 @@ class PauliString:
                 self.bits[i] = 1
                 break
             self.bits[i] = 0
+        self.bits_even = self.bits[::2]
+        self.bits_odd  = self.bits[1::2]
 
     def expand(self, n: int):
         """
@@ -305,22 +306,23 @@ class PauliString:
         """
         return self + PauliString(n = n - len(self))
 
-    def get_nested(self, generators = None):
+    def gen_all_pauli_strings(self):
         """
-        Get nested of Pauli string
+        Generate a list of Pauli strings that commute with this string
         Args:
-            generators: Collection of Pauli strings on which nested is searched
-                        If not specified, then the search area is all Pauli strings of the same size
-        """
+          Yields the generated Pauli string
 
-        if generators is None:
-           generators = get_all_pauli_strings(len(self))
-        return [
-            (self.create_instance(pauli_str=a), self.create_instance(pauli_str=b))
-            for a, b in combinations(generators, 2)
-            if a != str(self) and b != str(self) and not self.create_instance(pauli_str=a)|b and self.create_instance(pauli_str=a)^b == self
-        ]
-                      
+        """
+        n = len(self)
+        pauli_string = PauliString(n=n)
+
+        last = PauliString(bits = bitarray([1] * (2 * n)))
+
+        while pauli_string !=last:
+            yield pauli_string.copy()
+            pauli_string.inc()
+        yield pauli_string.copy()
+
     def get_commutants(self, generators = None):
         """
         Get a list of Pauli strings that commute with this string
@@ -330,9 +332,9 @@ class PauliString:
 
         """
         if generators is None:
-            generators = get_all_pauli_strings(len(self))
+            generators = self.gen_all_pauli_strings()
 
-        return [self.create_instance(pauli_str=str(g)) for g in generators if self|g]
+        return [g for g in generators if self|g]
 
     def get_anti_commutants(self, generators = None):
         """
@@ -343,6 +345,21 @@ class PauliString:
 
         """
         if generators is None:
-            generators = get_all_pauli_strings(len(self))
+            generators = self.gen_all_pauli_strings()
 
-        return [self.create_instance(pauli_str=str(g)) for g in generators if not self|g]
+        return [g for g in generators if not self|g]
+
+    def get_nested(self, generators = None):
+        """
+        Get nested of Pauli string
+        Args:
+            generators: Collection of Pauli strings on which nested is searched
+                        If not specified, then the search area is all Pauli strings of the same size
+        """
+
+        generators = self.get_anti_commutants(generators = generators)
+        return [
+            (a, b)
+            for a, b in combinations(generators, 2)
+            if a^b == self
+        ]

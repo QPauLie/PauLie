@@ -2,7 +2,6 @@
 Collection of Pauli strings
 """
 from paulie.common.pauli_string import PauliString
-from paulie.common.all_pauli_strings import get_all_pauli_strings
 from paulie.common.get_graph import get_graph
 import networkx as nx
 from paulie.classifier.classification import Classification
@@ -181,9 +180,13 @@ class PauliStringCollection:
            Args:
                generators: Generators, Pauli string search list. If empty, then all lines are the same length
         """
-        if generators is None:
-            generators = get_all_pauli_strings(self.get_size())
-        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators if all(gen|g for gen in self.generators)], debug=self.debug)
+        if len(self) == 0:
+            return PauliStringCollection([], debug=self.debug)
+
+        
+        for p in self:
+            generators = PauliStringCollection(p.get_commutants(generators=generators), debug=self.debug)
+        return generators
 
     def get_anti_commutants(self, generators=None):
         """
@@ -191,9 +194,14 @@ class PauliStringCollection:
            Args:
                generators: Generators, Pauli string search list. If empty, then all lines are the same length
         """
-        if generators is None:
-            generators = get_all_pauli_strings(self.get_size())
-        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators if all(not gen|g for gen in self.generators)], debug=self.debug)
+        if len(self) == 0:
+            return PauliStringCollection([], debug=self.debug)
+
+        
+        for p in self:
+            generators = PauliStringCollection(p.get_anti_commutants(generators=generators), debug=self.debug)
+        return generators
+
 
     def get_graph(self, generators: list["PauliStringCollection"]=[]):
         """
