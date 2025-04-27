@@ -33,7 +33,7 @@ G_LIE: dict[str, list[str]] = {
 # A dictionary of the DLAs n>=3
 def two_local_algebras(n):
     return  {
-    "a0": f"({n-1})*u(1)",
+    "a0": f"{n-1}*u(1)",
     "a1": f"so({n})",
     "a2": f"so({n})+so({n})", #same as a_4
    # "a3": ,
@@ -46,7 +46,7 @@ def two_local_algebras(n):
     "a13": f"su({2**(n-1)}) + su({2**(n-1)})", # a_20, a_15
     "a14": f"so({2*n})",
     "b0": f"{n}*u(1)",
-    "b1": f"({2*n-1})*u(1)",
+    "b1": f"{2*n-1}*u(1)",
     "b2": f"sp({2**(n-2)}) + u(1)",
     "b3": f"{n}*su(2)",
     "b4": f"su({2**(n-1)}) + su({2**(n-1)}) + u(1)" ,

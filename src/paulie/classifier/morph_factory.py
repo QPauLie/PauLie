@@ -31,13 +31,6 @@ class MorphFactory(Debug):
       def set_debug(self, debug):
           self.debug = debug
 
-      #def recording(self, lighting = None, vertices = None):
-      #     if vertices is None:
-      #         vertices = self.get_vertices()
-      #     if lighting is not None:
-      #        vertices.append(lighting)
-      #     recording_graph(self.record, vertices)
-
       def set_lighting(self, lighting):
            self.lighting = lighting
 
@@ -49,6 +42,7 @@ class MorphFactory(Debug):
 
       def lit(self, lighting, vertix):
           lighting = lighting@vertix
+          #lighting = lighting^vertix
           if self.is_included(lighting):
               raise DependentException()
           return lighting
@@ -59,12 +53,6 @@ class MorphFactory(Debug):
               vertices = self.get_vertices()
           return [v for v in vertices if v != lighting and not lighting|v]
 
-#          lits = []
-#          for v in vertices:
-#              if v != lighting:
-#                  if not lighting.commutes_with(v):
-#                      lits.append(v)
-#          return lits
 
       def is_empty(self):
           return len(self.legs) == 0
@@ -370,6 +358,13 @@ class MorphFactory(Debug):
           pq, p = self.get_PQ(lighting)
           if pq is not None:
               lits = self.get_lits(lighting)
+
+              for lit in lits:
+                  if lit != p:
+                      v = pq@lit
+                      if self.is_included(v):
+                          raise DependentException()
+
               for lit in lits:
                   if lit != p:
                       v = pq@lit
@@ -416,6 +411,7 @@ class MorphFactory(Debug):
           lighting = self.get_lighting()
 
           self.print_vertix(lighting, "Lit only long leg")
+
           omega = self.get_one_vertix()
           center = self.get_center()
           center_lits = self.get_lits(lighting, [center])
@@ -486,16 +482,31 @@ class MorphFactory(Debug):
           long_v0 = long_leg[0]
           long_v1 = long_leg[1]
 
+
           for i,leg in enumerate(two_legs):
               lits = self.get_lits(lighting, leg)
               v0 = leg[0]
               v1 = leg[1]
+              if v0 not in lits and v1 not in lits:
+                  continue
+              self.print_title("leg")
+              self.print_lit_vertices(leg, lits, title = "leg")
+              self.print_state(lighting)
+
               if v0 in lits and v1 not in lits:
                   lighting = self.lit(lighting, v0)
                   lits.append(v1)
-              if v0 not in lits and v1 in lits:
+                  self.print_title("v0")
+                  self.print_state(lighting)
+              elif v0 not in lits and v1 in lits:
                   lighting = self.lit(lighting, v1)
                   lits.append(v0)
+                  self.print_title("v1")
+                  self.print_state(lighting)
+                  self.print_lit_vertices(leg, lits, title = "leg")
+
+              self.print_title("after leg")
+              self.print_state(lighting)
 
               if v0 in lits and v1 in lits:
                   center_lits = self.get_lits(lighting, [center])
@@ -507,6 +518,7 @@ class MorphFactory(Debug):
                       lighting = self.lit(lighting, omega)
                       lighting = self.lit(lighting, center)
                   else:
+
                       long_lits = self.get_lits(lighting, [long_leg[0]])
                       if len(long_lits) == 0:
                           lighting = self.lit(lighting, long_v1)
@@ -578,8 +590,9 @@ class MorphFactory(Debug):
               first = lit_indexes[0]
               second = lit_indexes[1]
               if first > 0 and first + 1 != second:
-                  for i in range(second, first - 1, -1): ## maybe + 1
+                  for i in range(second, first, -1): ## maybe + 1
                       lighting = self.lit(lighting, long_leg[i])
+
               lits = self.get_lits(lighting, long_leg)
               if len(lits) == 1:
                   if long_leg[0] == lits[0] or long_leg[len(long_leg) - 1] == lits[0]:
@@ -652,7 +665,6 @@ class MorphFactory(Debug):
 
           lit_indexes = self.get_lit_indexes(long_leg, lits)
 
-#          self.debugbreak(lighting = lighting, append=True)
 
           # only long leg and center are lited 
           if len(lit_indexes) == 1 and 0 in lit_indexes:
@@ -722,6 +734,9 @@ class MorphFactory(Debug):
               omega = self.get_one_vertix()
               pq = omega@lighting
               new_g = pq@g
+              if self.is_included(new_g):
+                  raise DependentException()
+
               self.remove(last_v)
               self.append(lighting, center)
               self.replace(g, new_g)
@@ -806,7 +821,7 @@ class MorphFactory(Debug):
 
       def is_break(self):
            return self.debug_break
-      #def unlit_two_legs(morph, lighting)
+
       def build(self, generators):
           """Transform a connected graph to a cononic type."""
           #self.debuging()
@@ -815,9 +830,9 @@ class MorphFactory(Debug):
               return self
 
           vertices = generators.get_queue().get()
+
           self.set_debug(generators.get_debug())
           self.print_vertices(vertices, "init")
-          #self.recording(vertices=vertices)
           unappended = []
           self.dependents = []
 
@@ -826,7 +841,7 @@ class MorphFactory(Debug):
               lighting = vertices[0]
               vertices.remove(lighting)
               try:
-                  #self.debugbreak(number=8, lighting = lighting)
+                  #self.debugbreak(number=37, lighting = None)
                   self._pipeline(lighting)
               except AppendedException:
                   vertices = self.restore_delayed(vertices)

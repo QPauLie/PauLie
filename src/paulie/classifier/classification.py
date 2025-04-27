@@ -143,11 +143,29 @@ class Classification:
           algebra.replace(" ", "")
           return _algebra.find(algebra) > -1
 
-      def is_algebra(self, algebra):
-          _algebra = self.get_algebra()
+      def _parse_algebra(self, algebra):
           algebra.replace(" ", "")
           algebras = algebra.split("+")
+
+          algs = {}
+          for alg in algebras:
+              name = alg
+              q = 1
+              if "*" in alg:
+                  a = name.split("*")
+                  name = a[1]
+                  q = int(a[0])
+              if name in algs.keys():
+                  q += algs[name]
+              algs[name] = q
+          return "+".join([key if v == 1 else str(v) + "*" + key for key, v in algs.items()]).split("+")
+
+      def is_algebra(self, algebra):
+          _algebra = self.get_algebra()
+          algebras = self._parse_algebra(algebra)
+
           _algebras = _algebra.split("+")
+
           if len(algebras) != len(_algebras):
               return False
 
