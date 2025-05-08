@@ -31,24 +31,70 @@ G_LIE: dict[str, list[str]] = {
 }
 
 # A dictionary of the DLAs n>=3
+def _a3(n):
+    if n % 8 == 0:
+        return f"4*so({2**(n-2)})"
+    if n % 8 == 1 or n % 8 == 7:
+        return f"so({2**(n-1)})"
+    if n % 8 == 2 or n % 8 == 6:
+        return f"2*su({2**(n-2)})"
+    if n % 8 == 3 or n % 8 == 5:
+        return f"sp({2**(n-2)})"
+    if n % 8 == 4:
+        return f"4*sp({2**(n-3)})"
+
+def _a5(n):
+    if n % 6 == 0:
+        return f"4*so({2**(n-2)})"
+    if n % 6 == 1 or n % 6 == 5:
+        return f"so({2**(n-1)})"
+    if n % 6 == 2 or n % 6 == 4:
+        return f"2*su({2**(n-2)})"
+    if n % 6 == 3:
+        return f"sp({2**(n-2)})"
+
+def _a6(n):
+    if n % 2 == 1: #odd
+        return f"su({2**(n-1)})"
+    else: #even
+        return f"4*su({2**(n-2)})"
+
+def _a7(n):
+    return _a6(n)
+
+def _a10(n):
+    return _a6(n)
+
+# A dictionary of the DLAs n>=3
 def two_local_algebras(n):
     return  {
     "a0": f"{n-1}*u(1)",
     "a1": f"so({n})",
     "a2": f"so({n})+so({n})", #same as a_4
-   # "a3": ,
-   # "a5": ,
-    "a6": f"su({2**(n-1)})", #n odd 4*su(2^(n-2)) # same as a_7, a_10
+    "a3": _a3(n),
+    "a4": f"so({n})+so({n})",
+    "a5": _a5(n),
+    "a6": _a6(n),
+    "a7": _a7(n),
     "a8": f"so({2*n-1})",
     "a9": f"sp({2**(n-2)})",
+    "a10": _a10(n),
     "a11": f"so({2**n})", # a_16
     "a12": f"su({2**n})", # a_17, a_18, a_19, a_21, a_22
     "a13": f"su({2**(n-1)}) + su({2**(n-1)})", # a_20, a_15
     "a14": f"so({2*n})",
+    "a15": f"su({2**(n-1)}) + su({2**(n-1)})", # a_20, a_15
+    "a16": f"so({2**n})", # a_16
+    "a17": f"su({2**n})", # a_17, a_18, a_19, a_21, a_22
+    "a18": f"su({2**n})", # a_17, a_18, a_19, a_21, a_22
+    "a19": f"su({2**n})", # a_17, a_18, a_19, a_21, a_22
+    "a20": f"su({2**(n-1)}) + su({2**(n-1)})", # a_20, a_15
+    "a21": f"su({2**n})", # a_17, a_18, a_19, a_21, a_22
+    "a22": f"su({2**n})", # a_17, a_18, a_19, a_21, a_22
     "b0": f"{n}*u(1)",
     "b1": f"{2*n-1}*u(1)",
     "b2": f"sp({2**(n-2)}) + u(1)",
-    "b3": f"{n}*su(2)",
+    "b3": f"{n}*so(2)",
     "b4": f"su({2**(n-1)}) + su({2**(n-1)}) + u(1)" ,
 }
 

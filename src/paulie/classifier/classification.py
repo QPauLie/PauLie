@@ -19,7 +19,6 @@ class Morph:
           self.legs = legs # center is zero leg
           self.dependents = dependents
 
-
       def is_empty(self):
           return len(self.legs) == 0
 
@@ -49,11 +48,16 @@ class Morph:
                       raise Exception("Graph of non-canonical type") 
                   long_vertices += len(leg)
 
+
           if long_vertices == 0 and two_legs == 1:
               two_legs = 0
               long_vertices = 2
+
+          if long_vertices > 0 and two_legs == 0:
+              long_vertices += 1
+
           if long_vertices == 0 and two_legs == 0 and one_legs == 1:
-             long_vertices = 1
+             long_vertices = 0
 
           return one_legs, two_legs, long_vertices
 
@@ -144,7 +148,7 @@ class Classification:
           return _algebra.find(algebra) > -1
 
       def _parse_algebra(self, algebra):
-          algebra.replace(" ", "")
+          algebra = algebra.replace(" ", "")
           algebras = algebra.split("+")
 
           algs = {}
@@ -163,7 +167,7 @@ class Classification:
       def is_algebra(self, algebra):
           _algebra = self.get_algebra()
           algebras = self._parse_algebra(algebra)
-
+          #print(f"algebras = {algebras}")
           _algebras = _algebra.split("+")
 
           if len(algebras) != len(_algebras):

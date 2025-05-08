@@ -27,6 +27,8 @@ class PauliStringCollection:
         self.record = None
         if len(generators) == 0:
             return
+        self.sv_queue = None
+        self.debug_queue = None
 
         longest = len(max(generators, key=len))
 
@@ -241,8 +243,17 @@ class PauliStringCollection:
         g.add_edges_from(edges)
         return [self._convert(subgaph) for subgaph in sorted(nx.connected_components(g), key=len, reverse=True)]
 
+    def debug_classify(self):
+        self.classification = Classification()
+        morph_factory = MorphFactory()
+        self.classification.add(morph_factory.build(self.debug_queue).get_morph())
+        return self.classification
+
     def classify(self):
         """Classify collection"""
+        if self.debug_queue:
+            return self.debug_classify()
+
         subgraphs = self.get_subgraphs()
         self.classification = Classification()
         for subgraph in subgraphs:
@@ -252,6 +263,10 @@ class PauliStringCollection:
                 morph_factory = RecordingMorphFactory(record = self.record)
 
             self.classification.add(morph_factory.build(subgraph).get_morph())
+            sv_queue = subgraph.get_sv_queue()
+            if sv_queue:
+                self.set_sv_queue(sv_queue)
+
         return self.classification
 
     def get_class(self):
@@ -263,6 +278,10 @@ class PauliStringCollection:
     def get_algebra(self):
         classification = self.get_class()
         return classification.get_algebra()
+
+    def is_algebra(self, algebra):
+        classification = self.get_class()
+        return classification.is_algebra(algebra)
 
     def DLA_dim(self):
         dim_su = lambda n: n**2-1
@@ -280,10 +299,12 @@ class PauliStringCollection:
                 dim+= dim_so(n)
         return dim
 
+    def reset_algebra(self):
+        self.classification = None
 
     def get_dependents(self):
         """Get a list of dependent strings in the collection"""
-        self.get_class().get_dependents()
+        return PauliStringCollection(self.get_class().get_dependents())
 
     def get_canonic_graph(self):
         """Get the canonical representation of a graph"""
@@ -353,6 +374,9 @@ class PauliStringCollection:
 
     def get_queue(self):
         """Get associated sequence of Pauli strings"""
+        if self.debug_queue:
+            return self.debug_queue.get()
+
         new_generators = self.copy()
         new_generators.sort()
         queue_pauli_strings = PauliStringCollection(debug=self.debug)
@@ -367,9 +391,18 @@ class PauliStringCollection:
 
         while len(new_generators) > 0:
             self._append_to_queue(queue_pauli_strings, new_generators)
+        if len(queue_pauli_strings) > 1:
+            self.sv_queue = PauliStringCollection(queue_pauli_strings)
         return queue_pauli_strings
 
+    def get_sv_queue(self):
+        return self.sv_queue
 
+    def set_sv_queue(self, sv_queue):
+        self.sv_queue = sv_queue
+
+    def set_debug_queue(self, debug_queue):
+        self.debug_queue = debug_queue
 
 
 

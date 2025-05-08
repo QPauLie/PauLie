@@ -201,7 +201,7 @@ class MorphFactory(Debug):
 
           raise Exception ("Can't append")
 
-      def append_to_center(self, lighting):
+      def append_to_tow_center(self, lighting):
           center = self.get_center()
           if len(self.legs) == 1:
               self.append(lighting, center)
@@ -225,6 +225,27 @@ class MorphFactory(Debug):
               self.append(lighting, center)
               return
           raise NotConnectedException()
+
+      def check_dependency_one_leg(self, lighting):
+          center = self.get_center()
+          ones = self.get_one_vertices()
+          vertices = set(self.get_vertices())
+
+          for one in ones:
+              pq = one @ lighting
+              for v in vertices:
+                  if v == one:
+                      continue
+                  n_v = pq @ v
+                  if n_v in vertices or n_v == lighting:
+                      raise DependentException()
+
+      def append_to_center(self, lighting):
+          #check dependency
+          self.check_dependency_one_leg(lighting)
+
+          center = self.get_center()
+          self.append(lighting, center)
 
       def remove(self, v):
           leg_index, vertix_index = self.find(v)
@@ -345,7 +366,7 @@ class MorphFactory(Debug):
               raise DependentException
 
           if self.is_empty_legs():
-              self.append_to_center(lighting)
+              self.append_to_tow_center(lighting)
               raise AppendedException
           self.print_state(lighting)
           self.set_lighting(lighting)
@@ -396,7 +417,7 @@ class MorphFactory(Debug):
               lits = self.get_lits(lighting)
               if len(lits) == 1:
                   if center in lits:
-                      self.append(lighting, center)
+                      self.append_to_center(lighting)
                       raise AppendedException
                   long_leg = self.get_long_leg()
                   if long_leg[len(long_leg) - 1] in lits:
@@ -550,7 +571,7 @@ class MorphFactory(Debug):
           while True:
               lits = self.get_lits(lighting, long_leg)
               if len(lits) == 0:
-                  self.append(lighting, center)
+                  self.append_to_center(lighting)
                   raise AppendedException()
 
 
@@ -649,7 +670,7 @@ class MorphFactory(Debug):
           if is_center_lit and len(lits) == 0:
               #lit only center
               self.print_state(lighting)
-              self.append(lighting, center)
+              self.append_to_center(lighting)
               raise AppendedException
 
           lit_indexes = self.get_lit_indexes(long_leg, lits)
@@ -696,7 +717,7 @@ class MorphFactory(Debug):
                   lighting = self.lit(lighting, long_leg[0])
                   lighting = self.lit(lighting, v0)
                   lighting = self.lit(lighting, center)
-                  self.append(lighting, center)
+                  self.append_to_center(lighting)
                   raise AppendedException
 
           self.print_state(lighting)
@@ -713,6 +734,7 @@ class MorphFactory(Debug):
 
           lits = self.get_lits(lighting, long_leg)
           if len(lits) == 1:
+              self.check_dependency_one_leg(lighting)
 
               last_v = long_leg[len(long_leg) - 1]
               if len(long_leg) == 1:
@@ -757,7 +779,7 @@ class MorphFactory(Debug):
           lighting = self.lit(lighting, omega)
           lighting = self.lit(lighting, first_v)
           lighting = self.lit(lighting, center)
-          self.append(lighting, center)
+          self.append_to_center(lighting)
           raise AppendedException
 
 
@@ -837,19 +859,26 @@ class MorphFactory(Debug):
                   if lighting in unappended:
                       unappended.remove(lighting)
                   pass
+                  continue
               except DependentException:
                   self.dependents.append(lighting)
+                  self.print_vertix(lighting, "Dependency")
+                  vertices = self.restore_delayed(vertices)
+                  continue
               except NotConnectedException:
+                  vertices = self.restore_delayed(vertices)
                   exc_type, exc_obj, exc_tb = sys.exc_info()
                   self.print_vertix(lighting, f"Exception {traceback.format_exc()}")
                   if lighting not in unappended:
                       unappended.append(lighting)
                       vertices.append(lighting)
+                  continue
               except DebugException:
                   exc_type, exc_obj, exc_tb = sys.exc_info()
                   self.print_vertix(lighting, f"Debug exception {traceback.format_exc()}")
                   break
               except Exception as e:
+                  vertices = self.restore_delayed(vertices)
                   if self.debug:
                       exc_type, exc_obj, exc_tb = sys.exc_info()
                       self.print_vertix(lighting, f"Exception {traceback.format_exc()}")
@@ -858,10 +887,11 @@ class MorphFactory(Debug):
                       self.print_vertix(lighting, f"Exception {e}")
                       self.restore()
                   unappended.append(lighting)
-
+                  continue
 
           self.print_state()
           self.print_vertices(unappended, "unappended")
           self.print_vertices(self.dependents, "dependents")
+
           return self
 
