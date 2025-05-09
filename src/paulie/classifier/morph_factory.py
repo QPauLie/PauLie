@@ -16,6 +16,17 @@ class DependentException(Exception):
 class NotConnectedException(Exception):
     pass
 
+class RaiseException(Exception):
+    pass
+
+class DException(Exception):
+      def __init__(self, params, queue):
+          super().__init__(params)
+          self.queue = queue
+
+      def get_queue(self):
+          return self.get_queue
+
 class MorphFactory(Debug):
       def __init__(self, debug = False, record=None):
           super().__init__(debug)
@@ -566,28 +577,18 @@ class MorphFactory(Debug):
           omega = self.get_one_vertix()
           center = self.get_center()
           long_leg = self.get_long_leg()
-          v0 = long_leg[0]
-
+          n = 0
+          #Offset the first vertex to the end of the linear leg. Since the leg is finite, we will always reach the highlighting of one vertex,
+          #it will be either the last one or the penultimate one
           while True:
+              n += 1
+              if n > 100:
+                  raise RaiseException("loop")
+
               lits = self.get_lits(lighting, long_leg)
               if len(lits) == 0:
                   self.append_to_center(lighting)
                   raise AppendedException()
-
-
-
-
-              if len(lits) == 1:
-                  if long_leg[0] == lits[0] or long_leg[len(long_leg) - 1] == lits[0]:
-                      break
-
-                  if long_leg[0] != lits[0]:
-                      lit_indexes = self.get_lit_indexes(long_leg, lits)
-                      if lit_indexes[0] < len(long_leg) - 1:
-                          for i in range(lit_indexes[0] + 1, len(long_leg)):
-                              self.append_delayed(long_leg[i])
-                          self.remove(long_leg[lit_indexes[0] + 1])
-                      break
 
               if len(lits) == 2:
                   lit_indexes = self.get_lit_indexes(long_leg, lits)
@@ -595,15 +596,6 @@ class MorphFactory(Debug):
                   if lit_indexes[0] == 0 and lit_indexes[1] == len(long_leg) - 1:
                       break
 
-
-              lit_indexes = self.get_lit_indexes(long_leg, lits)
-              first = lit_indexes[0]
-              second = lit_indexes[1]
-              if first > 0 and first + 1 != second:
-                  for i in range(second, first, -1): ## maybe + 1
-                      lighting = self.lit(lighting, long_leg[i])
-
-              lits = self.get_lits(lighting, long_leg)
               if len(lits) == 1:
                   if long_leg[0] == lits[0] or long_leg[len(long_leg) - 1] == lits[0]:
                       break
@@ -616,34 +608,15 @@ class MorphFactory(Debug):
                           self.remove(long_leg[lit_indexes[0] + 1])
                       break
 
-
-
               lit_indexes = self.get_lit_indexes(long_leg, lits)
-              if len(lit_indexes) > 0:
-                  first = lit_indexes[0]
-                  if first != 0:
-                     for i in range(first, 0, -1):
-                         lighting = self.lit(lighting, long_leg[i])
-
-                     lits = self.get_lits(lighting, long_leg)
-
-
-              lits = self.get_lits(lighting, long_leg)
-              if len(lits) == 1:
-                  if long_leg[0] == lits[0] or long_leg[len(long_leg) - 1] == lits[0]:
-                      break
-
-              if v0 in lits:
-                  lighting = self.lit(lighting, center)
-                  lighting = self.lit(lighting, omega)
-                  lits = self.get_lits(lighting, long_leg)
-                  lit_indexes = self.get_lit_indexes(long_leg, lits)
-                  first = lit_indexes[0]
-                  for i in range(first, -1, -1):
+              first = lit_indexes[0]
+              second = lit_indexes[1]
+                  
+              if first > 0 and first + 1 != second:
+                  for i in range(second, first, -1): ## maybe + 1
                       lighting = self.lit(lighting, long_leg[i])
-
-                  lighting = self.lit(lighting, center)
-
+              else:
+                  lighting = self.lit(lighting, long_leg[second])
 
           self.print_state(lighting)
           self.set_lighting(lighting)
@@ -841,6 +814,7 @@ class MorphFactory(Debug):
               return self
 
           vertices = generators.get_queue().get()
+          queue = vertices.copy()
 
           self.set_debug(generators.get_debug())
           self.print_vertices(vertices, "init")
@@ -877,6 +851,11 @@ class MorphFactory(Debug):
                   exc_type, exc_obj, exc_tb = sys.exc_info()
                   self.print_vertix(lighting, f"Debug exception {traceback.format_exc()}")
                   break
+              except RaiseException as e:
+                  self.debuging()
+                  self.print_vertices(queue, "init")
+                  
+                  raise DException("loop", queue)
               except Exception as e:
                   vertices = self.restore_delayed(vertices)
                   if self.debug:
