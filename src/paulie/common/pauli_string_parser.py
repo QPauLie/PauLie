@@ -1,3 +1,6 @@
+"""
+Parsing of Pauli string
+"""
 LOWCASE = "_"
 SIZE = "s"
 GATES = {"I", "X", "Y", "Z"}
@@ -16,9 +19,9 @@ def _is_number(char: str) -> bool:
     try:
         int(char)
         return True
-    except ValueError:
+    except ValueError as e:
         if char not in TOKENS:
-            raise ValueError("Invalid pauli string: unexpected character")
+            raise ValueError("Invalid pauli string: unexpected character") from e
         return False
 
 
@@ -26,8 +29,8 @@ def _to_int(position: str) -> int:
     """Convert string to int, raise exception if invalid."""
     try:
         return int(position)
-    except ValueError:
-        raise ValueError("Invalid pauli string: position must be a number")
+    except ValueError as e:
+        raise ValueError("Invalid pauli string: position must be a number") from e
 
 
 def pauli_string_parser(pauli_string: str) -> str:
@@ -46,7 +49,6 @@ def pauli_string_parser(pauli_string: str) -> str:
     new_pauli_string = ""
     i = 0
     size = None
-    
     # Extract size if specified
     try:
         index = pauli_string.find(SIZE)
@@ -58,7 +60,6 @@ def pauli_string_parser(pauli_string: str) -> str:
             pauli_string = pauli_string[:index]
     except ValueError as e:
         raise e
-    
     # Parse the operations
     while i < len(pauli_string):
         if pauli_string[i] not in GATES:
@@ -77,23 +78,19 @@ def pauli_string_parser(pauli_string: str) -> str:
                     p += pauli_string[i]
                     i += 1
             position = _to_int(p)
-            
             # Check for valid position
-            if position - len(new_pauli_string) - 1 < 0: 
+            if position - len(new_pauli_string) - 1 < 0:
                 raise ValueError("Invalid pauli string: invalid position order")
-                
             # Create string with I's up to position and add the operator
-            token = "".join(["I" for _ in range(position - len(new_pauli_string) - 1)]) + pauli_string[m]
+            token = "".join(["I" for _ in range(position - len(new_pauli_string) - 1)])
+            token += pauli_string[m]
         else:
             i += 1
-            
         new_pauli_string += token
-    
     # Add padding I's if size is specified
     if size is not None:
         if size < len(new_pauli_string):
             raise ValueError("Invalid pauli string: size too small for operators")
         padding = size - len(new_pauli_string)
         new_pauli_string += "".join(["I" for _ in range(padding)])
-        
     return new_pauli_string

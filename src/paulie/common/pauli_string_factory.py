@@ -1,7 +1,10 @@
-"""Pauli's String Factory. Responsible for creating instances of Pauli strings of various implementations"""
+"""
+Pauli's String Factory. Responsible for creating instances
+of Pauli strings of various implementations
+"""
+from typing import Generator
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
-from typing import Generator
 
 def get_identity(n: int):
     """
@@ -19,13 +22,15 @@ def get_pauli_string(o, n:int = None):
          n - length of Pauli strings
     Returns If o is a Pauli string, then its current instantiation value n is created
     otherwise PauliStringCollection is created - a collection of Pauli strings.
-    Given n, the collection is expanded as k-local. Where k is the maximum length of a Pauli string in a given collection
+    Given n, the collection is expanded as k-local.
+    Where k is the maximum length of a Pauli string in a given collection
     """
     if isinstance(o, str):
         return PauliString(pauli_str=o, n=n)
     if isinstance(o, PauliString):
         return o
-    generators = PauliStringCollection([PauliString(pauli_str=p) if isinstance(p, str) else PauliString(pauli_str=str(p)) for p in o])
+    generators = PauliStringCollection([PauliString(pauli_str=p) if isinstance(p, str)
+                 else PauliString(pauli_str=str(p)) for p in o])
     if n is not None:
         return PauliStringCollection(list(gen_k_local_generators(n, generators.get())))
     return generators
@@ -70,12 +75,12 @@ def gen_k_local(n: int, p: PauliString, used:Used=None) -> Generator[list[int], 
         yield left
 
 
-def gen_k_local_generators(n: int, generators: list[str], used: Used = None) -> Generator[list[int], None, None]:
+def gen_k_local_generators(n: int, generators: list[str],
+                           used: Used = None) -> Generator[list[int], None, None]:
     """Generates k-local operators for a set of generators."""
     used = used or Used()
     longest = max(generators, key=len)
     for g in generators:
         if isinstance(g, str):
-            g = get_pauli_string(pauli_str=g, n = len(longest))
-        
+            g = get_pauli_string(g, n = len(longest))
         yield from gen_k_local(n, g, used=used)

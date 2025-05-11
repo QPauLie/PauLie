@@ -1,20 +1,24 @@
 """
 Collection of Pauli strings
 """
+import re
+import networkx as nx
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.get_graph import get_graph
-import networkx as nx
 from paulie.classifier.classification import Classification
 from paulie.classifier.morph_factory import MorphFactory
 from paulie.classifier.recording_morph_factory import RecordingMorphFactory
-import re
+
+class PauliStringCollectionException(Exception):
+    """
+    Pauli string exception
+    """
 
 class PauliStringCollection:
     """
     Collection of Pauli strings
     """
-
-    def __init__(self, generators:list[PauliString]=[], debug: bool = False):
+    def __init__(self, generators:list[PauliString]=None, debug: bool = False):
         """
         Initializing a collection
         Args:
@@ -25,7 +29,7 @@ class PauliStringCollection:
         self.classification = None
         self.debug = debug
         self.record = None
-        if len(generators) == 0:
+        if not generators:
             return
         self.sv_queue = None
         self.debug_queue = None
@@ -54,24 +58,26 @@ class PauliStringCollection:
             Args:
                  record - record of the classification algorithm
         """
-
         self.record = record
 
     def get_record(self):
+        """
+        Get record
+        """
         return self.record
 
     def __str__(self) -> str:
         """Convert PauliStringCollection to readable string (e.g., "XYZI, YYYS")"""
         return ",".join([str(g) for g in self.generators])
-    
+
     def __len__(self) -> int:
         """ Collection length"""
         return len(self.generators)
 
     def __iter__(self):
-       """Collection Iterator"""
-       self.nextpos = 0
-       return self
+        """Collection Iterator"""
+        self.nextpos = 0
+        return self
 
     def __next__(self):
         """Next iterator value"""
@@ -94,8 +100,8 @@ class PauliStringCollection:
     def copy(self):
         """ Copy collection"""
         return PauliStringCollection(self.generators, debug=self.debug)
-    
-    def __add__(self, p: PauliString): 
+
+    def __add__(self, p: PauliString):
         """Overloading the addition operator with a collection"""
         self.classification = None
         new_generators = []
@@ -162,17 +168,19 @@ class PauliStringCollection:
     def index(self, p: PauliString):
         """Index Pauli string"""
         return self.generators.index(p)
-    
+
     def get_size(self):
         """Get length of Pauli String in collection"""
         return 0 if len(self.generators) == 0 else len(self.generators[0])
 
     def create_instance(self, n: int = None, pauli_str: str = None):
-        """Create a new instance of the same type as the rest of the Pauli strings in the collection"""
+        """
+        Create a new instance of the same type as the rest of the Pauli strings in the collection
+        """
         if len(self.generators) == 0:
-            raise Exception("Empty generator")
+            raise PauliStringCollectionException("Empty generator")
         return self.generators[0].create_instance(n=n, pauli_str=pauli_str)
- 
+
     def sort(self):
         """Sort collection"""
         self.generators.sort()
@@ -181,47 +189,53 @@ class PauliStringCollection:
         """
            Get Pauli strings that commute with the entire collection
            Args:
-               generators: Generators, Pauli string search list. If empty, then all lines are the same length
+               generators: Generators, Pauli string search list.
+               If empty, then all lines are the same length
         """
         if len(self) == 0:
             return PauliStringCollection([], debug=self.debug)
-
-        
         for p in self:
-            generators = PauliStringCollection(p.get_commutants(generators=generators), debug=self.debug)
+            generators = PauliStringCollection(p.get_commutants(generators=generators),
+                         debug=self.debug)
         return generators
 
     def get_anti_commutants(self, generators=None):
         """
            Get Pauli strings that no-commute with the entire collection
            Args:
-               generators: Generators, Pauli string search list. If empty, then all lines are the same length
+               generators: Generators, Pauli string search list.
+               If empty, then all lines are the same length
         """
         if len(self) == 0:
             return PauliStringCollection([], debug=self.debug)
-
-        
         for p in self:
-            generators = PauliStringCollection(p.get_anti_commutants(generators=generators), debug=self.debug)
+            generators = PauliStringCollection(p.get_anti_commutants(generators=generators),
+                         debug=self.debug)
         return generators
 
 
-    def get_graph(self, generators: list["PauliStringCollection"]=[]):
+    def get_graph(self, generators: list["PauliStringCollection"]=None):
         """
         Get graph
         Args:
-            generators: The area of Pauli strings over which to build a graph. If not specified, then that's it
-
+            generators: The area of Pauli strings over which to build a graph.
+            If not specified, then that's it
         Returns the vertices, edges, and labels of edges
         """
         return get_graph(self.generators, commutators=generators)
 
     def get_commutator_graph(self):
+        """
+        Get commutator graph
+        """
         n = self.get_size()
-        I = PauliString(n=n)
-        return get_graph(I.get_commutants(), commutators=self, flag_labels=False)
+        i = PauliString(n=n)
+        return get_graph(i.get_commutants(), commutators=self, flag_labels=False)
 
     def frame_potential(self):
+        """
+        Get frame potential
+        """
         vertices, edges = self.get_commutator_graph()
         graph = nx.Graph()
         graph.add_nodes_from(vertices)
@@ -232,7 +246,9 @@ class PauliStringCollection:
 
     def _convert(self, generators: list[str])->"PauliStringCollection":
         """ Convert list of string to List of PauliString"""
-        return PauliStringCollection([self.create_instance(pauli_str=g) for g in generators], debug=self.debug)
+        return PauliStringCollection([self.create_instance(pauli_str=g)
+               for g in generators],
+               debug=self.debug)
 
     def get_subgraphs(self):
         """Get related subsets of a collection"""
@@ -241,9 +257,13 @@ class PauliStringCollection:
         g = nx.Graph()
         g.add_nodes_from(vertices)
         g.add_edges_from(edges)
-        return [self._convert(subgaph) for subgaph in sorted(nx.connected_components(g), key=len, reverse=True)]
+        return [self._convert(subgaph) for subgaph in
+               sorted(nx.connected_components(g), key=len, reverse=True)]
 
     def debug_classify(self):
+        """
+        debug classify
+        """
         self.classification = Classification()
         morph_factory = MorphFactory()
         self.classification.add(morph_factory.build(self.debug_queue).get_morph())
@@ -276,20 +296,35 @@ class PauliStringCollection:
         return self.classification
 
     def get_algebra(self):
+        """
+         Get algebra
+        """
         classification = self.get_class()
         return classification.get_algebra()
 
     def is_algebra(self, algebra):
+        """
+        Checking for compliance with a given algebra
+        """
         classification = self.get_class()
         return classification.is_algebra(algebra)
 
-    def DLA_dim(self):
+    def reset_algebra(self):
+        """
+        Reset classification algebra calculation
+        """
+        self.classification = None
+
+    def dla_dim(self):
+        """
+        Get dim of DLA
+        """
         dim_su = lambda n: n**2-1
         dim_so = lambda n: n*(n-1)/2
         dim_sp = lambda n: n*(2*n+1)
-        S = self.get_class().get_subalgebras()
+        subgraphs = self.get_class().get_subalgebras()
         dim = 0
-        for s in S:
+        for s in subgraphs:
             n = [int(x) for x in re.split('(|)', s) if x.isdigit()][0]
             if "su" in s:
                 dim+= dim_su(n)
@@ -298,9 +333,6 @@ class PauliStringCollection:
             if "so" in s:
                 dim+= dim_so(n)
         return dim
-
-    def reset_algebra(self):
-        self.classification = None
 
     def get_dependents(self):
         """Get a list of dependent strings in the collection"""
@@ -317,25 +349,31 @@ class PauliStringCollection:
             Get a collection of non-commuting Pauli strings
             Args:
                 Pauli string to which commutators are defined
-            generators: The area of Pauli strings over which to build a graph. If not specified, then collection
+            generators: The area of Pauli strings over which to build a graph.
+            If not specified, then collection
 
         """
         if generators is None:
             generators = self.generators
-        return PauliStringCollection([g for g in generators if g != pauli_string and not pauli_string|g], debug=self.debug)
+        return PauliStringCollection([g for g in generators
+               if g != pauli_string and not pauli_string|g],
+               debug=self.debug)
 
     def get_commutates(self, pauli_string, generators = None):
         """
             Get a collection of non-commuting Pauli strings
             Args:
                 Pauli string to which commutators are defined
-            generators: The area of Pauli strings over which to build a graph. If not specified, then collection
+            generators: The area of Pauli strings over which to build a graph.
+            If not specified, then collection
 
         """
         if generators is None:
             generators = self.generators
-        return PauliStringCollection([g for g in generators if g != pauli_string and g|pauli_string], debug=self.debug)
- 
+        return PauliStringCollection([g for g in generators
+               if g != pauli_string and g|pauli_string],
+               debug=self.debug)
+
     def get_max_connected(self):
         """Get the Pauli string that has the maximum number of non-commutable"""
         if len(self) == 0:
@@ -349,14 +387,12 @@ class PauliStringCollection:
                 anti_commutates = _anti_commutates
         return pauli_string, anti_commutates
 
- 
-
     def _append_to_queue(self, queue_pauli_strings, pauli_strings):
         """Append the next related Pauli string to the queue"""
         for p in pauli_strings:
             if p in queue_pauli_strings:
-               pauli_strings.remove(p)
-               continue
+                pauli_strings.remove(p)
+                continue
             anti_commutates = self.get_anti_commutates(p, generators = queue_pauli_strings)
             if len(anti_commutates) == 0:
                 continue
@@ -396,13 +432,19 @@ class PauliStringCollection:
         return queue_pauli_strings
 
     def get_sv_queue(self):
+        """
+        Get saved queue
+        """
         return self.sv_queue
 
     def set_sv_queue(self, sv_queue):
+        """
+        Set saved queue
+        """
         self.sv_queue = sv_queue
 
     def set_debug_queue(self, debug_queue):
+        """
+         Set debug queue
+        """
         self.debug_queue = debug_queue
-
-
-

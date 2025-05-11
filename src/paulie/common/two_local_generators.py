@@ -1,4 +1,7 @@
-# A dictionary representing 2 local generators
+"""
+ Two local algebra
+"""
+#A dictionary representing 2 local generators
 G_LIE: dict[str, list[str]] = {
     "a0": ["XX"],
     "a1": ["XY"],
@@ -30,8 +33,10 @@ G_LIE: dict[str, list[str]] = {
     "b4": ["XX", "XY", "XZ", "XI", "IX", "IY", "IZ"],
 }
 
-# A dictionary of the DLAs n>=3
 def _a3(n):
+    """
+    a3 algebra
+    """
     if n % 8 == 0:
         return f"4*so({2**(n-2)})"
     if n % 8 == 1 or n % 8 == 7:
@@ -42,8 +47,12 @@ def _a3(n):
         return f"sp({2**(n-2)})"
     if n % 8 == 4:
         return f"4*sp({2**(n-3)})"
+    return None
 
 def _a5(n):
+    """
+    a5 algebra
+    """
     if n % 6 == 0:
         return f"4*so({2**(n-2)})"
     if n % 6 == 1 or n % 6 == 5:
@@ -52,21 +61,35 @@ def _a5(n):
         return f"2*su({2**(n-2)})"
     if n % 6 == 3:
         return f"sp({2**(n-2)})"
+    return None
 
 def _a6(n):
+    """
+    a6 algebra
+    """
     if n % 2 == 1: #odd
         return f"su({2**(n-1)})"
     else: #even
         return f"4*su({2**(n-2)})"
+    return None
 
 def _a7(n):
+    """
+    a7 algebra
+    """
     return _a6(n)
 
 def _a10(n):
+    """
+    a10 algebra
+    """
     return _a6(n)
 
-# A dictionary of the DLAs n>=3
 def two_local_algebras(n):
+    """
+    A dictionary of the DLAs n>=3
+    """
+
     return  {
     "a0": f"{n-1}*u(1)",
     "a1": f"so({n})",

@@ -1,3 +1,7 @@
+"""
+    Non-commuting charges describe non-Abelian symmetries — that is, elements of the
+    stabilizer of the DLA that do not commute with each other.
+"""
 from itertools import combinations
 from paulie.common.pauli_string_collection import PauliStringCollection
 

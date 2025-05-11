@@ -34,3 +34,27 @@ line-length = 120
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pylint.'MESSAGES CONTROL']
+disable=[
+  'no-name-in-module',
+  'import-error',
+  'too-many-branches',
+  'too-many-arguments',
+  'too-many-positional-arguments',
+  'too-many-locals',
+  'no-else-return',
+  'too-many-statements',
+  'too-many-return-statements',
+  'too-many-instance-attributes',
+  'no-member',
+  'broad-exception-caught',
+  'too-many-public-methods',
+  'too-many-lines',
+  'consider-using-enumerate',
+  'unnecessary-lambda-assignment',
+  'unnecessary-lambda',
+  'duplicate-code',
+  'too-many-nested-blocks',
+  'too-few-public-methods'
+]

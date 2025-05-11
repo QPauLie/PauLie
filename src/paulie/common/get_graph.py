@@ -1,13 +1,19 @@
+"""
+Get anticommutator graph
+"""
 from itertools import combinations
 
-def get_graph(generators, commutators=[], flag_labels = True):
+def get_graph(generators, commutators=None, flag_labels = True):
     """
     Get anticommutator graph
     Args:
         generators: Array of PauliString
-        commutators: The area of Pauli strings over which to build a graph. If not specified, then that's it
+        commutators: The area of Pauli strings over which to build a graph. 
+        If not specified, then that's it
     Returns the vertices, edges, and labels of edges
     """
+    if not commutators:
+        commutators = []
     vertices = [str(g) for g in generators]
     edge_labels = {}
     edges = []
@@ -21,4 +27,3 @@ def get_graph(generators, commutators=[], flag_labels = True):
         return vertices, edges, edge_labels
     else:
         return vertices, edges
-

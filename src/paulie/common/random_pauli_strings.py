@@ -17,7 +17,8 @@ def get_random_k_local(k:int, n:int):
     pauli_string = get_random(k)
     if k < n:
         position = randint(0, n-k)
-        pauli_string = "".join("I" for _ in range(position)) + pauli_string + "".join(["I" for _ in range(position+k, n)])
+        pauli_string = "".join("I" for _ in range(position))
+        pauli_string += pauli_string + "".join(["I" for _ in range(position+k, n)])
     return pauli_string
 
 def get_random_list(n:int, size: int):
