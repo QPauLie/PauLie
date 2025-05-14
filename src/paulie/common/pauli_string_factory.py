@@ -6,7 +6,7 @@ from typing import Generator
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
 
-def get_identity(n: int):
+def get_identity(n: int) -> PauliString:
     """
     Get an identity of a given length
     Args: n - lenght of Pauli string
@@ -14,7 +14,7 @@ def get_identity(n: int):
     """
     return PauliString(n=n)
 
-def get_pauli_string(o, n:int = None):
+def get_pauli_string(o, n:int = None) -> PauliString|PauliStringCollection:
     """
     Get Pauli strings in their current representation
     Args: 
@@ -40,14 +40,14 @@ class Used:
     """
     Helper class for monitoring previously created Pauli strings
     """
-    def __init__(self):
+    def __init__(self) -> None:
         self.clear()
 
-    def clear(self):
+    def clear(self) -> None:
         """Clear set"""
         self.used = set()
 
-    def append(self, p: PauliString):
+    def append(self, p: PauliString) -> None:
         """Append to set
         Args:
             p - Pauli string
@@ -59,7 +59,7 @@ class Used:
         return p in self.used
 
 
-def gen_k_local(n: int, p: PauliString, used:Used=None) -> Generator[list[int], None, None]:
+def gen_k_local(n: int, p: PauliString, used:Used=None) -> Generator[list[PauliString], None, None]:
     """Generates k-local Pauli strings."""
     if n < len(p):
         raise ValueError(f"Size must be greater than {len(p)}")
@@ -75,8 +75,9 @@ def gen_k_local(n: int, p: PauliString, used:Used=None) -> Generator[list[int], 
         yield left
 
 
-def gen_k_local_generators(n: int, generators: list[str],
-                           used: Used = None) -> Generator[list[int], None, None]:
+def gen_k_local_generators(n: int,
+                           generators: list[str]|list[PauliString]|PauliStringCollection,
+                           used: Used = None) -> Generator[list[PauliString], None, None]:
     """Generates k-local operators for a set of generators."""
     used = used or Used()
     longest = max(generators, key=len)

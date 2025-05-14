@@ -2,8 +2,12 @@
 Get anticommutator graph
 """
 from itertools import combinations
+from paulie.common.pauli_string_bitarray import PauliString
 
-def get_graph(generators, commutators=None, flag_labels = True):
+def get_graph(generators:list[PauliString], commutators:list[PauliString]=None
+, flag_labels:bool = True
+) -> (tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]
+     |tuple[list[str], list[tuple[str, str]]]):
     """
     Get anticommutator graph
     Args:

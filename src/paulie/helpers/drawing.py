@@ -7,8 +7,12 @@ import matplotlib.pyplot as plt
 import matplotlib.animation
 import numpy as np
 from paulie.helpers.recording import RecordGraph
+from paulie.common.pauli_string_collection import PauliStringCollection
+from paulie.common.pauli_string_bitarray import PauliString
 
-def plot_graph(vertices, edges, edge_labels = None):
+def plot_graph(vertices:list[str],
+               edges:list[tuple[str,str]],
+               edge_labels:dict[tuple[str,str],str] = None) -> None:
     """
     Plot graph
     """
@@ -21,7 +25,9 @@ def plot_graph(vertices, edges, edge_labels = None):
     nx.draw_networkx(graph, pos=pos)
 
 
-def plot_graph_by_nodes(nodes, commutators=None):
+def plot_graph_by_nodes(nodes:PauliStringCollection,
+                        commutators:PauliStringCollection|list[PauliString]=None
+) -> None:
     """
     Plot graph by nodes
     """
@@ -30,13 +36,15 @@ def plot_graph_by_nodes(nodes, commutators=None):
     vertices, edges, edge_labels = nodes.get_graph(nodes, commutators)
     return plot_graph(vertices, edges, edge_labels)
 
-def animation_graph(record: RecordGraph, interval=1000, repeat=False, storage=None):
+def animation_graph(record: RecordGraph, interval:int=1000,
+                    repeat:bool=False, storage:dict[str,str]=None
+) -> None:
     """
     Animate graph building
     """
     graph = nx.Graph()
     fig, ax = plt.subplots(figsize=(6,4))
-    def clear():
+    def clear() -> None:
         """
         Clear frame
         """
@@ -44,7 +52,8 @@ def animation_graph(record: RecordGraph, interval=1000, repeat=False, storage=No
         graph.remove_nodes_from(list(n for n in graph.nodes))
 
 
-    def build_positions(edges, center):
+    def build_positions(edges:list[tuple[str,str]],
+                        center:str) -> tuple[dict[str,np.array], int]:
         """
         Build position of vertices in canonical graph
         """
@@ -144,7 +153,7 @@ def animation_graph(record: RecordGraph, interval=1000, repeat=False, storage=No
             x_position_lighting = 0
         return positions, x_position_lighting
 
-    def update(num):
+    def update(num:int) -> nx.draw_networkx:
         clear()
         frame = record.get_frame(num)
         ax.set_title(f"{frame.get_title()}")

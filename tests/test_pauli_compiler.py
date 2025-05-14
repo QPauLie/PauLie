@@ -3,7 +3,7 @@ from paulie.common.pauli_string_factory import get_pauli_string
 from paulie.application.pauli_compiler import pauli_compiler, nested_adjoint
 
 
-def test_pauli_compiler():
+def test_pauli_compiler() -> None:
     """Test the PauliCompiler with examples"""
     # Define parameters
     n = 4  # Total number of qubits

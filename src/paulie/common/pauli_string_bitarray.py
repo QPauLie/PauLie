@@ -1,4 +1,5 @@
 """Implementation of a Pauli string on bitarray."""
+from typing import Self, Generator
 from bitarray import bitarray
 from bitarray.util import count_and
 from paulie.common.pauli_string_parser import pauli_string_parser
@@ -13,7 +14,7 @@ CODEC = {
 class PauliString:
     """Implementation of a Pauli string on bitarray."""
 
-    def __init__(self, n: int = None, pauli_str: str = None, bits: bitarray = None):
+    def __init__(self, n: int = None, pauli_str: str = None, bits: bitarray = None) -> None:
         """Initialize a Pauli string.
         
         Args:
@@ -50,10 +51,10 @@ class PauliString:
         """Convert PauliString to readable string (e.g., "XYZI")."""
         return "".join(self.bits.decode(CODEC))
 
-    def _ensure_pauli_string(self, other):
+    def _ensure_pauli_string(self, other:str|Self):
         return other if isinstance(other, PauliString) else PauliString(pauli_str=str(other))
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other:str|Self) -> bool:
         """Overloading the equality operator of two Pauli strings.
         Args:
              other: Comparable Pauli string
@@ -62,7 +63,7 @@ class PauliString:
         other = self._ensure_pauli_string(other)
         return self.bits == other.bits
 
-    def __lt__(self, other):
+    def __lt__(self, other:str|Self) -> bool:
         """
         Overloading < operator of two Pauli strings
         Args:
@@ -72,7 +73,7 @@ class PauliString:
         other = self._ensure_pauli_string(other)
         return self.bits < other.bits
 
-    def __le__(self, other):
+    def __le__(self, other:str|Self) -> bool:
         """
         Overloading <= operator of two Pauli strings
         Args:
@@ -82,7 +83,7 @@ class PauliString:
         other = self._ensure_pauli_string(other)
         return self.bits <= other.bits
 
-    def __gt__(self, other):
+    def __gt__(self, other:str|Self) -> bool:
         """
         Overloading > operator of two Pauli strings
         Args:
@@ -92,7 +93,7 @@ class PauliString:
         other = self._ensure_pauli_string(other)
         return self.bits > other.bits
 
-    def __ge__(self, other):
+    def __ge__(self, other:str|Self) -> bool:
         """
         Overloading >= operator of two Pauli strings
         Args:
@@ -102,7 +103,7 @@ class PauliString:
         other = self._ensure_pauli_string(other)
         return self.bits >= other.bits
 
-    def __ne__(self, other):
+    def __ne__(self, other:str|Self) -> bool:
         """
         Overloading != operator of two Pauli strings
         Args:
@@ -122,14 +123,14 @@ class PauliString:
         """
         return len(self.bits) // 2
 
-    def __iter__(self):
+    def __iter__(self) -> Self:
         """
         Pauli String Iterator
         """
         self.nextpos = 0
         return self
 
-    def __next__(self):
+    def __next__(self) -> Self:
         """
         The value of the next position of the Pauli string
         """
@@ -140,54 +141,54 @@ class PauliString:
         self.nextpos += 1
         return value
 
-    def __setitem__(self, position: int, pauli_string):
+    def __setitem__(self, position: int, pauli_string: str|Self):
         """
         Set value to position
         """
         self.set_subsystem(position, pauli_string)
 
-    def __getitem__(self, position: int):
+    def __getitem__(self, position: int) -> Self:
         """
         Get values at position
         """
         return self.get_subsystem(position)
 
-    def __copy__(self):
+    def __copy__(self) -> Self:
         """
         Pauli string copy operator
         """
         return PauliString(bits=self.bits)
 
-    def copy(self):
+    def copy(self) -> Self:
         """Copy Pauli string"""
         return PauliString(bits=self.bits)
 
-    def __add__(self, other):
+    def __add__(self, other:str|Self):
         """
         Pauli string addition operator
         """
         other = self._ensure_pauli_string(other)
         return self.tensor(other)
 
-    def __or__(self, other)->bool:
+    def __or__(self, other:str|Self)->bool:
         """
         Overloading | operator of two Pauli strings like commutes_with
         """
         return self.commutes_with(other)
 
-    def __xor__(self, other):
+    def __xor__(self, other:str|Self):
         """
         Overloading ^ operator of two Pauli strings like adjoint_map
         """
         return self.adjoint_map(other)
 
-    def __matmul__(self, other):
+    def __matmul__(self, other:str|Self):
         """
         Overloading @ operator of two Pauli strings like multiply
         """
         return self.multiply(other)
 
-    def commutes_with(self, other) -> bool:
+    def commutes_with(self, other:str|Self) -> bool:
         """
         Check if this Pauli string commutes with another
         Returns True if they commute, False if they anticommute
@@ -201,11 +202,11 @@ class PauliString:
         return (count_and(self.bits_even, other.bits_odd) % 2 ==
                count_and(other.bits_even, self.bits_odd) % 2)
 
-    def get_subsystem(self, start: int, length: int = 1) -> "PauliString":
+    def get_subsystem(self, start: int, length: int = 1) -> Self:
         """Get a subsystem of this Pauli string"""
         return PauliString(bits=self.bits[2*start:2*start+2*length])
 
-    def set_subsystem(self, position: int, pauli_string):
+    def set_subsystem(self, position: int, pauli_string:str|Self) -> None:
         """
         Set subsystem value
         """
@@ -222,7 +223,7 @@ class PauliString:
         """Check if this Pauli string is the identity"""
         return bitarray(len(self.bits)) == self.bits
 
-    def tensor(self, other: "PauliString") -> "PauliString":
+    def tensor(self, other: Self) -> Self:
         """Tensor product of this Pauli string with another"""
         new_bits = bitarray(len(self.bits) + len(other.bits))
         for i in range(len(new_bits)):
@@ -232,7 +233,7 @@ class PauliString:
 
         return PauliString(bits=new_bits)
 
-    def multiply(self, other) -> "PauliString":
+    def multiply(self, other:str|Self) -> Self:
         """
         Proportional multiplication operator of two Pauli strings
         Returns a PauliString proportional to the multiplication 
@@ -244,7 +245,7 @@ class PauliString:
         # Bitwise XOR is equivalent to mod-2 addition
         return PauliString(bits = self.bits ^ other.bits)
 
-    def adjoint_map(self, other) -> "PauliString":
+    def adjoint_map(self, other:str|Self) -> Self:
         """
         Compute the adjoint map ad_A(B) = [A,B]
         Returns None if the commutator is zero (i.e., if A and B commute)
@@ -264,7 +265,7 @@ class PauliString:
         # Bitwise XOR is equivalent to mod-2 addition
         return PauliString(bits = self.bits ^ other.bits)
 
-    def inc(self):
+    def inc(self) -> None:
         """
         Pauli string increment operator
         """
@@ -276,7 +277,7 @@ class PauliString:
         self.bits_even = self.bits[::2]
         self.bits_odd  = self.bits[1::2]
 
-    def expand(self, n: int):
+    def expand(self, n: int) -> Self:
         """
         Increasing the size of the Pauli string
         Args:
@@ -285,7 +286,7 @@ class PauliString:
         """
         return self + PauliString(n = n - len(self))
 
-    def gen_all_pauli_strings(self):
+    def gen_all_pauli_strings(self) -> Generator[list[Self], None, None]:
         """
         Generate a list of Pauli strings that commute with this string
         Args:
@@ -302,7 +303,7 @@ class PauliString:
             pauli_string.inc()
         yield pauli_string.copy()
 
-    def get_commutants(self, generators = None):
+    def get_commutants(self, generators:list[Self] = None) -> list[Self]:
         """
         Get a list of Pauli strings that commute with this string
         Args:
@@ -315,7 +316,7 @@ class PauliString:
 
         return [g for g in generators if self|g]
 
-    def get_anti_commutants(self, generators = None):
+    def get_anti_commutants(self, generators:list[Self] = None) -> list[Self]:
         """
         Get a list of Pauli strings that no-commute with this string
         Args:
@@ -330,7 +331,7 @@ class PauliString:
 
 
 
-    def get_nested(self, generators = None):
+    def get_nested(self, generators:list[Self] = None) ->list[tuple[Self, Self]]:
         """
         Get nested of Pauli string
         Args:

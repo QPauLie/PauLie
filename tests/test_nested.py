@@ -3,6 +3,7 @@ Test nested
 """
 import pytest
 from paulie.common.pauli_string_factory import get_pauli_string as p
+from paulie.common.pauli_string_collection import PauliStringCollection
 
 # Define expected nested Pauli string pairs for each node
 NESTED_PAIRS = {
@@ -22,7 +23,7 @@ NESTED_PAIRS = {
     "ZZ": [["XZ", "YI"], ["IY", "ZX"], ["ZY", "IX"], ["XI", "YZ"]]
 }
 
-def check_nested(node):
+def check_nested(node:PauliStringCollection) -> bool:
     """
     Check if a node's nested pairs match the expected pairs.
     
@@ -60,7 +61,7 @@ def check_nested(node):
     return True
 
 @pytest.mark.parametrize("pauli_string", list(NESTED_PAIRS.keys()))
-def test_nested(pauli_string):
+def test_nested(pauli_string:str):
     """
     Test that all Pauli strings have the correct nested pairs.
     

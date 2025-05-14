@@ -11,7 +11,7 @@ from paulie.common.pauli_string_factory import get_pauli_string as p
     ("a9", True),
     # Add more algebras to test as needed
 ])
-def test_algebras_with_non_commuting_charges(algebra_name, should_have_charges):
+def test_algebras_with_non_commuting_charges(algebra_name:str, should_have_charges:bool) -> None:
     """
     Test that specific algebras possess non-commuting charges.
     

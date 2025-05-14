@@ -2,9 +2,11 @@
 Test classification
 """
 from operator import itemgetter
+from typing import Any
 import pytest
 from paulie.common.pauli_string_factory import get_pauli_string as p
 from paulie.common.two_local_generators import G_LIE, two_local_algebras
+
 
 @pytest.mark.parametrize("generators_to_compare", [
     ([["XY", "XZ"], ["IX", "XY"]]), #Example III.1 Wie+24
@@ -17,7 +19,7 @@ from paulie.common.two_local_generators import G_LIE, two_local_algebras
     (itemgetter("a12", "a17", "a18", "a19", "a21", "a22")(G_LIE)), #su(2^n)
 
 ])
-def test_multiple_algebra_equivalences(generators_to_compare):
+def test_multiple_algebra_equivalences(generators_to_compare:Any) -> None:
     """Test algebra equivalences"""
     algebra = []
     for generator_set in generators_to_compare:
@@ -26,7 +28,7 @@ def test_multiple_algebra_equivalences(generators_to_compare):
     assert all(x==algebra[0] for x in algebra), "Expected to represent the same algebra"
 
 #Consider isomorphisms and improve is_algebra
-def test_explicit_algebras():
+def test_explicit_algebras() -> None:
     """
     Test explicit algebras
     """

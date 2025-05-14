@@ -6,14 +6,14 @@ from scipy.linalg import block_diag
 from paulie.common.pauli_string_collection import PauliStringCollection
 
 
-def is_in_so(a):
+def is_in_so(a: np.array)->bool:
     """
     is_in_so
     """
     return a.dot(a.T) == np.eye(a.shape)
 
 
-def is_in_sp(a):
+def is_in_sp(a:np.array) -> bool:
     """
     is_in_sp
     """
@@ -22,7 +22,7 @@ def is_in_sp(a):
     return a.conj @ j @ a == j
 
 
-def reachable(u, generators: PauliStringCollection):
+def reachable(u:np.array, generators: PauliStringCollection):
     """
     input: U as a numpy array, generator list
     output: whether it is reachable

@@ -5,7 +5,7 @@ from paulie.helpers.drawing import plot_graph
 from paulie.common.pauli_string_collection import PauliStringCollection
 
 
-def plot_anti_commutation_graph(generators:PauliStringCollection):
+def plot_anti_commutation_graph(generators:PauliStringCollection) -> None:
     """
     Plot anti-commutation graph after tranform graph to canonic
     """

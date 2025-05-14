@@ -2,8 +2,10 @@
 Factory for constructing a canonical graph
 """
 import traceback
+from typing import Generator, Self
 from paulie.helpers.printing import Debug
 from paulie.classifier.classification import Morph
+from paulie.common.pauli_string_bitarray import PauliString
 
 class AppendedException(Exception):
     """
@@ -38,7 +40,7 @@ class MorphFactory(Debug):
     """
     Factory for constructing a canonical graph
     """
-    def __init__(self, debug = False):
+    def __init__(self, debug:bool = False) -> None:
         """
         Constructor
         """
@@ -50,32 +52,32 @@ class MorphFactory(Debug):
         self.debug_break = False
         self.dependents = []
 
-    def set_debug(self, debug):
+    def set_debug(self, debug:bool) -> None:
         """
         Set debug flag
         """
         self.debug = debug
 
-    def set_lighting(self, lighting):
+    def set_lighting(self, lighting:PauliString) -> None:
         """
         Set lighting
         """
         self.lighting = lighting
 
-    def get_lighting(self):
+    def get_lighting(self) -> PauliString:
         """
         Get lighting
         """
         return self.lighting
 
-    def get_morph(self):
+    def get_morph(self) -> Morph:
         """
         Get canonical graph form
         """
         return Morph(self.legs, self.dependents)
 
 
-    def lit(self, lighting, vertix):
+    def lit(self, lighting:PauliString, vertix:PauliString) -> PauliString:
         """
         Lit vertix
         """
@@ -85,7 +87,8 @@ class MorphFactory(Debug):
             raise DependentException()
         return lighting
 
-    def get_lits(self, lighting, vertices=None):
+    def get_lits(self, lighting:PauliString,
+                 vertices:list[PauliString]=None) ->list[PauliString]:
         """
         Return lit vertices (connected to the selected vertex).
         """
@@ -94,19 +97,19 @@ class MorphFactory(Debug):
         return [v for v in vertices if v != lighting and not lighting|v]
 
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         """
         Checking for emptiness
         """
         return len(self.legs) == 0
 
-    def is_empty_legs(self):
+    def is_empty_legs(self) -> bool:
         """
         Checking for missing legs
         """
         return len(self.legs) < 3
 
-    def _find_in_leg(self, leg, v):
+    def _find_in_leg(self, leg:list[PauliString], v:PauliString) -> int:
         """
         Find vertix in leg
         """
@@ -117,7 +120,7 @@ class MorphFactory(Debug):
         return index
 
 
-    def find(self, v):
+    def find(self, v:PauliString) -> tuple[int,int]:
         """
         Find vertix
         """
@@ -127,20 +130,20 @@ class MorphFactory(Debug):
                 return i, index
         return -1, -1
 
-    def is_included(self, v):
+    def is_included(self, v:PauliString) -> bool:
         """
         Checking a vertex for inclusion in the graph
         """
         leg_index = self.find(v)[0]
         return leg_index > -1
 
-    def get_vertices(self):
+    def get_vertices(self) -> list[PauliString]:
         """
         Get graph vertices
         """
         return [v for leg in self.legs for v in leg]
 
-    def get_center(self):
+    def get_center(self) -> PauliString|None:
         """
         Get center
         """
@@ -148,7 +151,7 @@ class MorphFactory(Debug):
             return None
         return self.legs[0][0]
 
-    def set_center(self, v):
+    def set_center(self, v: PauliString) -> None:
         """
         Set center
         """
@@ -156,7 +159,7 @@ class MorphFactory(Debug):
             raise MorphFactoryException("Center is setted")
         self.legs.append([v])
 
-    def get_long_leg(self):
+    def get_long_leg(self) -> list[PauliString]:
         """
         Get long leg
         """
@@ -164,7 +167,7 @@ class MorphFactory(Debug):
             raise MorphFactoryException("No legs")
         return self.legs[len(self.legs) - 1]
 
-    def get_one_vertix(self):
+    def get_one_vertix(self) -> PauliString:
         """
         Get one vertix in leg
         """
@@ -172,7 +175,7 @@ class MorphFactory(Debug):
             raise MorphFactoryException("No legs")
         return self.legs[1][0]
 
-    def _gen_one_legs(self):
+    def _gen_one_legs(self) -> Generator[list[list[PauliString]], None, None]:
         """
         Generate vertices included in single legs
         """
@@ -184,7 +187,7 @@ class MorphFactory(Debug):
             else:
                 break
 
-    def get_one_vertices(self):
+    def get_one_vertices(self)->list[PauliString]:
         """
         Get vertices included in single legs
         """
@@ -193,7 +196,7 @@ class MorphFactory(Debug):
             vertices.append(leg[0].copy())
         return vertices
 
-    def get_pq(self, lighting):
+    def get_pq(self, lighting:PauliString) -> tuple[PauliString|None,PauliString|None]:
         """
         Get pq 
         """
@@ -210,7 +213,7 @@ class MorphFactory(Debug):
                 return p@q, p
         return None, None
 
-    def _gen_two_legs(self):
+    def _gen_two_legs(self) -> Generator[list[list[PauliString]], None, None]:
         """
         Generate vertices included in two legs
         """
@@ -223,19 +226,19 @@ class MorphFactory(Debug):
                 if len(self.legs[i]) > 2:
                     break
 
-    def get_two_legs(self):
+    def get_two_legs(self) -> list[tuple[PauliString, PauliString]]:
         """
         Get vertices included in two legs
         """
         return [(leg[0].copy(), leg[1].copy()) for leg in self._gen_two_legs()]
 
-    def get_count_two_legs(self):
+    def get_count_two_legs(self) -> int:
         """
         Get the number of legs of length two
         """
         return len(self.get_two_legs())
 
-    def is_two_leg(self):
+    def is_two_leg(self) -> bool:
         """
         Checking the leg for length two
         """
@@ -248,7 +251,7 @@ class MorphFactory(Debug):
             return True
         return count_two_legs > 1
 
-    def _gen_long_legs(self):
+    def _gen_long_legs(self) -> list[tuple[PauliString, PauliString]]:
         """
         Generate long leg vertices
         """
@@ -260,13 +263,13 @@ class MorphFactory(Debug):
             else:
                 break
 
-    def get_long_legs(self):
+    def get_long_legs(self) -> list[list[PauliString]]:
         """
         Get long leg vertices
         """
         return [leg.copy() for leg in self._gen_long_legs()]
 
-    def append(self, v, lit):
+    def append(self, v:PauliString, lit:PauliString) -> None:
         """
         Append vertix to graph
         """
@@ -290,7 +293,7 @@ class MorphFactory(Debug):
                 return
         raise MorphFactoryException("Can't append")
 
-    def append_to_two_center(self, lighting):
+    def append_to_two_center(self, lighting:PauliString) -> None:
         """
         Append vertix to two wertices graph
         """
@@ -316,7 +319,7 @@ class MorphFactory(Debug):
             return
         raise NotConnectedException()
 
-    def check_dependency_one_leg(self, lighting):
+    def check_dependency_one_leg(self, lighting:PauliString) -> None:
         """
         Dependency check when attaching a vertex to the center of the graph
         """
@@ -331,7 +334,7 @@ class MorphFactory(Debug):
                 if n_v in vertices or n_v == lighting:
                     raise DependentException()
 
-    def append_to_center(self, lighting):
+    def append_to_center(self, lighting:PauliString) -> None:
         """
         Joining a vertex to the center of the graph
         """
@@ -339,7 +342,7 @@ class MorphFactory(Debug):
         center = self.get_center()
         self.append(lighting, center)
 
-    def remove(self, v):
+    def remove(self, v:PauliString) -> None:
         """
         Removing a graph vertex
         """
@@ -365,7 +368,7 @@ class MorphFactory(Debug):
                 return
         raise MorphFactoryException("Can't remove")
 
-    def replace(self, v, v_new):
+    def replace(self, v:PauliString, v_new:PauliString) -> None:
         """
         Replacing a graph vertex with an equivalent one
         """
@@ -374,7 +377,7 @@ class MorphFactory(Debug):
             raise MorphFactoryException("No vertix")
         self.legs[leg_index][vertix_index] = v_new
 
-    def print_state(self, lighting = None):
+    def print_state(self, lighting:PauliString = None) -> None:
         """
         Debug output of graph state
         """
@@ -401,7 +404,7 @@ class MorphFactory(Debug):
                 continue
             self.print_lit_vertices(leg, lits)
 
-    def get_lit_indexes(self, vertices, lits):
+    def get_lit_indexes(self, vertices:list[PauliString], lits:list[PauliString]) -> list[int]:
         """
         Get the indices of the lited vertices in lits 
         """
@@ -411,7 +414,7 @@ class MorphFactory(Debug):
                 indexes.append(i)
         return indexes
 
-    def _append_three_graph(self):
+    def _append_three_graph(self) -> Self:
         """
         Step I. Construct a graph of three vertices
         """
@@ -429,7 +432,7 @@ class MorphFactory(Debug):
         self.set_lighting(lighting)
         return self
 
-    def _append_one_legs_in_different_state(self):
+    def _append_one_legs_in_different_state(self) -> Self:
         """
         Step II. Legs of length 1 in different initial lit states.
         """
@@ -458,7 +461,7 @@ class MorphFactory(Debug):
         self.set_lighting(lighting)
         return self
 
-    def _append_fast(self):
+    def _append_fast(self) -> Self:
         """
         Quickly obvious connection of lightning to a graph
         """
@@ -483,7 +486,7 @@ class MorphFactory(Debug):
         self.set_lighting(lighting)
         return self
 
-    def _lit_only_long_leg(self):
+    def _lit_only_long_leg(self) -> Self:
         """
         Step III. Lit only the long leg
         """
@@ -582,7 +585,7 @@ class MorphFactory(Debug):
         self.set_lighting(lighting)
         return self
 
-    def _lit_center(self):
+    def _lit_center(self) -> Self:
         """
         Lit center
         """
@@ -602,7 +605,7 @@ class MorphFactory(Debug):
         return self
 
 
-    def _reduce_long_leg_more_than_one_lits(self):
+    def _reduce_long_leg_more_than_one_lits(self) -> Self:
         """
         Step IV. Reducing the long leg lits to standard configurations
         """
@@ -644,7 +647,7 @@ class MorphFactory(Debug):
         self.set_lighting(lighting)
         return self
 
-    def _append_long_leg_first_and_center_lit(self):
+    def _append_long_leg_first_and_center_lit(self) -> Self:
         """
         Step V. Append long leg with first lit and center
         """
@@ -708,7 +711,7 @@ class MorphFactory(Debug):
         self.set_lighting(lighting)
         return self
 
-    def _append_long_leg_only_last_lit(self):
+    def _append_long_leg_only_last_lit(self) -> Self:
         """
         Step VI. Append if long leg last and center are lited
         """
@@ -744,7 +747,7 @@ class MorphFactory(Debug):
         self.set_lighting(lighting)
         return self
 
-    def _append_long_leg_last_and_first_lit(self):
+    def _append_long_leg_last_and_first_lit(self) -> None:
         """
         Step VII. Append if long leg last, first and center are lited
         """
@@ -764,7 +767,7 @@ class MorphFactory(Debug):
         raise AppendedException
 
 
-    def _pipeline(self, lighting):
+    def _pipeline(self, lighting: PauliString) -> None:
         """
         Pipeline
         """
@@ -781,13 +784,13 @@ class MorphFactory(Debug):
         self._append_long_leg_only_last_lit()
         self._append_long_leg_last_and_first_lit()
 
-    def append_delayed(self, v):
+    def append_delayed(self, v:PauliString) -> None:
         """
         Append to delayed
         """
         self.delayed_vertices.append(v)
 
-    def restore_delayed(self, vertices):
+    def restore_delayed(self, vertices:list[PauliString]) -> list[PauliString]:
         """
         Restore to delayed
         """
@@ -796,20 +799,21 @@ class MorphFactory(Debug):
         self.delayed_vertices = []
         return vertices
 
-    def set_debug_vertix(self, lighting):
+    def set_debug_vertix(self, lighting:PauliString) -> None:
         """
         Set debug vertix
         """
         self.debug_lighting = lighting
 
-    def set_debug_break(self, lighting):
+    def set_debug_break(self, lighting:PauliString) -> None:
         """
         Set debug break
         """
         if lighting == self.debug_lighting:
             self.debug_break = True
 
-    def debugbreak(self, number=None, lighting=None, append=True):
+    def debugbreak(self, number:int=None, lighting:PauliString=None,
+                   append:bool=True) -> None:
         """
         Debug break
         """
@@ -825,13 +829,14 @@ class MorphFactory(Debug):
         if lighting is not None:
             self.set_debug_break(lighting)
 
-    def is_break(self):
+    def is_break(self) -> bool:
         """
         Check debug
         """
         return self.debug_break
 
-    def _get_anti_commutates(self, pauli_string, generators):
+    def _get_anti_commutates(self, pauli_string:PauliString,
+                             generators) -> list[PauliString]:
         """
             Get a collection of non-commuting Pauli strings
             Args:
@@ -843,7 +848,8 @@ class MorphFactory(Debug):
                if g != pauli_string and not pauli_string|g]
 
 
-    def _get_max_connected(self, generators):
+    def _get_max_connected(self, generators:list[PauliString]
+    ) -> tuple[PauliString|None, list[PauliString]|None]:
         """Get the Pauli string that has the maximum number of non-commutable"""
         if len(generators) == 0:
             return None, None
@@ -858,7 +864,8 @@ class MorphFactory(Debug):
 
 
 
-    def _append_to_queue(self, queue_pauli_strings, pauli_strings):
+    def _append_to_queue(self, queue_pauli_strings:list[PauliString],
+                         pauli_strings:list[PauliString]) -> None:
         """Append the next related Pauli string to the queue"""
         for p in pauli_strings:
             if p in queue_pauli_strings:
@@ -879,7 +886,7 @@ class MorphFactory(Debug):
             pauli_strings.remove(p)
             return
 
-    def _get_queue(self, generators):
+    def _get_queue(self, generators:list[PauliString])->list[PauliString]:
         """Get associated sequence of Pauli strings"""
         new_generators = generators.copy()
         new_generators.sort()
@@ -897,7 +904,7 @@ class MorphFactory(Debug):
             self._append_to_queue(queue_pauli_strings, new_generators)
         return queue_pauli_strings
 
-    def build(self, generators):
+    def build(self, generators:list[PauliString]) -> Self:
         """
         Transform a connected graph to a cononic type.
         """

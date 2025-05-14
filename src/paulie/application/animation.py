@@ -7,7 +7,7 @@ from paulie.common.pauli_string_collection import PauliStringCollection
 
 
 def animation_anti_commutation_graph(generators: PauliStringCollection,
-                                     storage=None, interval:int =1000):
+                                     storage=None, interval:int =1000) -> None:
     """
     Animation building transformation anti-commutation graph
     generators - list of generators

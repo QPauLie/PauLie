@@ -3,9 +3,10 @@ Test commutator
 """
 import pytest
 from paulie.common.pauli_string_factory import get_pauli_string as p
+from paulie.common.pauli_string_bitarray import PauliString
 
 @pytest.fixture(scope="module")
-def pauli_setup():
+def pauli_setup() -> dict[str,PauliString]:
     """Set up Pauli operators for testing."""
     return {
         "I": p("I"),
@@ -26,7 +27,7 @@ def pauli_setup():
         "IZXXI": p("IZXXI")
     }
 
-def test_single_qubit_commutation(pauli_setup):
+def test_single_qubit_commutation(pauli_setup:dict[str,PauliString]) -> None:
     """Test commutation relations for single-qubit Pauli operators."""
     # Identity commutes with everything
     assert pauli_setup["I"] | pauli_setup["I"]
@@ -49,7 +50,7 @@ def test_single_qubit_commutation(pauli_setup):
     assert not pauli_setup["Z"] | pauli_setup["Y"]
     assert pauli_setup["Z"] | pauli_setup["Z"]
 
-def test_single_qubit_products(pauli_setup):
+def test_single_qubit_products(pauli_setup:dict[str,PauliString]) -> None:
     """Test multiplication of single-qubit Pauli operators."""
     # Extract operators for cleaner code
     i, x, y, z = pauli_setup["I"], pauli_setup["X"], pauli_setup["Y"], pauli_setup["Z"]
@@ -74,14 +75,14 @@ def test_single_qubit_products(pauli_setup):
     assert z @ y == x
     assert z @ z == i
 
-def test_operator_chaining(pauli_setup):
+def test_operator_chaining(pauli_setup:dict[str,PauliString]) -> None:
     """Test chaining of Pauli operators."""
     x, y, z = pauli_setup["X"], pauli_setup["Y"], pauli_setup["Z"]
     assert z ^ y == x
     assert x @ (y @ z) == pauli_setup["I"]
     assert x @ y @ z == pauli_setup["I"]
 
-def test_multi_qubit_commutation(pauli_setup):
+def test_multi_qubit_commutation(pauli_setup:dict[str,PauliString]) -> None:
     """Test commutation relations for multi-qubit Pauli strings."""
     # Same operator commutes with itself
     assert pauli_setup["XI"] | pauli_setup["XI"]
@@ -96,7 +97,7 @@ def test_multi_qubit_commutation(pauli_setup):
     assert pauli_setup["XIIII"] | pauli_setup["IZIXZ"]
     assert pauli_setup["XIIII"] | pauli_setup["IIIIX"]
 
-def test_complex_commutation_matrix(pauli_setup):
+def test_complex_commutation_matrix(pauli_setup:dict[str,PauliString]) -> None:
     """Test commutation relations between multiple multi-qubit operators."""
     # Define the operators to test
     operators = [
@@ -119,6 +120,6 @@ def test_complex_commutation_matrix(pauli_setup):
             assert (op1 | op2) == expected_results[i][j], (f"Commutation failed "
                    f"for operators at position {i},{j}")
 
-def test_multi_qubit_products(pauli_setup):
+def test_multi_qubit_products(pauli_setup:dict[str,PauliString]) -> None:
     """Test products of multi-qubit Pauli strings."""
     assert pauli_setup["IXIXI"] ^ pauli_setup["IYXII"] == pauli_setup["IZXXI"]

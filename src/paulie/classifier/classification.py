@@ -2,6 +2,7 @@
 Canonical graph classification
 """
 import enum
+from paulie.common.pauli_string_bitarray import PauliString
 
 class ClassificatonException(Exception):
     """
@@ -32,38 +33,38 @@ class Morph:
     """
     Class of canonical form of a graph
     """
-    def __init__(self, legs, dependents):
+    def __init__(self, legs:list[list[PauliString]], dependents:list[PauliString]) -> None:
         """
         Constructor
         """
         self.legs = legs # center is zero leg
         self.dependents = dependents
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         """
         Checking for emptiness of a graph
         """
         return len(self.legs) == 0
 
-    def is_empty_legs(self):
+    def is_empty_legs(self) -> bool:
         """
         Checking for missing legs in a graph
         """
         return len(self.legs) == 1
 
-    def get_vertices(self):
+    def get_vertices(self) -> list[PauliString]:
         """
         Get a list of graph vertices
         """
         return [v for leg in self.legs for v in leg ]
 
-    def get_dependents(self):
+    def get_dependents(self) -> list[PauliString]:
         """
         Get a list of dependent Pauli strings
         """
         return self.dependents
 
-    def counts(self):
+    def counts(self) -> tuple[int,int,int]:
         """
         Get number of leg types
         """
@@ -90,7 +91,7 @@ class Morph:
             long_vertices = 1
         return one_legs, two_legs, long_vertices
 
-    def get_properties(self):
+    def get_properties(self) -> tuple[TypeGraph,int,int,int]:
         """
         Get graph properties
         """
@@ -109,14 +110,14 @@ class Morph:
             return  TypeGraph.B2, one_legs, two_legs, long_vertices
         raise ClassificatonException("Graph of non-canonical type")
 
-    def get_type(self):
+    def get_type(self) -> TypeGraph:
         """
         Get graph type
         """
         type_graph = self.get_properties()[0]
         return type_graph
 
-    def get_algebra_properties(self):
+    def get_algebra_properties(self) -> tuple[TypeAlgebra,int,int]:
         """
         Get properties of algebra
         """
@@ -133,7 +134,8 @@ class Morph:
             return TypeAlgebra.SU, one_legs, 2**(two_legs + 2)
         return None, None, None
 
-    def check_algebra_properties(self, type_algebra = None, nc = None, size = None):
+    def check_algebra_properties(self, type_algebra:TypeAlgebra = None,
+                                 nc:int = None, size:int = None) -> bool:
         """
         Check properties of algebra
         """
@@ -155,25 +157,25 @@ class Classification:
     """
     Algebra classification class
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Constructor
         """
-        self.morphs = set()
+        self.morphs: set[Morph] = set()
 
-    def add(self, morph):
+    def add(self, morph: Morph) -> None:
         """
         Add canonical form
         """
         self.morphs.add(morph)
 
-    def get_morphs(self):
+    def get_morphs(self) -> Morph:
         """
         Get canonical form
         """
         return self.morphs
 
-    def get_algebra(self):
+    def get_algebra(self) -> str:
         """
         Get algebra
         """
@@ -195,7 +197,7 @@ class Classification:
                 algebras[algebra] = nc if nc == 1 else 2**(nc-1)
         return "+".join([key if v == 1 else str(v) + "*" + key for key, v in algebras.items()])
 
-    def contains_algebra(self, algebra):
+    def contains_algebra(self, algebra:str) -> bool:
         """
         Algebra inclusion check
         """
@@ -203,7 +205,7 @@ class Classification:
         algebra.replace(" ", "")
         return _algebra.find(algebra) > -1
 
-    def _parse_algebra(self, algebra):
+    def _parse_algebra(self, algebra:str) -> bool:
         """
         Parse algebra
         """
@@ -224,7 +226,7 @@ class Classification:
         return "+".join([key if v == 1 else str(v) +
                "*" + key for key, v in algs.items()]).split("+")
 
-    def is_algebra(self, algebra):
+    def is_algebra(self, algebra:str) -> bool:
         """
         Checking for compliance with a given algebra
         """
@@ -240,7 +242,7 @@ class Classification:
                 return False
         return True
 
-    def get_subalgebras(self, algebra=None):
+    def get_subalgebras(self, algebra:str=None) -> list[str]:
         """
         Get subalgebras
         """
@@ -250,13 +252,13 @@ class Classification:
             algebra.replace(" ", "")
         return algebra.split("+")
 
-    def get_vertices(self):
+    def get_vertices(self) -> list[PauliString]:
         """
         Get a list of independent strings of Pauli algebra
         """
         return [v for morph in self.morphs for v in morph.get_vertices() ]
 
-    def get_dependents(self):
+    def get_dependents(self) -> list[PauliString]:
         """
         Get a list of dependent strings of Pauli algebra
         """

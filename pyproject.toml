@@ -58,5 +58,6 @@ disable=[
   'too-many-nested-blocks',
   'too-few-public-methods',
   'redefined-outer-name',
-  'attribute-defined-outside-init'
+  'attribute-defined-outside-init',
+  'useless-object-inheritance'
 ]

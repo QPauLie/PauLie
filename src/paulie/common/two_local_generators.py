@@ -33,7 +33,7 @@ G_LIE: dict[str, list[str]] = {
     "b4": ["XX", "XY", "XZ", "XI", "IX", "IY", "IZ"],
 }
 
-def _a3(n):
+def _a3(n:int) -> str|None:
     """
     a3 algebra
     """
@@ -50,7 +50,7 @@ def _a3(n):
             return f"4*sp({2**(n-3)})"
     return None
 
-def _a5(n):
+def _a5(n:int) -> str|None:
     """
     a5 algebra
     """
@@ -65,7 +65,7 @@ def _a5(n):
             return f"sp({2**(n-2)})"
     return None
 
-def _a6(n):
+def _a6(n:int) -> str|None:
     """
     a6 algebra
     """
@@ -75,19 +75,19 @@ def _a6(n):
         return f"4*su({2**(n-2)})"
     return None
 
-def _a7(n):
+def _a7(n:int) -> str|None:
     """
     a7 algebra
     """
     return _a6(n)
 
-def _a10(n):
+def _a10(n:int) -> str|None:
     """
     a10 algebra
     """
     return _a6(n)
 
-def two_local_algebras(n):
+def two_local_algebras(n:int) -> dict[str, str]:
     """
     A dictionary of the DLAs n>=3
     """
