@@ -1050,14 +1050,80 @@ class RecordingMorphFactory(Debug):
         """
         return self.debug_break
 
+    def _get_anti_commutates(self, pauli_string, generators):
+        """
+            Get a collection of non-commuting Pauli strings
+            Args:
+                Pauli string to which commutators are defined
+            generators: The area of Pauli strings over which to build a graph.
+            If not specified, then collection
+        """
+        return [g for g in generators
+               if g != pauli_string and not pauli_string|g]
+
+
+    def _get_max_connected(self, generators):
+        """Get the Pauli string that has the maximum number of non-commutable"""
+        if len(generators) == 0:
+            return None, None
+        pauli_string = generators[0]
+        anti_commutates = self._get_anti_commutates(pauli_string, generators)
+        for p in generators:
+            _anti_commutates = self._get_anti_commutates(p, generators)
+            if len(_anti_commutates) > len(anti_commutates):
+                pauli_string = p
+                anti_commutates = _anti_commutates
+        return pauli_string, anti_commutates
+
+
+
+    def _append_to_queue(self, queue_pauli_strings, pauli_strings):
+        """Append the next related Pauli string to the queue"""
+        for p in pauli_strings:
+            if p in queue_pauli_strings:
+                pauli_strings.remove(p)
+                continue
+            anti_commutates = self._get_anti_commutates(p, queue_pauli_strings)
+            if len(anti_commutates) == 0:
+                continue
+            if len(anti_commutates) > 1:
+                min_index = len(queue_pauli_strings)
+                for anti_commutate in anti_commutates:
+                    index = queue_pauli_strings.index(anti_commutate)
+                    if index < min_index:
+                        min_index = index
+                        queue_pauli_strings.insert(min_index + 1, p)
+            else:
+                queue_pauli_strings.append(p)
+            pauli_strings.remove(p)
+            return
+
+    def _get_queue(self, generators):
+        """Get associated sequence of Pauli strings"""
+        new_generators = generators.copy()
+        new_generators.sort()
+        queue_pauli_strings = []
+        pauli_string, anti_commutates = self._get_max_connected(new_generators)
+
+        new_generators.remove(pauli_string)
+        queue_pauli_strings.append(pauli_string)
+        for anti_commutate in anti_commutates:
+            new_generators.remove(anti_commutate)
+            if anti_commutate not in queue_pauli_strings:
+                queue_pauli_strings.append(anti_commutate)
+
+        while len(new_generators) > 0:
+            self._append_to_queue(queue_pauli_strings, new_generators)
+        return queue_pauli_strings
+
     def build(self, generators):
         """
         Transform a connected graph to a cononic type.
         """
         if len(generators) == 0:
             return self
-        vertices = generators.get_queue().get()
-        self.set_debug(generators.get_debug())
+        vertices = self._get_queue(generators)
+        #self.set_debug(generators.get_debug())
         #self.debuging()
         recording_graph(self.record, collection=vertices, title="Original graph", init=True)
         self.print_vertices(vertices, "init")
