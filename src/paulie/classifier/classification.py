@@ -238,7 +238,6 @@ class Classification:
         algebras.sort()
         _algebras.sort()
         for i, a in enumerate(algebras):
-#            print(f"res {self.get_isomorphism(_algebras[i])}")
             if a != _algebras[i] and a != self.get_isomorphism(_algebras[i]):
                 return False
         return True
@@ -281,7 +280,6 @@ class Classification:
         n = 1
         core_algebra = ""
         if algebra not in self.get_isomorphisms():
-#            print("here {algebra}")
             if '*' in algebra:
                 algebras = algebra.split("*")
                 n = algebras[0]
@@ -289,7 +287,6 @@ class Classification:
                 if core_algebra not in self.get_isomorphisms():
                     return None
                 isomorph_core_algebra = self.get_isomorphisms()[core_algebra]
- #               print(f"isomorph_core_algebra {isomorph_core_algebra}")
                 isomorph_n = 1
                 if "*" in isomorph_core_algebra:
                     isomorph_core_algebras = isomorph_core_algebra.split("*")
