@@ -238,7 +238,8 @@ class Classification:
         algebras.sort()
         _algebras.sort()
         for i, a in enumerate(algebras):
-            if a != _algebras[i]:
+#            print(f"res {self.get_isomorphism(_algebras[i])}")
+            if a != _algebras[i] and a != self.get_isomorphism(_algebras[i]):
                 return False
         return True
 
@@ -263,3 +264,39 @@ class Classification:
         Get a list of dependent strings of Pauli algebra
         """
         return [v for morph in self.morphs for v in morph.get_dependents()]
+
+    def get_isomorphisms(self) -> dict[str, str]:
+        """
+        Dictionary of isomorphisms
+        """
+        return {"2*so(2)":"2*su(2)",
+                "so(3)":"su(2)",
+                "so(4)":"2*su(2)"
+               }
+
+    def get_isomorphism(self, algebra:str)->str:
+        """
+        Get algebra isomorphism
+        """
+        n = 1
+        core_algebra = ""
+        if algebra not in self.get_isomorphisms():
+#            print("here {algebra}")
+            if '*' in algebra:
+                algebras = algebra.split("*")
+                n = algebras[0]
+                core_algebra = algebras[1]
+                if core_algebra not in self.get_isomorphisms():
+                    return None
+                isomorph_core_algebra = self.get_isomorphisms()[core_algebra]
+ #               print(f"isomorph_core_algebra {isomorph_core_algebra}")
+                isomorph_n = 1
+                if "*" in isomorph_core_algebra:
+                    isomorph_core_algebras = isomorph_core_algebra.split("*")
+                    isomorph_n = int(isomorph_core_algebras[0])
+                    isomorph_core_algebra = isomorph_core_algebras[1]
+                isomorph_n *= n
+                return (f"{isomorph_core_algebra}" if isomorph_n == 1
+                       else f"{isomorph_n}*{isomorph_core_algebra}")
+            return "None"
+        return self.get_isomorphisms()[algebra]

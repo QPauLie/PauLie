@@ -32,7 +32,7 @@ def test_explicit_algebras() -> None:
     """
     Test explicit algebras
     """
-    assert p(["XX", "YY", "ZZ", "ZY"]).is_algebra("u(1)+2*so(2)") # Example III.8
+    assert p(["XX", "YY", "ZZ", "ZY"]).is_algebra("u(1)+2*su(2)") # Example III.8
     assert p(["XY"]).is_algebra("u(1)") # Example I.4
     assert p(["XY"], n = 3).is_algebra("so(3)")
     # n>=3 for n = 3 eg. a6 should be su(4)

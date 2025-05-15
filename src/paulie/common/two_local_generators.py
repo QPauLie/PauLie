@@ -119,7 +119,7 @@ def two_local_algebras(n:int) -> dict[str, str]:
     "b0": f"{n}*u(1)",
     "b1": f"{2*n-1}*u(1)",
     "b2": f"sp({2**(n-2)}) + u(1)",
-    "b3": f"{n}*so(3)",
+    "b3": f"{n}*su(2)",
     "b4": f"su({2**(n-1)}) + su({2**(n-1)}) + u(1)" ,
 }
 
