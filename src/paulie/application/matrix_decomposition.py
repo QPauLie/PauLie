@@ -24,20 +24,24 @@ def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliStrin
     j = np.arange(n)
     k = np.zeros(n, dtype=np.int64)
     m = np.zeros(n, dtype=np.int8)
+    k0 = 0
     m[0] = 1
     coeffs = Counter()
-    dfs_stack = deque([('Z', 0, 1), ('Y', 0, -1j), ('X', 0, 1), ('I', 0, 1)])
+    dfs_stack = deque([('Z', 0), ('Y', 0), ('X', 0), ('I', 0)])
+    phase = [-1j, -1, 1j, 1]
     pstr = get_identity(log2n)
     while dfs_stack:
-        node, depth, phase = dfs_stack.pop()
+        node, depth = dfs_stack.pop()
         if node == 'I':
             k[2 ** depth : 2 ** (depth + 1)] = k[0 : 2 ** depth] + 2 ** depth
             m[2 ** depth : 2 ** (depth + 1)] = m[0 : 2 ** depth]
         elif node == 'X':
+            k0 += 2 ** depth
             k[2 ** depth : 2 ** (depth + 1)] -= 2 ** (depth + 1)
         elif node == 'Y':
             m[2 ** depth : 2 ** (depth + 1)] *= -1
         elif node == 'Z':
+            k0 -= 2 ** depth
             k[2 ** depth : 2 ** (depth + 1)] += 2 ** (depth + 1)
         # Set bits manually for performance
         nodebits = CODEC[node]
@@ -46,12 +50,11 @@ def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliStrin
         pstr.bits_even[log2n - depth - 1] = nodebits[0]
         pstr.bits_odd[log2n - depth - 1] = nodebits[1]
         if depth + 1 == log2n:
-            k0 = int(pstr.bits_even.to01(), base=2)
             coeff = np.dot(m, matrix[k0 + k, j]) / n
             if np.abs(coeff) > tol:
-                coeffs[pstr.copy()] += phase * coeff
+                coeffs[pstr.copy()] += phase[(pstr.bits_even & pstr.bits_odd).count() % 4] * coeff
         else:
-            dfs_stack.extend([('Z', depth + 1, phase), ('Y', depth + 1, -1j * phase), ('X', depth + 1, phase), ('I', depth + 1, phase)])
+            dfs_stack.extend([('Z', depth + 1), ('Y', depth + 1), ('X', depth + 1), ('I', depth + 1)])
     return dict(coeffs)
 
 def matrix_decomposition_diagonal(diag: np.ndarray, tol: float=1e-8) -> dict[PauliString, complex]:
