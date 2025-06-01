@@ -5,28 +5,30 @@ import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_factory import get_identity
 
-def _mat_to_vec(A: np.ndarray) -> list[complex]:
-    if A.shape[0] == 2:
-        return [A[0, 0], A[1, 1], A[0, 1], A[1, 0]]
-    n = A.shape[0] // 2
-    return _mat_to_vec(A[:n,:n]) + _mat_to_vec(A[n:,n:]) + _mat_to_vec(A[:n,n:]) + _mat_to_vec(A[n:,:n])
+def _pauli_ord(row: np.ndarray, col: np.ndarray, n: int) -> None:
+    if n == 1:
+        row[0], col[0] = 0, 0
+        row[1], col[1] = 1, 1
+        row[2], col[2] = 0, 1
+        row[3], col[3] = 1, 0
+        return
+    _pauli_ord(row, col, n - 1)
+    pw = 1 << (2 * (n - 1))
+    row[pw: 2 * pw] = row[:pw] + (1 << (n - 1))
+    col[pw: 2 * pw] = col[:pw] + (1 << (n - 1))
+    row[2 * pw: 3 * pw] = row[:pw]
+    col[2 * pw: 3 * pw] = col[:pw] + (1 << (n - 1))
+    row[3 * pw: 4 * pw] = row[:pw] + (1 << (n - 1))
+    col[3 * pw: 4 * pw] = col[:pw]
 
-def _fast_pauli_transform(a: list) -> None:
-    h = 1
-    while h < len(a):
-        for i in range(0, len(a), h << 2):
-            for j in range(i, i + h):
-                x = a[j]
-                y = a[j + h]
-                z = a[j + 2 * h]
-                w = a[j + 3 * h]
-                a[j] = (x + y) / 2
-                a[j + h] = (x - y) / 2
-                a[j + 2 * h] = (z + w) / 2
-                a[j + 3 * h] = 1j * (z - w) / 2
-        h <<= 2
+def _mat_to_vec(A: np.ndarray, log2n: int) -> np.ndarray:
+    row = np.zeros(4 ** log2n, dtype=np.int64)
+    col = np.zeros(4 ** log2n, dtype=np.int64)
+    _pauli_ord(row, col, log2n)
+    flatindex = (1 << log2n) * row + col
+    return A.reshape(-1)[flatindex].astype(np.complex128)
 
-def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliString, complex]:
+def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliString, np.complex128]:
     if matrix.ndim != 2:
         raise ValueError("matrix must be a 2D ndarray")
     if matrix.shape[0] != matrix.shape[1]:
@@ -40,39 +42,32 @@ def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliStrin
                          ({matrix.shape[0]}, {matrix.shape[1]})")
     n = matrix.shape[0]
     log2n = int(n).bit_length() - 1
-    B = _mat_to_vec(matrix)
-    _fast_pauli_transform(B)
+    B = _mat_to_vec(matrix, log2n)
+    h = 1
+    while h < B.shape[0]:
+        for i in range(0, B.shape[0], h << 2):
+            B[i : i + h], B[i + h : i + 2 * h] = (B[i : i + h] + B[i + h : i + 2 * h]) / 2, (B[i : i + h] - B[i + h : i + 2 * h]) / 2
+            B[i + 2 * h : i + 3 * h], B[i + 2 * h : i + 3 * h] = (B[i + 2 * h : i + 3 * h] + B[i + 2 * h : i + 3 * h]) / 2, 1j * (B[i + 2 * h : i + 3 * h] - B[i + 2 * h : i + 3 * h]) / 2
+        h <<= 2
     pstr = get_identity(log2n)
     res = dict()
-    pind = 0
     if np.abs(B[0]) > tol:
         res[pstr.copy()] = B[0]
+    inds = np.arange(4 ** log2n + 1)
+    inds = inds ^ (inds >> 1)
+    Bgray = B[inds[:-1]]
+    nnz_coeff_inds = set(np.where(np.abs(Bgray) > tol)[0])
+    binds = 2 * log2n - np.frexp(inds ^ np.roll(inds, 1))[1]
     for i in range(1, 4 ** log2n):
         # Iterate in Gray code order and manually set bits for performance
-        ind = i ^ (i >> 1)
-        bpos = (ind ^ pind).bit_length() - 1
-        pstr.bits[2 * log2n - 1 - bpos] ^= 1
-        if bpos & 1:
-            pstr.bits_even[log2n - 1 - (bpos >> 1)] ^= 1
-        else:
-            pstr.bits_odd[log2n - 1 - (bpos >> 1)] ^= 1
-        if np.abs(B[ind]) > tol:
-            res[pstr.copy()] = B[ind]
-        pind = ind
+        pstr.bits[binds[i]] ^= 1
+        pstr.bits_even = pstr.bits[::2]
+        pstr.bits_odd = pstr.bits[1::2]
+        if i in nnz_coeff_inds:
+            res[pstr.copy()] = Bgray[i]
     return res
 
-def _fast_walsh_hadamard_transform(a: np.ndarray) -> None:
-    h = 1
-    while h < len(a):
-        for i in range(0, len(a), h << 1):
-            for j in range(i, i + h):
-                x = a[j]
-                y = a[j + h]
-                a[j] = (x + y) / 2
-                a[j + h] = (x - y) / 2
-        h <<= 1
-
-def matrix_decomposition_diagonal(diag: np.ndarray, tol: float=1e-8) -> dict[PauliString, complex]:
+def matrix_decomposition_diagonal(diag: np.ndarray, tol: float=1e-8) -> dict[PauliString, np.complex128]:
     if diag.ndim != 1:
         raise ValueError("matrix must be a 1D ndarray")
     if diag.shape[0] == 1:
@@ -82,20 +77,25 @@ def matrix_decomposition_diagonal(diag: np.ndarray, tol: float=1e-8) -> dict[Pau
                          length but length is {diag.shape[0]}")
     n = diag.shape[0]
     log2n = int(n).bit_length() - 1
-    B = diag.copy()
-    _fast_walsh_hadamard_transform(B)
+    B = diag.astype(np.complex128)
+    h = 1
+    while h < B.shape[0]:
+        for i in range(0, B.shape[0], h << 1):
+            B[i : i + h], B[i + h : i + 2 * h] = (B[i : i + h] + B[i + h : i + 2 * h]) / 2, (B[i : i + h] + B[i + h : i + 2 * h]) / 2
+        h <<= 1
     pstr = get_identity(log2n)
     res = dict()
-    pind = 0
     if np.abs(B[0]) > tol:
         res[pstr.copy()] = B[0]
+    inds = np.arange(2 ** log2n + 1)
+    inds = inds ^ (inds >> 1)
+    Bgray = B[inds[:-1]]
+    nnz_coeff_inds = set(np.where(np.abs(Bgray) > tol)[0])
+    binds = log2n - np.frexp(inds ^ np.roll(inds, 1))[1]
     for i in range(1, 2 ** log2n):
         # Iterate in Gray code order and manually set bits for performance
-        ind = i ^ (i >> 1)
-        bpos = (ind ^ pind).bit_length() - 1
-        pstr.bits_even[log2n - 1 - bpos] ^= 1
-        pstr.bits[2 * (log2n - bpos) - 1] ^= 1
-        if np.abs(B[ind]) > tol:
-            res[pstr.copy()] = B[ind]
-        pind = ind
+        pstr.bits_even[binds[i]] ^= 1
+        pstr.bits[::2] = pstr.bits_even
+        if i in nnz_coeff_inds:
+            res[pstr.copy()] = Bgray[i]
     return res
