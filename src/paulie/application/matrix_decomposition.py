@@ -4,6 +4,7 @@
 import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_factory import get_identity
+from bitarray import bitarray
 
 def _pauli_ord(row: np.ndarray, col: np.ndarray, n: int) -> None:
     if n == 1:
@@ -28,6 +29,15 @@ def _mat_to_vec(A: np.ndarray, log2n: int) -> np.ndarray:
     flatindex = (1 << log2n) * row + col
     return A.reshape(-1)[flatindex].astype(np.complex128)
 
+def _one_bit_indices(x: np.int64, n: int) -> list:
+    x = int(x)
+    one_bit_indexes = []
+    while x:
+        v = x & -x
+        one_bit_indexes.append(n - v.bit_length())
+        x ^= v
+    return one_bit_indexes
+
 def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliString, np.complex128]:
     if matrix.ndim != 2:
         raise ValueError("matrix must be a 2D ndarray")
@@ -51,23 +61,22 @@ def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliStrin
         h *= 4
     pstr = get_identity(log2n)
     res = dict()
-    if np.abs(B[0]) > tol:
-        res[pstr.copy()] = B[0]
-    # Compute Gray code ordering
-    inds = np.arange(4 ** log2n + 1)
-    inds = inds ^ (inds >> 1)
-    Bgray = B[inds[:-1]]
     # Find nonzero coefficient indices
-    nnz_coeff_inds = set(np.where(np.abs(Bgray) > tol)[0])
-    # Compute bit change positions
-    binds = 2 * log2n - np.frexp(inds ^ np.roll(inds, 1))[1]
-    for i in range(1, 4 ** log2n):
-        # Iterate in Gray code order and manually set bits for performance
-        pstr.bits[binds[i]] ^= 1
-        if i in nnz_coeff_inds:
-            pstr.bits_even = pstr.bits[::2]
-            pstr.bits_odd = pstr.bits[1::2]
-            res[pstr.copy()] = Bgray[i]
+    nnz_coeff_inds = np.where(np.abs(B) > tol)[0]
+    if nnz_coeff_inds[0] == 0:
+        res[pstr.copy()] = B[0]
+        nnz_coeff_inds = nnz_coeff_inds[1:]
+    npb = np.zeros(2 * log2n, dtype=np.bool)
+    j = 0
+    for i in nnz_coeff_inds:
+        # Manually set bits for performance
+        npb[_one_bit_indices(i ^ j, 2 * log2n)] ^= True
+        pstr.bits = bitarray()
+        pstr.bits.pack(npb.tobytes())
+        pstr.bits_even = pstr.bits[::2]
+        pstr.bits_odd = pstr.bits[1::2]
+        res[pstr.copy()] = B[i]
+        j = i
     return res
 
 def matrix_decomposition_diagonal(diag: np.ndarray, tol: float=1e-8) -> dict[PauliString, np.complex128]:
@@ -88,20 +97,19 @@ def matrix_decomposition_diagonal(diag: np.ndarray, tol: float=1e-8) -> dict[Pau
         h *= 2
     pstr = get_identity(log2n)
     res = dict()
-    if np.abs(B[0]) > tol:
-        res[pstr.copy()] = B[0]
-    # Compute Gray code ordering
-    inds = np.arange(2 ** log2n + 1)
-    inds = inds ^ (inds >> 1)
-    Bgray = B[inds[:-1]]
     # Find nonzero coefficient indices
-    nnz_coeff_inds = set(np.where(np.abs(Bgray) > tol)[0])
-    # Compute bit change positions
-    binds = log2n - np.frexp(inds ^ np.roll(inds, 1))[1]
-    for i in range(1, 2 ** log2n):
-        # Iterate in Gray code order and manually set bits for performance
-        pstr.bits_odd[binds[i]] ^= 1
-        if i in nnz_coeff_inds:
-            pstr.bits[1::2] = pstr.bits_odd
-            res[pstr.copy()] = Bgray[i]
+    nnz_coeff_inds = np.where(np.abs(B) > tol)[0]
+    if nnz_coeff_inds[0] == 0:
+        res[pstr.copy()] = B[0]
+        nnz_coeff_inds = nnz_coeff_inds[1:]
+    npb = np.zeros(log2n, dtype=np.bool)
+    j = 0
+    for i in nnz_coeff_inds:
+        # Manually set bits for performance
+        npb[_one_bit_indices(i ^ j, log2n)] ^= True
+        pstr.bits_odd = bitarray()
+        pstr.bits_odd.pack(npb.tobytes())
+        pstr.bits[1::2] = pstr.bits_odd
+        res[pstr.copy()] = B[i]
+        j = i
     return res
