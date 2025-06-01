@@ -2,9 +2,8 @@
     Fast Pauli basis matrix decomposition algorithm (arXiV:2403.11644).
 """
 import numpy as np
-from paulie.common.pauli_string_bitarray import PauliString, CODEC
+from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_factory import get_identity
-from collections import deque, Counter
 
 def _mat_to_vec(A: np.ndarray) -> list[complex]:
     if A.shape[0] == 2:
@@ -27,7 +26,7 @@ def _fast_pauli_transform(a: list) -> None:
                 a[j + 3 * h] = 1j * (z - w) / 2
         h <<= 2
 
-def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliString, np.complex128]:
+def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliString, complex]:
     if matrix.ndim != 2:
         raise ValueError("matrix must be a 2D ndarray")
     if matrix.shape[0] != matrix.shape[1]:
@@ -45,14 +44,35 @@ def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliStrin
     _fast_pauli_transform(B)
     pstr = get_identity(log2n)
     res = dict()
-    for i in range(4 ** log2n):
-        if np.abs(B[i]) > tol:
-            res[pstr.copy()] = B[i]
-        pstr.inc()
+    pind = 0
+    if np.abs(B[0]) > tol:
+        res[pstr.copy()] = B[0]
+    for i in range(1, 4 ** log2n):
+        # Iterate in Gray code order and manually set bits for performance
+        ind = i ^ (i >> 1)
+        bpos = (ind ^ pind).bit_length() - 1
+        pstr.bits[2 * log2n - 1 - bpos] ^= 1
+        if bpos & 1:
+            pstr.bits_even[log2n - 1 - (bpos >> 1)] ^= 1
+        else:
+            pstr.bits_odd[log2n - 1 - (bpos >> 1)] ^= 1
+        if np.abs(B[ind]) > tol:
+            res[pstr.copy()] = B[ind]
+        pind = ind
     return res
 
+def _fast_walsh_hadamard_transform(a: np.ndarray) -> None:
+    h = 1
+    while h < len(a):
+        for i in range(0, len(a), h << 1):
+            for j in range(i, i + h):
+                x = a[j]
+                y = a[j + h]
+                a[j] = (x + y) / 2
+                a[j + h] = (x - y) / 2
+        h <<= 1
+
 def matrix_decomposition_diagonal(diag: np.ndarray, tol: float=1e-8) -> dict[PauliString, complex]:
-    # Shape checks
     if diag.ndim != 1:
         raise ValueError("matrix must be a 1D ndarray")
     if diag.shape[0] == 1:
@@ -62,27 +82,20 @@ def matrix_decomposition_diagonal(diag: np.ndarray, tol: float=1e-8) -> dict[Pau
                          length but length is {diag.shape[0]}")
     n = diag.shape[0]
     log2n = int(n).bit_length() - 1
-    m = np.zeros(n, dtype=np.int8)
-    m[0] = 1
-    coeffs = Counter()
-    dfs_stack = deque([('Z', 0), ('I', 0)])
+    B = diag.copy()
+    _fast_walsh_hadamard_transform(B)
     pstr = get_identity(log2n)
-    while dfs_stack:
-        node, depth = dfs_stack.pop()
-        if node == 'I':
-            m[2 ** depth : 2 ** (depth + 1)] = m[0 : 2 ** depth]
-        elif node == 'Z':
-            m[2 ** depth : 2 ** (depth + 1)] *= -1
-        # Set bits manually for performance
-        nodebits = CODEC[node]
-        pstr.bits[2 * (log2n - depth - 1)] = nodebits[0]
-        pstr.bits[2 * (log2n - depth - 1) + 1] = nodebits[1]
-        pstr.bits_even[log2n - depth - 1] = nodebits[0]
-        pstr.bits_odd[log2n - depth - 1] = nodebits[1]
-        if depth + 1 == log2n:
-            coeff = np.dot(m, diag) / n
-            if np.abs(coeff) > tol:
-                coeffs[pstr.copy()] += coeff
-        else:
-            dfs_stack.extend([('Z', depth + 1), ('I', depth + 1)])
-    return dict(coeffs)
+    res = dict()
+    pind = 0
+    if np.abs(B[0]) > tol:
+        res[pstr.copy()] = B[0]
+    for i in range(1, 2 ** log2n):
+        # Iterate in Gray code order and manually set bits for performance
+        ind = i ^ (i >> 1)
+        bpos = (ind ^ pind).bit_length() - 1
+        pstr.bits_even[log2n - 1 - bpos] ^= 1
+        pstr.bits[2 * (log2n - bpos) - 1] ^= 1
+        if np.abs(B[ind]) > tol:
+            res[pstr.copy()] = B[ind]
+        pind = ind
+    return res
