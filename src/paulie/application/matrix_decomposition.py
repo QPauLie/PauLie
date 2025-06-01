@@ -1,5 +1,5 @@
 """
-    Fast Pauli basis matrix decomposition algorithm (arXiV:2403.11644).
+    Fast Pauli basis matrix decomposition algorithm.
 """
 import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
