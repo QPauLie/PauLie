@@ -64,9 +64,9 @@ def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliStrin
     for i in range(1, 4 ** log2n):
         # Iterate in Gray code order and manually set bits for performance
         pstr.bits[binds[i]] ^= 1
-        pstr.bits_even = pstr.bits[::2]
-        pstr.bits_odd = pstr.bits[1::2]
         if i in nnz_coeff_inds:
+            pstr.bits_even = pstr.bits[::2]
+            pstr.bits_odd = pstr.bits[1::2]
             res[pstr.copy()] = Bgray[i]
     return res
 
@@ -101,7 +101,7 @@ def matrix_decomposition_diagonal(diag: np.ndarray, tol: float=1e-8) -> dict[Pau
     for i in range(1, 2 ** log2n):
         # Iterate in Gray code order and manually set bits for performance
         pstr.bits_odd[binds[i]] ^= 1
-        pstr.bits[1::2] = pstr.bits_odd
         if i in nnz_coeff_inds:
+            pstr.bits[1::2] = pstr.bits_odd
             res[pstr.copy()] = Bgray[i]
     return res
