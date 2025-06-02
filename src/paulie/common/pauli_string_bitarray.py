@@ -195,6 +195,32 @@ class PauliString:
         """
         return self.multiply(other)
 
+    def sign(self, other:Self):
+        """
+        Sign of multiplication of two pauli string
+        return +- 1
+        """
+        if self|other:
+            return 1
+        s = 1
+        for i in range(0, len(self)):
+            if ((self[i] == 'I' and other[i] == "I") or
+                (self[i] == 'I' and other[i] == "X") or
+                (self[i] == 'I' and other[i] == "Y") or
+                (self[i] == 'I' and other[i] == "Z") or
+                (self[i] == 'X' and other[i] == "I") or
+                (self[i] == 'Y' and other[i] == "I") or
+                (self[i] == 'Z' and other[i] == "I")):
+                continue
+
+            if ((self[i] == 'X' and other[i] == "Y") or
+                (self[i] == 'Y' and other[i] == "Z") or
+                (self[i] == 'Z' and other[i] == "X")):
+                s *= complex(0,1)
+                continue
+            s *= complex(0,-1)
+        return s
+
     def commutes_with(self, other:str|Self) -> bool:
         """
         Check if this Pauli string commutes with another

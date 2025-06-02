@@ -5,6 +5,7 @@ of Pauli strings of various implementations
 from typing import Generator
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
+from paulie.common.pauli_string_linear import PauliStringLinear
 
 def get_identity(n: int) -> PauliString:
     """
@@ -29,6 +30,10 @@ def get_pauli_string(o, n:int = None) -> PauliString|PauliStringCollection:
         return PauliString(pauli_str=o, n=n)
     if isinstance(o, PauliString):
         return o
+
+    if isinstance(o, list):
+        if len(o) > 0 and  isinstance(o[0], tuple):
+            return PauliStringLinear(o)
     generators = PauliStringCollection([PauliString(pauli_str=p) if isinstance(p, str)
                  else PauliString(pauli_str=str(p)) for p in o])
     if n is not None:
