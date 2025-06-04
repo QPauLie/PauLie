@@ -16,6 +16,7 @@ Paulistrings.
     getting_started
     intro_tutorial
     commutator_graph
+    matrix_decomposition
 
 .. toctree::
    :hidden:
