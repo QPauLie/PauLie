@@ -42,13 +42,10 @@ def test_pauli_string_matrices(paulistr: str) -> None:
     pmat = pstr.get_matrix()
     decomp = matrix_decomposition(pmat)
     # There should only be one entry
-    assert len(decomp) == 1
-    for ustr, coeff in decomp.items():
-        # ustr must match pstr
-        assert ustr == pstr
-        # coeff must be real and equal to 1
-        assert np.imag(coeff) == pytest.approx(0)
-        assert np.real(coeff) == pytest.approx(1)
+    assert np.count_nonzero(~np.isclose(np.abs(decomp), 0)) == 1
+    # Non-zero entry must be equal to 1 and in correct position
+    assert np.real(pstr.get_weight_in_matrix(decomp)) == pytest.approx(1.0)
+    assert np.imag(pstr.get_weight_in_matrix(decomp)) == pytest.approx(0.0)
 
 def test_matrix_decomposition_diagonal_errors() -> None:
     """
@@ -80,10 +77,7 @@ def test_pauli_string_diagonal_matrices(paulistr: str) -> None:
     pmat = np.diag(pstr.get_matrix())
     decomp = matrix_decomposition_diagonal(pmat)
     # There should only be one entry
-    assert len(decomp) == 1
-    for ustr, coeff in decomp.items():
-        # ustr must match pstr
-        assert ustr == pstr
-        # coeff must be real and equal to 1
-        assert np.imag(coeff) == pytest.approx(0)
-        assert np.real(coeff) == pytest.approx(1)
+    assert np.count_nonzero(~np.isclose(np.abs(decomp), 0)) == 1
+    # Non-zero entry must be equal to 1 and in correct position
+    assert np.real(pstr.get_weight_in_matrix(decomp)) == pytest.approx(1.0)
+    assert np.imag(pstr.get_weight_in_matrix(decomp)) == pytest.approx(0.0)
