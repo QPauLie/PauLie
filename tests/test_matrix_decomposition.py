@@ -2,27 +2,30 @@
     Test Pauli decomposition routines.
 """
 import pytest
-from paulie.application.matrix_decomposition import matrix_decomposition, matrix_decomposition_diagonal
-from paulie.common.pauli_string_factory import get_pauli_string as p
 import numpy as np
+from paulie.application.matrix_decomposition import (
+    matrix_decomposition,
+    matrix_decomposition_diagonal
+)
+from paulie.common.pauli_string_factory import get_pauli_string as p
 
 def test_matrix_decomposition_errors() -> None:
     """
     Assert that matrix_decomposition raises errors for
     invalid input.
     """
-    A = np.zeros((2, 3))
-    B = np.zeros((3, 3))
-    C = np.zeros((6, 4, 3))
-    D = np.zeros(1)
+    non_square = np.zeros((2, 3))
+    not_power_of_two = np.zeros((3, 3))
+    not_2d = np.zeros((6, 4, 3))
+    scalar = np.zeros(1)
     with pytest.raises(ValueError):
-        matrix_decomposition(A)
+        matrix_decomposition(non_square)
     with pytest.raises(ValueError):
-        matrix_decomposition(B)
+        matrix_decomposition(not_power_of_two)
     with pytest.raises(ValueError):
-        matrix_decomposition(C)
+        matrix_decomposition(not_2d)
     with pytest.raises(ValueError):
-        matrix_decomposition(D)
+        matrix_decomposition(scalar)
 
 @pytest.mark.parametrize("paulistr", [
     "I", "X", "Y", "Z",
@@ -52,15 +55,15 @@ def test_matrix_decomposition_diagonal_errors() -> None:
     Assert that matrix_decomposition_diagonal raises errors
     for invalid input.
     """
-    A = np.zeros((2, 3))
-    B = np.zeros(3)
-    C = np.zeros(1)
+    not_1d = np.zeros((2, 3))
+    not_power_of_two = np.zeros(3)
+    scalar = np.zeros(1)
     with pytest.raises(ValueError):
-        matrix_decomposition(A)
+        matrix_decomposition(not_1d)
     with pytest.raises(ValueError):
-        matrix_decomposition(B)
+        matrix_decomposition(not_power_of_two)
     with pytest.raises(ValueError):
-        matrix_decomposition(C)
+        matrix_decomposition(scalar)
 
 @pytest.mark.parametrize("paulistr", [
     "I", "Z",
