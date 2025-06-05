@@ -204,6 +204,7 @@ class PauliStringLinear(PauliString):
 
     def __matmul__(self, other: 'PauliStringLinear') -> 'PauliStringLinear':
         """
+        Overloading @ operator of two Pauli strings like multiply
         Performs the distributive multiplication of two linear combinations of Pauli strings.
         This version assumes the PauliStringLinear object is directly iterable.
         """
@@ -240,6 +241,15 @@ class PauliStringLinear(PauliString):
 
         # Create a new PauliStringLinear and simplify it to collect common terms
         return p(new_pauli_terms).simplify()
+
+    def __rmatmul__(self, other:PauliString):
+        """
+        Overloading @ operator of two Pauli strings like multiply
+        """
+        new_combinations = []
+        for c in self.combinations:
+            new_combinations.append((c[0]*other.sign(c[1]), c[1]@other))
+        return PauliStringLinear(new_combinations)
     
     def __rmul__(self, scalar: complex) -> 'PauliStringLinear':
         """
