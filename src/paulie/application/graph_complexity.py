@@ -1,11 +1,13 @@
 """
-    Computes the long-time average graph complexity of a specified
-    PauliString.
+    Computes the average graph complexity of a specified PauliString.
 """
-from paulie.common.pauli_string_collection import PauliString, PauliStringCollection
 import networkx as nx
+from paulie.common.pauli_string_collection import PauliString, PauliStringCollection
 
 def average_graph_complexity(generators: PauliStringCollection, p: PauliString):
+    """
+    Return the average graph complexity 
+    """
     # Get commutator graph
     vertices, edges = generators.get_commutator_graph()
     # Construct graph in NetworkX
