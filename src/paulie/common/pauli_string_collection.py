@@ -282,6 +282,11 @@ class PauliStringCollection:
                 morph_factory = RecordingMorphFactory(record = self.record)
 
             self.classification.add(morph_factory.build(subgraph.get()).get_morph())
+            morph = morph_factory.build(subgraph.get()).get_morph()
+            print("--- DEBUG ---")
+            print("Final morphed graph vertices:", morph.get_vertices())
+            print("Final morphed graph edges:", morph.get_graph()[1])
+            print("-------------")
         return self.classification
 
     def get_class(self) -> Classification:
@@ -363,3 +368,46 @@ class PauliStringCollection:
             generators = self.generators
         return PauliStringCollection([g for g in generators
                if g != pauli_string and g|pauli_string])
+    
+    def get_quadratic_symmetries(self) -> list['PauliStringLinear']:
+        """
+        Computes the orthogonal basis of quadratic symmetries.
+        
+        A quadratic symmetry is defined by Supplemental Theorem 1 of arXiv:2310.11505
+        as Q_kj = ∑_{S ∈ C_k} S ⊗ L_j*S, where L_j are the linear symmetries
+        (commutants) of the system and C_k are the connected components of the
+        full commutator graph.
+        
+        Returns:
+            A list of PauliStringLinear objects, each representing a Q_kj.
+        """
+        # Import the factory function locally to avoid circular dependencies
+        from paulie.common.pauli_string_factory import get_pauli_string as p
+
+        linear_symmetries = self.get_commutants()
+
+        # CORRECTED LINE: The method returns only two values.
+        nodes, edges = self.get_commutator_graph()
+
+        comm_graph = nx.Graph()
+        comm_graph.add_nodes_from(nodes)
+        comm_graph.add_edges_from(edges)
+
+        connected_components = list(nx.connected_components(comm_graph))
+
+        quadratic_basis = []
+
+        for Lj in linear_symmetries:
+            for Ck_nodes in connected_components:
+                linear_combination_terms = []
+                for S_str in Ck_nodes:
+                    S = self.create_instance(pauli_str=S_str)
+                    Lj_times_S = Lj @ S
+                    tensor_prod_str = str(S) + str(Lj_times_S)
+                    linear_combination_terms.append((1.0, tensor_prod_str))
+
+                if linear_combination_terms:
+                    Q_kj = p(linear_combination_terms)
+                    quadratic_basis.append(Q_kj)
+
+        return quadratic_basis
