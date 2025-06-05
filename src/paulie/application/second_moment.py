@@ -42,16 +42,13 @@ def second_moment(M: 'PauliStringLinear', system_generators: PauliStringCollecti
         num_qubits_Q = Q_kj.get_size()
         trace_denominator = num_terms * (2**num_qubits_Q)
 
-        if trace_denominator == 0:
-            continue
-
         # Step 5: Calculate the final coefficient for this basis element
         coeff = trace_numerator / trace_denominator
         
         # Step 6: Add the scaled basis vector Q_kj * coeff to our final sum
         # Note: This requires PauliStringLinear to support scalar multiplication.
         scaled_Q = Q_kj * coeff
-        twirled_M_terms.extend(scaled_Q.pauli_list)
+        twirled_M_terms.extend(scaled_Q)
 
     # Step 7: Create and simplify the final PauliStringLinear object
     if not twirled_M_terms:

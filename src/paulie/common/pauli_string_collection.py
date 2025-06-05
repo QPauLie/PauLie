@@ -378,7 +378,7 @@ class PauliStringCollection:
             A list of PauliStringLinear objects, each representing a Q_kj.
         """
         # Import the factory function locally to avoid circular dependencies
-        from paulie.common.pauli_string_factory import get_pauli_string as p
+        from paulie.common.pauli_string_linear import PauliStringLinear
 
         linear_symmetries = self.get_commutants()
         
@@ -403,7 +403,8 @@ class PauliStringCollection:
                     linear_combination_terms.append((1.0, tensor_prod_str))
 
                 if linear_combination_terms:
-                    Q_kj = p(linear_combination_terms)
+                    Q_kj = PauliStringLinear(linear_combination_terms)
                     quadratic_basis.append(Q_kj)
+
 
         return quadratic_basis

@@ -240,15 +240,30 @@ class PauliStringLinear(PauliString):
 
         # Create a new PauliStringLinear and simplify it to collect common terms
         return p(new_pauli_terms).simplify()
-
-    def __rmatmul__(self, other:PauliString):
+    
+    def __rmul__(self, scalar: complex) -> 'PauliStringLinear':
         """
-        Overloading @ operator of two Pauli strings like multiply
+        Performs reverse scalar multiplication: scalar * self.
         """
-        new_combinations = []
-        for c in self.combinations:
-            new_combinations.append((c[0]*other.sign(c[1]), c[1]@other))
-        return PauliStringLinear(new_combinations)
+        # Scalar multiplication is commutative, so we can just call our existing __mul__
+        return self.__mul__(scalar)
+    
+    def __mul__(self, scalar: complex) -> 'PauliStringLinear':
+        """
+        Performs scalar multiplication: self * scalar.
+        """
+        from paulie.common.pauli_string_factory import get_pauli_string as p
+        
+        # Check that we are multiplying by a number
+        if not isinstance(scalar, (int, float, complex)):
+            # Let Python know this operation is not implemented for other types
+            return NotImplemented
+    
+        # Create a new list of terms where each coefficient is scaled by the number
+        new_terms = [(coeff * scalar, pauli) for coeff, pauli in self]
+        
+        return p(new_terms)
+    
 
     def multiply(self, other:PauliString|Self) -> Self:
         """
