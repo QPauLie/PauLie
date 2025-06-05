@@ -16,6 +16,7 @@ Paulistrings.
     getting_started
     intro_tutorial
     commutator_graph
+    average_graph_complexity
     matrix_decomposition
 
 .. toctree::
