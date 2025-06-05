@@ -282,7 +282,6 @@ class PauliStringCollection:
                 morph_factory = RecordingMorphFactory(record = self.record)
 
             self.classification.add(morph_factory.build(subgraph.get()).get_morph())
-            morph = morph_factory.build(subgraph.get()).get_morph()
         return self.classification
 
     def get_class(self) -> Classification:
