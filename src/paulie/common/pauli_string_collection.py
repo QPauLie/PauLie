@@ -283,10 +283,6 @@ class PauliStringCollection:
 
             self.classification.add(morph_factory.build(subgraph.get()).get_morph())
             morph = morph_factory.build(subgraph.get()).get_morph()
-            print("--- DEBUG ---")
-            print("Final morphed graph vertices:", morph.get_vertices())
-            print("Final morphed graph edges:", morph.get_graph()[1])
-            print("-------------")
         return self.classification
 
     def get_class(self) -> Classification:
