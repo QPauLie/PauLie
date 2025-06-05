@@ -5,6 +5,7 @@ from typing import Self, Generator
 from six.moves import reduce
 import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
+from collections import defaultdict
 
 class PauliStringLinearException(Exception):
     """
@@ -201,11 +202,44 @@ class PauliStringLinear(PauliString):
         """
         return self.adjoint_map(other)
 
-    def __matmul__(self, other:PauliString|Self):
+    def __matmul__(self, other: 'PauliStringLinear') -> 'PauliStringLinear':
         """
-        Overloading @ operator of two Pauli strings like multiply
+        Performs the distributive multiplication of two linear combinations of Pauli strings.
+        This version assumes the PauliStringLinear object is directly iterable.
         """
-        return self.multiply(other)
+        from paulie.common.pauli_string_factory import get_pauli_string as p
+
+        # Ensure the other object is also a PauliStringLinear for uniform processing.
+        if not isinstance(other, self.__class__):
+            raise TypeError(f"Unsupported operand type(s) for @: "
+                            f"'{type(self).__name__}' and '{type(other).__name__}'")
+
+        new_pauli_terms = []
+
+        # Distributive multiplication: Loop through all pairs of terms.
+        # We now loop over `self` and `other` directly.
+        for self_coeff, self_pauli in self:
+            for other_coeff, other_pauli in other:
+
+                # Step 1: Calculate the phase of the Pauli product (P1 * P2)
+                phase = self_pauli.sign(other_pauli)
+
+                # Step 2: Calculate the resulting Pauli string (the phase-less product)
+                product_pauli_string = self_pauli.multiply(other_pauli)
+
+                # Step 3: Calculate the new term's overall coefficient: a * b * phase
+                new_coeff = self_coeff * other_coeff * phase
+
+                # Step 4: Append the new (coefficient, PauliString) tuple
+                new_pauli_terms.append((new_coeff, product_pauli_string))
+
+        # If there are no resulting terms, return a zero operator
+        if not new_pauli_terms:
+            size = self.get_size() if self.get_size() > 0 else other.get_size()
+            return p([(0.0, 'I' * size)])
+
+        # Create a new PauliStringLinear and simplify it to collect common terms
+        return p(new_pauli_terms).simplify()
 
     def __rmatmul__(self, other:PauliString):
         """
@@ -382,3 +416,86 @@ class PauliStringLinear(PauliString):
 
         return reduce(lambda matrix, c: matrix + c[0] * c[1].get_matrix()
                       if matrix is not None else c[0] * c[1].get_matrix(), self, None)
+    
+    def simplify(self) -> 'PauliStringLinear':
+       """
+       Combines terms with the same Pauli string by summing their coefficients.
+       Removes terms with coefficients close to zero.
+       This version assumes the PauliStringLinear object is directly iterable.
+       """
+       
+       from paulie.common.pauli_string_factory import get_pauli_string as p
+       from collections import defaultdict
+       
+       summed_coeffs = defaultdict(complex)
+       
+       # CORRECTED LINE: Loop directly over `self` instead of `self.pauli_list`
+       for coeff, pauli in self:
+           # Assuming the phase is handled by the coefficient
+           summed_coeffs[str(pauli)] += coeff
+       
+       # Filter out terms with a coefficient very close to zero
+       simplified_list = [
+           (coeff, pauli_str) for pauli_str, coeff in summed_coeffs.items()
+           if abs(coeff) > 1e-12 # A small tolerance for floating point errors
+       ]
+       
+       # If all terms cancel out, return a zero operator
+       if not simplified_list:
+           size = self.get_size()
+           return p([(0.0, 'I' * size)])
+       
+       return p(simplified_list)
+    
+    def trace(self) -> complex:
+        """
+        Computes the trace of the operator represented by this linear combination.
+
+        The trace is non-zero only if the Identity operator is present in the sum.
+        Tr(self) = (coefficient of Identity) * 2^n.
+
+        Returns:
+            The complex value of the trace.
+        """
+        identity_coeff = 0.0
+
+        # Loop through the terms to find the coefficient of the Identity string
+        for coeff, pauli in self:
+            # The PauliString class should have an `is_identity()` method
+            if pauli.is_identity():
+                identity_coeff = coeff
+                break # Found it, no need to look further
+
+        # If there was no identity term, its coefficient is zero, so trace is zero.
+        if identity_coeff == 0:
+            return 0.0
+
+        # Get the number of qubits, n
+        num_qubits = self.get_size()
+
+        # The trace is coeff * 2^n
+        return identity_coeff * (2**num_qubits)
+
+    # It should get the qubit count from its first Pauli string.
+    def get_size(self) -> int:
+        """
+        Get the length of the Pauli Strings in this linear combination.
+        """
+        # Assuming the internal list of terms is accessible via iteration
+        try:
+            # Get the first term to determine the size
+            _, first_pauli = next(iter(self))
+            return len(first_pauli)
+        except StopIteration:
+            # Handle the case of an empty linear combination
+            return 0
+        
+    def is_zero(self) -> bool:
+        """
+        Check if the linear combination is effectively zero.
+        This can be done by checking if all coefficients are close to zero.
+        
+        Returns:
+            True if the linear combination is zero, False otherwise.
+        """
+        return all(abs(coeff) < 1e-12 for coeff, _ in self)
