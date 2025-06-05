@@ -381,8 +381,8 @@ class PauliStringCollection:
         from paulie.common.pauli_string_factory import get_pauli_string as p
 
         linear_symmetries = self.get_commutants()
-
-        # CORRECTED LINE: The method returns only two values.
+        
+        # Get the commutator graph
         nodes, edges = self.get_commutator_graph()
 
         comm_graph = nx.Graph()
