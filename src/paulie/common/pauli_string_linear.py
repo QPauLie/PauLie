@@ -429,7 +429,7 @@ class PauliStringLinear(PauliString):
        
        summed_coeffs = defaultdict(complex)
        
-       # CORRECTED LINE: Loop directly over `self` instead of `self.pauli_list`
+       # Loop through all terms in the linear combination
        for coeff, pauli in self:
            # Assuming the phase is handled by the coefficient
            summed_coeffs[str(pauli)] += coeff
@@ -457,7 +457,7 @@ class PauliStringLinear(PauliString):
         Returns:
             The complex value of the trace.
         """
-        identity_coeff = 0.0
+        identity_coeff = 0.0 # Initialize the coefficient of the Identity operator
 
         # Loop through the terms to find the coefficient of the Identity string
         for coeff, pauli in self:
