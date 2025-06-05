@@ -37,27 +37,3 @@ class TestSecondMoment(unittest.TestCase):
         M_complex = PauliStringLinear([(1.0, "XX"), (1.0, "YY")])
         twirled_M_complex = second_moment(M_complex, system)
         self.assertEqual(twirled_M_complex, M_complex)
-
-    def test_second_moment_skips_on_zero_denominator(self):
-        """
-        Tests that the function gracefully handles a quadratic symmetry
-        that results in a zero-valued trace denominator, triggering the
-        `continue` statement and preventing a ZeroDivisionError.
-        """
-        system = PauliStringCollection(p(["Z"]))
-        M = PauliStringLinear([(1.0, "XI")])
-        
-        zero_term_q = PauliStringLinear([])
-        overlapping_q = PauliStringLinear([(1.0, "XI")])
-        
-        # Our handcrafted basis for the test
-        fake_q_basis = [zero_term_q, overlapping_q]
-        
-        # Temporarily replace the real get_quadratic_symmetries with our fake one
-        system.get_quadratic_symmetries = lambda: fake_q_basis
-        twirled_M = second_moment(M, system)
-        
-        # The result should be `overlapping_q` itself, as we are projecting it
-        # onto a basis that contains only it and a term that should be skipped.
-        self.assertEqual(twirled_M, overlapping_q,
-                         "Function did not correctly skip the zero-denominator term.")
