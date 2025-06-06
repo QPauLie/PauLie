@@ -45,6 +45,35 @@ class PauliString:
         self.bits_even = self.bits[::2]
         self.bits_odd  = self.bits[1::2]
 
+    def get_index(self) -> int:
+        """
+         Return index in matrix decomposition vector
+        """
+        return ba2int(self.bits)
+
+    def get_diagonal_index(self) -> int:
+        """
+         Return index in diagonal matrix decomposition vector
+        """
+        if ba2int(self.bits_even) == 0:
+            return ba2int(self.bits_odd)
+        return -1
+
+    def get_weight_in_matrix(self, b_matrix: np.ndarray) -> np.complex128:
+        """
+         Return weight in diagonal matrix decomposition vector
+        """
+        len_matrix = len(b_matrix)
+        len_string = len(self)
+        if len_matrix not in (2**len_string, 4**len_string):
+            raise ValueError("Incorrect matrix size")
+        if len_matrix == 2**len_string:
+            index = self.get_diagonal_index()
+            if index > -1:
+                return b_matrix[index]
+            return 0.0
+        return b_matrix[self.get_index()]
+
     def create_instance(self, n: int = None, pauli_str: str = None):
         """Create a Pauli string instance.
            Args:
