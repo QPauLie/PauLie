@@ -375,44 +375,37 @@ class PauliStringCollection:
         return PauliStringCollection(
             [g for g in generators if g != pauli_string and g | pauli_string]
         )
-    def get_quadratic_symmetries(self) -> list[PauliStringLinear]:
+
+    def get_quadratic_symmetries(self) -> list['PauliStringLinear']:
         """
         Computes the orthogonal basis of quadratic symmetries.
-        Computes the orthogonal basis of quadratic symmetries.
-
-        A quadratic symmetry is defined by Supplemental Theorem 1 of arXiv:2310.11505
-        as Q_kj = ∑_{S ∈ C_k} S ⊗ L_j*S, where L_j are the linear symmetries
-        (commutants) of the system and C_k are the connected components of the
-        full commutator graph.
-
-        Returns:
-            A list of PauliStringLinear objects, each representing a Q_kj.
+        This implementation follows the formula from arXiv:2310.11505 directly.
         """
-        # Import the factory function locally to avoid circular dependencies
 
+        # 1. Get linear symmetries {L_j}
         linear_symmetries = self.get_commutants()
 
-        # Get the commutator graph
+        # 2. Get connected components {C_k} of the full commutator graph
         nodes, edges = self.get_commutator_graph()
-
         comm_graph = nx.Graph()
         comm_graph.add_nodes_from(nodes)
         comm_graph.add_edges_from(edges)
-
         connected_components = list(nx.connected_components(comm_graph))
 
         quadratic_basis = []
 
-        for linear_symmetry in linear_symmetries:
-            for component_nodes in connected_components:
+        # 3. For each L_j and C_k, build Q_kj = ∑_{S ∈ C_k} S ⊗ (L_j*S)
+        for lj in linear_symmetries:
+            for ck_nodes in connected_components:
                 linear_combination_terms = []
-                for s_str in component_nodes:
+                for s_str in ck_nodes:
                     s = self.create_instance(pauli_str=s_str)
-                    linear_symmetry_times_s = linear_symmetry @ s
-                    tensor_prod_str = str(s) + str(linear_symmetry_times_s)
+                    lj_times_s = lj @ s
+                    tensor_prod_str = str(s) + str(lj_times_s)
                     linear_combination_terms.append((1.0, tensor_prod_str))
 
                 if linear_combination_terms:
+                    # Construct the PauliStringLinear object directly
                     q_kj = PauliStringLinear(linear_combination_terms)
                     quadratic_basis.append(q_kj)
 

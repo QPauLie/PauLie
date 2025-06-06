@@ -66,23 +66,35 @@ class PauliStringLinear(PauliString):
         return str_value
 
 
-    def __eq__(self, other: Self) -> bool:
-        """Overloading the equality operator relating two linear combination of Pauli strings.
-        Args:
-             other: The linear combination of Pauli strings to compare with
-        Returns the result of the comparison
+    def __eq__(self, other: 'PauliStringLinear') -> bool:
         """
-        if len(self) != len(other):
+        Checks for mathematical equality between two PauliStringLinear objects.
+        Two objects are equal if they have the same terms after simplification.
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+
+        # Simplify both objects to get them into a canonical form
+        self_simplified = self.simplify()
+        other_simplified = other.simplify()
+
+        # The canonical representation is a dictionary mapping a Pauli string
+        # to its coefficient. We can get this from the internal list.
+        self_dict = {str(pauli): coeff for coeff, pauli in self_simplified}
+        other_dict = {str(pauli): coeff for coeff, pauli in other_simplified}
+
+        # Now, compare the dictionaries.
+        if len(self_dict) != len(other_dict):
             return False
 
-        for c in self.combinations:
-            is_eq = None
-            for o in other:
-                if o[1] == c[1]:
-                    is_eq = c[0] == o[0]
-                    break
-            if not is_eq:
+        for pauli_str, self_coeff in self_dict.items():
+            other_coeff = other_dict.get(pauli_str)
+            if other_coeff is None:
                 return False
+            # Use a tolerance for floating point comparison
+            if abs(self_coeff - other_coeff) > 1e-12:
+                return False
+
         return True
 
     def __lt__(self, other:Self) -> bool:
