@@ -38,7 +38,7 @@ def second_moment(
         trace_numerator = prod.trace()
 
         # If the trace is zero, this basis vector has no overlap with operator_m
-        if trace_numerator == 0:
+        if abs(trace_numerator) < 1e-12:
             continue
 
         # Step 4: Calculate the coefficient denominator: Tr(q_kj²)
