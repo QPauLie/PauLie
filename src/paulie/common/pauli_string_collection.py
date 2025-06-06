@@ -375,8 +375,10 @@ class PauliStringCollection:
         return PauliStringCollection(
             [g for g in generators if g != pauli_string and g | pauli_string]
         )
-        
-    def get_graph_components(self, graph_type: str = 'anticommutator') -> list['PauliStringCollection']:
+
+    def get_graph_components(self,
+                             graph_type: str = 'anticommutator'
+                             ) -> list['PauliStringCollection']:
         """
         Computes the connected components of the specified graph (anticommutator or commutator) 
         constructed from the Pauli strings in the collection.
@@ -394,10 +396,12 @@ class PauliStringCollection:
             nodes, edges = self.get_commutator_graph() # The commutator graph
         else:
             raise ValueError("graph_type must be 'anticommutator' or 'commutator'")
-        
+
         return self._get_connected_components(nodes, edges)
-    
-    def _get_connected_components(self, nodes: list[str], edges: list[tuple[str, str]]) -> list['PauliStringCollection']:
+
+    def _get_connected_components(self, nodes: list[str],
+                                  edges: list[tuple[str, str]]
+                                  ) -> list['PauliStringCollection']:
         """
         Helper method to compute connected components from nodes and edges.
         Args:
