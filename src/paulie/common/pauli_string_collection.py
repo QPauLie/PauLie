@@ -366,16 +366,16 @@ class PauliStringCollection:
         return PauliStringCollection([g for g in generators
                if g != pauli_string and g|pauli_string])
 
-    def get_quadratic_symmetries(gens) -> list[PauliStringLinear]:
+    def get_quadratic_symmetries(self) -> list[PauliStringLinear]:
         """
         Return a Hermitian, orthonormal basis of the quadratic symmetries
         of the collection.
         """
         # Get linear symmetries
-        linear_symmetries = gens.get_commutants().get()
-        n = len(gens.generators[0])
+        linear_symmetries = self.get_commutants().get()
+        n = len(self.generators[0])
         # Get commutator graph
-        vertices, edges = gens.get_commutator_graph()
+        vertices, edges = self.get_commutator_graph()
         commutator_graph = nx.Graph()
         commutator_graph.add_nodes_from(vertices)
         commutator_graph.add_edges_from(edges)
