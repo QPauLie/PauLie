@@ -1,5 +1,6 @@
 """Representation of a Pauli string as a bitarray."""
 
+from copy import deepcopy
 from typing import Self, Generator
 
 from six.moves import reduce
@@ -24,7 +25,7 @@ class PauliStringLinear(PauliString):
             Pauli string - Pauli string like PauliString or string
         """
         self.nextpos = 0
-        self.combinations = [(c[0], PauliString(pauli_str=str(c[1]))) for c in combinations]
+        self.combinations = [[c[0], PauliString(pauli_str=str(c[1]))] for c in combinations]
 
 
     def _gtzero(self, z: complex) -> bool:
@@ -181,17 +182,54 @@ class PauliStringLinear(PauliString):
         """
         Linear combination of Pauli string addition operator
         """
-        combinations = self.combinations.copy()
-        for o in other:
-            is_found = False
-            for c in combinations:
-                if o[1] == c[1]:
-                    c[0] += o[0]
-                    break
-            if not is_found:
-                combinations.append(o)
+        combinations = deepcopy(self.combinations)
+        otherdict = {c[1]: c[0] for c in other.combinations}
+        for c in combinations:
+            if c[1] in otherdict:
+                c[0] += otherdict[c[1]]
+                del otherdict[c[1]]
+        for c1, c0 in otherdict.items():
+            combinations.append([c0, c1])
         return PauliStringLinear(combinations)
 
+    def __iadd__(self, other:Self):
+        """
+        Linear combination of Pauli string addition operator
+        """
+        otherdict = {c[1]: c[0] for c in other.combinations}
+        for c in self.combinations:
+            if c[1] in otherdict:
+                c[0] += otherdict[c[1]]
+                del otherdict[c[1]]
+        for c1, c0 in otherdict.items():
+            self.combinations.append([c0, c1])
+        return self
+
+    def __mul__(self, num:complex):
+        """
+        Multiply by a constant
+        """
+        combinations = deepcopy(self.combinations)
+        for c in combinations:
+            c[0] *= num
+        return PauliStringLinear(combinations)
+
+    def __rmul__(self, num:complex):
+        """
+        Multiply by a constant
+        """
+        combinations = deepcopy(self.combinations)
+        for c in combinations:
+            c[0] *= num
+        return PauliStringLinear(combinations)
+
+    def __imul__(self, num:complex):
+        """
+        Multiply by a constant
+        """
+        for c in self.combinations:
+            c[0] *= num
+        return self
 
     def __or__(self, other:Self)->bool:
         """
@@ -217,7 +255,7 @@ class PauliStringLinear(PauliString):
         """
         new_combinations = []
         for c in self.combinations:
-            new_combinations.append((c[0]*other.sign(c[1]), c[1]@other))
+            new_combinations.append((c[0]*other.sign(c[1]), other@c[1]))
         return PauliStringLinear(new_combinations)
 
     def multiply(self, other:PauliString|Self) -> Self:
@@ -307,11 +345,11 @@ class PauliStringLinear(PauliString):
     def quadratic(self, basis:PauliString):
         """
         Quadratic form
-        Returns a linera comination of PauliString 
+        Returns a linear comination of PauliString 
         """
         new_combinations = []
         for c in self.combinations:
-            new_combinations.append((c[0]*basis.sign(c[1]), c[1] + c[1]@basis))
+            new_combinations.append((c[0]*basis.sign(c[1]), c[1] + basis@c[1]))
         return PauliStringLinear(new_combinations)
 
 
@@ -377,7 +415,6 @@ class PauliStringLinear(PauliString):
 
         # Retrieve the Pauli strings that anticommute with self.
         raise PauliStringLinearException("Not implemented")
-
 
 
     def get_matrix(self) -> np.array:

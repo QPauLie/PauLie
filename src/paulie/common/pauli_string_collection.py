@@ -366,16 +366,16 @@ class PauliStringCollection:
         return PauliStringCollection([g for g in generators
                if g != pauli_string and g|pauli_string])
 
-    def get_quadratic_symmetries(self) -> list[PauliStringLinear]:
+    def get_quadratic_symmetries(gens) -> list[PauliStringLinear]:
         """
         Return a Hermitian, orthonormal basis of the quadratic symmetries
         of the collection.
         """
         # Get linear symmetries
-        linear_symmetries = self.get_commutants()
-        n = len(self.generators[0])
+        linear_symmetries = gens.get_commutants().get()
+        n = len(gens.generators[0])
         # Get commutator graph
-        vertices, edges = self.get_commutator_graph()
+        vertices, edges = gens.get_commutator_graph()
         commutator_graph = nx.Graph()
         commutator_graph.add_nodes_from(vertices)
         commutator_graph.add_edges_from(edges)
@@ -385,14 +385,14 @@ class PauliStringCollection:
             # Compute the normalization without creating the matrix
             norm = 2 ** n * np.sqrt(len(cc))
             cc_representative = PauliString(pauli_str=next(iter(cc)))
+            phase = 1 if linear_symmetries[0]|cc_representative else 1j
+            # Create the sum over Pauli strings in the connected component
+            s = []
+            for v in cc:
+                s.append((phase / norm, v))
+            s = PauliStringLinear(s)
             # For each linear symmetry
             for lin_sym in linear_symmetries:
-                phase = 1 if lin_sym|cc_representative else 1j
-                # Create the sum over Pauli strings in the connected component
-                s = []
-                for v in cc:
-                    s.append((phase / norm, v))
-                s = PauliStringLinear(s)
                 # Create and add the quadratic form
                 quadform = s.quadratic(lin_sym)
                 quadratic_symmetries.append(quadform)
