@@ -7,6 +7,36 @@ from paulie.common.pauli_string_collection import PauliStringCollection
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.pauli_string_factory import get_pauli_string as p
 
+
+
+def get_full_quadratic_basis(system_generators: PauliStringCollection) -> list['PauliStringLinear']:
+    """
+    Orchestrates the calculation of the full basis of quadratic symmetries {Q_kj}.
+    """
+    # 1. Get the linear symmetries {L_j}
+    linear_symmetries = system_generators.get_commutants()
+
+    # 2. Get the *commutator* graph components {C_k} using our new method
+    connected_components = system_generators.get_commutator_graph_components()
+
+    full_quadratic_basis = []
+
+    # 3. For each component and symmetry, build Q_kj
+    for ck_collection in connected_components:
+        for lj_pauli in linear_symmetries:
+            # Manually implement the formula correctly
+            linear_combination_terms = []
+            for s in ck_collection:
+                lj_times_s = lj_pauli @ s
+                tensor_prod_str = str(s) + str(lj_times_s)
+                linear_combination_terms.append((1.0, tensor_prod_str))
+
+            if linear_combination_terms:
+                q_kj = PauliStringLinear(linear_combination_terms)
+                full_quadratic_basis.append(q_kj)
+    # 4. Return the full quadratic basis
+    return full_quadratic_basis
+
 def second_moment(
     operator_m: 'PauliStringLinear',
     system_generators: PauliStringCollection) -> 'PauliStringLinear':
@@ -25,7 +55,7 @@ def second_moment(
         The twirled operator, also as a PauliStringLinear object.
     """
     # Step 1: Get the orthogonal basis of quadratic symmetries
-    q_basis = system_generators.get_quadratic_symmetries()
+    q_basis = get_full_quadratic_basis(system_generators)
 
     # We will accumulate all the terms of the final sum here
     twirled_m_terms = []

@@ -376,37 +376,52 @@ class PauliStringCollection:
             [g for g in generators if g != pauli_string and g | pauli_string]
         )
 
-    def get_quadratic_symmetries(self) -> list['PauliStringLinear']:
+    def get_commutator_graph_components(self) -> list['PauliStringCollection']:
         """
-        Computes the orthogonal basis of quadratic symmetries.
-        This implementation follows the formula from arXiv:2310.11505 directly.
+        Computes the connected components of the full COMMUTATOR graph.
+
+        This is a specialized method required for calculating quadratic symmetries
+        and should not be confused with `get_subgraphs`, which uses the
+        anti-commutation graph for DLA classification.
+
+        Returns:
+            A list of PauliStringCollection objects, one for each component.
         """
 
-        # 1. Get linear symmetries {L_j}
-        linear_symmetries = self.get_commutants()
-
-        # 2. Get connected components {C_k} of the full commutator graph
+        # 1. Get the commutator graph (this method already exists and is correct)
         nodes, edges = self.get_commutator_graph()
+
+        # 2. Use networkx to find the connected components
         comm_graph = nx.Graph()
         comm_graph.add_nodes_from(nodes)
         comm_graph.add_edges_from(edges)
-        connected_components = list(nx.connected_components(comm_graph))
 
-        quadratic_basis = []
+        connected_components_nodes = list(nx.connected_components(comm_graph))
 
-        # 3. For each L_j and C_k, build Q_kj = ∑_{S ∈ C_k} S ⊗ (L_j*S)
+        # 3. Convert the sets of node strings back into PauliStringCollection objects
+        # self._convert is an existing helper method in your class
+        return [self._convert(subgraph) for subgraph in connected_components_nodes]
+
+    def get_quadratic_symmetries(self,
+                                 linear_symmetries: 'PauliStringCollection'
+                                 ) -> list['PauliStringLinear']:
+        """
+        Computes the quadratic symmetries for THIS specific component (`self`)
+        and a given set of linear symmetries.
+        """
+
+        ck = self
+        quadratic_symmetries_for_this_component = []
+
         for lj in linear_symmetries:
-            for ck_nodes in connected_components:
-                linear_combination_terms = []
-                for s_str in ck_nodes:
-                    s = self.create_instance(pauli_str=s_str)
-                    lj_times_s = lj @ s
-                    tensor_prod_str = str(s) + str(lj_times_s)
-                    linear_combination_terms.append((1.0, tensor_prod_str))
+            linear_combination_terms = []
+            for s in ck:
+                lj_times_s = lj @ s
+                tensor_prod_str = str(s) + str(lj_times_s)
+                linear_combination_terms.append((1.0, tensor_prod_str))
 
-                if linear_combination_terms:
-                    # Construct the PauliStringLinear object directly
-                    q_kj = PauliStringLinear(linear_combination_terms)
-                    quadratic_basis.append(q_kj)
+            if linear_combination_terms:
+                q_kj = PauliStringLinear(linear_combination_terms)
+                quadratic_symmetries_for_this_component.append(q_kj)
 
-        return quadratic_basis
+        return quadratic_symmetries_for_this_component
