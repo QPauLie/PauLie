@@ -3,8 +3,10 @@ Class for a set/collection of Pauli strings with various features
 """
 import re
 from typing import Self
+import numpy as np
 import networkx as nx
 from paulie.common.pauli_string_bitarray import PauliString
+from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.get_graph import get_graph
 from paulie.classifier.classification import Classification
 from paulie.classifier.morph_factory import MorphFactory
@@ -363,3 +365,35 @@ class PauliStringCollection:
             generators = self.generators
         return PauliStringCollection([g for g in generators
                if g != pauli_string and g|pauli_string])
+
+    def get_quadratic_symmetries(self) -> list[PauliStringLinear]:
+        """
+        Return a Hermitian, orthonormal basis of the quadratic symmetries
+        of the collection.
+        """
+        # Get linear symmetries
+        linear_symmetries = self.get_commutants()
+        n = len(self.generators[0])
+        # Get commutator graph
+        vertices, edges = self.get_commutator_graph()
+        commutator_graph = nx.Graph()
+        commutator_graph.add_nodes_from(vertices)
+        commutator_graph.add_edges_from(edges)
+        quadratic_symmetries = []
+        # For each connected component
+        for cc in nx.connected_components(commutator_graph):
+            # Compute the normalization without creating the matrix
+            norm = 2 ** n * np.sqrt(len(cc))
+            cc_representative = PauliString(pauli_str=next(iter(cc)))
+            # For each linear symmetry
+            for lin_sym in linear_symmetries:
+                phase = 1 if lin_sym|cc_representative else 1j
+                # Create the sum over Pauli strings in the connected component
+                s = []
+                for v in cc:
+                    s.append((phase / norm, v))
+                s = PauliStringLinear(s)
+                # Create and add the quadratic form
+                quadform = s.quadratic(lin_sym)
+                quadratic_symmetries.append(quadform)
+        return quadratic_symmetries

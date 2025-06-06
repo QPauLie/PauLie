@@ -205,6 +205,9 @@ class PauliString:
         s = 1
         for i in range(0, len(self)):
             if ((self[i] == 'I' and other[i] == "I") or
+                (self[i] == 'X' and other[i] == "X") or
+                (self[i] == 'Y' and other[i] == "Y") or
+                (self[i] == 'Z' and other[i] == "Z") or
                 (self[i] == 'I' and other[i] == "X") or
                 (self[i] == 'I' and other[i] == "Y") or
                 (self[i] == 'I' and other[i] == "Z") or

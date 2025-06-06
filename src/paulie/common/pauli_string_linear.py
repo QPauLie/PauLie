@@ -30,26 +30,30 @@ class PauliStringLinear(PauliString):
     def _gtzero(self, z: complex) -> bool:
         if z.real > 0:
             return True
-        if z.real == 0 and z.imag > 0:
+        if np.isclose(z.real, 0) and z.imag > 0:
             return True
         return False
 
     def _print_complex(self, z: complex):
-        if z.imag == 0:
-            return "" if abs(z.real) == 1 else str(abs(z.real)) + "*"
-        if z.real == 0:
-            return "i*" if abs(z.imag) == 1 else str(abs(z.imag)) + "*i*"
-        if z.real > 0:
-            return "(" + z.real + "-" if z.imag < 0 else "+" + abs(z.imag) + ")*"
+        if np.isclose(z.imag, 0):
+            return "" if np.isclose(abs(z.real), 1) else str(abs(z.real)) + "*"
 
-        return "(" + abs(z.real) + "-" if z.imag > 0 else "+" + abs(z.imag) + ")*"
+        if np.isclose(z.real, 0):
+            return "i*" if np.isclose(abs(z.imag), 1) else str(abs(z.imag)) + "i*"
+
+        if z.real > 0:
+            return "(" + str(z.real) + ("-" if z.imag < 0 else "+") + str(abs(z.imag)) + "i)*"
+
+        return "(" + str(-z.real) + ("-" if z.imag > 0 else "+") + str(abs(z.imag)) + "i)*"
 
     def __str__(self) -> str:
         """Convert PauliStringLinear to readable string (e.g., 7*"XYZI" + 5*"ZZYX")."""
         str_value = ''
         for i, c in enumerate(self.combinations):
             if i == 0:
-                str_value = self._print_complex(c[0]) + str(c[1])
+                if not self._gtzero(c[0]):
+                    str_value += '- '
+                str_value += self._print_complex(c[0]) + str(c[1])
                 continue
             if self._gtzero(c[0]):
                 str_value += ' + ' + self._print_complex(c[0]) + str(c[1])
@@ -223,7 +227,8 @@ class PauliStringLinear(PauliString):
         Returns a PauliString proportional to the multiplication 
         """
         new_combinations = []
-        if isinstance(other, PauliString):
+        # isinstance also returns True if other is a subclass of PauliString
+        if type(other) is PauliString:
             for c in self.combinations:
                 new_combinations.append((c[0]*c[1].sign(other), c[1]@other))
             return PauliStringLinear(new_combinations)
