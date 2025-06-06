@@ -1,11 +1,11 @@
 """Representation of a Pauli string as a bitarray."""
-
+from collections import defaultdict
 from typing import Self, Generator
 
 from six.moves import reduce
 import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
-from collections import defaultdict
+
 
 class PauliStringLinearException(Exception):
     """
@@ -24,6 +24,12 @@ class PauliStringLinear(PauliString):
             weight - weight of Pauli string in linear combination,
             Pauli string - Pauli string like PauliString or string
         """
+        if combinations:
+            super().__init__(
+                pauli_str="I" * len(str(combinations[0][1]))
+            )
+        else:
+            super().__init__(pauli_str="")
         self.nextpos = 0
         self.combinations = [(c[0], PauliString(pauli_str=str(c[1]))) for c in combinations]
 
@@ -208,6 +214,7 @@ class PauliStringLinear(PauliString):
         Performs the distributive multiplication of two linear combinations of Pauli strings.
         This version assumes the PauliStringLinear object is directly iterable.
         """
+        # pylint: disable=import-outside-toplevel
         from paulie.common.pauli_string_factory import get_pauli_string as p
 
         # Ensure the other object is also a PauliStringLinear for uniform processing.
@@ -250,43 +257,41 @@ class PauliStringLinear(PauliString):
         for c in self.combinations:
             new_combinations.append((c[0]*other.sign(c[1]), c[1]@other))
         return PauliStringLinear(new_combinations)
-    
+
     def __rmul__(self, scalar: complex) -> 'PauliStringLinear':
         """
         Performs reverse scalar multiplication: scalar * self.
         """
         # Scalar multiplication is commutative, so we can just call our existing __mul__
         return self.__mul__(scalar)
-    
+
     def __mul__(self, scalar: complex) -> 'PauliStringLinear':
         """
         Performs scalar multiplication: self * scalar.
         """
+        # pylint: disable=import-outside-toplevel
         from paulie.common.pauli_string_factory import get_pauli_string as p
-        
+
         # Check that we are multiplying by a number
         if not isinstance(scalar, (int, float, complex)):
             # Let Python know this operation is not implemented for other types
             return NotImplemented
-    
+
         # Create a new list of terms where each coefficient is scaled by the number
         new_terms = [(coeff * scalar, pauli) for coeff, pauli in self]
-        
         return p(new_terms)
-    
 
     def multiply(self, other:PauliString|Self) -> Self:
         """
         Multiplication operator of two linear combination
         of Pauli strings
-        Returns a PauliString proportional to the multiplication 
+        Returns a PauliString proportional to the multiplication
         """
         new_combinations = []
         if isinstance(other, PauliString):
             for c in self.combinations:
                 new_combinations.append((c[0]*c[1].sign(other), c[1]@other))
             return PauliStringLinear(new_combinations)
-
         for c in self.combinations:
             for o in other:
                 new_combinations.append((c[0]*o[0]*c[1].sign(o[1]), c[1]@o[1]))
@@ -338,7 +343,7 @@ class PauliStringLinear(PauliString):
         """
         Kroniker multiplication pauli string on linear combination
         of Pauli strings
-        Returns a linera comination of PauliString 
+        Returns a linera comination of PauliString
         """
         new_combinations = []
         for c in self.combinations:
@@ -349,7 +354,7 @@ class PauliStringLinear(PauliString):
         """
         Right Kroniker multiplication pauli string on linear combination
         of Pauli strings
-        Returns a linera comination of PauliString 
+        Returns a linera comination of PauliString
         """
         new_combinations = []
         for c in self.combinations:
@@ -360,7 +365,7 @@ class PauliStringLinear(PauliString):
     def quadratic(self, basis:PauliString):
         """
         Quadratic form
-        Returns a linera comination of PauliString 
+        Returns a linera comination of PauliString
         """
         new_combinations = []
         for c in self.combinations:
@@ -441,37 +446,36 @@ class PauliStringLinear(PauliString):
 
         return reduce(lambda matrix, c: matrix + c[0] * c[1].get_matrix()
                       if matrix is not None else c[0] * c[1].get_matrix(), self, None)
-    
+
     def simplify(self) -> 'PauliStringLinear':
-       """
-       Combines terms with the same Pauli string by summing their coefficients.
-       Removes terms with coefficients close to zero.
-       This version assumes the PauliStringLinear object is directly iterable.
-       """
-       
-       from paulie.common.pauli_string_factory import get_pauli_string as p
-       from collections import defaultdict
-       
-       summed_coeffs = defaultdict(complex)
-       
-       # Loop through all terms in the linear combination
-       for coeff, pauli in self:
-           # Assuming the phase is handled by the coefficient
-           summed_coeffs[str(pauli)] += coeff
-       
-       # Filter out terms with a coefficient very close to zero
-       simplified_list = [
-           (coeff, pauli_str) for pauli_str, coeff in summed_coeffs.items()
-           if abs(coeff) > 1e-12 # A small tolerance for floating point errors
-       ]
-       
-       # If all terms cancel out, return a zero operator
-       if not simplified_list:
-           size = self.get_size()
-           return p([(0.0, 'I' * size)])
-       
-       return p(simplified_list)
-    
+        """
+        Combines terms with the same Pauli string by summing their coefficients.
+        Removes terms with coefficients close to zero.
+        This version assumes the PauliStringLinear object is directly iterable.
+        """
+        # pylint: disable=import-outside-toplevel
+        from paulie.common.pauli_string_factory import get_pauli_string as p
+
+        summed_coeffs = defaultdict(complex)
+
+        # Loop through all terms in the linear combination
+        for coeff, pauli in self:
+            # Assuming the phase is handled by the coefficient
+            summed_coeffs[str(pauli)] += coeff
+
+        # Filter out terms with a coefficient very close to zero
+        simplified_list = [
+            (coeff, pauli_str) for pauli_str, coeff in summed_coeffs.items()
+            if abs(coeff) > 1e-12  # A small tolerance for floating point errors
+        ]
+
+        # If all terms cancel out, return a zero operator
+        if not simplified_list:
+            size = self.get_size()
+            return p([(0.0, 'I' * size)])
+
+        return p(simplified_list)
+
     def trace(self) -> complex:
         """
         Computes the trace of the operator represented by this linear combination.
@@ -482,14 +486,14 @@ class PauliStringLinear(PauliString):
         Returns:
             The complex value of the trace.
         """
-        identity_coeff = 0.0 # Initialize the coefficient of the Identity operator
+        identity_coeff = 0.0  # Initialize the coefficient of the Identity operator
 
         # Loop through the terms to find the coefficient of the Identity string
         for coeff, pauli in self:
             # The PauliString class should have an `is_identity()` method
             if pauli.is_identity():
                 identity_coeff = coeff
-                break # Found it, no need to look further
+                break  # Found it, no need to look further
 
         # If there was no identity term, its coefficient is zero, so trace is zero.
         if identity_coeff == 0:
@@ -514,7 +518,7 @@ class PauliStringLinear(PauliString):
         except StopIteration:
             # Handle the case of an empty linear combination
             return 0
-        
+
     def is_zero(self) -> bool:
         """
         Check if the linear combination is effectively zero.
