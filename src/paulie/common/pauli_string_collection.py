@@ -375,32 +375,48 @@ class PauliStringCollection:
         return PauliStringCollection(
             [g for g in generators if g != pauli_string and g | pauli_string]
         )
-
-    def get_commutator_graph_components(self) -> list['PauliStringCollection']:
+        
+    def get_graph_components(self, graph_type: str = 'anticommutator') -> list['PauliStringCollection']:
         """
-        Computes the connected components of the full COMMUTATOR graph.
-
-        This is a specialized method required for calculating quadratic symmetries
-        and should not be confused with `get_subgraphs`, which uses the
-        anti-commutation graph for DLA classification.
-
+        Computes the connected components of the specified graph (anticommutator or commutator) 
+        constructed from the Pauli strings in the collection.
+        Args:
+            graph_type (str): The type of graph to use for finding components. 
+                Must be either 'anticommutator' (default) or 'commutator'.
+            list[PauliStringCollection]: A list of PauliStringCollection objects, 
+                each representing a connected component of the selected graph.
+        Raises:
+            ValueError: If graph_type is not 'anticommutator' or 'commutator'.
+        """
+        if graph_type == 'anticommutator':
+            nodes, edges = self.get_graph() # The anti-commutation graph
+        elif graph_type == 'commutator':
+            nodes, edges = self.get_commutator_graph() # The commutator graph
+        else:
+            raise ValueError("graph_type must be 'anticommutator' or 'commutator'")
+        
+        return self._get_connected_components(nodes, edges)
+    
+    def _get_connected_components(self, nodes: list[str], edges: list[tuple[str, str]]) -> list['PauliStringCollection']:
+        """
+        Helper method to compute connected components from nodes and edges.
+        Args:
+            nodes (list[str]): List of node strings.
+            edges (list[tuple[str, str]]): List of edges as tuples of node strings.
         Returns:
-            A list of PauliStringCollection objects, one for each component.
+            list[PauliStringCollection]: A list of PauliStringCollection objects,
+                each representing a connected component.
         """
+        # Create a graph from the nodes and edges
+        graph = nx.Graph()
+        graph.add_nodes_from(nodes)
+        graph.add_edges_from(edges)
 
-        # 1. Get the commutator graph (this method already exists and is correct)
-        nodes, edges = self.get_commutator_graph()
+        # Find connected components
+        connected_components = list(nx.connected_components(graph))
 
-        # 2. Use networkx to find the connected components
-        comm_graph = nx.Graph()
-        comm_graph.add_nodes_from(nodes)
-        comm_graph.add_edges_from(edges)
-
-        connected_components_nodes = list(nx.connected_components(comm_graph))
-
-        # 3. Convert the sets of node strings back into PauliStringCollection objects
-        # self._convert is an existing helper method in your class
-        return [self._convert(subgraph) for subgraph in connected_components_nodes]
+        # Convert sets of node strings back into PauliStringCollection objects
+        return [self._convert(subgraph) for subgraph in connected_components]
 
     def get_quadratic_symmetries(self,
                                  linear_symmetries: 'PauliStringCollection'

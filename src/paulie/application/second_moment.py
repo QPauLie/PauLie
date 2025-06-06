@@ -17,7 +17,7 @@ def get_full_quadratic_basis(system_generators: PauliStringCollection) -> list['
     linear_symmetries = system_generators.get_commutants()
 
     # 2. Get the *commutator* graph components {C_k} using our new method
-    connected_components = system_generators.get_commutator_graph_components()
+    connected_components = system_generators.get_graph_components(graph_type='commutator')
 
     full_quadratic_basis = []
 
