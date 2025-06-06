@@ -228,7 +228,8 @@ class PauliStringLinear(PauliString):
         """
         new_combinations = []
         # isinstance also returns True if other is a subclass of PauliString
-        if type(other) is PauliString:
+        # Therefore check instead if other is NOT of type PauliStringLinear
+        if not isinstance(other, PauliStringLinear):
             for c in self.combinations:
                 new_combinations.append((c[0]*c[1].sign(other), c[1]@other))
             return PauliStringLinear(new_combinations)
@@ -387,3 +388,7 @@ class PauliStringLinear(PauliString):
 
         return reduce(lambda matrix, c: matrix + c[0] * c[1].get_matrix()
                       if matrix is not None else c[0] * c[1].get_matrix(), self, None)
+
+    def trace(self) -> complex:
+        """Get the trace of the matrix representation for Pauli string"""
+        return sum(c[0] * c[1].trace() for c in self.combinations)
