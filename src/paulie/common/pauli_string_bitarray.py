@@ -3,7 +3,7 @@ from typing import Self, Generator
 from six.moves import reduce
 import numpy as np
 from bitarray import bitarray
-from bitarray.util import count_and
+from bitarray.util import count_and, ba2int
 from paulie.common.pauli_string_parser import pauli_string_parser
 
 CODEC = {
