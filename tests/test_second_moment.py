@@ -4,7 +4,6 @@ Unit tests for the second_moment function in paulie.application.second_moment.
 import unittest
 
 # Import the classes we need to construct objects directly
-from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.pauli_string_collection import PauliStringCollection
 
 # We still need the factory for simple generators
@@ -23,9 +22,9 @@ class TestSecondMoment(unittest.TestCase):
         Tests that an operator with no overlap with the quadratic symmetries
         is correctly projected to the zero operator.
         """
-        system = PauliStringCollection(p(["Z"]))
+        system = p(["Z"])
         # Construct operator_m directly to ensure it has the correct type
-        operator_m = PauliStringLinear([(1.0, "XI")])
+        operator_m = p([(1.0, "XI")])
         twirled_m = second_moment(operator_m, system)
         self.assertTrue(twirled_m.is_zero(), f"Expected a zero operator, but got {twirled_m}")
 
@@ -34,14 +33,17 @@ class TestSecondMoment(unittest.TestCase):
         Tests that twirling a quadratic symmetry basis vector returns the
         same vector, confirming the projection logic.
         """
-        system = PauliStringCollection(p(["Z"]))
+        system = p(["Z"])
         # Construct operator_m directly
-        operator_m = PauliStringLinear([(1.0, "IZ")])
+        operator_m = p([(1.0, "IZ")])
         twirled_m = second_moment(operator_m, system)
-        self.assertEqual(twirled_m, operator_m, f"Expected {operator_m}, "+
-                         "but twirling returned {twirled_m}")
+        self.assertEqual(twirled_m, operator_m, 
+                         f"Expected {operator_m}, but twirling returned {twirled_m}")
 
-        # Test a more complex symmetry
-        operator_m_complex = PauliStringLinear([(1.0, "XX"), (1.0, "YY")])
+        # Test a more complex symmetry, again using the factory
+        operator_m_complex = p([(1.0, "XX"), (1.0, "YY")])
         twirled_m_complex = second_moment(operator_m_complex, system)
         self.assertEqual(twirled_m_complex, operator_m_complex)
+
+    
+    
