@@ -12,6 +12,7 @@ from paulie.classifier.classification import Classification
 from paulie.classifier.morph_factory import MorphFactory
 from paulie.classifier.recording_morph_factory import RecordingMorphFactory
 from paulie.helpers.recording import RecordGraph
+import numpy as np
 
 
 class PauliStringCollectionException(Exception):
@@ -488,8 +489,15 @@ class PauliStringCollection:
         # Filter out any zero vectors that may have been created
         orthogonal_basis = [q for q in full_basis if not q.is_zero()]
 
-        if not normalized:
-            return orthogonal_basis
+        normalized_basis = []
+        for q_vector in orthogonal_basis:
+            # The squared norm is Tr(Q†Q). Use the .H property.
+            squared_norm_trace = (q_vector.h @ q_vector).trace()
 
-        # Normalize using a list comprehension
-        return [q * (1.0 / q.norm()) for q in orthogonal_basis if q.norm() > 1e-12]
+            # The trace should be real and positive for a non-zero operator
+            if squared_norm_trace.real > 1e-12:
+                # The Hilbert-Schmidt norm is the sqrt of this trace
+                norm = np.sqrt(squared_norm_trace.real)
+                normalized_basis.append(q_vector * (1.0 / norm))
+                
+        return normalized_basis
