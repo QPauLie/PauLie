@@ -2,7 +2,6 @@
     Test second-order twirl routine.
 """
 import pytest
-import numpy as np
 from paulie.common.pauli_string_factory import get_pauli_string as p
 from paulie.application.second_moment import second_moment
 
