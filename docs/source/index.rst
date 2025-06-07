@@ -16,6 +16,7 @@ Paulistrings.
     getting_started
     intro_tutorial
     commutator_graph
+    second_moment
     matrix_decomposition
 
 .. toctree::
