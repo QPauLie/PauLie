@@ -380,19 +380,20 @@ class PauliStringCollection:
         commutator_graph.add_nodes_from(vertices)
         commutator_graph.add_edges_from(edges)
         quadratic_symmetries = []
-        # For each connected component
-        for cc in nx.connected_components(commutator_graph):
-            # Compute the normalization without creating the matrix
-            norm = 2 ** n * np.sqrt(len(cc))
-            cc_representative = PauliString(pauli_str=next(iter(cc)))
-            phase = 1 if linear_symmetries[0]|cc_representative else 1j
-            # Create the sum over Pauli strings in the connected component
-            s = []
-            for v in cc:
-                s.append((phase / norm, v))
-            s = PauliStringLinear(s)
-            # For each linear symmetry
-            for lin_sym in linear_symmetries:
+        # For each linear symmetry
+        for lin_sym in linear_symmetries:
+            # For each connected component
+            for cc in nx.connected_components(commutator_graph):
+                # Compute the normalization without creating the matrix
+                norm = 2 ** n * np.sqrt(len(cc))
+                cc_representative = PauliString(pauli_str=next(iter(cc)))
+                phase = 1 if lin_sym|cc_representative else 1j
+                coeff = phase / norm
+                # Create the sum over Pauli strings in the connected component
+                s = []
+                for v in cc:
+                    s.append((coeff, v))
+                s = PauliStringLinear(s)
                 # Create and add the quadratic form
                 quadform = s.quadratic(lin_sym)
                 quadratic_symmetries.append(quadform)
