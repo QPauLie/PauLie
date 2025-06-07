@@ -52,26 +52,88 @@ class PauliStringLinear(PauliString):
         return "(" + abs(z.real) + "-" if z.imag > 0 else "+" + abs(z.imag) + ")*"
 
     def __str__(self) -> str:
-        """Convert PauliStringLinear to readable string (e.g., 7*"XYZI" + 5*"ZZYX")."""
-        str_value = ''
-        for i, c in enumerate(self.combinations):
-            if i == 0:
-                str_value = self._print_complex(c[0]) + str(c[1])
-                continue
-            if self._gtzero(c[0]):
-                str_value += ' + ' + self._print_complex(c[0]) + str(c[1])
-            else:
-                str_value += ' - ' + self._print_complex(c[0]) + str(c[1])
+        """
+        Converts PauliStringLinear to a readable string (e.g., "0.5*XX - 1j*YZ").
+        Terms with coefficients close to zero are omitted.
+        """
+        if self.is_zero():
+            # If it's a zero operator, we can represent it cleanly.
+            # Get size for the identity string, or default to 0.
+            size = self.get_size() if self.get_size() > 0 else 0
+            return f"0.0*I{''*size}"
 
-        return str_value
+        # Simplify to combine terms before printing
+        simplified_self = self.simplify()
+
+        # Helper to format a single term
+        def _format_term(coeff, pauli_str):
+            # Handle complex number formatting cleanly
+            if np.isclose(coeff.imag, 0): # Real number
+                val_str = f"{coeff.real:.8g}"
+            elif np.isclose(coeff.real, 0): # Purely imaginary
+                if np.isclose(coeff.imag, 1):
+                    val_str = "i"
+                elif np.isclose(coeff.imag, -1):
+                    val_str = "-i"
+                else:
+                    val_str = f"{coeff.imag:.8g}*i"
+            else: # Full complex
+                val_str = f"({coeff.real:.8g}{coeff.imag:+.8g}j)"
+
+            # Don't print 1.0*
+            if val_str == "1":
+                return pauli_str
+            if val_str == "-1":
+                return f"-{pauli_str}"
+
+            return f"{val_str}*{pauli_str}"
+
+        terms = []
+        for i, (coeff, pauli) in enumerate(simplified_self.combinations):
+            pauli_str = str(pauli)
+
+            # For the first term, don't add a leading "+"
+            if i == 0:
+                terms.append(_format_term(coeff, pauli_str))
+            else:
+                # For subsequent terms, handle the sign
+                if coeff.real < -1e-12 or (np.isclose(coeff.real, 0) and coeff.imag < -1e-12):
+                    # If negative, the sign is handled by the formatter
+                    terms.append(f" - {_format_term(-coeff, pauli_str)}")
+                else:
+                    terms.append(f" + {_format_term(coeff, pauli_str)}")
+
+        return "".join(terms)
 
 
     def __eq__(self, other):
-        if not isinstance(other, self.__class__): return NotImplemented
-        # Create a canonical dictionary representation of the simplified object
-        self_dict = {str(p): c for c, p in self.simplify().combinations}
-        other_dict = {str(p): c for c, p in other.simplify().combinations}
-        return self_dict == other_dict
+        """
+        Performs a robust equality check between two PauliStringLinear objects.
+        It simplifies both objects and compares their terms using a tolerance
+        for floating-point coefficients.
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+
+        # Simplify both objects to get them into a canonical form
+        self_simplified = self.simplify()
+        other_simplified = other.simplify()
+
+        # Create dictionaries for easy lookup: {pauli_str: coefficient}
+        self_dict = {str(p): c for c, p in self_simplified.combinations}
+        other_dict = {str(p): c for c, p in other_simplified.combinations}
+
+        # Check if they have the same Pauli string terms
+        if self_dict.keys() != other_dict.keys():
+            return False
+
+        # Check if the coefficients for each term are close enough
+        for pauli_str, self_coeff in self_dict.items():
+            other_coeff = other_dict[pauli_str]
+            if not np.isclose(self_coeff, other_coeff):
+                return False
+
+        return True
 
     def __lt__(self, other:Self) -> bool:
         """
@@ -176,12 +238,12 @@ class PauliStringLinear(PauliString):
             summed_coeffs[str(pauli)] += coeff
         for coeff, pauli in other.combinations:
             summed_coeffs[str(pauli)] += coeff
-        
+
         new_combinations = [(c, p) for p, c in summed_coeffs.items() if abs(c) > 1e-12]
         if not new_combinations:
             return PauliStringLinear([])
         return PauliStringLinear(new_combinations)
-    
+
     def __iadd__(self, other):
         """Performs in-place addition."""
         # This calls our robust __add__ method and reassigns self
@@ -412,15 +474,6 @@ class PauliStringLinear(PauliString):
         """
         raise PauliStringLinearException("Not implemented")
 
-    def get_commutants(self, generators:list[Self] = None) -> list[Self]:
-        """
-        Get a list of Pauli strings that commute with this string
-        Args:
-            generators: Collection of Pauli strings on which commutant is searched
-                        If not specified, then the search area is all Pauli strings of the same size
-
-        """
-        raise PauliStringLinearException("Not implemented")
 
     def get_anti_commutants(self, generators:list[Self] = None) -> list[Self]:
         """
@@ -546,3 +599,16 @@ class PauliStringLinear(PauliString):
         # Sum the squared magnitudes of all coefficients
         sum_of_squares = sum(abs(coeff)**2 for coeff, _ in self.combinations)
         return np.sqrt(sum_of_squares)
+
+    @property
+    def H(self) -> 'PauliStringLinear':
+        """
+        Returns the Hermitian conjugate of this linear combination.
+        This is found by taking the complex conjugate of all coefficients,
+        as the Pauli matrices themselves are Hermitian.
+        """
+        # Use a list comprehension to create the new list of terms
+        conjugated_combinations = [
+            (np.conj(coeff), pauli) for coeff, pauli in self.combinations
+        ]
+        return PauliStringLinear(conjugated_combinations)

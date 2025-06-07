@@ -193,21 +193,33 @@ class PauliStringCollection:
          given by the bitarray representation """
         self.generators.sort()
         return self
-
-    def get_commutants(self, generators:list[PauliString]|Self=None) -> Self:
+    
+    def get_commutants(self, generators: list[PauliString] = None) -> 'PauliStringCollection':
         """
-           Get Pauli strings that commute with the entire collection
-           Args:
-               generators: Generators, Pauli string search list.
-               If empty, then all lines are the same length
-           Returns:
-                 commutant of the set of Pauli strings
+        Get the set of Pauli strings that commute with ALL generators in this collection.
+        This finds the linear symmetries L_j of the system.
         """
-        if len(self) == 0:
+        if not self.generators:
+            # If there are no generators, all Paulis are symmetries by definition.
+            # However, a group with no generators is trivial, so we can return empty.
             return PauliStringCollection([])
-        for p in self:
-            generators = PauliStringCollection(p.get_commutants(generators=generators))
-        return generators
+
+        num_qubits = self.get_size()
+
+        # Start with a list of all possible Pauli strings.
+        # Note: gen_all_pauli_strings is a method on the PauliString object.
+        identity = self.create_instance(n=num_qubits)
+        candidate_symmetries = list(identity.gen_all_pauli_strings())
+
+        # For each generator in our system, filter the candidate list.
+        for g in self.generators:
+            # Keep only the candidates that commute with the current generator g.
+            candidate_symmetries = [
+                p for p in candidate_symmetries if g.commutes_with(p)
+            ]
+
+        # Return the final filtered list as a new collection.
+        return PauliStringCollection(candidate_symmetries)
 
     def get_anti_commutants(self, generators: list[PauliString] | Self = None) -> Self:
         """
@@ -422,26 +434,34 @@ class PauliStringCollection:
         # Convert sets of node strings back into PauliStringCollection objects
         return [self._convert(subgraph) for subgraph in connected_components]
 
-    def get_quadratic_symmetries(self,
-                                 linear_symmetries: 'PauliStringCollection'
-                                 ) -> list['PauliStringLinear']:
+    def get_quadratic_symmetries(self, linear_symmetries: 'PauliStringCollection') -> list['PauliStringLinear']:
         """
         Computes the quadratic symmetries for THIS specific component (`self`)
-        and a given set of linear symmetries.
+        by leveraging the built-in .quadratic() method of the PauliStringLinear class,
+        which encapsulates the formula Q_j = ∑_{S ∈ self} S ⊗ (L_j*S).
+        
+        Args:
+            linear_symmetries: A PauliStringCollection of the system's linear symmetries.
+        
+        Returns:
+            A list of PauliStringLinear objects representing the Q_j for this component.
         """
 
-        ck = self
+        # This component (`self`) is one of the C_k.
+        # First, convert it from a simple collection of Pauli strings into a
+        # single PauliStringLinear object representing the sum C_k = ∑S.
+        # Each term in this sum has a coefficient of 1.0.
+        component_as_linear = PauliStringLinear([(1.0, str(s)) for s in self])
+
         quadratic_symmetries_for_this_component = []
 
-        for lj in linear_symmetries:
-            linear_combination_terms = []
-            for s in ck:
-                lj_times_s = lj @ s
-                tensor_prod_str = str(s) + str(lj_times_s)
-                linear_combination_terms.append((1.0, tensor_prod_str))
-
-            if linear_combination_terms:
-                q_kj = PauliStringLinear(linear_combination_terms)
-                quadratic_symmetries_for_this_component.append(q_kj)
+        # Now, loop through each linear symmetry Lj...
+        for lj_pauli in linear_symmetries:
+            # ...and call the .quadratic() method. This single line performs the
+            # entire summation and phase calculation for us.
+            q_kj = component_as_linear.quadratic(lj_pauli)
+            quadratic_symmetries_for_this_component.append(q_kj)
 
         return quadratic_symmetries_for_this_component
+
+    

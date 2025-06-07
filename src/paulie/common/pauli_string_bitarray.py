@@ -241,6 +241,8 @@ class PauliString:
             The complex phase of the product (1, -1, 1j, or -1j).
         """
         other = self._ensure_pauli_string(other)
+        if len(self) != len(other):
+            raise ValueError("Pauli arrays must have the same length for multiplication.")
 
         # This is the full, correct formula for the exponent f in phase = i^f.
         # It is based on the bit-array representations of the two Pauli strings.

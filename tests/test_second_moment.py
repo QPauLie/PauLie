@@ -1,6 +1,9 @@
 """
 Unit tests for the second_moment application and related functions.
 """
+import pytest
+import numpy as np
+
 from paulie.common.pauli_string_factory import get_pauli_string as p
 from paulie.application.second_moment import second_moment, get_full_quadratic_basis
 from paulie.common.pauli_string_linear import PauliStringLinear
@@ -104,3 +107,31 @@ class TestSecondMoment:
         for q in full_quadratic_basis:
             assert isinstance(q, PauliStringLinear)
             #"All generated symmetries should be PauliStringLinear objects."
+
+
+generator_list = [
+    ["I"], ["X"], ["Y"], ["Z"],
+    ["ZI", "IZ", "XX"], # a5 Lie algebra
+    ["XI", "IX", "YY"]  # a5 Lie algebra
+]
+
+@pytest.mark.parametrize("generators", generator_list)
+def test_twirl_of_basis_vector_is_idempotent(generators: list[str]):
+    """
+    Tests that the twirl (projection) of a quadratic symmetry basis vector
+    returns that same vector. This is a fundamental property of a projection:
+    P(v) = v, for any v in the target subspace.
+    """
+    system = p(generators)
+    quad_symmetries = get_full_quadratic_basis(system)
+
+    # The twirl should be the identity operator for any vector
+    # already in the symmetry subspace.
+    for quadsym in quad_symmetries:
+        # Twirl the basis vector.
+        twirled_q = second_moment(quadsym, system)
+
+        # The result of the twirl should be the original symmetry operator.
+        # We use a robust equality check that handles floating point errors.
+        assert twirled_q == quadsym, \
+            f"Twirl of basis vector failed. Expected {quadsym}, got {twirled_q}"
