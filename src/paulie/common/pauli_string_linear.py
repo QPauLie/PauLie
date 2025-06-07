@@ -374,14 +374,28 @@ class PauliStringLinear(PauliString):
         return PauliStringLinear(new_combinations)
 
 
-    def quadratic(self, basis:PauliString):
+    def quadratic(self, basis: PauliString):
         """
-        Quadratic form
-        Returns a linera comination of PauliString
+        Computes the quadratic form Q_j = ∑_{S ∈ self} S ⊗ (L_j*S)
+        where `self` represents the component C_k = ∑S, and `basis` is the
+        linear symmetry L_j.
         """
         new_combinations = []
-        for c in self.combinations:
-            new_combinations.append((c[0]*basis.sign(c[1]), c[1] + c[1]@basis))
+        # `self` is a linear combination of terms `(coeff, S_pauli)`
+        # In our case, `coeff` is always 1.0 for a component.
+        for coeff, s_pauli in self.combinations:
+            # 1. Calculate the phase of the product Lj * S
+            phase = basis.sign(s_pauli)
+
+            # 2. Calculate the Pauli letters of the product Lj @ S
+            product_letters = basis @ s_pauli
+
+            # 3. Form the tensor product S ⊗ (product_letters)
+            tensor_prod_str = str(s_pauli) + str(product_letters)
+
+            # 4. The new coefficient is the original coefficient times the phase
+            new_coeff = coeff * phase
+            new_combinations.append((new_coeff, tensor_prod_str))
         return PauliStringLinear(new_combinations)
 
 
