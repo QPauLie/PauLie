@@ -70,8 +70,6 @@ class PauliStringLinear(PauliString):
              other: The linear combination of Pauli strings to compare with
         Returns the result of the comparison
         """
-        if len(self) != len(other):
-            return False
 
         for c in self.combinations:
             is_eq = None
@@ -79,7 +77,9 @@ class PauliStringLinear(PauliString):
                 if o[1] == c[1]:
                     is_eq = c[0] == o[0]
                     break
-            if not is_eq:
+            if is_eq is None and not np.isclose(c[0], 0):
+                return False
+            if is_eq is False:
                 return False
         return True
 
