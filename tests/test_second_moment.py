@@ -3,7 +3,7 @@
 """
 import pytest
 import numpy as np
-from paulie.common.pauli_string_factory import get_pauli_string as p, get_identity
+from paulie.common.pauli_string_factory import get_pauli_string as p
 from paulie.application.second_moment import second_moment
 
 generator_list = [
@@ -25,10 +25,10 @@ def test_twirl_in_quadsym_basis_is_equal(generators: list[str]):
     quadsyms = gens.get_quadratic_symmetries()
     for quadsym in quadsyms:
         # Construct Hermitian conjugate of quadratic symmetry
-        quadsym_H = p([(np.conj(c[0]), c[1]) for c in quadsym.combinations])
+        quadsym_h = p([(np.conj(c[0]), c[1]) for c in quadsym.combinations])
         print(quadsym)
-        print(quadsym_H)
-        twirl = second_moment(gens, quadsym_H)
+        print(quadsym_h)
+        twirl = second_moment(gens, quadsym_h)
         print(twirl)
         print('------------------')
         assert twirl == quadsym
