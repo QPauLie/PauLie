@@ -27,9 +27,17 @@ def get_full_quadratic_basis(system_generators: PauliStringCollection) -> list['
             # Manually implement the formula correctly
             linear_combination_terms = []
             for s in ck_collection:
-                lj_times_s = lj_pauli @ s
-                tensor_prod_str = str(s) + str(lj_times_s)
-                linear_combination_terms.append((1.0, tensor_prod_str))
+                # Step A: Calculate the phase of the product Lj * S
+                phase = lj_pauli.sign(s)
+
+                # Step B: Calculate the resulting Pauli letters (phase-less product)
+                product_letters = lj_pauli @ s
+
+                # Step C: Form the tensor product S ⊗ (product_letters)
+                tensor_prod_str = str(s) + str(product_letters)
+
+                # Step D: Append the term with the correct phase as its coefficient
+                linear_combination_terms.append((phase, tensor_prod_str))
 
             if linear_combination_terms:
                 q_kj = PauliStringLinear(linear_combination_terms)
