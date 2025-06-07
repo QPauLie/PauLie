@@ -23,6 +23,7 @@ def plot_graph(vertices:list[str],
     if edge_labels is not None:
         nx.draw_networkx_edge_labels(graph, pos=pos, edge_labels=edge_labels,font_color="red")
     nx.draw_networkx(graph, pos=pos)
+    plt.show()
 
 
 def plot_graph_by_nodes(nodes:PauliStringCollection,
