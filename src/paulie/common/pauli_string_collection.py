@@ -1,7 +1,7 @@
 """
 Class for a set/collection of Pauli strings with various features
 """
-
+import numpy as np
 import re
 from typing import Self
 import networkx as nx
@@ -12,7 +12,7 @@ from paulie.classifier.classification import Classification
 from paulie.classifier.morph_factory import MorphFactory
 from paulie.classifier.recording_morph_factory import RecordingMorphFactory
 from paulie.helpers.recording import RecordGraph
-import numpy as np
+
 
 
 class PauliStringCollectionException(Exception):
@@ -489,6 +489,9 @@ class PauliStringCollection:
         # Filter out any zero vectors that may have been created
         orthogonal_basis = [q for q in full_basis if not q.is_zero()]
 
+        if not normalized:
+            return orthogonal_basis
+
         normalized_basis = []
         for q_vector in orthogonal_basis:
             # The squared norm is Tr(Q†Q). Use the .H property.
@@ -499,5 +502,5 @@ class PauliStringCollection:
                 # The Hilbert-Schmidt norm is the sqrt of this trace
                 norm = np.sqrt(squared_norm_trace.real)
                 normalized_basis.append(q_vector * (1.0 / norm))
-                
+
         return normalized_basis
