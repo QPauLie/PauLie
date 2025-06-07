@@ -17,6 +17,7 @@ Paulistrings.
     intro_tutorial
     commutator_graph
     matrix_decomposition
+    second_moment
 
 .. toctree::
    :hidden:
