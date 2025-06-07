@@ -37,6 +37,14 @@ class TestOTOC(unittest.TestCase):
         otoc_val = average_otoc(op_v, op_w, system)
         self.assertAlmostEqual(otoc_val, 1.0, delta=1e-9)
 
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_mismatched_qubit_count_raises_value_error(self):
+        """
+        Covers: raise ValueError(...)
+        Tests that a ValueError is raised if operators have inconsistent sizes.
+        """
+        system = p(["ZI"])  # n=2
+        op_v = p("X")       # n=1
+        op_w = p("II")      # n=2
+        # Use assertRaises to confirm that the expected error is thrown.
+        with self.assertRaises(ValueError):
+            average_otoc(op_v, op_w, system)

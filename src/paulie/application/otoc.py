@@ -42,9 +42,6 @@ def average_otoc(
             component_of_v = component
             break
 
-    if component_of_v is None:
-        raise RuntimeError(f"Could not find operator {op_v} in any graph component.")
-
     # Step 2: Apply the correct formula based on Corollary 3
     # First, check if W is in the same component as V
     if str(op_w) in component_of_v:
