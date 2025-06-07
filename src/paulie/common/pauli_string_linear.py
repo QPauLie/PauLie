@@ -77,7 +77,7 @@ class PauliStringLinear(PauliString):
                 if o[1] == c[1]:
                     is_eq = c[0] == o[0]
                     break
-            if is_eq is None and not np.isclose(c[0], 0):
+            if is_eq is None and not np.isclose(np.abs(c[0]), 0):
                 return False
             if is_eq is False:
                 return False
