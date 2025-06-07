@@ -57,52 +57,45 @@ class PauliStringLinear(PauliString):
         Terms with coefficients close to zero are omitted.
         """
         if self.is_zero():
-            # If it's a zero operator, we can represent it cleanly.
-            # Get size for the identity string, or default to 0.
             size = self.get_size() if self.get_size() > 0 else 0
             return f"0.0*I{''*size}"
 
-        # Simplify to combine terms before printing
         simplified_self = self.simplify()
 
-        # Helper to format a single term
+        # --- ADD THIS LINE TO SORT THE TERMS ---
+        # Sort by the Pauli string part alphabetically for consistent output
+        sorted_combinations = sorted(simplified_self.combinations, key=lambda term: str(term[1]))
+
+        # Helper to format a single term (code from previous answer is fine)
         def _format_term(coeff, pauli_str):
-            # Handle complex number formatting cleanly
-            if np.isclose(coeff.imag, 0): # Real number
+            # ... (formatting logic) ...
+            if np.isclose(coeff.imag, 0):
                 val_str = f"{coeff.real:.8g}"
-            elif np.isclose(coeff.real, 0): # Purely imaginary
+            elif np.isclose(coeff.real, 0):
                 if np.isclose(coeff.imag, 1):
                     val_str = "i"
                 elif np.isclose(coeff.imag, -1):
                     val_str = "-i"
                 else:
                     val_str = f"{coeff.imag:.8g}*i"
-            else: # Full complex
+            else:
                 val_str = f"({coeff.real:.8g}{coeff.imag:+.8g}j)"
-
-            # Don't print 1.0*
             if val_str == "1":
                 return pauli_str
             if val_str == "-1":
                 return f"-{pauli_str}"
-
             return f"{val_str}*{pauli_str}"
 
         terms = []
-        for i, (coeff, pauli) in enumerate(simplified_self.combinations):
+        for i, (coeff, pauli) in enumerate(sorted_combinations):
             pauli_str = str(pauli)
-
-            # For the first term, don't add a leading "+"
             if i == 0:
                 terms.append(_format_term(coeff, pauli_str))
             else:
-                # For subsequent terms, handle the sign
                 if coeff.real < -1e-12 or (np.isclose(coeff.real, 0) and coeff.imag < -1e-12):
-                    # If negative, the sign is handled by the formatter
                     terms.append(f" - {_format_term(-coeff, pauli_str)}")
                 else:
                     terms.append(f" + {_format_term(coeff, pauli_str)}")
-
         return "".join(terms)
 
 

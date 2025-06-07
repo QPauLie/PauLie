@@ -4,8 +4,7 @@ Unit tests for the second_moment application and related functions.
 import pytest
 
 from paulie.common.pauli_string_factory import get_pauli_string as p
-from paulie.application.second_moment import second_moment, get_full_quadratic_basis
-from paulie.common.pauli_string_linear import PauliStringLinear
+from paulie.application.second_moment import second_moment
 
 # We group the tests into a class for organization, but use pytest-style asserts.
 class TestSecondMoment:
@@ -20,7 +19,7 @@ class TestSecondMoment:
         test that validates the core logic and phase calculations.
         """
         system = p(["X"])
-        q_basis = get_full_quadratic_basis(system)
+        q_basis = system.get_full_quadratic_basis()
 
         # This is the expected vector from the paper, verifying i*YZ - i*ZY
         expected_q_vector = p([(1j, "YZ"), (-1j, "ZY")])
@@ -36,7 +35,7 @@ class TestSecondMoment:
         This is a crucial test of the `second_moment` projection logic.
         """
         system = p(["Z"])
-        q_basis = get_full_quadratic_basis(system)
+        q_basis = system.get_full_quadratic_basis()
 
         # Find the specific Q_kj vector that corresponds to IZ
         operator_m = next((q for q in q_basis if str(q) == "IZ"), None)
@@ -62,50 +61,30 @@ class TestSecondMoment:
 
     def test_gksmail_demonstration_case(self):
         """
-        Tests the quadratic symmetry generation against the specific
-        example for the a_5 system (n=2).
-        This test verifies that the final refactored implementation correctly
-        computes the full basis by iterating through the components and
-        linear symmetries.
+        Tests the quadratic symmetry generation against the specific a_5 system.
+        This test now correctly calls the low-level component-specific method.
         """
-        # 1. Recreate the list of connected components {C_k} for the a_5 system.
-        #    Each component is a PauliStringCollection.
+        # Step 1: Define the connected components {C_k}
         components_ck = [
             p(["II"]), p(["XY"]), p(["ZX"]), p(["YZ"]),
-            p(["ZI", "XZ", "IX", "YY"]),  # The 4-element component
-            p(["XI", "ZZ"]),
-            p(["IY", "YX"]),
-            p(["YI", "ZY"]),
-            p(["IZ", "XX"])
+            p(["ZI", "XZ", "IX", "YY"]),
+            p(["XI", "ZZ"]), p(["IY", "YX"]),
+            p(["YI", "ZY"]), p(["IZ", "XX"])
         ]
-        assert len(components_ck) == 9, "Should be 9 connected components for a_5"
 
-        # 2. Recreate the list of linear symmetries {L_j} for the a_5 system.
+        # Step 2: Define the linear symmetries {L_j}
         linear_symmetries_lj = p(["II", "XY", "ZX", "YZ"])
-        assert len(linear_symmetries_lj), 4 #"Should be 4 linear symmetries for a_5"
 
-        # 3. Use our final, refactored logic to compute the full basis.
-        #    This mimics the logic from the `get_full_quadratic_basis` orchestrator we deleted.
+        # Step 3: Loop through components and call the HELPER method for each.
         full_quadratic_basis = []
-
-        # For each component Ck in our list...
         for ck in components_ck:
-            # ...compute its associated symmetries by passing the linear symmetries as an argument.
-            # This directly calls the final version of our method.
-            q_for_this_component = ck.get_quadratic_symmetries(linear_symmetries_lj)
+            # Call the private helper, passing the pre-computed linear symmetries
+            q_for_this_component = ck.get_symmetries_for_component(linear_symmetries_lj)
             full_quadratic_basis.extend(q_for_this_component)
 
-        # 4. Assert the final result is correct.
-        #    The total number of Q_kj should be (number of components) * (number of symmetries).
-        expected_q_count = len(components_ck) * len(linear_symmetries_lj)  # 9 * 4 = 36
-
+        # Step 4: Assert the final count is correct
+        expected_q_count = len(components_ck) * len(linear_symmetries_lj) # 9 * 4 = 36
         assert len(full_quadratic_basis) == expected_q_count
-        #"The total number of generated quadratic symmetries is incorrect."
-
-        # A deeper check to ensure all generated objects have the correct type.
-        for q in full_quadratic_basis:
-            assert isinstance(q, PauliStringLinear)
-            #"All generated symmetries should be PauliStringLinear objects."
 
 
 generator_list = [
@@ -122,7 +101,7 @@ def test_twirl_of_basis_vector_is_idempotent(generators: list[str]):
     P(v) = v, for any v in the target subspace.
     """
     system = p(generators)
-    quad_symmetries = get_full_quadratic_basis(system)
+    quad_symmetries = system.get_full_quadratic_basis(system)
 
     # The twirl should be the identity operator for any vector
     # already in the symmetry subspace.

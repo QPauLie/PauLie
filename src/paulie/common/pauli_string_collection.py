@@ -434,34 +434,67 @@ class PauliStringCollection:
         # Convert sets of node strings back into PauliStringCollection objects
         return [self._convert(subgraph) for subgraph in connected_components]
 
-    def get_quadratic_symmetries(self,
-                                 linear_symmetries: 'PauliStringCollection'
-                                 ) -> list['PauliStringLinear']:
+    def get_symmetries_for_component(
+        self, linear_symmetries: 'PauliStringCollection'
+    ) -> list['PauliStringLinear']:
         """
-        Computes the quadratic symmetries for THIS specific component (`self`)
-        by leveraging the built-in .quadratic() method of the PauliStringLinear class,
-        which encapsulates the formula Q_j = ∑_{S ∈ self} S ⊗ (L_j*S).
-        
-        Args:
-            linear_symmetries: A PauliStringCollection of the system's linear symmetries.
-        
-        Returns:
-            A list of PauliStringLinear objects representing the Q_j for this component.
+        Private helper: Computes the quadratic symmetries for THIS collection,
+        assuming THIS collection is a single connected component (C_k) and
+        is provided with a pre-computed list of linear symmetries (L_j).
+        This method performs the inner loop of the full calculation.
         """
-
-        # This component (`self`) is one of the C_k.
-        # First, convert it from a simple collection of Pauli strings into a
-        # single PauliStringLinear object representing the sum C_k = ∑S.
-        # Each term in this sum has a coefficient of 1.0.
+        # Convert this component collection into a single PauliStringLinear object
         component_as_linear = PauliStringLinear([(1.0, str(s)) for s in self])
 
         quadratic_symmetries_for_this_component = []
 
-        # Now, loop through each linear symmetry Lj...
+        # For each linear symmetry Lj...
         for lj_pauli in linear_symmetries:
-            # ...and call the .quadratic() method. This single line performs the
-            # entire summation and phase calculation for us.
+            # ...compute Q_kj using the low-level .quadratic() method.
             q_kj = component_as_linear.quadratic(lj_pauli)
             quadratic_symmetries_for_this_component.append(q_kj)
 
         return quadratic_symmetries_for_this_component
+
+
+    def get_full_quadratic_basis(self, normalized: bool = False) -> list['PauliStringLinear']:
+        """
+        Public Method: Calculates the full basis of quadratic symmetries for this system.
+
+        This method performs the complete, high-level operation:
+        1. Finds the linear symmetries (L_j) for this system.
+        2. Finds the connected components (C_k) of this system's commutator graph.
+        3. Loops through each component and calls the internal helper to get the Q_kj.
+        
+        Args:
+            normalized (bool): If True, returns an ORTHONORMAL basis. 
+                           If False (default), returns an ORTHOGONAL basis.
+        Returns:
+            A list of PauliStringLinear objects representing the basis.
+        """
+        # Step 1: Find the linear symmetries for this system
+        linear_symmetries = self.get_commutants()
+
+        # Step 2: Find the connected components of the commutator graph
+        connected_components = self.get_graph_components(graph_type='commutator')
+
+        # Step 3: Loop through components and get symmetries for each
+        full_basis = []
+        for component in connected_components:
+            # Call the private helper for each component
+            symmetries = component.get_symmetries_for_component(linear_symmetries)
+            full_basis.extend(symmetries)
+
+        if not normalized:
+            return [q for q in full_basis if not q.is_zero()]
+
+        # Step 4: Normalize if requested
+        normalized_basis = []
+        for q_vector in full_basis:
+            if q_vector.is_zero():
+                continue
+            norm = q_vector.norm()
+            if norm > 1e-12:
+                normalized_basis.append(q_vector * (1.0 / norm))
+
+        return normalized_basis
