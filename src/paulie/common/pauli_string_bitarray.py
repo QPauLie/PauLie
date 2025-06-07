@@ -228,30 +228,15 @@ class PauliString:
         """
         Sign of multiplication of two pauli string
         return +- 1
-        """
-        if self|other:
-            return 1
-        s = 1
-        for i in range(0, len(self)):
-            if ((self[i] == 'I' and other[i] == "I") or
-                (self[i] == 'I' and other[i] == "X") or
-                (self[i] == 'I' and other[i] == "Y") or
-                (self[i] == 'I' and other[i] == "Z") or
-                (self[i] == 'X' and other[i] == "I") or
-                (self[i] == 'Y' and other[i] == "I") or
-                (self[i] == 'Z' and other[i] == "I") or
-                (self[i] == 'X' and other[i] == "X") or
-                (self[i] == 'Y' and other[i] == "Y") or
-                (self[i] == 'Z' and other[i] == "Z")):
-                continue
 
-            if ((self[i] == 'X' and other[i] == "Y") or
-                (self[i] == 'Y' and other[i] == "Z") or
-                (self[i] == 'Z' and other[i] == "X")):
-                s *= complex(0,1)
-                continue
-            s *= complex(0,-1)
-        return s
+        Based on arxiv.org:2405.19287
+        """
+        f = 2 * count_and(self.bits_even, other.bits_odd) + \
+            count_and(self.bits_odd, self.bits_even) + \
+            count_and(other.bits_odd, other.bits_even) - \
+            count_and(self.bits_even ^ other.bits_even,
+                      self.bits_odd ^ other.bits_odd)
+        return (-1j) ** (f % 4)
 
     def commutes_with(self, other:str|Self) -> bool:
         """
@@ -448,3 +433,7 @@ class PauliString:
         """
         return reduce(lambda matrix, v: np.kron(matrix, self._match_matrix(v))
                       if matrix is not None else self._match_matrix(v), str(self), None)
+
+    def trace(self) -> int:
+        """Get the trace of the matrix representation for Pauli string"""
+        return 0 if self.bits.any() else 2 ** (len(self.bits) // 2)
