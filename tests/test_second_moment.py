@@ -41,7 +41,7 @@ def test_frame_potential_from_second_order_twirl(gens: list[str]) -> None:
     # Frame potential from second-order twirls
     fp_from_twirl = 0
     i = PauliString(n=n)
-    swap = create_swap_matrix(2 * n)
+    swap = create_swap_matrix(n)
     all_pauli_strings = list(i.gen_all_pauli_strings())
     for a1 in all_pauli_strings:
         for a2 in all_pauli_strings:
