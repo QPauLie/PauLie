@@ -13,9 +13,11 @@ def create_swap_matrix(n: int) -> np.ndarray:
 
     The SWAP matrix is given by sum_{i} sum_{j} |i, j> <j, i|.
     """
-    swap = np.zeros((2 ** n, 2 ** n))
-    for i in range(2 ** n):
-        j = int(np.binary_repr(i, width=n)[::-1], base=2)
+    swap = np.zeros((4 ** n, 4 ** n))
+    for i in range(4 ** n):
+        # Take the binary repr of i, split it in half and swap two halves
+        t = np.binary_repr(i, width=2*n)
+        j = int(t[n:] + t[:n], base=2)
         swap[i, j] = 1
     return swap
 
