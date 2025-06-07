@@ -601,7 +601,7 @@ class PauliStringLinear(PauliString):
         return np.sqrt(sum_of_squares)
 
     @property
-    def H(self) -> 'PauliStringLinear':
+    def h(self) -> 'PauliStringLinear':
         """
         Returns the Hermitian conjugate of this linear combination.
         This is found by taking the complex conjugate of all coefficients,

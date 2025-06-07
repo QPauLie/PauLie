@@ -193,8 +193,8 @@ class PauliStringCollection:
          given by the bitarray representation """
         self.generators.sort()
         return self
-    
-    def get_commutants(self, generators: list[PauliString] = None) -> 'PauliStringCollection':
+
+    def get_commutants(self) -> 'PauliStringCollection':
         """
         Get the set of Pauli strings that commute with ALL generators in this collection.
         This finds the linear symmetries L_j of the system.
@@ -434,7 +434,9 @@ class PauliStringCollection:
         # Convert sets of node strings back into PauliStringCollection objects
         return [self._convert(subgraph) for subgraph in connected_components]
 
-    def get_quadratic_symmetries(self, linear_symmetries: 'PauliStringCollection') -> list['PauliStringLinear']:
+    def get_quadratic_symmetries(self,
+                                 linear_symmetries: 'PauliStringCollection'
+                                 ) -> list['PauliStringLinear']:
         """
         Computes the quadratic symmetries for THIS specific component (`self`)
         by leveraging the built-in .quadratic() method of the PauliStringLinear class,
@@ -463,5 +465,3 @@ class PauliStringCollection:
             quadratic_symmetries_for_this_component.append(q_kj)
 
         return quadratic_symmetries_for_this_component
-
-    

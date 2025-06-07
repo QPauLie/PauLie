@@ -32,20 +32,21 @@ def get_full_quadratic_basis(system_generators: PauliStringCollection) -> list['
     return full_quadratic_basis
 
 
-def get_normalized_quadratic_basis(system_generators: PauliStringCollection) -> list['PauliStringLinear']:
+def get_normalized_quadratic_basis(
+    system_generators: PauliStringCollection
+    ) -> list['PauliStringLinear']:
     """
     Calculates the full, ORTHONORMAL basis of quadratic symmetries {Q_kj}.
     Each returned vector is scaled to have a norm of 1.
     """
     orthogonal_basis = get_full_quadratic_basis(system_generators)
-    
+
     normalized_basis = []
     for q_vector in orthogonal_basis:
         # The squared norm is Tr(Q†Q)
-        squared_norm_trace = (q_vector.H @ q_vector).trace()
+        squared_norm_trace = (q_vector.h @ q_vector).trace()
 
         if squared_norm_trace.real > 1e-12:
-            norm = np.sqrt(squared_norm_trace.real)
             # The paper's convention uses Hilbert-Schmidt norm. To match the
             # expectation of the user, we'll normalize to a simple norm of 1.
             # Tr(Q_norm† * Q_norm) = 1.
@@ -69,17 +70,17 @@ def second_moment(
 
     for q_kj in q_basis:
         # Numerator: Tr(Q_kj† M)
-        trace_numerator = (q_kj.H @ operator_m).trace()
+        trace_numerator = (q_kj.h @ operator_m).trace()
         if abs(trace_numerator) < 1e-12:
             continue
 
         # Denominator: Tr(Q_kj† Q_kj), the squared norm.
-        trace_denominator = (q_kj.H @ q_kj).trace()
+        trace_denominator = (q_kj.h @ q_kj).trace()
         if abs(trace_denominator) < 1e-12:
             continue
-        
+
         coeff = trace_numerator / trace_denominator
         projection = q_kj * coeff
         twirl_result += projection
-        
+
     return twirl_result.simplify()

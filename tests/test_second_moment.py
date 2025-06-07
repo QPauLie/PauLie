@@ -2,7 +2,6 @@
 Unit tests for the second_moment application and related functions.
 """
 import pytest
-import numpy as np
 
 from paulie.common.pauli_string_factory import get_pauli_string as p
 from paulie.application.second_moment import second_moment, get_full_quadratic_basis
