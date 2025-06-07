@@ -17,7 +17,13 @@ class PauliStringLinear(PauliString):
     """Representation of a linear combination of Pauli string."""
 
     def __init__(self, combinations: list[tuple[complex, str | PauliString]]) -> None:
-        """Initialize a linear combination of Pauli strings."""
+        """Initialize a linear combination of Pauli strings.
+        
+        Args:
+            combination: list of tuple (weight, Pauli string),
+            weight - weight of Pauli string in linear combination,
+            Pauli string - Pauli string like PauliString or string
+        """
         num_qubits = len(str(combinations[0][1])) if combinations else 0
         super().__init__(n=num_qubits)
         self.nextpos = 0
@@ -460,6 +466,15 @@ class PauliStringLinear(PauliString):
         """
         Generate a list of Pauli strings that commute with this string
         Yields the commutant of the Pauli string
+        """
+        raise PauliStringLinearException("Not implemented")
+    
+    def get_commutants(self, generators:list[Self] = None) -> list[Self]:
+        """
+        Get a list of Pauli strings that commute with this string
+        Args:
+            generators: Collection of Pauli strings on which commutant is searched
+                        If not specified, then the search area is all Pauli strings of the same size
         """
         raise PauliStringLinearException("Not implemented")
 
