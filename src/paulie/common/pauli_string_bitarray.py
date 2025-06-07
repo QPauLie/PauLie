@@ -224,31 +224,35 @@ class PauliString:
         """
         return self.multiply(other)
 
-    def sign(self, other:Self):
+    def sign(self, other: 'PauliString') -> complex:
         """
-        Sign of multiplication of two pauli string
-        return +- 1
+        Calculates the phase of the product of two Pauli strings: self * other.
+        The product is defined as P1 * P2 = i^f * P3, where P3 is the
+        phase-less product (self @ other). This method returns i^f.
+        
+        This implementation uses the correct symplectic product formalism.
+        The phase i^g is determined by the number of times Pauli matrices
+        are multiplied in cyclic order (e.g., XY=iZ) versus anti-cyclic
+        order (e.g., YX=-iZ).
+        
+        Args:
+            other (PauliString): The Pauli string to multiply with.
+        
+        Returns:
+            The complex phase of the product (1, -1, 1j, or -1j).
         """
-        if self|other:
-            return 1
-        s = 1
-        for i in range(0, len(self)):
-            if ((self[i] == 'I' and other[i] == "I") or
-                (self[i] == 'I' and other[i] == "X") or
-                (self[i] == 'I' and other[i] == "Y") or
-                (self[i] == 'I' and other[i] == "Z") or
-                (self[i] == 'X' and other[i] == "I") or
-                (self[i] == 'Y' and other[i] == "I") or
-                (self[i] == 'Z' and other[i] == "I")):
-                continue
-
-            if ((self[i] == 'X' and other[i] == "Y") or
-                (self[i] == 'Y' and other[i] == "Z") or
-                (self[i] == 'Z' and other[i] == "X")):
-                s *= complex(0,1)
-                continue
-            s *= complex(0,-1)
-        return s
+        other = self._ensure_pauli_string(other)
+        
+        # The exponent 'g' counts the net number of "positive" phase terms.
+        # It's the number of (X,Y), (Y,Z), (Z,X) pairs MINUS
+        # the number of (Y,X), (Z,Y), (X,Z) pairs.
+        # This can be computed efficiently using bitwise operations.
+        # g = ∑ (x_k * z'_k - x'_k * z_k) mod 4
+        
+        g = count_and(self.bits_even, other.bits_odd) - count_and(other.bits_even, self.bits_odd)
+        
+        # The final phase is i^g
+        return 1j ** g
 
     def commutes_with(self, other:str|Self) -> bool:
         """
