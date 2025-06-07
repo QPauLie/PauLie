@@ -20,29 +20,15 @@ def get_full_quadratic_basis(system_generators: PauliStringCollection) -> list['
     connected_components = system_generators.get_graph_components(graph_type='commutator')
 
     full_quadratic_basis = []
-
-    # 3. For each component and symmetry, build Q_kj
     for ck_collection in connected_components:
+        # Convert the component into a PauliStringLinear object
+        ck_linear = PauliStringLinear([(1.0, str(S)) for S in ck_collection])
+        
         for lj_pauli in linear_symmetries:
-            # Manually implement the formula correctly
-            linear_combination_terms = []
-            for s in ck_collection:
-                # Step A: Calculate the phase of the product Lj * S
-                phase = lj_pauli.sign(s)
-
-                # Step B: Calculate the resulting Pauli letters (phase-less product)
-                product_letters = lj_pauli @ s
-
-                # Step C: Form the tensor product S ⊗ (product_letters)
-                tensor_prod_str = str(s) + str(product_letters)
-
-                # Step D: Append the term with the correct phase as its coefficient
-                linear_combination_terms.append((phase, tensor_prod_str))
-
-            if linear_combination_terms:
-                q_kj = PauliStringLinear(linear_combination_terms)
-                full_quadratic_basis.append(q_kj)
-    # 4. Return the full quadratic basis
+            # Call the now-corrected quadratic method
+            q_kj = ck_linear.quadratic(lj_pauli)
+            full_quadratic_basis.append(q_kj)
+            
     return full_quadratic_basis
 
 def second_moment(
