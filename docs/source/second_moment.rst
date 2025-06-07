@@ -47,7 +47,7 @@ which outputs:
     0.5*II
     0.5*IX
     0.35355339059327373*YY + 0.35355339059327373*ZZ
-    0.35355339059327373i*YZ - 0.35355339059327373i*ZY
+    - 0.35355339059327373i*YZ + 0.35355339059327373*ZY
     0.5*XX
     0.5*XI
 
@@ -70,4 +70,4 @@ which outputs:
 
     Second-order twirl of IX: - 0.0*II + IX - 0.0*ZZ - 0.0*YY - 0.0*ZY - 0.0*YZ - 0.0*XX - 0.0*XI
     Second-order twirl of YY: - 0.0*II - 0.0*IX + 0.4999999999999999*ZZ + 0.4999999999999999*YY - 0.0*ZY - 0.0*YZ - 0.0*XX - 0.0*XI
-    Second-order twirl of YZ - ZY: - 0.0*II - 0.0*IX - 0.0*ZZ - 0.0*YY + ZY - YZ - 0.0*XX - 0.0*XI
+    Second-order twirl of YZ - ZY: - 0.0*II - 0.0*IX - 0.0*ZZ - 0.0*YY + YZ - ZY - 0.0*XX - 0.0*XI
