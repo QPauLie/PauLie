@@ -540,3 +540,13 @@ class PauliStringLinear(PauliString):
             True if the linear combination is zero, False otherwise.
         """
         return all(abs(coeff) < 1e-12 for coeff, _ in self)
+    
+    def norm(self) -> float:
+        """
+        Calculates the Frobenius norm of the coefficient vector.
+        The norm is sqrt(∑ |cᵢ|²), where cᵢ are the coefficients of the
+        Pauli strings in the linear combination.
+        """
+        # Sum the squared magnitudes of all coefficients
+        sum_of_squares = sum(abs(coeff)**2 for coeff, _ in self.combinations)
+        return np.sqrt(sum_of_squares)
