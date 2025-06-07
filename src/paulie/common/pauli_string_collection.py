@@ -1,9 +1,10 @@
 """
 Class for a set/collection of Pauli strings with various features
 """
-import numpy as np
+
 import re
 from typing import Self
+import numpy as np
 import networkx as nx
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_linear import PauliStringLinear

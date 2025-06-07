@@ -468,7 +468,7 @@ class PauliStringLinear(PauliString):
         Yields the commutant of the Pauli string
         """
         raise PauliStringLinearException("Not implemented")
-    
+
     def get_commutants(self, generators:list[Self] = None) -> list[Self]:
         """
         Get a list of Pauli strings that commute with this string
