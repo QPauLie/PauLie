@@ -89,7 +89,7 @@ class TestSecondMoment(unittest.TestCase):
         for q in full_quadratic_basis:
             self.assertIsInstance(q, PauliStringLinear,
                                   "All generated symmetries should be PauliStringLinear objects.")
-    
+
     def test_supplemental_example_2_phase_is_correct(self):
         """
         Tests that the quadratic symmetry generation correctly handles the phase
