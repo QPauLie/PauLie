@@ -485,16 +485,11 @@ class PauliStringCollection:
             symmetries = component.get_symmetries_for_component(linear_symmetries)
             full_basis.extend(symmetries)
 
+        # Filter out any zero vectors that may have been created
+        orthogonal_basis = [q for q in full_basis if not q.is_zero()]
+
         if not normalized:
-            return [q for q in full_basis if not q.is_zero()]
+            return orthogonal_basis
 
-        # Step 4: Normalize if requested
-        normalized_basis = []
-        for q_vector in full_basis:
-            if q_vector.is_zero():
-                continue
-            norm = q_vector.norm()
-            if norm > 1e-12:
-                normalized_basis.append(q_vector * (1.0 / norm))
-
-        return normalized_basis
+        # Normalize using a list comprehension
+        return [q * (1.0 / q.norm()) for q in orthogonal_basis if q.norm() > 1e-12]

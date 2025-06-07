@@ -16,20 +16,10 @@ class PauliStringLinearException(Exception):
 class PauliStringLinear(PauliString):
     """Representation of a linear combination of Pauli string."""
 
-    def __init__(self, combinations: list[tuple[complex, str|PauliString]]) -> None:
-        """Initialize a linear combination of Pauli strings.
-        
-        Args:
-            combination: list of tuple (weight, Pauli string),
-            weight - weight of Pauli string in linear combination,
-            Pauli string - Pauli string like PauliString or string
-        """
-        if combinations:
-            super().__init__(
-                pauli_str="I" * len(str(combinations[0][1]))
-            )
-        else:
-            super().__init__(pauli_str="")
+    def __init__(self, combinations: list[tuple[complex, str | PauliString]]) -> None:
+        """Initialize a linear combination of Pauli strings."""
+        num_qubits = len(str(combinations[0][1])) if combinations else 0
+        super().__init__(n=num_qubits)
         self.nextpos = 0
         self.combinations = [(c[0], PauliString(pauli_str=str(c[1]))) for c in combinations]
 
@@ -52,23 +42,15 @@ class PauliStringLinear(PauliString):
         return "(" + abs(z.real) + "-" if z.imag > 0 else "+" + abs(z.imag) + ")*"
 
     def __str__(self) -> str:
-        """
-        Converts PauliStringLinear to a readable string (e.g., "0.5*XX - 1j*YZ").
-        Terms with coefficients close to zero are omitted.
-        """
+        """Converts PauliStringLinear to a readable, sorted string."""
         if self.is_zero():
-            size = self.get_size() if self.get_size() > 0 else 0
-            return f"0.0*I{''*size}"
+            return f"0.0*I{self.get_size()}"
 
         simplified_self = self.simplify()
-
-        # --- ADD THIS LINE TO SORT THE TERMS ---
-        # Sort by the Pauli string part alphabetically for consistent output
+        # Sort by the Pauli string part for a canonical, consistent output
         sorted_combinations = sorted(simplified_self.combinations, key=lambda term: str(term[1]))
 
-        # Helper to format a single term (code from previous answer is fine)
         def _format_term(coeff, pauli_str):
-            # ... (formatting logic) ...
             if np.isclose(coeff.imag, 0):
                 val_str = f"{coeff.real:.8g}"
             elif np.isclose(coeff.real, 0):
@@ -76,26 +58,27 @@ class PauliStringLinear(PauliString):
                     val_str = "i"
                 elif np.isclose(coeff.imag, -1):
                     val_str = "-i"
-                else:
-                    val_str = f"{coeff.imag:.8g}*i"
+                else: val_str = f"{coeff.imag:.8g}*i"
             else:
                 val_str = f"({coeff.real:.8g}{coeff.imag:+.8g}j)"
-            if val_str == "1":
+
+            if val_str == "1" and pauli_str != "I"*len(pauli_str):
                 return pauli_str
-            if val_str == "-1":
+            if val_str == "-1" and pauli_str != "I"*len(pauli_str):
                 return f"-{pauli_str}"
             return f"{val_str}*{pauli_str}"
 
         terms = []
         for i, (coeff, pauli) in enumerate(sorted_combinations):
-            pauli_str = str(pauli)
+            term_str = _format_term(coeff, str(pauli))
             if i == 0:
-                terms.append(_format_term(coeff, pauli_str))
+                terms.append(term_str)
             else:
-                if coeff.real < -1e-12 or (np.isclose(coeff.real, 0) and coeff.imag < -1e-12):
-                    terms.append(f" - {_format_term(-coeff, pauli_str)}")
+                # Handle leading sign for subsequent terms
+                if term_str.startswith('-'):
+                    terms.append(f" - {term_str[1:]}")
                 else:
-                    terms.append(f" + {_format_term(coeff, pauli_str)}")
+                    terms.append(f" + {term_str}")
         return "".join(terms)
 
 
@@ -330,6 +313,19 @@ class PauliStringLinear(PauliString):
         new_terms = [(coeff * scalar, pauli) for coeff, pauli in self]
         return p(new_terms)
 
+    @property
+    def h(self) -> 'PauliStringLinear':
+        """
+        Returns the Hermitian conjugate of this linear combination.
+        This is found by taking the complex conjugate of all coefficients,
+        as the Pauli matrices themselves are Hermitian.
+        """
+        # Use a list comprehension to create the new list of terms
+        conjugated_combinations = [
+            (np.conj(coeff), pauli) for coeff, pauli in self.combinations
+        ]
+        return PauliStringLinear(conjugated_combinations)
+
     def multiply(self, other:PauliString|Self) -> Self:
         """
         Multiplication operator of two linear combination
@@ -509,24 +505,20 @@ class PauliStringLinear(PauliString):
         """
         # pylint: disable=import-outside-toplevel
         from paulie.common.pauli_string_factory import get_pauli_string as p
+        if not self.combinations:
+            return self
 
         summed_coeffs = defaultdict(complex)
-
-        # Loop through all terms in the linear combination
-        for coeff, pauli in self:
-            # Assuming the phase is handled by the coefficient
+        for coeff, pauli in self.combinations:
             summed_coeffs[str(pauli)] += coeff
 
-        # Filter out terms with a coefficient very close to zero
         simplified_list = [
             (coeff, pauli_str) for pauli_str, coeff in summed_coeffs.items()
-            if abs(coeff) > 1e-12  # A small tolerance for floating point errors
+            if abs(coeff) > 1e-12
         ]
 
-        # If all terms cancel out, return a zero operator
         if not simplified_list:
-            size = self.get_size()
-            return p([(0.0, 'I' * size)])
+            return p([(0.0, 'I' * self.get_size())])
 
         return p(simplified_list)
 
@@ -592,16 +584,3 @@ class PauliStringLinear(PauliString):
         # Sum the squared magnitudes of all coefficients
         sum_of_squares = sum(abs(coeff)**2 for coeff, _ in self.combinations)
         return np.sqrt(sum_of_squares)
-
-    @property
-    def h(self) -> 'PauliStringLinear':
-        """
-        Returns the Hermitian conjugate of this linear combination.
-        This is found by taking the complex conjugate of all coefficients,
-        as the Pauli matrices themselves are Hermitian.
-        """
-        # Use a list comprehension to create the new list of terms
-        conjugated_combinations = [
-            (np.conj(coeff), pauli) for coeff, pauli in self.combinations
-        ]
-        return PauliStringLinear(conjugated_combinations)
