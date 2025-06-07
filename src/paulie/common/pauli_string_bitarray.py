@@ -228,20 +228,20 @@ class PauliString:
         """
         Calculates the phase of the product of two Pauli strings: self * other.
         The product is defined as P1 * P2 = phase * P3. This method returns the phase.
-        
+
         This implementation uses the correct symplectic product formalism, which can
         be found in various literature, including the supplemental material of
         the paper referenced in the related GitHub issue.
         See also: arxiv.org:2405.19287
-        
+
         Args:
             other (PauliString): The Pauli string to multiply with.
-        
+
         Returns:
             The complex phase of the product (1, -1, 1j, or -1j).
         """
         other = self._ensure_pauli_string(other)
-        
+
         # This is the full, correct formula for the exponent f in phase = i^f.
         # It is based on the bit-array representations of the two Pauli strings.
         # self.bits_even corresponds to the X part, self.bits_odd to the Z part.
@@ -250,8 +250,8 @@ class PauliString:
             count_and(other.bits_odd, other.bits_even) - \
             count_and(self.bits_even ^ other.bits_even,
                       self.bits_odd ^ other.bits_odd)
-        
-        # The final phase is (-1j)^f mod 4.
+
+        # The final phase is (-1j)^f mod 4. 
         return (-1j) ** (f % 4)
 
     def commutes_with(self, other:str|Self) -> bool:

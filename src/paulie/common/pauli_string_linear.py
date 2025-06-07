@@ -66,36 +66,12 @@ class PauliStringLinear(PauliString):
         return str_value
 
 
-    def __eq__(self, other: 'PauliStringLinear') -> bool:
-        """
-        Checks for mathematical equality between two PauliStringLinear objects.
-        Two objects are equal if they have the same terms after simplification.
-        """
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-
-        # Simplify both objects to get them into a canonical form
-        self_simplified = self.simplify()
-        other_simplified = other.simplify()
-
-        # The canonical representation is a dictionary mapping a Pauli string
-        # to its coefficient. We can get this from the internal list.
-        self_dict = {str(pauli): coeff for coeff, pauli in self_simplified}
-        other_dict = {str(pauli): coeff for coeff, pauli in other_simplified}
-
-        # Now, compare the dictionaries.
-        if len(self_dict) != len(other_dict):
-            return False
-
-        for pauli_str, self_coeff in self_dict.items():
-            other_coeff = other_dict.get(pauli_str)
-            if other_coeff is None:
-                return False
-            # Use a tolerance for floating point comparison
-            if abs(self_coeff - other_coeff) > 1e-12:
-                return False
-
-        return True
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__): return NotImplemented
+        # Create a canonical dictionary representation of the simplified object
+        self_dict = {str(p): c for c, p in self.simplify().combinations}
+        other_dict = {str(p): c for c, p in other.simplify().combinations}
+        return self_dict == other_dict
 
     def __lt__(self, other:Self) -> bool:
         """
@@ -192,20 +168,26 @@ class PauliStringLinear(PauliString):
         """ Copy Linear combination of Pauli strings """
         return PauliStringLinear(self.combinations)
 
-    def __add__(self, other:Self):
-        """
-        Linear combination of Pauli string addition operator
-        """
-        combinations = self.combinations.copy()
-        for o in other:
-            is_found = False
-            for c in combinations:
-                if o[1] == c[1]:
-                    c[0] += o[0]
-                    break
-            if not is_found:
-                combinations.append(o)
-        return PauliStringLinear(combinations)
+    def __add__(self, other):
+        """Performs a robust addition of two linear combinations."""
+        # Use a dictionary to correctly sum coefficients
+        summed_coeffs = defaultdict(complex)
+        for coeff, pauli in self.combinations:
+            summed_coeffs[str(pauli)] += coeff
+        for coeff, pauli in other.combinations:
+            summed_coeffs[str(pauli)] += coeff
+        
+        new_combinations = [(c, p) for p, c in summed_coeffs.items() if abs(c) > 1e-12]
+        if not new_combinations:
+            return PauliStringLinear([])
+        return PauliStringLinear(new_combinations)
+    
+    def __iadd__(self, other):
+        """Performs in-place addition."""
+        # This calls our robust __add__ method and reassigns self
+        new_self = self + other
+        self.combinations = new_self.combinations
+        return self
 
 
     def __or__(self, other:Self)->bool:
@@ -554,7 +536,7 @@ class PauliStringLinear(PauliString):
             True if the linear combination is zero, False otherwise.
         """
         return all(abs(coeff) < 1e-12 for coeff, _ in self)
-    
+
     def norm(self) -> float:
         """
         Calculates the Frobenius norm of the coefficient vector.
