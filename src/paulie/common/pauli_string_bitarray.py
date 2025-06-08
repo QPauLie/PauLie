@@ -227,34 +227,32 @@ class PauliString:
     def sign(self, other: 'PauliString') -> complex:
         """
         Calculates the phase of the product of two Pauli strings: self * other.
-        The product is defined as P1 * P2 = phase * P3. This method returns the phase.
-
-        This implementation uses the correct symplectic product formalism, which can
-        be found in various literature, including the supplemental material of
-        the paper referenced in the related GitHub issue.
-        See also: arxiv.org:2405.19287
-
+        The product is defined as P1 * P2 = i^f * P3, where P3 is the
+        phase-less product (self @ other). This method returns i^f.
+        
+        This implementation uses the correct symplectic product formalism.
+        The phase i^g is determined by the number of times Pauli matrices
+        are multiplied in cyclic order (e.g., XY=iZ) versus anti-cyclic
+        order (e.g., YX=-iZ).
+        
         Args:
             other (PauliString): The Pauli string to multiply with.
-
+        
         Returns:
-            The complex phase of the product (1, -1, 1j, or -1j) .
+            The complex phase of the product (1, -1, 1j, or -1j).
         """
         other = self._ensure_pauli_string(other)
-        if len(self) != len(other):
-            raise ValueError("Pauli arrays must have the same length for multiplication.")
-
-        # This is the full, correct formula for the exponent f in phase = i^f.
-        # It is based on the bit-array representations of the two Pauli strings.
-        # self.bits_even corresponds to the X part, self.bits_odd to the Z part.
-        f = 2 * count_and(self.bits_even, other.bits_odd) + \
-            count_and(self.bits_odd, self.bits_even) + \
-            count_and(other.bits_odd, other.bits_even) - \
-            count_and(self.bits_even ^ other.bits_even,
-                      self.bits_odd ^ other.bits_odd)
-
-        # The final phase is (-1j)^f mod 4.
-        return (-1j) ** (f % 4)
+        
+        # The exponent 'g' counts the net number of "positive" phase terms.
+        # It's the number of (X,Y), (Y,Z), (Z,X) pairs MINUS
+        # the number of (Y,X), (Z,Y), (X,Z) pairs.
+        # This can be computed efficiently using bitwise operations.
+        # g = ∑ (x_k * z'_k - x'_k * z_k) mod 4
+        
+        g = count_and(self.bits_even, other.bits_odd) - count_and(other.bits_even, self.bits_odd)
+        
+        # The final phase is i^g
+        return 1j ** g
 
     def commutes_with(self, other:str|Self) -> bool:
         """
