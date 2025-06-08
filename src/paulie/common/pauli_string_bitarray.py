@@ -224,34 +224,34 @@ class PauliString:
         """
         return self.multiply(other)
 
-    def sign(self, other: 'PauliString') -> complex:
+    def sign(self, other:Self):
         """
-        Calculates the phase of the product of two Pauli strings: self * other.
-        The product is defined as P1 * P2 = phase * P3. This method returns the phase.
-
-        This implementation uses the correct symplectic product formalism, which can
-        be found in various literature, including the supplemental material of
-        the paper referenced in the related GitHub issue.
-        See also: arxiv.org:2405.19287
-
-        Args:
-            other (PauliString): The Pauli string to multiply with.
-
-        Returns:
-            The complex phase of the product (1, -1, 1j, or -1j) .
+        Sign of multiplication of two pauli string
+        return +- 1
         """
-        other = self._ensure_pauli_string(other)
-        if len(self) != len(other):
-            raise ValueError("Pauli arrays must have the same length for multiplication.")
+        if self|other:
+            return 1
+        s = 1
+        for i in range(0, len(self)):
+            if ((self[i] == 'I' and other[i] == "I") or
+                (self[i] == 'I' and other[i] == "X") or
+                (self[i] == 'I' and other[i] == "Y") or
+                (self[i] == 'I' and other[i] == "Z") or
+                (self[i] == 'X' and other[i] == "I") or
+                (self[i] == 'Y' and other[i] == "I") or
+                (self[i] == 'Z' and other[i] == "I") or
+                (self[i] == 'X' and other[i] == "X") or
+                (self[i] == 'Y' and other[i] == "Y") or
+                (self[i] == 'Z' and other[i] == "Z")):
+                continue
 
-        # This is the full, correct formula for the exponent f in phase = i^f.
-        # It is based on the bit-array representations of the two Pauli strings.
-        # self.bits_even corresponds to the X part, self.bits_odd to the Z part.
-        f = 2 * count_and(self.bits_even, other.bits_odd) + \
-            count_and(self.bits_odd, self.bits_even) + \
-            count_and(other.bits_odd, other.bits_even) - \
-            count_and(self.bits_even ^ other.bits_even,
-                      self.bits_odd ^ other.bits_odd)
+            if ((self[i] == 'X' and other[i] == "Y") or
+                (self[i] == 'Y' and other[i] == "Z") or
+                (self[i] == 'Z' and other[i] == "X")):
+                s *= complex(0,1)
+                continue
+            s *= complex(0,-1)
+        return s
 
         # The final phase is (-1j)^f mod 4.
         return (-1j) ** (f % 4)
