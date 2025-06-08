@@ -14,22 +14,21 @@ def second_moment(
     subspace of quadratic symmetries.
     """
     # Get the unnormalized basis directly from the collection object
-    q_basis = system_generators.get_full_quadratic_basis(normalized=False)
+    orthonormal_basis = system_generators.get_full_quadratic_basis(normalized=True)
 
     twirl_result = PauliStringLinear([(0.0, 'I' * operator_m.get_size())])
 
-    for q_kj in q_basis:
-        trace_numerator = (q_kj.h @ operator_m).trace()
-        if abs(trace_numerator) < 1e-12:
+    for q_norm in orthonormal_basis:
+        # Step 2: The projection coefficient is now just Tr(Q_norm† * M).
+        # The denominator is 1 by definition of an orthonormal basis.
+        coeff = (q_norm.h @ operator_m).trace()
+
+        # If the projection is negligible, skip
+        if abs(coeff) < 1e-12:
             continue
 
-        # Denominator is Tr(Q†Q)
-        trace_denominator = (q_kj.h @ q_kj).trace()
-        if abs(trace_denominator) < 1e-12:
-            continue
-
-        coeff = trace_numerator / trace_denominator
-        projection = q_kj * coeff
+        # Step 3: Add the scaled basis vector to the result
+        projection = q_norm * coeff
         twirl_result += projection
 
     return twirl_result.simplify()
