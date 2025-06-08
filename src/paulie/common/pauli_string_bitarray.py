@@ -253,7 +253,7 @@ class PauliString:
             count_and(self.bits_even ^ other.bits_even,
                       self.bits_odd ^ other.bits_odd)
 
-        # The final phase is (-1j)^f mod 4. 
+        # The final phase is (-1j)^f mod 4.
         return (-1j) ** (f % 4)
 
     def commutes_with(self, other:str|Self) -> bool:
