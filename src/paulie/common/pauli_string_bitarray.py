@@ -253,9 +253,6 @@ class PauliString:
             s *= complex(0,-1)
         return s
 
-        # The final phase is (-1j)^f mod 4.
-        return (-1j) ** (f % 4)
-
     def commutes_with(self, other:str|Self) -> bool:
         """
         Check if this Pauli string commutes with another
