@@ -238,7 +238,7 @@ class PauliString:
             other (PauliString): The Pauli string to multiply with.
 
         Returns:
-            The complex phase of the product (1, -1, 1j, or -1j).
+            The complex phase of the product (1, -1, 1j, or -1j) .
         """
         other = self._ensure_pauli_string(other)
         if len(self) != len(other):
