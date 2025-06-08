@@ -2,10 +2,10 @@
 Pauli's String Factory. Responsible for creating instances
 of Pauli strings of various implementations
 """
-from typing import Generator
+from typing import Generator, Union
+from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
-from paulie.common.pauli_string_linear import PauliStringLinear
 
 def get_identity(n: int) -> PauliString:
     """
@@ -81,7 +81,7 @@ def gen_k_local(n: int, p: PauliString, used:Used=None) -> Generator[list[PauliS
 
 
 def gen_k_local_generators(n: int,
-                           generators: list[str]|list[PauliString]|PauliStringCollection,
+                           generators: 'Union[list[str], list[PauliString], PauliStringCollection]',
                            used: Used = None) -> Generator[list[PauliString], None, None]:
     """Generates k-local operators for a set of generators."""
     used = used or Used()
