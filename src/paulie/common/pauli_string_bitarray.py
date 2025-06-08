@@ -239,7 +239,10 @@ class PauliString:
                 (self[i] == 'I' and other[i] == "Z") or
                 (self[i] == 'X' and other[i] == "I") or
                 (self[i] == 'Y' and other[i] == "I") or
-                (self[i] == 'Z' and other[i] == "I")):
+                (self[i] == 'Z' and other[i] == "I") or
+                (self[i] == 'X' and other[i] == "X") or
+                (self[i] == 'Y' and other[i] == "Y") or
+                (self[i] == 'Z' and other[i] == "Z")):
                 continue
 
             if ((self[i] == 'X' and other[i] == "Y") or
