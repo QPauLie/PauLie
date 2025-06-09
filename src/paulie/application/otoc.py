@@ -16,7 +16,7 @@ def average_otoc(generators: PauliStringCollection,
 
     We can compute this as
     1 - 2 * |{W, P} = 0 : P in connected component of V| / |connected component of V|
-    where we take the commutator graph.
+    where we take the commutator graph. (arXiV:2502.16404)
 
     Args:
         generators: Generating set of the Pauli string DLA.

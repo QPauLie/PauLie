@@ -17,6 +17,7 @@ Paulistrings.
     intro_tutorial
     commutator_graph
     average_graph_complexity
+    average_otoc
     matrix_decomposition
     second_moment
 
