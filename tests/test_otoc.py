@@ -3,6 +3,9 @@
 """
 import pytest
 import numpy as np
+import networkx as nx
+from paulie.common.pauli_string_collection import PauliStringCollection
+from paulie.common.pauli_string_bitarray import PauliString
 from paulie.application.otoc import average_otoc
 from paulie.common.pauli_string_factory import (
     get_pauli_string as p,
@@ -20,6 +23,45 @@ generators_list = [
     ["XI", "IX", "YI", "IY", "ZI", "IZ", "XX"],
 ]
 
+def naive_otoc(generators: PauliStringCollection,
+                 v: PauliString, w: PauliString) -> float:
+    """
+    Computes the Haar averaged out-of-time-order correlator between two Pauli strings
+    using NetworkX.
+
+    We can compute this as
+    1 - 2 * |{W, P} = 0 : P in connected component of V| / |connected component of V|
+    where we take the commutator graph. (arXiV:2502.16404)
+
+    Args:
+        generators: Generating set of the Pauli string DLA.
+        v: Pauli string V
+        w: Pauli string W
+    """
+    # Generate commutator graph
+    vertices, edges = generators.get_commutator_graph()
+    graph = nx.Graph()
+    graph.add_nodes_from(vertices)
+    graph.add_edges_from(edges)
+    # Get connected component of V
+    v_connected_component = nx.node_connected_component(graph, str(v))
+    # Count the number of elements t in the connected component of V
+    # that anticommute with W
+    anticommute_count = sum([not w | p(t) for t in v_connected_component])
+    return 1 - 2 * anticommute_count / len(v_connected_component)
+
+@pytest.mark.parametrize("generators", generators_list)
+def test_average_otoc_matches_naive(generators: list[str]) -> None:
+    """
+    Test that average_otoc(g, v, w) == average_otoc(g, w, v).
+    """
+    g = p(generators)
+    i = get_identity(len(generators[0]))
+    all_paulis = i.get_commutants()
+    for v in all_paulis:
+        for w in all_paulis:
+            assert average_otoc(g, v, w) == pytest.approx(naive_otoc(g, v, w))
+
 @pytest.mark.parametrize("generators", generators_list)
 def test_average_otoc_is_symmetric(generators: list[str]) -> None:
     """
@@ -30,7 +72,7 @@ def test_average_otoc_is_symmetric(generators: list[str]) -> None:
     all_paulis = i.get_commutants()
     for v in all_paulis:
         for w in all_paulis:
-            assert average_otoc(g, v, w) == pytest.approx(average_otoc(g, v, w))
+            assert average_otoc(g, v, w) == pytest.approx(average_otoc(g, w, v))
 
 @pytest.mark.parametrize("generators", generators_list)
 def test_average_eq_initial_otoc_for_commutants(generators: list[str]) -> None:
