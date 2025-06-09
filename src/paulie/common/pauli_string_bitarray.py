@@ -3,7 +3,7 @@ from typing import Self, Generator
 from six.moves import reduce
 import numpy as np
 from bitarray import bitarray
-from bitarray.util import count_and
+from bitarray.util import count_and, ba2int
 from paulie.common.pauli_string_parser import pauli_string_parser
 
 CODEC = {
@@ -44,6 +44,35 @@ class PauliString:
                 self.bits = o.bits.copy()
         self.bits_even = self.bits[::2]
         self.bits_odd  = self.bits[1::2]
+
+    def get_index(self) -> int:
+        """
+         Return index in matrix decomposition vector
+        """
+        return ba2int(self.bits)
+
+    def get_diagonal_index(self) -> int:
+        """
+         Return index in diagonal matrix decomposition vector
+        """
+        if ba2int(self.bits_even) == 0:
+            return ba2int(self.bits_odd)
+        return -1
+
+    def get_weight_in_matrix(self, b_matrix: np.ndarray) -> np.complex128:
+        """
+         Return weight in diagonal matrix decomposition vector
+        """
+        len_matrix = len(b_matrix)
+        len_string = len(self)
+        if len_matrix not in (2**len_string, 4**len_string):
+            raise ValueError("Incorrect matrix size")
+        if len_matrix == 2**len_string:
+            index = self.get_diagonal_index()
+            if index > -1:
+                return b_matrix[index]
+            return 0.0
+        return b_matrix[self.get_index()]
 
     def create_instance(self, n: int = None, pauli_str: str = None):
         """Create a Pauli string instance.
@@ -194,6 +223,38 @@ class PauliString:
         Overloading @ operator of two Pauli strings like multiply
         """
         return self.multiply(other)
+
+    def sign(self, other: 'PauliString') -> complex:
+        """
+        Calculates the phase of the product of two Pauli strings: self * other.
+        The product is defined as P1 * P2 = phase * P3. This method returns the phase.
+
+        This implementation uses the correct symplectic product formalism, which can
+        be found in various literature, including the supplemental material of
+        the paper referenced in the related GitHub issue.
+        See also: arxiv.org:2405.19287
+
+        Args:
+            other (PauliString): The Pauli string to multiply with.
+
+        Returns:
+            The complex phase of the product (1, -1, 1j, or -1j) .
+        """
+        other = self._ensure_pauli_string(other)
+        if len(self) != len(other):
+            raise ValueError("Pauli arrays must have the same length for multiplication.")
+
+        # This is the full, correct formula for the exponent f in phase = i^f.
+        # It is based on the bit-array representations of the two Pauli strings.
+        # self.bits_even corresponds to the X part, self.bits_odd to the Z part.
+        f = 2 * count_and(self.bits_even, other.bits_odd) + \
+            count_and(self.bits_odd, self.bits_even) + \
+            count_and(other.bits_odd, other.bits_even) - \
+            count_and(self.bits_even ^ other.bits_even,
+                      self.bits_odd ^ other.bits_odd)
+
+        # The final phase is (-1j)^f mod 4.
+        return (-1j) ** (f % 4)
 
     def commutes_with(self, other:str|Self) -> bool:
         """
