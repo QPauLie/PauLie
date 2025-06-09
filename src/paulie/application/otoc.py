@@ -30,6 +30,8 @@ def average_otoc(generators: PauliStringCollection,
     queue = deque([v])
     while queue:
         t = queue.popleft()
+        if t in visited:
+            continue
         visited.add(t)
         if not w | t:
             anti_commute_count += 1
