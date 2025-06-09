@@ -32,5 +32,5 @@ def average_otoc(generators: PauliStringCollection,
     v_connected_component = nx.node_connected_component(graph, str(v))
     # Count the number of elements t in the connected component of V
     # that anticommute with W
-    anticommute_count = sum([not w | p(t) for t in v_connected_component])
+    anticommute_count = sum(not w | p(t) for t in v_connected_component)
     return 1 - 2 * anticommute_count / len(v_connected_component)
