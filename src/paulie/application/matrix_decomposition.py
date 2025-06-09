@@ -7,7 +7,7 @@ from paulie.common.pauli_string_factory import get_pauli_string, get_identity
 from collections import deque, Counter
 from concurrent.futures import ProcessPoolExecutor
 
-def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliString, complex]:
+def matrix_decomposition(matrix: np.ndarray) -> dict[PauliString, complex]:
     # Shape checks
     if matrix.ndim != 2:
         raise ValueError("matrix must be a 2D ndarray")
@@ -21,7 +21,7 @@ def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliStrin
                          dimensions but matrix dimensions are \
                          ({matrix.shape[0]}, {matrix.shape[1]})")
     # Numpy dtype checks?
-    # General decomposition (future additions: tridiagonal/band-diagonal cases?)
+    # General decomposition (future additions: diagonal/tridiagonal/band-diagonal cases?)
     n = matrix.shape[0]
     log2n = int(n).bit_length() - 1
     # Hardcoded parallel processing by splitting into 4 blocks
@@ -37,7 +37,7 @@ def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliStrin
               matrix[n // 2 : n, n // 2 : n],]  # -> 0.5 * (I - Z)
         # Break up matrix
         with ProcessPoolExecutor() as executor:
-            for i, decomp in enumerate(executor.map(_decomp_general, Ms, [tol] * 4)):
+            for i, decomp in enumerate(executor.map(_decomp_general, Ms)):
                 for pstr, coeff in decomp.items():
                     if i == 0:
                         res[ops[0] + pstr] += coeff / 2
@@ -52,7 +52,14 @@ def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliStrin
                         res[ops[0] + pstr] += coeff / 2
                         res[ops[3] + pstr] -= coeff / 2
         return res
-    return dict(_decomp_general(matrix, tol))
+    return dict(_decomp_general(matrix))
+
+def _compute_coeff(k0: int, k: np.ndarray, m: np.ndarray, nY: int, matrix: np.ndarray) -> complex:
+    n = matrix.shape[0]
+    coeff = 0
+    for j in range(n):
+        coeff += m[j] * matrix[k0 + k[j]][j] / n
+    return (-1j) ** (nY % 4) * coeff
 
 def _update_general(k: np.ndarray, m: np.ndarray, l: int, node: str) -> None:
     # The nature of the updates forces us to walk the tree in IXYZ order
@@ -66,87 +73,43 @@ def _update_general(k: np.ndarray, m: np.ndarray, l: int, node: str) -> None:
     elif node == 'Z':
         k[2 ** l : 2 ** (l + 1)] += 2 ** (l + 1)
 
-def _decomp_general(matrix: np.ndarray, tol: float) -> dict[PauliString, complex]:
+def _decomp_general(matrix: np.ndarray) -> dict[PauliString, complex]:
     n = matrix.shape[0]
     log2n = int(n).bit_length() - 1
     k = np.zeros(n, dtype=np.int64)
     m = np.zeros(n, dtype=np.int64)
-    j = np.arange(n)
     nY = 0
     coeffs = Counter()
     # Initialize m[0] (k[0] is computed at leaves)
     m[0] = 1
     # Walk the tree
     dfs_stack = deque([('I', 0), ('X', 0), ('Y', 0), ('Z', 0)])
-    # pstr = get_identity(log2n)
-    pstr = ['I'] * log2n
-    curlen = 0
-    while dfs_stack:
-        node, depth = dfs_stack.popleft()
-        while curlen > depth:
-            rnode = pstr[log2n - curlen]
-            pstr[log2n - curlen] = 'I'
-            nY -= (rnode == 'Y')
-            curlen -= 1
-        nY += (node == 'Y')
-        pstr[log2n - curlen - 1] = node
-        curlen += 1
-        _update_general(k, m, depth, node)
-        if curlen == log2n:
-            pcl = get_pauli_string(''.join(pstr))
-            k0 = int(pcl.bits_even.to01(), base=2)
-            coeff = (-1j) ** (nY % 4) * \
-                np.dot(m, matrix[k0 + k, j]) / n
-            if np.abs(coeff) > tol:
-                coeffs[pcl] += coeff
-        else:
-            dfs_stack.appendleft(('Z', 1 + depth))
-            dfs_stack.appendleft(('Y', 1 + depth))
-            dfs_stack.appendleft(('X', 1 + depth))
-            dfs_stack.appendleft(('I', 1 + depth))
-    return dict(coeffs)
-
-def matrix_decomposition_diagonal(diag: np.ndarray, tol: float=1e-8) -> dict[PauliString, complex]:
-    # Shape checks
-    if diag.ndim != 1:
-        raise ValueError("matrix must be a 1D ndarray")
-    if int(diag.shape[0]).bit_count() != 1:
-        raise ValueError(f"expected 1D ndarray with power of two \
-                         length but length is {diag.shape[0]}")
-    return dict(_decomp_diagonal(diag))
-
-def _update_diagonal(m: np.ndarray, l: int, node: str) -> None:
-    if node == 'I':
-        m[2 ** l : 2 ** (l + 1)] = m[0 : 2 ** l]
-    elif node == 'Z':
-        m[2 ** l : 2 ** (l + 1)] *= -1
-
-def _decomp_diagonal(diag: np.ndarray, tol: float) -> dict[PauliString, complex]:
-    n = diag.shape[0]
-    log2n = int(n).bit_length() - 1
-    m = np.zeros(n, dtype=np.int64)
-    coeffs = Counter()
-    m[0] = 1
-    # Walk the tree
-    dfs_stack = deque([('I', 0), ('Z', 0)])
     pstr = get_identity(log2n)
     curlen = 0
     pos = log2n - 1
     while dfs_stack:
         node, depth = dfs_stack.popleft()
         while curlen > depth:
+            rnode = pstr[pos + 1]
             pstr[pos + 1] = 'I'
+            if str(rnode) == 'Y':
+                nY -= 1
             curlen -= 1
             pos += 1
+        if node == 'Y':
+            nY += 1
         pstr[pos] = node
         curlen += 1
         pos -= 1
-        _update_diagonal(m, depth, node)
+        _update_general(k, m, depth, node)
         if curlen == log2n:
-            coeff = np.dot(m, diag) / n
-            if np.abs(coeff) > tol:
+            k0 = int(pstr.bits_even.to01(), base=2)
+            coeff = _compute_coeff(k0, k, m, nY, matrix)
+            if not np.isclose(np.abs(coeff), 0):
                 coeffs[pstr.copy()] += coeff
         else:
             dfs_stack.appendleft(('Z', 1 + depth))
+            dfs_stack.appendleft(('Y', 1 + depth))
+            dfs_stack.appendleft(('X', 1 + depth))
             dfs_stack.appendleft(('I', 1 + depth))
     return dict(coeffs)
