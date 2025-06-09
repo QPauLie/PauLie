@@ -11,7 +11,7 @@ where :math:`d` is the total Hilbert space dimension. For two initially commutin
 
 If we Heisenberg-evolve one of the operators under some dynamics as :math:`V_t = U^{\dagger}VU` where :math:`U=e^{-iHt}`, the operators :math:`W` and :math:`V_t` begin to fail to commute as the operator :math:`V` gets scrambled under the dynamics. The decay of the OTOC :math:`F(W, V_t)` is a well-studied probe of operator scrambling in quantum systems.
 
-Given a Pauli string dynamical Lie algebra (DLA), we can compute the average OTOC between two Pauli strings where the Heisenberg-evolution is averaged over the dynamics using the function `average_otoc`:
+Given a Pauli string dynamical Lie algebra (DLA), we can compute the average OTOC between two Pauli strings where the Heisenberg-evolution is averaged over the dynamics using the function :code:`average_otoc`:
 
 .. code-block:: python
 
@@ -33,4 +33,4 @@ which outputs:
     Do XYZ and YZZ initially commute? True
     Average OTOC of {v} and {w} under matchgate dynamics: -0.333
 
-As we can see, after Heisenberg-evolution, two initially commuting operators may fail to commute after Heisenberg-evolution under some dynamics.
+As we can see, two initially commuting operators may fail to commute after Heisenberg-evolution under some dynamics.
