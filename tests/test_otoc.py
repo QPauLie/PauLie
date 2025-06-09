@@ -53,7 +53,7 @@ def naive_otoc(generators: PauliStringCollection,
 @pytest.mark.parametrize("generators", generators_list)
 def test_average_otoc_matches_naive(generators: list[str]) -> None:
     """
-    Test that average_otoc(g, v, w) == average_otoc(g, w, v).
+    Test that average_otoc(g, v, w) == naive_otoc(g, v, w).
     """
     g = p(generators)
     i = get_identity(len(generators[0]))
