@@ -28,7 +28,7 @@ def matrix_decomposition(matrix: np.ndarray, tol: float=1e-8) -> dict[PauliStrin
     m[0] = 1
     coeffs = Counter()
     dfs_stack = deque([('Z', 0), ('Y', 0), ('X', 0), ('I', 0)])
-    phase = [1, -1j, -1, 1j]
+    phase = [-1j, -1, 1j, 1]
     pstr = get_identity(log2n)
     while dfs_stack:
         node, depth = dfs_stack.pop()
