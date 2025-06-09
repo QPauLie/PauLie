@@ -2,7 +2,6 @@
     Compute the average out-of-time-order correlator between two Pauli strings.
 """
 from collections import deque
-from paulie.common.pauli_string_factory import get_pauli_string as p
 from paulie.common.pauli_string_collection import PauliStringCollection
 from paulie.common.pauli_string_bitarray import PauliString
 
