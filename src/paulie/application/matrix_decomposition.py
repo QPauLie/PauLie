@@ -58,8 +58,6 @@ def matrix_decomposition_diagonal(diag: np.ndarray, tol: float=1e-8) -> dict[Pau
     # Shape checks
     if diag.ndim != 1:
         raise ValueError("matrix must be a 1D ndarray")
-    if diag.shape[0] == 1:
-        raise ValueError(f"input cannot be scalar")
     if int(diag.shape[0]).bit_count() != 1:
         raise ValueError(f"expected 1D ndarray with power of two \
                          length but length is {diag.shape[0]}")
