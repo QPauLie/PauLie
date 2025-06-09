@@ -59,6 +59,5 @@ disable=[
   'too-few-public-methods',
   'redefined-outer-name',
   'attribute-defined-outside-init',
-  'useless-object-inheritance',
-  'too-many-boolean-expressions'
+  'useless-object-inheritance'
 ]
