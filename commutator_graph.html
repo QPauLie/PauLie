@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Commutator graph &#8212; paulie 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Average graph complexity" href="average_graph_complexity.html" />
+    <link rel="prev" title="Classification of Pauli DLAs" href="classification.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="commutator-graph">
+<h1>Commutator graph<a class="headerlink" href="#commutator-graph" title="Link to this heading">¶</a></h1>
+<p>This tutorial will illustrate how to use <code class="code docutils literal notranslate"><span class="pre">paulie</span></code> to analyse short term dynamics of quantum systems.
+The Hamiltonian of the system is described by a linear combination of Pauli strings <span class="math notranslate nohighlight">\(H = \sum_{P \in \mathcal{G}} c_P P\)</span> where
+<span class="math notranslate nohighlight">\(\mathcal{G}\)</span> is the generator set. The commutator graph of an <span class="math notranslate nohighlight">\(n\)</span>-qubit system has the <span class="math notranslate nohighlight">\(4^n\)</span> Pauli strings as
+vertices and there exists and edge <span class="math notranslate nohighlight">\((P,Q)\)</span> if there exists a generator <span class="math notranslate nohighlight">\(G \in \mathcal{G}\)</span> s.t.
+<span class="math notranslate nohighlight">\([P,G] \propto Q\)</span>.
+While the anticommutation graph is isomorphic for generator sets with isomorphic DLA’s and only capture the
+long term dynamics, the commutator graph captures short term dynamics.
+We can plot the commutator graph</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">paulie.common.pauli_string_factory</span> <span class="kn">import</span> <span class="n">get_pauli_string</span> <span class="k">as</span> <span class="n">p</span>
+<span class="n">generators</span> <span class="o">=</span> <span class="n">p</span><span class="p">([</span><span class="s2">&quot;XI&quot;</span><span class="p">,</span> <span class="s2">&quot;ZI&quot;</span><span class="p">,</span> <span class="s2">&quot;IX&quot;</span><span class="p">,</span> <span class="s2">&quot;IZ&quot;</span><span class="p">,</span> <span class="s2">&quot;ZZ&quot;</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">generators</span><span class="o">.</span><span class="n">get_commutator_graph</span><span class="p">()</span>
+<span class="n">plot_graph</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/commutator_graph.png" src="_images/commutator_graph.png" />
+<p>With the help of the commutator graph we can analyse the short-term dynamics of the quantum system.
+In particular, we can determine how chaotic the system behaves. A quantifier of quantum chaos is the
+the out-of-time-order correlator (OTOC) between two unitary operators <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(V\)</span> defined as</p>
+<div class="math notranslate nohighlight">
+\[F(W, V) = \frac{1}{d}\text{tr}\left[W^{\dagger}V^{\dagger}WV\right]\]</div>
+<p>where <span class="math notranslate nohighlight">\(d\)</span> is the total Hilbert space dimension. For two initially commuting operators, the OTOC is equal to one.</p>
+<p>If we Heisenberg-evolve one of the operators under some dynamics as <span class="math notranslate nohighlight">\(V_t = U^{\dagger}VU\)</span> where <span class="math notranslate nohighlight">\(U=e^{-iHt}\)</span>, the operators <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(V_t\)</span> begin to fail to commute as the operator <span class="math notranslate nohighlight">\(V_t\)</span> becomes global under the dynamics.
+The exponential decay of the OTOC <span class="math notranslate nohighlight">\(F(W, V_t)\)</span> with time is a probe of quantum choas.</p>
+<p>Given a Pauli string dynamical Lie algebra (DLA), we can compute the average OTOC between two Pauli strings where the Heisenberg-evolution is averaged over the dynamics using the function <code class="code docutils literal notranslate"><span class="pre">average_otoc</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">paulie.common.pauli_string_factory</span> <span class="kn">import</span> <span class="n">get_pauli_string</span> <span class="k">as</span> <span class="n">p</span>
+<span class="kn">from</span> <span class="nn">paulie.application.otoc</span> <span class="kn">import</span> <span class="n">average_otoc</span>
+
+<span class="c1"># These are the generators of n=3 &quot;matchgate&quot; dynamics</span>
+<span class="n">generators</span> <span class="o">=</span> <span class="n">p</span><span class="p">([</span><span class="s2">&quot;ZII&quot;</span><span class="p">,</span> <span class="s2">&quot;IZI&quot;</span><span class="p">,</span> <span class="s2">&quot;IIZ&quot;</span><span class="p">,</span> <span class="s2">&quot;XXI&quot;</span><span class="p">,</span> <span class="s2">&quot;IXX&quot;</span><span class="p">])</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="s2">&quot;YZZ&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Do </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2"> initially commute?&quot;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">commutes_with</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average OTOC of </span><span class="si">{v}</span><span class="s2"> and </span><span class="si">{w}</span><span class="s2"> under matchgate dynamics:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">average_otoc</span><span class="p">(</span><span class="n">generators</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>which outputs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Do<span class="w"> </span>XYZ<span class="w"> </span>and<span class="w"> </span>YZZ<span class="w"> </span>initially<span class="w"> </span>commute?<span class="w"> </span>True
+Average<span class="w"> </span>OTOC<span class="w"> </span>of<span class="w"> </span><span class="o">{</span>v<span class="o">}</span><span class="w"> </span>and<span class="w"> </span><span class="o">{</span>w<span class="o">}</span><span class="w"> </span>under<span class="w"> </span>matchgate<span class="w"> </span>dynamics:<span class="w"> </span>-0.333
+</pre></div>
+</div>
+<p>As we can see, two initially commuting operators may fail to commute after Heisenberg-evolution under some dynamics.</p>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">paulie</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classification.html">Classification of Pauli DLAs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Commutator graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="average_graph_complexity.html">Average graph complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrix_decomposition.html">Matrix decomposition</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AmanieOxana/PauLie">Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/unitary-fund-764231928676089909">Discord</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="classification.html" title="previous chapter">Classification of Pauli DLAs</a></li>
+      <li>Next: <a href="average_graph_complexity.html" title="next chapter">Average graph complexity</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, PauLie contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/commutator_graph.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

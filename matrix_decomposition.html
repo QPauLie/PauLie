@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Matrix decomposition &#8212; paulie 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Second-Order Twirl &amp; Quadratic Symmetries" href="second_moment.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="matrix-decomposition">
+<h1>Matrix decomposition<a class="headerlink" href="#matrix-decomposition" title="Link to this heading">¶</a></h1>
+<p>This tutorial demonstrates how to use <code class="code docutils literal notranslate"><span class="pre">paulie</span></code> to decompose a matrix in <span class="math notranslate nohighlight">\(\mathbb{C}^{2^n \times 2^n}\)</span>
+as a sum of Pauli strings of length <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p>The set of Pauli strings of length <span class="math notranslate nohighlight">\(n\)</span> given by <span class="math notranslate nohighlight">\(\mathcal{P}=\{\bigotimes_{i=1}^{n}U_{i} \mid U_{i} \in (I, X, Y, Z)\}\)</span>
+forms a basis of the vector space of complex matrices of dimensions <span class="math notranslate nohighlight">\(2^n \times 2^n\)</span> denoted by <span class="math notranslate nohighlight">\(\mathbb{C}^{2^n \times 2^n}\)</span>.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">paulie</span></code> provides the method <code class="code docutils literal notranslate"><span class="pre">matrix_decomposition</span></code> for decomposing general matrices which returns a weight vector:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">paulie.application.matrix_decomposition</span> <span class="kn">import</span> <span class="n">matrix_decomposition</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span> <span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.9</span><span class="o">-</span><span class="mf">0.9</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.5</span><span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span> <span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">]</span>
+              <span class="p">[</span><span class="mf">3.1</span><span class="o">+</span><span class="mf">1.5</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span> <span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span> <span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">]</span>
+              <span class="p">[</span><span class="mf">0.5</span><span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span> <span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span> <span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="mf">3.1</span><span class="o">+</span><span class="mf">1.5</span><span class="n">j</span><span class="p">]</span>
+              <span class="p">[</span><span class="mf">0.</span> <span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.9</span><span class="o">-</span><span class="mf">0.9</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.</span> <span class="o">+</span><span class="mf">0.</span><span class="n">j</span><span class="p">]])</span>
+<span class="n">decomp</span> <span class="o">=</span> <span class="n">matrix_decomposition</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Decomposition weight vector:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">decomp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which outputs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Decomposition<span class="w"> </span>weight<span class="w"> </span>vector:
+<span class="o">[</span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">0</span>.1+0.3j<span class="w"> </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">1</span>.2-3.j
+<span class="w"> </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">0</span>.5+0.j<span class="w">  </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w">  </span><span class="m">0</span>.<span class="w"> </span>+0.j<span class="w"> </span><span class="o">]</span>
+</pre></div>
+</div>
+<p>From this weight vector, we can obtain the coefficient of a given Pauli string in the decomposition:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">paulie.common.pauli_string_factory</span> <span class="kn">import</span> <span class="n">get_pauli_string</span> <span class="k">as</span> <span class="n">p</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="s2">&quot;IX&quot;</span><span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="s2">&quot;ZY&quot;</span><span class="p">)</span>
+<span class="n">p3</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="s2">&quot;XZ&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficient of IX: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">get_weight_in_matrix</span><span class="p">(</span><span class="n">decomp</span><span class="p">),</span> <span class="mi">5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficient of ZY: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">p2</span><span class="o">.</span><span class="n">get_weight_in_matrix</span><span class="p">(</span><span class="n">decomp</span><span class="p">),</span> <span class="mi">5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficient of XZ: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">p3</span><span class="o">.</span><span class="n">get_weight_in_matrix</span><span class="p">(</span><span class="n">decomp</span><span class="p">),</span> <span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>which outputs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Coefficient<span class="w"> </span>of<span class="w"> </span>IX:<span class="w">  </span><span class="o">(</span><span class="m">0</span>.1+0.3j<span class="o">)</span>
+Coefficient<span class="w"> </span>of<span class="w"> </span>ZY:<span class="w">  </span><span class="o">(</span><span class="m">1</span>.2-3j<span class="o">)</span>
+Coefficient<span class="w"> </span>of<span class="w"> </span>XZ:<span class="w">  </span><span class="o">(</span><span class="m">0</span>.5+0j<span class="o">)</span>
+</pre></div>
+</div>
+<p>There is also a specialized method <code class="code docutils literal notranslate"><span class="pre">matrix_decomposition_diagonal</span></code> for decomposing diagonal matrices:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">paulie.application.matrix_decomposition</span> <span class="kn">import</span> <span class="n">matrix_decomposition_diagonal</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.41</span><span class="o">+</span><span class="mf">0.16</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.1</span> <span class="o">+</span><span class="mf">0.72</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.31</span><span class="o">+</span><span class="mf">0.12</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.28</span><span class="o">+</span><span class="mf">0.67</span><span class="n">j</span><span class="p">])</span>
+<span class="n">decomp</span> <span class="o">=</span> <span class="n">matrix_decomposition_diagonal</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">pauli_strs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;II&quot;</span><span class="p">,</span> <span class="s2">&quot;IZ&quot;</span><span class="p">,</span> <span class="s2">&quot;ZI&quot;</span><span class="p">,</span> <span class="s2">&quot;ZZ&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">pauli_str</span> <span class="ow">in</span> <span class="n">pauli_strs</span><span class="p">:</span>
+    <span class="n">pstr</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">pauli_str</span><span class="p">)</span>
+    <span class="n">coeff</span> <span class="o">=</span> <span class="n">pstr</span><span class="o">.</span><span class="n">get_weight_in_matrix</span><span class="p">(</span><span class="n">decomp</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Coefficient of </span><span class="si">{</span><span class="n">pauli_str</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which outputs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Coefficient<span class="w"> </span>of<span class="w"> </span>II:<span class="w"> </span><span class="o">(</span><span class="m">0</span>.275+0.4175j<span class="o">)</span>
+Coefficient<span class="w"> </span>of<span class="w"> </span>IZ:<span class="w"> </span><span class="o">(</span><span class="m">0</span>.085-0.2775j<span class="o">)</span>
+Coefficient<span class="w"> </span>of<span class="w"> </span>ZI:<span class="w"> </span><span class="o">(</span>-0.02+0.0225j<span class="o">)</span>
+Coefficient<span class="w"> </span>of<span class="w"> </span>ZZ:<span class="w"> </span><span class="o">(</span><span class="m">0</span>.07-0.0025j<span class="o">)</span>
+</pre></div>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">paulie</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classification.html">Classification of Pauli DLAs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commutator_graph.html">Commutator graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="average_graph_complexity.html">Average graph complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Matrix decomposition</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AmanieOxana/PauLie">Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/unitary-fund-764231928676089909">Discord</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="second_moment.html" title="previous chapter">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, PauLie contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/matrix_decomposition.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
