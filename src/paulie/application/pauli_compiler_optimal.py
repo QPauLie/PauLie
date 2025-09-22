@@ -92,7 +92,9 @@ def _all_left_paulis(k: int) -> list[PauliString]:
                 out.append(get_pauli_string(s))
             return
         for L in labels:
-            cur.append(L); rec(i+1, cur); cur.pop()
+            cur.append(L)
+            rec(i + 1, cur)
+            cur.pop()
     rec(0, [])
     return out
 
@@ -136,9 +138,12 @@ class SubsystemCompiler:
         sequences: list[list[PauliString]] = []
         def rec(i: int, acc: list[PauliString]):
             if i == len(per_site_opts):
-                sequences.append(list(acc)); return
+                sequences.append(list(acc))
+                return
             for seg in per_site_opts[i]:
-                acc.extend(seg); rec(i+1, acc); del acc[-len(seg):]
+                acc.extend(seg)
+                rec(i + 1, acc)
+                del acc[-len(seg):]
         rec(0, [])
         Ui = self.U_tag
         return [[(Ui, b) for b in flat] for flat in sequences]
@@ -189,7 +194,9 @@ class SubsystemCompiler:
                 if _multiply(P_left, Ui).is_identity():
                     cnt = helper_used_for_i.get(i, 0)
                     if cnt >= 1:
-                        G.append(self.extend_pair(Ui, Bi)); i -= 1; continue
+                        G.append(self.extend_pair(Ui, Bi))
+                        i -= 1
+                        continue
                     A1, A2 = self._choose_A1_A2(Ui)
                     H = [A1, A2]
                     helper_used_for_i[i] = cnt + 1
@@ -201,7 +208,9 @@ class SubsystemCompiler:
                 if _commutes(current, rest_full):
                     cnt = helper_used_for_i.get(i, 0)
                     if cnt >= 1:
-                        G.append(self.extend_pair(Ui, Bi)); i -= 1; continue
+                        G.append(self.extend_pair(Ui, Bi))
+                        i -= 1
+                        continue
                     A_prime = self._choose_Aprime(Ui, P_left)
                     H = [A_prime]
                     helper_used_for_i[i] = cnt + 1
@@ -219,7 +228,8 @@ def _key(p: PauliString) -> str:
 def left_map_over_A(V_from: PauliString, V_to: PauliString, A: list[PauliString]) -> list[PauliString]:
     if _key(V_from) == _key(V_to):
         return []
-    start_k = _key(V_from); goal_k = _key(V_to)
+    start_k = _key(V_from)
+    goal_k = _key(V_to)
     q: deque[PauliString] = deque([V_from])
     parent: dict[str, tuple[str, str, PauliString]] = {}
     seen = {start_k}
@@ -294,7 +304,8 @@ class OptimalPauliCompiler:
         for a, b in cand:
             key = (str(a), str(b))
             if key not in seen:
-                seen.add(key); uniq.append((a, b))
+                seen.add(key)
+                uniq.append((a, b))
         return uniq
 
     def _all_interleavings_preserving(self, A: list[PauliString], B: list[PauliString], C: list[PauliString], cap: int = 60000) -> Iterable[list[PauliString]]:
@@ -309,38 +320,57 @@ class OptimalPauliCompiler:
                 yield list(prefix)
                 return
             if i < NA:
-                prefix.append(A[i]); yield from rec(i+1, j, k, prefix); prefix.pop()
-                if count >= cap: return
+                prefix.append(A[i])
+                yield from rec(i + 1, j, k, prefix)
+                prefix.pop()
+                if count >= cap:
+                    return
             if j < NB:
-                prefix.append(B[j]); yield from rec(i, j+1, k, prefix); prefix.pop()
-                if count >= cap: return
+                prefix.append(B[j])
+                yield from rec(i, j + 1, k, prefix)
+                prefix.pop()
+                if count >= cap:
+                    return
             if k < NC:
-                prefix.append(C[k]); yield from rec(i, j, k+1, prefix); prefix.pop()
-        return rec(0,0,0, [])
+                prefix.append(C[k])
+                yield from rec(i, j, k + 1, prefix)
+                prefix.pop()
+        return rec(0, 0, 0, [])
 
     def _all_interleavings_preserving4(self, A: list[PauliString], B: list[PauliString], C: list[PauliString], D: list[PauliString], cap: int = 120000) -> Iterable[list[PauliString]]:
         count = 0
         NA, NB, NC, ND = len(A), len(B), len(C), len(D)
-        def rec(i: int, j: int, k: int, l: int, prefix: list[PauliString]):
+        def rec(i: int, j: int, k: int, l_idx: int, prefix: list[PauliString]):
             nonlocal count
             if count >= cap:
                 return
-            if i == NA and j == NB and k == NC and l == ND:
+            if i == NA and j == NB and k == NC and l_idx == ND:
                 count += 1
                 yield list(prefix)
                 return
             if i < NA:
-                prefix.append(A[i]); yield from rec(i+1, j, k, l, prefix); prefix.pop()
-                if count >= cap: return
+                prefix.append(A[i])
+                yield from rec(i + 1, j, k, l_idx, prefix)
+                prefix.pop()
+                if count >= cap:
+                    return
             if j < NB:
-                prefix.append(B[j]); yield from rec(i, j+1, k, l, prefix); prefix.pop()
-                if count >= cap: return
+                prefix.append(B[j])
+                yield from rec(i, j + 1, k, l_idx, prefix)
+                prefix.pop()
+                if count >= cap:
+                    return
             if k < NC:
-                prefix.append(C[k]); yield from rec(i, j, k+1, l, prefix); prefix.pop()
-                if count >= cap: return
-            if l < ND:
-                prefix.append(D[l]); yield from rec(i, j, k, l+1, prefix); prefix.pop()
-        return rec(0,0,0,0, [])
+                prefix.append(C[k])
+                yield from rec(i, j, k + 1, l_idx, prefix)
+                prefix.pop()
+                if count >= cap:
+                    return
+            if l_idx < ND:
+                prefix.append(D[l_idx])
+                yield from rec(i, j, k, l_idx + 1, prefix)
+                prefix.pop()
+        return rec(0, 0, 0, 0, [])
 
     def _case3_best_reordering(self, G1: list[PauliString], G2: list[PauliString], Aext: list[PauliString], W: PauliString) -> list[PauliString] | None:
         k = self.k
@@ -422,7 +452,8 @@ class OptimalPauliCompiler:
                     visited[(depth, kres)] = True
                     new_seq = seq_idx + [j]
                     if depth >= 2:
-                        L = _left_part(new_res, self.k); R = _right_part(new_res, self.k)
+                        L = _left_part(new_res, self.k)
+                        R = _right_part(new_res, self.k)
                         if str(L) == str(target_left) and str(R) == str(target_right):
                             return [S[idx] for idx in new_seq]
                     new_front.append((new_res, new_seq))
@@ -476,9 +507,12 @@ class OptimalPauliCompiler:
         wstr = str(W)
         j = next(i for i, ch in enumerate(wstr) if ch != "I")
         lab = "X" if wstr[j] == "Z" else ("Z" if wstr[j] == "X" else "X")
-        W1 = _single(self.n_right, j, lab); W2 = _multiply(W1, W)
-        G1 = self.sub.subsystem_compiler(W1); G2 = self.sub.subsystem_compiler(W2)
-        V1p = self._left_factor_from_sequence(G1); V2p = self._left_factor_from_sequence(G2)
+        W1 = _single(self.n_right, j, lab)
+        W2 = _multiply(W1, W)
+        G1 = self.sub.subsystem_compiler(W1)
+        G2 = self.sub.subsystem_compiler(W2)
+        V1p = self._left_factor_from_sequence(G1)
+        V2p = self._left_factor_from_sequence(G2)
         Aseq = left_map_over_A(V2p, V1p, left_A_minimal(self.k))
         Aext = [self.extend_left(a) for a in Aseq]
         return _sequence_to_paulie_orientation(list(reversed(G1)) + Aext + list(reversed(G2)))
