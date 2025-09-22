@@ -64,7 +64,8 @@ class PauliStringLinear(PauliString):
                     val_str = "i"
                 elif np.isclose(coeff.imag, -1):
                     val_str = "-i"
-                else: val_str = f"{coeff.imag:.8g}*i"
+                else:
+                    val_str = f"{coeff.imag:.8g}*i"
             else:
                 val_str = f"({coeff.real:.8g}{coeff.imag:+.8g}j)"
 
