@@ -1,15 +1,4 @@
-﻿# pylint: disable=line-too-long,invalid-name,missing-function-docstring,missing-class-docstring,superfluous-parens`n"""  # pylint: disable=line-too-long,invalid-name,missing-function-docstring,missing-class-docstring,superfluous-parens
-Optimal Pauli Compiler (Algorithm from arXiv:2408.03294) implemented using PauLie types.
-
-API overview:
-- OptimalPauliCompiler(k_left: int, n_total: int).compile(V_left: PauliString, W_right: PauliString) -> list[PauliString]
-  Returns a sequence G in PauLie orientation: nested_adjoint(G[:-1], G[-1]) = V âŠ— W.
-- compile_target(target: PauliString, k_left: int) -> list[PauliString]
-
-This module does not replace the existing simple pauli_compiler; it provides an
-algorithmically faithful implementation alongside it.
-"""
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from dataclasses import dataclass
 from itertools import permutations
