@@ -341,7 +341,7 @@ class PauliString:
         # Bitwise XOR is equivalent to mod-2 addition
         return PauliString(bits = self.bits ^ other.bits)
 
-    def inc(self) -> None:
+    def inc(self) -> Self:
         """
         Pauli string increment operator
         """
@@ -352,6 +352,7 @@ class PauliString:
             self.bits[i] = 0
         self.bits_even = self.bits[::2]
         self.bits_odd  = self.bits[1::2]
+        return self
 
     def expand(self, n: int) -> Self:
         """

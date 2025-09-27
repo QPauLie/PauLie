@@ -3,6 +3,7 @@ Pauli's String Factory. Responsible for creating instances
 of Pauli strings of various implementations
 """
 from typing import Generator, Union
+from bitarray import bitarray
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
@@ -14,6 +15,14 @@ def get_identity(n: int) -> PauliString:
     returns identity
     """
     return PauliString(n=n)
+
+def get_last(n:int) -> PauliString:
+    """
+    Get an all Y of a given length
+    Args: n - lenght of Pauli string
+    returns all Y
+    """
+    return PauliString(bits = bitarray([1] * (2 * n)))
 
 def get_pauli_string(o, n:int = None) -> PauliString|PauliStringCollection:
     """
