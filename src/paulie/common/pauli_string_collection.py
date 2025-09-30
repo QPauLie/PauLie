@@ -57,6 +57,12 @@ class PauliStringCollection:
          corresponding to the generator elements """
         return self.generators
 
+    def get_len(self) -> int:
+        """Get len string"""
+        if len(self) == 0:
+            return 0
+        return len(self.generators[0])
+
     def set_record(self, record:RecordGraph) -> None:
         """ In order to animate the transformations that lead to the canonical graph
         and thus to the classifcation, set record of type RecordGraph
@@ -336,6 +342,67 @@ class PauliStringCollection:
         classification = self.get_class()
         return classification.is_algebra(algebra)
 
+    def is_in(self, generators: Self) -> bool:
+        """
+        Testing generators in algebra. All Pauli strings of one algebra are dependent on another.
+        return bool
+        """
+        if len(self) == 0:
+            return False
+
+        classification = self.get_class()
+        subgraphs = generators.get_subgraphs()
+        for subgraph in subgraphs:
+            is_eq = False
+            morphs = classification.get_morphs()
+            for morph in morphs:
+                legs = morph.get_legs()
+                morph_factory = MorphFactory()
+                is_eq = morph_factory.is_eq(legs, subgraph.get())
+                if is_eq:
+                    break
+            if not is_eq:
+                return False
+
+        return True
+
+    def is_eq(self, generators: Self) -> bool:
+        """
+        Testing for equivalence of two algebras.
+        All Pauli strings of one algebra are dependent on another.
+        return bool
+        """
+        return self.is_in(generators) and generators.is_in(self)
+
+    def select_dependents(self, generators: Self) -> Self:
+        """
+        Select dependents
+        """
+        if len(self) == 0:
+            return False
+        dependents = []
+        classification = self.get_class()
+        subgraphs = generators.get_subgraphs()
+        for subgraph in subgraphs:
+            morphs = classification.get_morphs()
+            for morph in morphs:
+                legs = morph.get_legs()
+                morph_factory = MorphFactory()
+                morph_dependents = morph_factory.select_dependents(legs, subgraph.get())
+                #print(f"morph = {PauliStringCollection(morph_dependents)}")
+                dependents += morph_dependents
+
+        return PauliStringCollection(dependents)
+
+    def get_space(self) -> Self:
+        """
+        Get all space
+        """
+        all_space = PauliStringCollection([g
+                    for g in PauliString(n=self.get_len()).gen_all_pauli_strings()
+                    if g != PauliString(n=self.get_len())])
+        return self.select_dependents(all_space)
+
     def get_dla_dim(self) -> int:
         """
         Get the dimension of the classified dynamical Lie algebra
@@ -345,6 +412,10 @@ class PauliStringCollection:
     def get_dependents(self) -> Self:
         """Get a list of dependent strings in the collection"""
         return PauliStringCollection(self.get_class().get_dependents())
+
+    def get_canonic_vertices(self) -> Self:
+        """Get a list of canonic strings in the collection"""
+        return PauliStringCollection(self.get_class().get_vertices())
 
     def get_canonic_graph(
         self,

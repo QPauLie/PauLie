@@ -64,6 +64,13 @@ class Morph:
         """
         return self.dependents
 
+    def get_legs(self) -> list[list[PauliString]]:
+        """
+        Get legs
+        """
+        return self.legs
+
+
     def counts(self) -> tuple[int,int,int]:
         """
         Get number of leg types

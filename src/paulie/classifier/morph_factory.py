@@ -12,6 +12,11 @@ class AppendedException(Exception):
     The vertix is appended
     """
 
+class CheckAppendedException(Exception):
+    """
+    The vertix is appended
+    """
+
 class DebugException(Exception):
     """
     Debug exception
@@ -51,6 +56,7 @@ class MorphFactory(Debug):
         self.debug_lighting = None
         self.debug_break = False
         self.dependents = []
+        self.is_check = False
 
     def set_debug(self, debug:bool) -> None:
         """
@@ -273,6 +279,8 @@ class MorphFactory(Debug):
         """
         Append vertix to graph
         """
+        if self.is_check:
+            raise CheckAppendedException()
         leg_index, vertix_index = self.find(lit)
         if leg_index == -1:
             raise MorphFactoryException("No vertix")
@@ -962,3 +970,44 @@ class MorphFactory(Debug):
         self.print_vertices(unappended, "unappended")
         self.print_vertices(self.dependents, "dependents")
         return self
+
+    def is_eq(self, legs:list[list[PauliString]], generators:list[PauliString]) -> bool:
+        """
+        Testing for equivalence of two algebras. 
+        All Pauli strings of one algebra are dependent on another.
+        return bool
+        """
+        self.legs = legs.copy()
+        for g in generators:
+            try:
+                self._pipeline(g)
+            except AppendedException:
+                self.legs = legs.copy()
+                return False
+            except Exception:
+                continue
+
+        self.legs = legs.copy()
+        return True
+
+    def select_dependents(self, legs:list[list[PauliString]], generators:list[PauliString]
+        ) -> list[PauliString]:
+        """
+        Select dependent strings
+        """
+        self.legs = legs.copy()
+        self.is_check = True
+        dependents = []
+
+        for g in generators:
+            self.legs = legs.copy()
+            try:
+                self._pipeline(g)
+            except CheckAppendedException:
+                continue
+            except DependentException:
+                dependents.append(g)
+            except Exception:
+                continue
+
+        return dependents
