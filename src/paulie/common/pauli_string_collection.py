@@ -2,7 +2,7 @@
 Class for a set/collection of Pauli strings with various features
 """
 from itertools import combinations
-from typing import Self
+from typing import Self, Generator
 import numpy as np
 import networkx as nx
 from paulie.common.pauli_string_bitarray import PauliString
@@ -402,6 +402,19 @@ class PauliStringCollection:
                     for g in PauliString(n=self.get_len()).gen_all_pauli_strings()
                     if g != PauliString(n=self.get_len())])
         return self.select_dependents(all_space)
+
+    def gen_generators(self) -> Generator[list[list[PauliString]], None, None]:
+        """Get generators"""
+        classification = self.get_class()
+        gen = classification.gen_generators()
+        while True:
+            try:
+                g = next(gen)
+                cg = PauliStringCollection(g)
+                if cg.get_algebra() == self.get_algebra():
+                    yield cg
+            except StopIteration:
+                break
 
     def get_dla_dim(self) -> int:
         """

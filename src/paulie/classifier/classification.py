@@ -2,7 +2,10 @@
 Canonical graph classification
 """
 import enum
+from typing import Generator
+
 from paulie.common.pauli_string_bitarray import PauliString
+
 
 class ClassificatonException(Exception):
     """
@@ -163,6 +166,85 @@ class Morph:
         if nc is not None:
             return nc == _nc
         return False
+
+    def gen_independent_pair(self
+        )-> Generator[list[list[PauliString]], None, None]:
+        """
+        Generate independent pairs
+        """
+        for i in range(len(self.legs) - 1, 0, -1):
+            leg = self.legs[i]
+            for j in range(len(leg) - 1, -1, -1):
+                v = leg[j]
+                for k in range(j - 2, -1, -1):
+                    w = leg[k]
+                    yield [v, w]
+                for m in range(i - 1, -1, -1):
+                    for w in leg[m]:
+                        yield [v, w]
+
+    def gen_pq(self
+        )-> Generator[list[dict], None, None]:
+        """
+        Generate pq 
+        """
+        for i in range(len(self.legs) - 1, 0, -1):
+            leg = self.legs[i]
+            for j in range(len(leg) - 1, -1, -1):
+                v = leg[j]
+                for k in range(j - 1, -1, -1):
+                    w = leg[k]
+
+                    yield { "v": v,
+                            "w": w,
+                            "vw": v@w,
+                            "neighbour": j - k == 1
+                          }
+                for m in range(i - 1, -1, -1):
+                    for w in self.legs[m]:
+                        yield { "v": v,
+                                "w": w,
+                                "vw": v@w,
+                                "neighbour": m == 0 and j == 0
+                              }
+
+    def _inc_vertices_generator(self, i, init_vertices, vertix_generators, vertices):
+        """incriminate the generator"""
+        if i == len(vertix_generators):
+            return False
+        try:
+            vw = next(vertix_generators[i])
+            if init_vertices[i] != vw["v"]:
+                vertices[i] = init_vertices[i]@vw["vw"]
+            else:
+                if vw["neighbour"]:
+                    vertices[i] = init_vertices[i]@vw["w"]
+                else:
+                    return self._inc_vertices_generator(i, init_vertices,
+                           vertix_generators, vertices)
+            return True
+        except StopIteration:
+            for k in range(0, i+1):
+                vertix_generators[k] = self.gen_pq()
+            return self._inc_vertices_generator(i + 1, init_vertices, vertix_generators, vertices)
+
+    def gen_generators(self
+        )-> Generator[list[list[PauliString]], None, None]:
+        """
+        Generate generators
+        """
+        vertices = self.get_vertices()
+        yield vertices
+        init_vertices = vertices.copy()
+        vertix_generators = [self.gen_pq() for i in range(0, len(vertices))]
+
+        while True:
+            if not self._inc_vertices_generator(0, init_vertices, vertix_generators, vertices):
+                break
+            if len(list(set(vertices))) == len(vertices):
+                yield vertices
+
+
 
 class Classification:
     """
@@ -328,3 +410,45 @@ class Classification:
             if type_algebra == TypeAlgebra.SO:
                 dim+= dim_so(n)
         return dim
+
+    def _inc_morph_generator(self, ms, morphs, morph_generators, current_morph_generators):
+        """incriminate the generator"""
+        if ms == len(morph_generators):
+            return False
+        try:
+            current_morph_generators[ms] = next(morph_generators[ms])
+            return True
+        except StopIteration:
+            for k in range(0, ms+1):
+                morph_generators[k] = morphs[k].gen_generators()
+
+            #morph_generators[ms] = morphs[ms].gen_generators()
+            current_morph_generators[ms] = next(morph_generators[ms])
+            return self._inc_morph_generator(ms + 1, morphs,
+                   morph_generators, current_morph_generators)
+
+    def gen_generators(self) -> Generator[list[list[PauliString]], None, None]:
+        """
+        Get a list of independent strings of Pauli algebra
+        """
+        generators = []
+        current_morph_generators = []
+        morph_generators = []
+        morphs = list(self.morphs)
+        for ms in range(0, len(morphs)):
+            morph_generators.append(morphs[ms].gen_generators())
+            try:
+                current_morph_generators.append(next(morph_generators[ms]))
+            except StopIteration:
+                return
+            generators += current_morph_generators[ms]
+
+        yield generators
+
+        while True:
+            if not self._inc_morph_generator(0, morphs, morph_generators, current_morph_generators):
+                break
+            generators = []
+            for ms in range(0, len(morphs)):
+                generators += current_morph_generators[ms]
+            yield generators
