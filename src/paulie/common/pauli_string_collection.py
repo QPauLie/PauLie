@@ -640,4 +640,5 @@ class PauliStringCollection:
 
     def list_connections(self):
         """ list conections"""
-        return [(x, y, len(x.get_anti_commutants(self)), len(y.get_anti_commutants(self))) for x,y in combinations(self.generators, r=2) if not x|y]
+        return [(x, y, len(x.get_anti_commutants(self)), len(y.get_anti_commutants(self)))
+               for x,y in combinations(self.generators, r=2) if not x|y]

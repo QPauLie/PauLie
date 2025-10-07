@@ -3,7 +3,7 @@ from typing import Self, Generator
 from six.moves import reduce
 import numpy as np
 from bitarray import bitarray
-from bitarray.util import count_and, ba2int
+from bitarray.util import count_and, count_or, ba2int
 
 from paulie.common.pauli_string_parser import pauli_string_parser
 
@@ -459,3 +459,6 @@ class PauliString:
         return reduce(lambda matrix, v: np.kron(matrix, self._match_matrix(v))
                       if matrix is not None else self._match_matrix(v), str(self), None)
 
+    def get_count_non_trivially(self) -> int:
+        """ Get count non-trivially"""
+        return count_or(self.bits_even, self.bits_odd)
