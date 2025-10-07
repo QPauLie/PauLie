@@ -206,6 +206,24 @@ class PauliStringCollection:
         Computes the fraction of anticommuting pairs of generators
         """
         anti_commute_count = 0
+        pair = 0
+        for x,y in combinations(self.generators, r=2):
+            pair += 1
+            if not x|y:
+                anti_commute_count += 1
+        return anti_commute_count / pair
+
+    def get_pair(self) -> int:
+        """
+        get number pair
+        """
+        return len(self)*(len(self) - 1)/2
+
+    def get_anticommutation_pair(self) -> int:
+        """
+        get number of anticommutation pair
+        """
+        anti_commute_count = 0
         for x,y in combinations(self.generators, r=2):
             if not x|y:
                 anti_commute_count += 1
@@ -428,6 +446,11 @@ class PauliStringCollection:
         """Get a list of dependent strings in the collection"""
         return PauliStringCollection(self.get_class().get_dependents())
 
+    def get_independents(self) -> Self:
+        """Get independents"""
+        dependents = self.get_class().get_dependents()
+        return PauliStringCollection([v for v in self if v not in dependents])
+
     def get_canonic_vertices(self) -> Self:
         """Get a list of canonic strings in the collection"""
         return PauliStringCollection(self.get_class().get_vertices())
@@ -587,3 +610,34 @@ class PauliStringCollection:
                 normalized_basis.append(q_vector * (1.0 / norm))
 
         return normalized_basis
+
+    def find(self, pauli_string: PauliString) -> int:
+        """Find index pauli string in collection"""
+        for i in enumerate(self.generators):
+            if self.generators[i] == pauli_string:
+                return i
+        return -1
+
+    def replace(self, pauli_string: PauliString, new_pauli_string: PauliString) -> None:
+        """
+        Replacing one Pauli string with another
+        pauli_string - The Pauli string that will be replaced
+        new_pauli_string - New Pauli string
+        """
+        index = self.find(pauli_string)
+        if index != -1:
+            self.generators[index] = new_pauli_string.copy()
+
+    def contract(self, pauli_string: PauliString, contracted_pauli_string: PauliString) -> None:
+        """
+        Contracting pauli string other pauli string
+        pauli_string - The Pauli string that will be replaced with the contract
+        contracted_pauli_string - Contractable Pauli string
+        pauli_string will be replaced on pauli_string @ contracted_pauli_string
+
+        """
+        self.replace(pauli_string, pauli_string@contracted_pauli_string)
+
+    def list_connections(self):
+        """ list conections"""
+        return [(x, y, len(x.get_anti_commutants(self)), len(y.get_anti_commutants(self))) for x,y in combinations(self.generators, r=2) if not x|y]

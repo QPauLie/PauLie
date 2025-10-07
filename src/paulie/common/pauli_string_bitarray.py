@@ -458,3 +458,4 @@ class PauliString:
         """
         return reduce(lambda matrix, v: np.kron(matrix, self._match_matrix(v))
                       if matrix is not None else self._match_matrix(v), str(self), None)
+
