@@ -52,14 +52,15 @@ def compute_c_for_operator(args):
         return None  # Mark as zero
     return h / i
 
-if __name__ == "__main__":
-    print("--- Testing the Conjecture: H(O) <= c * I(O) ---")
-    TRIAL_COUNT = 10000
-    c_list_nqbits = {}
-    max_ratio_nqbits = {}
-    min_ratio_nqbits = {}
-    number_of_zeros_nqbits = {}
-    frequent_c_values = {}
+TRIAL_COUNT = 10000
+c_list_nqbits = {}
+max_ratio_nqbits = {}
+min_ratio_nqbits = {}
+number_of_zeros_nqbits = {}
+frequent_c_values = {}
+
+def test():
+    """Main test function"""
     for n_qubits in range(1, 7):
         print(f"\nNumber of qubits: {n_qubits}")
         #pauli_strings = [''.join(p) for p in product('XYZI', repeat=n_qubits)]
@@ -67,25 +68,26 @@ if __name__ == "__main__":
         weights = get_pauli_weights(n_qubits, identity_pos=0)
         args = [(n_qubits, weights)] * TRIAL_COUNT
         c_list = []
-        NUM_OF_ZEROS = 0
-        MAX_RATIO = 0
-        MIN_RATIO = float('inf')
+        num_of_zeros = 0
+        max_ratio = 0
+        min_ratio = float('inf')
         with concurrent.futures.ProcessPoolExecutor() as executor:
             #results = list(tqdm(executor.map(compute_c_for_operator, args), total=TRIAL_COUNT))
             results = list(tqdm(executor.map(compute_c_for_weights, args), total=TRIAL_COUNT))
         for c in results:
             if c is None:
-                NUM_OF_ZEROS += 1
+                num_of_zeros += 1
                 continue
             c_list.append(c)
-            MAX_RATIO = max(MAX_RATIO, c)
-            MIN_RATIO = min(MIN_RATIO, c)
+            max_ratio = max(max_ratio, c)
+            min_ratio = min(min_ratio, c)
         c_list_nqbits[n_qubits] = c_list
-        max_ratio_nqbits[n_qubits] = MAX_RATIO
-        number_of_zeros_nqbits[n_qubits] = NUM_OF_ZEROS
-        min_ratio_nqbits[n_qubits] = MIN_RATIO
+        max_ratio_nqbits[n_qubits] = max_ratio
+        number_of_zeros_nqbits[n_qubits] = num_of_zeros
+        min_ratio_nqbits[n_qubits] = min_ratio
     # plot histogram of c values
     fig, axs = plt.subplots(2, 3, figsize=(15, 10))
+    fig.suptitle("Plot")
     axs = axs.flatten()
     for n_qubits in range(1, 7):
         res=axs[n_qubits-1].hist(c_list_nqbits[n_qubits], bins=100, alpha=0.7, color='blue')
@@ -110,3 +112,7 @@ if __name__ == "__main__":
         print(f"Max ratio H/I: {max_ratio:.4f}")
         print(f"Min ratio H/I: {min_ratio:.4f}")
         print(f"Number of zeros I: {number_of_zeros}")
+
+if __name__ == "__main__":
+    print("--- Testing the Conjecture: H(O) <= c * I(O) ---")
+    test()
