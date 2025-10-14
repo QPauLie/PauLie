@@ -1,6 +1,7 @@
 """
 Class for a set/collection of Pauli strings with various features
 """
+from random import randint
 from itertools import combinations
 from typing import Self, Generator
 import numpy as np
@@ -227,9 +228,9 @@ class PauliStringCollection:
         for x,y in combinations(self.generators, r=2):
             if not x|y:
                 anti_commute_count += 1
-        n = len(self.generators)
-        n_com = n*(n-1)/2
-        return anti_commute_count / n_com
+        #n = len(self.generators)
+        #n_com = n*(n-1)/2
+        return anti_commute_count
 
     def get_commutants(self) -> 'PauliStringCollection':
         """
@@ -613,8 +614,8 @@ class PauliStringCollection:
 
     def find(self, pauli_string: PauliString) -> int:
         """Find index pauli string in collection"""
-        for i in enumerate(self.generators):
-            if self.generators[i] == pauli_string:
+        for i, p in enumerate(self.generators):
+            if p == pauli_string:
                 return i
         return -1
 
@@ -642,3 +643,68 @@ class PauliStringCollection:
         """ list conections"""
         return [(x, y, len(x.get_anti_commutants(self)), len(y.get_anti_commutants(self)))
                for x,y in combinations(self.generators, r=2) if not x|y]
+
+    def _get_delta(self, generators: Self, number_connections:int)->int:
+        """get delta connections"""
+        return number_connections - generators.get_anticommutation_pair()
+
+    def find_generators_with_connection(self, number_connections:int)->Self:
+        """Get generators with connections"""
+        generators = self.copy().get_canonic_vertices()
+        max_iter = number_connections//2
+        i = 0
+        while i < max_iter:
+            delta = self._get_delta(generators, number_connections)
+            if delta == 0:
+                break
+            delta_min = delta
+            current_generators = generators.copy()
+            for connections in generators.list_connections():
+                gx = generators.copy()
+                gy = generators.copy()
+                x = connections[0]
+                y = connections[1]
+
+                gx.contract(x,y)
+                gy.contract(y, x)
+                delta_x = self._get_delta(gx, number_connections)
+                delta_y = self._get_delta(gy, number_connections)
+                if abs(delta_x) < abs(delta_y):
+                    if delta_x < 0:
+                        continue
+
+                    if abs(delta_min) > abs(delta_x):
+                        current_generators = gx
+                        delta_min = abs(delta_x)
+                else:
+                    if delta_y < 0:
+                        continue
+
+                    if abs(delta_min) > abs(delta_y):
+                        current_generators = gy
+                        delta_min = abs(delta_y)
+            if delta == delta_min:
+                list_connections = generators.list_connections()
+                while True:
+                    index = randint(0, i)
+                    connections = list_connections[index]
+                    gx = generators.copy()
+                    gy = generators.copy()
+                    x = connections[0]
+                    y = connections[1]
+
+                    gx.contract(x,y)
+                    gy.contract(y, x)
+                    delta_x = self._get_delta(gx, number_connections)
+                    delta_y = self._get_delta(gy, number_connections)
+                    if delta_x > 0:
+                        current_generators = gx
+                        break
+                    if delta_x > 0:
+                        current_generators = gy
+                        break
+
+            generators = current_generators
+
+            i += 1
+        return generators
