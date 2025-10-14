@@ -14,10 +14,10 @@ CODEC = {
     "Z": bitarray([0, 1]),
 }
 
-Si = np.array([[1,0],[0,1]])
-Sx = np.array([[0,1],[1,0]])
-Sy = np.array([[0,-1j],[1j,0]])
-Sz = np.array([[1,0],[0,-1]])
+SI = np.array([[1,0],[0,1]])
+SX = np.array([[0,1],[1,0]])
+SY = np.array([[0,-1j],[1j,0]])
+SZ = np.array([[1,0],[0,-1]])
 
 class PauliString:
     """Representation of a Pauli string as a bitarray."""
@@ -443,13 +443,13 @@ class PauliString:
         """
         match v:
             case "I":
-                return Si
+                return SI
             case "X":
-                return Sx
+                return SX
             case "Y":
-                return Sy
+                return SY
             case "Z":
-                return Sz
+                return SZ
 
     def get_matrix(self) -> np.array:
         """
