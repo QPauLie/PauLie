@@ -666,7 +666,7 @@ class PauliStringCollection:
                 y = connections[1]
 
                 gx.contract(x,y)
-                gy.contract(y, x)
+                gy.contract(y,x)
                 delta_x = self._get_delta(gx, number_connections)
                 delta_y = self._get_delta(gy, number_connections)
                 if abs(delta_x) < abs(delta_y):
