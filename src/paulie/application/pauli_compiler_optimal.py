@@ -1,9 +1,9 @@
-"""
+﻿# pylint: disable=line-too-long,invalid-name,missing-function-docstring,missing-class-docstring,superfluous-parens`n"""  # pylint: disable=line-too-long,invalid-name,missing-function-docstring,missing-class-docstring,superfluous-parens
 Optimal Pauli Compiler (Algorithm from arXiv:2408.03294) implemented using PauLie types.
 
 API overview:
 - OptimalPauliCompiler(k_left: int, n_total: int).compile(V_left: PauliString, W_right: PauliString) -> list[PauliString]
-  Returns a sequence G in PauLie orientation: nested_adjoint(G[:-1], G[-1]) = V ⊗ W.
+  Returns a sequence G in PauLie orientation: nested_adjoint(G[:-1], G[-1]) = V âŠ— W.
 - compile_target(target: PauliString, k_left: int) -> list[PauliString]
 
 This module does not replace the existing simple pauli_compiler; it provides an
@@ -68,17 +68,18 @@ def _sequence_to_paulie_orientation(G: list[PauliString]) -> list[PauliString]:
     return ops_rev + [base]
 
 
-def left_A_minimal(k: int) -> list[PauliString]:
-    # {Xi, Zi} for i=0..k-1 plus Z...Z on all k
-    A: list[PauliString] = []
+def left_a_minimal(k: int) -> list[PauliString]:
+    """Return minimal adjoint-universal set on the left: {Xi, Zi} plus Z...Z."""
+    a_ops: list[PauliString] = []
     for i in range(k):
-        A.append(_single(k, i, "X"))
-        A.append(_single(k, i, "Z"))
+        a_ops.append(_single(k, i, "X"))
+        a_ops.append(_single(k, i, "Z"))
     zall = get_pauli_string("Z" * k)
-    A.append(zall)
-    return A
+    a_ops.append(zall)
+    return a_ops
 
-def choose_U_for_B(k: int) -> PauliString:
+def choose_u_for_b(k: int) -> PauliString:
+    """Choose the left tag operator used for coupling to right-side B's."""
     return _single(k, 0, "X")
 
 def _all_left_paulis(k: int) -> list[PauliString]:
@@ -109,21 +110,21 @@ class SubsystemCompiler:
         if cfg.k_left < 2:
             raise ValueError("k_left must be >= 2 for the Pauli Compiler algorithm")
         self.k = cfg.k_left
-        self.N = cfg.n_total
-        self.n_right = self.N - self.k
-        self.U_tag = choose_U_for_B(self.k)
+        self.n_total = cfg.n_total
+        self.n_right = self.n_total - self.k
+        self.U_tag = choose_u_for_b(self.k)
         self.left_pool = _all_left_paulis(self.k)
 
-    def extend_left(self, A_left: PauliString) -> PauliString:
-        return _tensor(A_left, get_identity(self.n_right))
+    def extend_left(self, a_left: PauliString) -> PauliString:
+        return _tensor(a_left, get_identity(self.n_right))
 
-    def extend_pair(self, U_left: PauliString, B_right: PauliString) -> PauliString:
-        return _tensor(U_left, B_right)
+    def extend_pair(self, u_left: PauliString, b_right: PauliString) -> PauliString:
+        return _tensor(u_left, b_right)
 
-    def factor_W_orders(self, W_right: PauliString) -> list[list[tuple[PauliString, PauliString]]]:
-        assert len(W_right) == self.n_right
+    def factor_w_orders(self, w_right: PauliString) -> list[list[tuple[PauliString, PauliString]]]:
+        assert len(w_right) == self.n_right
         per_site_opts: list[list[list[PauliString]]] = []
-        wstr = str(W_right)
+        wstr = str(w_right)
         for j, ch in enumerate(wstr):
             if ch == "Y":
                 opt1 = [_single(self.n_right, j, "X"), _single(self.n_right, j, "Z")]
@@ -148,56 +149,61 @@ class SubsystemCompiler:
         Ui = self.U_tag
         return [[(Ui, b) for b in flat] for flat in sequences]
 
-    def _choose_A1_A2(self, U: PauliString) -> tuple[PauliString, PauliString]:
+    def _choose_a1_a2(self, u_op: PauliString) -> tuple[PauliString, PauliString]:
         for a1 in self.left_pool:
-            if _commutes(a1, U):
+            if _commutes(a1, u_op):
                 continue
             for a2 in self.left_pool:
                 if a2 is a1:
                     continue
-                if _commutes(a2, U):
+                if _commutes(a2, u_op):
                     continue
                 if _commutes(a1, a2):
                     return a1, a2
         raise RuntimeError("Failed to find A1,A2 in iP_k^*.")
 
-    def _choose_Aprime(self, Ui: PauliString, P_left: PauliString) -> PauliString:
+    def _choose_aprime(self, u_i: PauliString, p_left: PauliString) -> PauliString:
         for a in self.left_pool:
-            if (not _commutes(a, Ui)) and _commutes(a, P_left):
+            if not _commutes(a, u_i) and _commutes(a, p_left):
                 return a
         raise RuntimeError("Failed to find A' in iP_k^*.")
 
-    def _rest_full_after(self, Ui_Bi: list[tuple[PauliString, PauliString]], i: int, H: list[PauliString]) -> tuple[PauliString, PauliString]:
-        P_left = get_identity(self.k)
-        for j in range(i+1, len(Ui_Bi)):
-            P_left = _multiply(P_left, Ui_Bi[j][0])
-        for A in H:
-            P_left = _multiply(P_left, A)
-        P_right = get_identity(self.n_right)
-        for j in range(i+1, len(Ui_Bi)):
-            P_right = _multiply(P_right, Ui_Bi[j][1])
-        return P_left, P_right
+    def _rest_full_after(
+        self,
+        ui_bi: list[tuple[PauliString, PauliString]],
+        i: int,
+        helpers: list[PauliString],
+    ) -> tuple[PauliString, PauliString]:
+        p_left = get_identity(self.k)
+        for j in range(i + 1, len(ui_bi)):
+            p_left = _multiply(p_left, ui_bi[j][0])
+        for a_op in helpers:
+            p_left = _multiply(p_left, a_op)
+        p_right = get_identity(self.n_right)
+        for j in range(i + 1, len(ui_bi)):
+            p_right = _multiply(p_right, ui_bi[j][1])
+        return p_left, p_right
 
-    def subsystem_compiler(self, W_right: PauliString) -> list[PauliString]:
-        assert len(W_right) == self.n_right
-        for Ui_Bi in self.factor_W_orders(W_right):
-            if not Ui_Bi:
+    def subsystem_compiler(self, w_right: PauliString) -> list[PauliString]:
+        assert len(w_right) == self.n_right
+        for ui_bi in self.factor_w_orders(w_right):
+            if not ui_bi:
                 return []
-            r = len(Ui_Bi)
+            r = len(ui_bi)
             i = r - 1
-            G: list[PauliString] = [self.extend_pair(Ui_Bi[-1][0], Ui_Bi[-1][1])]
+            G: list[PauliString] = [self.extend_pair(ui_bi[-1][0], ui_bi[-1][1])]
             H: list[PauliString] = []
             helper_used_for_i: dict[int, int] = {}
             while i >= 1:
-                Ui, Bi = Ui_Bi[i]
-                P_left, P_right = self._rest_full_after(Ui_Bi, i, H)
+                Ui, Bi = ui_bi[i]
+                P_left, P_right = self._rest_full_after(ui_bi, i, H)
                 if _multiply(P_left, Ui).is_identity():
                     cnt = helper_used_for_i.get(i, 0)
                     if cnt >= 1:
                         G.append(self.extend_pair(Ui, Bi))
                         i -= 1
                         continue
-                    A1, A2 = self._choose_A1_A2(Ui)
+                    A1, A2 = self._choose_a1_a2(Ui)
                     H = [A1, A2]
                     helper_used_for_i[i] = cnt + 1
                     G.append(self.extend_left(A1))
@@ -211,7 +217,7 @@ class SubsystemCompiler:
                         G.append(self.extend_pair(Ui, Bi))
                         i -= 1
                         continue
-                    A_prime = self._choose_Aprime(Ui, P_left)
+                    A_prime = self._choose_aprime(Ui, P_left)
                     H = [A_prime]
                     helper_used_for_i[i] = cnt + 1
                     G.append(self.extend_left(A_prime))
@@ -225,7 +231,7 @@ class SubsystemCompiler:
 def _key(p: PauliString) -> str:
     return str(p)
 
-def left_map_over_A(V_from: PauliString, V_to: PauliString, A: list[PauliString]) -> list[PauliString]:
+def left_map_over_a(V_from: PauliString, V_to: PauliString, A: list[PauliString]) -> list[PauliString]:
     if _key(V_from) == _key(V_to):
         return []
     start_k = _key(V_from)
@@ -269,19 +275,19 @@ class OptimalPauliCompiler:
         if cfg.k_left < 2:
             raise ValueError("k_left must be >= 2 for the Pauli Compiler algorithm")
         self.k = cfg.k_left
-        self.N = cfg.n_total
-        self.n_right = self.N - self.k
-        self.A_left = left_A_minimal(self.k)
-        self.U_tag = choose_U_for_B(self.k)
-        self.sub = SubsystemCompiler(SubsystemCompilerConfig(k_left=self.k, n_total=self.N))
+        self.n_total = cfg.n_total
+        self.n_right = self.n_total - self.k
+        self.A_left = left_a_minimal(self.k)
+        self.U_tag = choose_u_for_b(self.k)
+        self.sub = SubsystemCompiler(SubsystemCompilerConfig(k_left=self.k, n_total=self.n_total))
         self.fallback_depth = cfg.fallback_depth
         self.fallback_nodes = cfg.fallback_nodes
 
-    def extend_left(self, A_left: PauliString) -> PauliString:
-        return _tensor(A_left, get_identity(self.n_right))
+    def extend_left(self, a_left: PauliString) -> PauliString:
+        return _tensor(a_left, get_identity(self.n_right))
 
-    def _left_factor_from_sequence(self, G: list[PauliString]) -> PauliString:
-        res = _nested_commutator_result(G)
+    def _left_factor_from_sequence(self, ops: list[PauliString]) -> PauliString:
+        res = _nested_commutator_result(ops)
         if res is None:
             return _single(self.k, 0, "X")
         return _left_part(res, self.k)
@@ -428,7 +434,7 @@ class OptimalPauliCompiler:
         return None
 
     def _bfs_case3(self, W: PauliString, depth_cap: int, node_cap: int) -> list[PauliString] | None:
-        S = construct_universal_set(self.N, self.k)
+        S = construct_universal_set(self.n_total, self.k)
         target_left = get_identity(self.k)
         target_right = W
         def key_of(p: PauliString | None) -> str | None:
@@ -464,10 +470,10 @@ class OptimalPauliCompiler:
         assert len(V_left) == self.k and len(W_right) == self.n_right
         V, W = V_left, W_right
         if W.is_identity():
-            Aset = left_A_minimal(self.k)
+            Aset = left_a_minimal(self.k)
             for As in Aset:
                 try:
-                    seqA = left_map_over_A(As, V, Aset)
+                    seqA = left_map_over_a(As, V, Aset)
                 except RuntimeError:
                     continue
                 G = [self.extend_left(As)] + [self.extend_left(a) for a in seqA]
@@ -478,8 +484,8 @@ class OptimalPauliCompiler:
         if not V.is_identity():
             Gp = self.sub.subsystem_compiler(W)
             Vp = self._left_factor_from_sequence(Gp)
-            Aset = left_A_minimal(self.k)
-            seq = left_map_over_A(Vp, V, Aset)
+            Aset = left_a_minimal(self.k)
+            seq = left_map_over_a(Vp, V, Aset)
             candidates = [
                 list(Gp) + [self.extend_left(a) for a in seq],
                 [self.extend_left(a) for a in seq] + list(Gp),
@@ -490,13 +496,13 @@ class OptimalPauliCompiler:
                 if res is not None and str(_left_part(res, self.k)) == str(V) and str(_right_part(res, self.k)) == str(W):
                     return _sequence_to_paulie_orientation(G)
             return _sequence_to_paulie_orientation(list(Gp) + [self.extend_left(a) for a in seq])
-        Aset = left_A_minimal(self.k)
+        Aset = left_a_minimal(self.k)
         for W1, W2 in self._candidate_decompositions(W):
             G1 = self.sub.subsystem_compiler(W1)
             G2 = self.sub.subsystem_compiler(W2)
             V1p = self._left_factor_from_sequence(G1)
             V2p = self._left_factor_from_sequence(G2)
-            Aseq = left_map_over_A(V2p, V1p, Aset)
+            Aseq = left_map_over_a(V2p, V1p, Aset)
             Aext = [self.extend_left(a) for a in Aseq]
             seq = self._case3_best_reordering(G1, G2, Aext, W)
             if seq is not None:
@@ -513,17 +519,17 @@ class OptimalPauliCompiler:
         G2 = self.sub.subsystem_compiler(W2)
         V1p = self._left_factor_from_sequence(G1)
         V2p = self._left_factor_from_sequence(G2)
-        Aseq = left_map_over_A(V2p, V1p, left_A_minimal(self.k))
+        Aseq = left_map_over_a(V2p, V1p, left_a_minimal(self.k))
         Aext = [self.extend_left(a) for a in Aseq]
         return _sequence_to_paulie_orientation(list(reversed(G1)) + Aext + list(reversed(G2)))
 
 
-def construct_universal_set(N: int, k: int) -> list[PauliString]:
-    if not (1 <= k < N):
+def construct_universal_set(n_total: int, k: int) -> list[PauliString]:
+    if not (1 <= k < n_total):
         raise ValueError("Require 1 <= k < N")
-    A_k = left_A_minimal(k)
-    n_right = N - k
-    U = choose_U_for_B(k)
+    A_k = left_a_minimal(k)
+    n_right = n_total - k
+    U = choose_u_for_b(k)
     right_B = [_single(n_right, j, "X") for j in range(n_right)] + [_single(n_right, j, "Z") for j in range(n_right)]
     A_prime = [_tensor(A, get_identity(n_right)) for A in A_k]
     B_prime = [_tensor(U, b) for b in right_B]
