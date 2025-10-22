@@ -29,7 +29,7 @@ ruff = "^0.9.4"
 sphinx = "^8.1.3"
 
 [tool.ruff]
-exclude = ["submodules", "src/paulie/application/pauli_compiler_optimal.py"]
+exclude = ["submodules"]
 line-length = 120
 
 [build-system]

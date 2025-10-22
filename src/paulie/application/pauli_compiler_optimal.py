@@ -2,24 +2,14 @@
 Optimal PauliCompiler
 """
 # noqa
-from __future__ import annotations
-
 from dataclasses import dataclass
 from itertools import permutations
 from collections import deque
 from typing import Iterable
 
 from paulie.common.pauli_string_bitarray import PauliString
-from paulie.common.pauli_string_factory import get_identity, get_pauli_string
+from paulie.common.pauli_string_factory import get_identity, get_pauli_string, get_single
 
-
-def _single(n: int, i: int, label: str) -> PauliString:
-    """
-    Get a Pauli string with a single value at position
-    """
-    p = get_identity(n)
-    p[i] = label
-    return p
 
 def _tensor(left: PauliString, right: PauliString) -> PauliString:
     """
@@ -93,15 +83,15 @@ def left_a_minimal(k: int) -> list[PauliString]:
     """Return minimal adjoint-universal set on the left: {Xi, Zi} plus Z...Z."""
     a_ops: list[PauliString] = []
     for i in range(k):
-        a_ops.append(_single(k, i, "X"))
-        a_ops.append(_single(k, i, "Z"))
+        a_ops.append(get_single(k, i, "X"))
+        a_ops.append(get_single(k, i, "Z"))
     zall = get_pauli_string("Z" * k)
     a_ops.append(zall)
     return a_ops
 
 def choose_u_for_b(k: int) -> PauliString:
     """Choose the left tag operator used for coupling to right-side B's."""
-    return _single(k, 0, "X")
+    return get_single(k, 0, "X")
 
 def _all_left_paulis(k: int) -> list[PauliString]:
     """ Enumerate all non-identity Pauli strings of length k"""
@@ -158,13 +148,13 @@ class SubsystemCompiler:
         wstr = str(w_right)
         for j, ch in enumerate(wstr):
             if ch == "Y":
-                opt1 = [_single(self.n_right, j, "X"), _single(self.n_right, j, "Z")]
-                opt2 = [_single(self.n_right, j, "Z"), _single(self.n_right, j, "X")]
+                opt1 = [get_single(self.n_right, j, "X"), get_single(self.n_right, j, "Z")]
+                opt2 = [get_single(self.n_right, j, "Z"), get_single(self.n_right, j, "X")]
                 per_site_opts.append([opt1, opt2])
             elif ch == "X":
-                per_site_opts.append([[ _single(self.n_right, j, "X") ]])
+                per_site_opts.append([[ get_single(self.n_right, j, "X") ]])
             elif ch == "Z":
-                per_site_opts.append([[ _single(self.n_right, j, "Z") ]])
+                per_site_opts.append([[ get_single(self.n_right, j, "Z") ]])
             else:
                 per_site_opts.append([[]])
         sequences: list[list[PauliString]] = []
@@ -332,7 +322,7 @@ class OptimalPauliCompiler:
         """Left factor from sequence"""
         res = _nested_commutator_result(ops)
         if res is None:
-            return _single(self.k, 0, "X")
+            return get_single(self.k, 0, "X")
         return _left_part(res, self.k)
 
     def _candidate_decompositions(self, W: PauliString) -> list[tuple[PauliString, PauliString]]:
@@ -345,7 +335,7 @@ class OptimalPauliCompiler:
                 continue
             labels = ["X", "Z"] if ch == "Y" else (["Z"] if ch == "X" else ["X"])
             for lab in labels:
-                W1 = _single(n_right, j, lab)
+                W1 = get_single(n_right, j, lab)
                 W2 = _multiply(W1, W)
                 if not _commutes(W1, W2):
                     cand.append((W1, W2))
@@ -390,7 +380,7 @@ class OptimalPauliCompiler:
         return rec(0, 0, 0, [])
 
     def _all_interleavings_preserving4(self, A: list[PauliString], B: list[PauliString],
-    C: list[PauliString], D: list[PauliString], cap: int = 120000) -> Iterable[list[PauliString]]:
+    C: list[PauliString], D: list[PauliString], cap: int = 120_000) -> Iterable[list[PauliString]]:
         """All interleavings preserving 4"""
         count = 0
         NA, NB, NC, ND = len(A), len(B), len(C), len(D)
@@ -576,7 +566,7 @@ class OptimalPauliCompiler:
         wstr = str(W)
         j = next(i for i, ch in enumerate(wstr) if ch != "I")
         lab = "X" if wstr[j] == "Z" else ("Z" if wstr[j] == "X" else "X")
-        W1 = _single(self.n_right, j, lab)
+        W1 = get_single(self.n_right, j, lab)
         W2 = _multiply(W1, W)
         G1 = self.sub.subsystem_compiler(W1)
         G2 = self.sub.subsystem_compiler(W2)
@@ -594,8 +584,8 @@ def construct_universal_set(n_total: int, k: int) -> list[PauliString]:
     A_k = left_a_minimal(k)
     n_right = n_total - k
     U = choose_u_for_b(k)
-    right_B = ([_single(n_right, j, "X") for j in range(n_right)]
-    + [_single(n_right, j, "Z") for j in range(n_right)])
+    right_B = ([get_single(n_right, j, "X") for j in range(n_right)]
+    + [get_single(n_right, j, "Z") for j in range(n_right)])
     A_prime = [_tensor(A, get_identity(n_right)) for A in A_k]
     B_prime = [_tensor(U, b) for b in right_B]
     return A_prime + B_prime
