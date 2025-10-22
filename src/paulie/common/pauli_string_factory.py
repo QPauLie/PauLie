@@ -16,6 +16,17 @@ def get_identity(n: int) -> PauliString:
     """
     return PauliString(n=n)
 
+def get_single(n: int, i: int, label: str) -> PauliString:
+    """
+    Get a Pauli string with a single value at position
+    Args: n - lenght of Pauli string
+          i - position
+          label - PauliString in single position
+    """
+    p = get_identity(n)
+    p[i] = label
+    return p
+
 def get_last(n:int) -> PauliString:
     """
     Get an all Y of a given length
