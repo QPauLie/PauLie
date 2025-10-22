@@ -1,4 +1,7 @@
-﻿# noqa
+﻿"""
+Optimal PauliCompiler
+"""
+# noqa
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -11,31 +14,57 @@ from paulie.common.pauli_string_factory import get_identity, get_pauli_string
 
 
 def _single(n: int, i: int, label: str) -> PauliString:
+    """
+    Get a Pauli string with a single value at position
+    """
     p = get_identity(n)
     p[i] = label
     return p
 
 def _tensor(left: PauliString, right: PauliString) -> PauliString:
+    """
+    Get tensor
+    """
     return left.tensor(right)
 
 def _multiply(a: PauliString, b: PauliString) -> PauliString:
+    """
+    Multiply two PauliStrings
+    """
     return a @ b
 
 def _commutes(a: PauliString, b: PauliString) -> bool:
+    """
+    Check on commutes two PauliStrings
+    """
     return a | b
 
 def _left_part(p: PauliString, k: int) -> PauliString:
+    """
+    Get left substring of PauliString
+    """
     return p.get_substring(0, k)
 
 def _right_part(p: PauliString, k: int) -> PauliString:
+    """
+    Get right substring of PauliString
+    """
     return p.get_substring(k, len(p) - k)
 
 def _ad_apply(A: PauliString, B: PauliString | None) -> PauliString | None:
+    """
+    Compute the adjoint map ad_A(B) = [A,B]
+    Returns None if the commutator is zero (i.e., if A and B commute)
+    Otherwise returns a PauliString proportional to the commutator
+    """
     if B is None:
         return None
     return None if _commutes(A, B) else _multiply(A, B)
 
 def _nested_commutator_result(G: list[PauliString]) -> PauliString | None:
+    """
+    Get nested commutator
+    """
     if not G:
         return None
     cur: PauliString | None = G[0]
@@ -46,10 +75,12 @@ def _nested_commutator_result(G: list[PauliString]) -> PauliString | None:
     return cur
 
 def _sequence_to_paulie_orientation(G: list[PauliString]) -> list[PauliString]:
-    # PauLie nested_adjoint iterates operators in reversed order.
-    # Our G is [base, A1, A2, ..., Am] where main.py applies A1 then A2 ... then Am.
-    # To make nested_adjoint(seq[:-1], seq[-1]) apply in the same order, we must
-    # return operators reversed: [Am, ..., A2, A1, base].
+    """
+    PauLie nested_adjoint iterates operators in reversed order.
+    Our G is [base, A1, A2, ..., Am] where main.py applies A1 then A2 ... then Am.
+    To make nested_adjoint(seq[:-1], seq[-1]) apply in the same order, we must
+    return operators reversed: [Am, ..., A2, A1, base].
+    """
     if not G:
         return []
     base = G[0]
@@ -73,7 +104,7 @@ def choose_u_for_b(k: int) -> PauliString:
     return _single(k, 0, "X")
 
 def _all_left_paulis(k: int) -> list[PauliString]:
-    # Enumerate all non-identity Pauli strings of length k
+    """ Enumerate all non-identity Pauli strings of length k"""
     out: list[PauliString] = []
     labels = ["I", "X", "Y", "Z"]
     def rec(i: int, cur: list[str]):
@@ -92,11 +123,18 @@ def _all_left_paulis(k: int) -> list[PauliString]:
 
 @dataclass
 class SubsystemCompilerConfig:
+    """Config of subsystem compiler"""
     k_left: int
     n_total: int
 
 class SubsystemCompiler:
+    """
+    subsystem compiler
+    """
     def __init__(self, cfg: SubsystemCompilerConfig):
+        """
+        constructor
+        """
         if cfg.k_left < 2:
             raise ValueError("k_left must be >= 2 for the Pauli Compiler algorithm")
         self.k = cfg.k_left
@@ -106,12 +144,15 @@ class SubsystemCompiler:
         self.left_pool = _all_left_paulis(self.k)
 
     def extend_left(self, a_left: PauliString) -> PauliString:
+        """Extend left"""
         return _tensor(a_left, get_identity(self.n_right))
 
     def extend_pair(self, u_left: PauliString, b_right: PauliString) -> PauliString:
+        """Extend pair"""
         return _tensor(u_left, b_right)
 
     def factor_w_orders(self, w_right: PauliString) -> list[list[tuple[PauliString, PauliString]]]:
+        """factor w orders"""
         assert len(w_right) == self.n_right
         per_site_opts: list[list[list[PauliString]]] = []
         wstr = str(w_right)
@@ -140,6 +181,7 @@ class SubsystemCompiler:
         return [[(Ui, b) for b in flat] for flat in sequences]
 
     def _choose_a1_a2(self, u_op: PauliString) -> tuple[PauliString, PauliString]:
+        """choose a1  or a2"""
         for a1 in self.left_pool:
             if _commutes(a1, u_op):
                 continue
@@ -153,6 +195,7 @@ class SubsystemCompiler:
         raise RuntimeError("Failed to find A1,A2 in iP_k^*.")
 
     def _choose_aprime(self, u_i: PauliString, p_left: PauliString) -> PauliString:
+        """choose aprime"""
         for a in self.left_pool:
             if not _commutes(a, u_i) and _commutes(a, p_left):
                 return a
@@ -164,6 +207,7 @@ class SubsystemCompiler:
         i: int,
         helpers: list[PauliString],
     ) -> tuple[PauliString, PauliString]:
+        """rest full after"""
         p_left = get_identity(self.k)
         for j in range(i + 1, len(ui_bi)):
             p_left = _multiply(p_left, ui_bi[j][0])
@@ -175,6 +219,7 @@ class SubsystemCompiler:
         return p_left, p_right
 
     def subsystem_compiler(self, w_right: PauliString) -> list[PauliString]:
+        """Subsystem compiler"""
         assert len(w_right) == self.n_right
         for ui_bi in self.factor_w_orders(w_right):
             if not ui_bi:
@@ -219,9 +264,12 @@ class SubsystemCompiler:
 
 
 def _key(p: PauliString) -> str:
+    """Convert PauliString to string"""
     return str(p)
 
-def left_map_over_a(V_from: PauliString, V_to: PauliString, A: list[PauliString]) -> list[PauliString]:
+def left_map_over_a(V_from: PauliString, V_to: PauliString, A: list[PauliString]
+) -> list[PauliString]:
+    """left map over a"""
     if _key(V_from) == _key(V_to):
         return []
     start_k = _key(V_from)
@@ -255,13 +303,16 @@ def left_map_over_a(V_from: PauliString, V_to: PauliString, A: list[PauliString]
 
 @dataclass
 class PauliCompilerConfig:
+    """Config of PauliCompiler"""
     k_left: int
     n_total: int
     fallback_depth: int = 8
     fallback_nodes: int = 200000
 
 class OptimalPauliCompiler:
+    """Optimal PauliCompiler"""
     def __init__(self, cfg: PauliCompilerConfig):
+        """Constructor"""
         if cfg.k_left < 2:
             raise ValueError("k_left must be >= 2 for the Pauli Compiler algorithm")
         self.k = cfg.k_left
@@ -274,15 +325,18 @@ class OptimalPauliCompiler:
         self.fallback_nodes = cfg.fallback_nodes
 
     def extend_left(self, a_left: PauliString) -> PauliString:
+        """Extend left"""
         return _tensor(a_left, get_identity(self.n_right))
 
     def _left_factor_from_sequence(self, ops: list[PauliString]) -> PauliString:
+        """Left factor from sequence"""
         res = _nested_commutator_result(ops)
         if res is None:
             return _single(self.k, 0, "X")
         return _left_part(res, self.k)
 
     def _candidate_decompositions(self, W: PauliString) -> list[tuple[PauliString, PauliString]]:
+        """candidate to decompositions"""
         cand: list[tuple[PauliString, PauliString]] = []
         wstr = str(W)
         n_right = len(wstr)
@@ -304,7 +358,9 @@ class OptimalPauliCompiler:
                 uniq.append((a, b))
         return uniq
 
-    def _all_interleavings_preserving(self, A: list[PauliString], B: list[PauliString], C: list[PauliString], cap: int = 60000) -> Iterable[list[PauliString]]:
+    def _all_interleavings_preserving(self, A: list[PauliString], B: list[PauliString],
+    C: list[PauliString], cap: int = 60000) -> Iterable[list[PauliString]]:
+        """All interleavings preserving"""
         count = 0
         NA, NB, NC = len(A), len(B), len(C)
         def rec(i: int, j: int, k: int, prefix: list[PauliString]):
@@ -333,7 +389,9 @@ class OptimalPauliCompiler:
                 prefix.pop()
         return rec(0, 0, 0, [])
 
-    def _all_interleavings_preserving4(self, A: list[PauliString], B: list[PauliString], C: list[PauliString], D: list[PauliString], cap: int = 120000) -> Iterable[list[PauliString]]:
+    def _all_interleavings_preserving4(self, A: list[PauliString], B: list[PauliString],
+    C: list[PauliString], D: list[PauliString], cap: int = 120000) -> Iterable[list[PauliString]]:
+        """All interleavings preserving 4"""
         count = 0
         NA, NB, NC, ND = len(A), len(B), len(C), len(D)
         def rec(i: int, j: int, k: int, l_idx: int, prefix: list[PauliString]):
@@ -368,7 +426,9 @@ class OptimalPauliCompiler:
                 prefix.pop()
         return rec(0, 0, 0, 0, [])
 
-    def _case3_best_reordering(self, G1: list[PauliString], G2: list[PauliString], Aext: list[PauliString], W: PauliString) -> list[PauliString] | None:
+    def _case3_best_reordering(self, G1: list[PauliString], G2: list[PauliString],
+    Aext: list[PauliString], W: PauliString) -> list[PauliString] | None:
+        """case3 best reordering"""
         k = self.k
         R = list
         G1r, G2r = list(reversed(G1)), list(reversed(G2))
@@ -382,7 +442,8 @@ class OptimalPauliCompiler:
         ]
         for seq in candidates:
             res = _nested_commutator_result(seq)
-            if res is not None and str(_left_part(res, k)) == "I"*k and str(_right_part(res, k)) == str(W):
+            if (res is not None and str(_left_part(res, k)) == "I"*k
+            and str(_right_part(res, k)) == str(W)):
                 return seq
         blocks = [G1, G2, Aext]
         for perm in permutations(range(3)):
@@ -394,14 +455,16 @@ class OptimalPauliCompiler:
                             + (list(reversed(B1)) if r1 else list(B1)) \
                             + (list(reversed(B2)) if r2 else list(B2))
                         res = _nested_commutator_result(seq)
-                        if res is not None and str(_left_part(res, k)) == "I"*k and str(_right_part(res, k)) == str(W):
+                        if (res is not None and str(_left_part(res, k)) == "I"*k
+                        and str(_right_part(res, k)) == str(W)):
                             return seq
         for g1 in (G1, list(reversed(G1))):
             for g2 in (G2, list(reversed(G2))):
                 for a in (Aext, list(reversed(Aext))):
                     for seq in self._all_interleavings_preserving(g1, g2, a):
                         res = _nested_commutator_result(seq)
-                        if res is not None and str(_left_part(res, k)) == "I"*k and str(_right_part(res, k)) == str(W):
+                        if (res is not None and str(_left_part(res, k)) == "I"*k
+                        and str(_right_part(res, k)) == str(W)):
                             return seq
         Aopts = (Aext, list(reversed(Aext)))
         for g1 in (G1, G1r):
@@ -415,15 +478,20 @@ class OptimalPauliCompiler:
                             list(a1)+list(g2)+list(a2)+list(g1),
                         ):
                             res = _nested_commutator_result(seq)
-                            if res is not None and str(_left_part(res, k)) == "I"*k and str(_right_part(res, k)) == str(W):
+                            if (res is not None
+                            and str(_left_part(res, k)) == "I"*k
+                            and str(_right_part(res, k)) == str(W)):
                                 return seq
                         for seq in self._all_interleavings_preserving4(g1, g2, a1, a2):
                             res = _nested_commutator_result(seq)
-                            if res is not None and str(_left_part(res, k)) == "I"*k and str(_right_part(res, k)) == str(W):
+                            if (res is not None
+                            and str(_left_part(res, k)) == "I"*k
+                            and str(_right_part(res, k)) == str(W)):
                                 return seq
         return None
 
     def _bfs_case3(self, W: PauliString, depth_cap: int, node_cap: int) -> list[PauliString] | None:
+        """bfs case3"""
         S = construct_universal_set(self.n_total, self.k)
         target_left = get_identity(self.k)
         target_right = W
@@ -457,6 +525,7 @@ class OptimalPauliCompiler:
         return None
 
     def compile(self, V_left: PauliString, W_right: PauliString) -> list[PauliString]:
+        """Compile"""
         assert len(V_left) == self.k and len(W_right) == self.n_right
         V, W = V_left, W_right
         if W.is_identity():
@@ -468,7 +537,9 @@ class OptimalPauliCompiler:
                     continue
                 G = [self.extend_left(As)] + [self.extend_left(a) for a in seqA]
                 res = _nested_commutator_result(G)
-                if res is not None and str(_left_part(res, self.k)) == str(V) and str(_right_part(res, self.k)) == str(W):
+                if (res is not None
+                and str(_left_part(res, self.k)) == str(V)
+                and str(_right_part(res, self.k)) == str(W)):
                     return _sequence_to_paulie_orientation(G)
             raise RuntimeError("Left-only mapping failed.")
         if not V.is_identity():
@@ -483,7 +554,9 @@ class OptimalPauliCompiler:
             ]
             for G in candidates:
                 res = _nested_commutator_result(G)
-                if res is not None and str(_left_part(res, self.k)) == str(V) and str(_right_part(res, self.k)) == str(W):
+                if (res is not None
+                and str(_left_part(res, self.k)) == str(V)
+                and str(_right_part(res, self.k)) == str(W)):
                     return _sequence_to_paulie_orientation(G)
             return _sequence_to_paulie_orientation(list(Gp) + [self.extend_left(a) for a in seq])
         Aset = left_a_minimal(self.k)
@@ -515,20 +588,23 @@ class OptimalPauliCompiler:
 
 
 def construct_universal_set(n_total: int, k: int) -> list[PauliString]:
-    if not (1 <= k < n_total):
+    """Construct universal set"""
+    if not 1 <= k < n_total:
         raise ValueError("Require 1 <= k < N")
     A_k = left_a_minimal(k)
     n_right = n_total - k
     U = choose_u_for_b(k)
-    right_B = [_single(n_right, j, "X") for j in range(n_right)] + [_single(n_right, j, "Z") for j in range(n_right)]
+    right_B = ([_single(n_right, j, "X") for j in range(n_right)]
+    + [_single(n_right, j, "Z") for j in range(n_right)])
     A_prime = [_tensor(A, get_identity(n_right)) for A in A_k]
     B_prime = [_tensor(U, b) for b in right_B]
     return A_prime + B_prime
 
 
 def compile_target(target: PauliString, k_left: int) -> list[PauliString]:
+    """Compile target"""
     n = len(target)
-    if not (1 <= k_left < n):
+    if not 1 <= k_left < n:
         raise ValueError("Require 1 <= k_left < len(target)")
     V = target.get_substring(0, k_left)
     W = target.get_substring(k_left, n - k_left)
