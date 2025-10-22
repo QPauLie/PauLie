@@ -15,6 +15,7 @@ from paulie.application.pauli_compiler_optimal import (
 
 
 def _assert_compiles(target_str: str, k: int) -> None:
+    """Assert compiles"""
     target = get_pauli_string(target_str)
     seq = compile_target(target, k_left=k)
     assert seq, f"Empty sequence for target={target_str}, k={k}"
@@ -25,6 +26,8 @@ def _assert_compiles(target_str: str, k: int) -> None:
 
 
 def test_compile_target_smoke_cases() -> None:
+    """Test compile target smoke cases"""
+
     # (k, N, target)
     cases = [
         (2, 3, "XII"),    # V=X1, W=I
@@ -41,7 +44,10 @@ def test_compile_target_smoke_cases() -> None:
 
 
 def test_class_compile_api() -> None:
-    # One class-based call to ensure V/W API works
+    """
+    Test class compile api
+    One class-based call to ensure V/W API works
+    """
     k, N = 2, 4
     cfg = PauliCompilerConfig(k_left=k, n_total=N)
     opc = OptimalPauliCompiler(cfg)
@@ -55,7 +61,7 @@ def test_class_compile_api() -> None:
 
 
 def test_universal_set_size_minimal() -> None:
+    """Test universal set size minimal"""
     for (k, N) in [(2, 3), (2, 4), (3, 5)]:
         U = construct_universal_set(N, k)
         assert len(U) == 2 * N + 1
-

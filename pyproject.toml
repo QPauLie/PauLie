@@ -61,5 +61,6 @@ disable=[
   'redefined-outer-name',
   'attribute-defined-outside-init',
   'useless-object-inheritance',
-  'too-many-boolean-expressions'
+  'too-many-boolean-expressions',
+  'invalid-name'
 ]
