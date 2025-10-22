@@ -1,4 +1,5 @@
-﻿from __future__ import annotations
+﻿# noqa
+from __future__ import annotations
 
 from dataclasses import dataclass
 from itertools import permutations
