@@ -395,9 +395,16 @@ class Classification:
         """
         Get the dimension of the classified dynamical Lie algebra
         """
-        dim_su = lambda n: n**2-1
-        dim_so = lambda n: n*(n-1)/2
-        dim_sp = lambda n: n*(2*n+1)
+
+        def dim_su(n):
+            return n**2-1
+
+        def dim_so(n):
+            return n*(n-1)/2
+
+        def dim_sp(n):
+            return n*(2*n+1)
+
         dim = 0
         for morph in self.morphs:
             result = morph.get_algebra_properties()
@@ -410,6 +417,8 @@ class Classification:
             if type_algebra == TypeAlgebra.SO:
                 dim+= dim_so(n)
         return dim
+
+
 
     def _inc_morph_generator(self, ms, morphs, morph_generators, current_morph_generators):
         """incriminate the generator"""

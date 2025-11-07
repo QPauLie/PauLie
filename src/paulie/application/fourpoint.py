@@ -24,9 +24,9 @@ def fourpoint(generators: PauliStringCollection,
         r: Pauli string R
         s: Pauli string S
     """
-    l = generators.get_commutants()
+    commutant = generators.get_commutants()
     rp = r@p
     qs = q@s
-    if rp == qs and qs in l:
+    if rp == qs and qs in commutant:
         return average_otoc(generators, p, q)
     return 0
