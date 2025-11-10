@@ -33,7 +33,7 @@ affiliations:
     index: 4
 date: "21 October 2025"
 bibliography: paper.bib
-header-includes: "\input{preamble.tex}"
+header-includes: \input{preamble.tex}
 ---
 
 
@@ -90,8 +90,8 @@ sets with optimal generation rate.
 A state of an isolated physical system is represented at a fixed time $t$ by a
 vector $\ket{\psi}$ in a Hilbert space $\mathcal{H}$, that is, a complex vector
 space endowed with an inner product. The time evolution of the state is
-determined by the Schrödinger equation $ i\frac{d}{dt} \ket{\psi}  = H
-\ket{\psi}$, where we set $\hbar = 1$. $H$ is the Hamiltonian that describes
+determined by the Schrödinger equation $i\frac{d}{dt} \ket{\psi}  = H\ket{\psi}$,
+where we set $\hbar = 1$. $H$ is the Hamiltonian that describes
 the observable corresponding to the total energy of the system. An observable
 is a Hermitian linear map acting on $\mathcal{H}$. The solution to this
 differential equation with initial state $\ket{\psi_0}$ and time-independent
@@ -106,10 +106,10 @@ for some index set $\{l_i\}_{i=1}^{m} \subset  J $. The associated matrix Lie
 algebra $\mathfrak{g}$, that is, a real subspace of complex matrices that is
 closed under the matrix commutator $i \comm{h}{g} =i ( hg-gh)$, is dubbed
 dynamical Lie algebra (DLA). Hence, the elements of $\mathcal{G}$ span all
-elements in $\mathfrak{g}$ through nested commutators, $\mathfrak{g}
-=\text{span}_{\mathbb{R}} \langle \mathcal{G} \rangle_{Lie}$. In case the
-generator set $\mathcal{G}$ consists of tensor products of Pauli matrices
-(Paulistrings), $\mathfrak{g}$  is termed Pauli Lie algebra. 
+elements in $\mathfrak{g}$ through nested commutators,
+$\mathfrak{g}=\text{span}_{\mathbb{R}} \langle \mathcal{G} \rangle_{Lie}$.
+In case the generator set $\mathcal{G}$ consists of tensor products of Pauli
+matrices (Paulistrings), $\mathfrak{g}$  is termed Pauli Lie algebra. 
 
 The classical compact simple Lie algebras are 
 \begin{align}
@@ -125,10 +125,9 @@ where the symplectic form is denoted as
     \end{pmatrix}.
 \end{align}
 
-Considering a system out of $n$ qubits, the Hilbert space is $\mathcal{H} =
-\mathbb{C}^{2^n}$. A generator set that spans all of  $\mathfrak{su}(2^n) $ is
-called universal, and the system is fully controllable. To characterise spin
-chains, we employ the following graph
+Considering a system out of $n$ qubits, the Hilbert space is $\mathcal{H} =\mathbb{C}^{2^n}$.
+A generator set that spans all of  $\mathfrak{su}(2^n)$ is called universal,
+and the system is fully controllable. To characterise spin chains, we employ the following graph
 \begin{definition}\label{def:anti_commutation_graph}
   The anticommutation graph has $\mathcal{G}$ as a node set and the edges are
   between the generators that anticommute $E = \{ (p,q) | [p, q] \neq 0 \}$. 
