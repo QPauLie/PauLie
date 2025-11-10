@@ -214,8 +214,10 @@ a Creative Commons Attribution 4.0 International License (CC BY
   <disp-formula><tex-math><![CDATA[\begin{aligned}
     \ket{\psi(t)} = e^{-ih_{l_m} t_{l_m}} \dots e^{-ih_{l_1} t_{l_1}}  \ket{\psi_0}
   \end{aligned}]]></tex-math></disp-formula> for some index set
-  ${l_i}_{i=1}^{m} J $. The associated matrix Lie algebra
   <inline-formula><alternatives>
+  <tex-math><![CDATA[\{l_i\}_{i=1}^{m} \subset J]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:mo stretchy="false" form="prefix">{</mml:mo><mml:msub><mml:mi>l</mml:mi><mml:mi>i</mml:mi></mml:msub><mml:msubsup><mml:mo stretchy="false" form="postfix">}</mml:mo><mml:mrow><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mi>m</mml:mi></mml:msubsup><mml:mo>⊂</mml:mo><mml:mi>J</mml:mi></mml:mrow></mml:math></alternatives></inline-formula>.
+  The associated matrix Lie algebra <inline-formula><alternatives>
   <tex-math><![CDATA[\mathfrak{g}]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>𝔤</mml:mi></mml:math></alternatives></inline-formula>,
   that is, a real subspace of complex matrices that is closed under the

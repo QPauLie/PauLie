@@ -102,7 +102,7 @@ interaction terms of the Hamiltonian. The reachable states are then of the form
 \begin{align}
   \ket{\psi(t)} = e^{-ih_{l_m} t_{l_m}} \dots e^{-ih_{l_1} t_{l_1}}  \ket{\psi_0}
 \end{align}
-for some index set $\{l_i\}_{i=1}^{m} \subset  J $. The associated matrix Lie
+for some index set $\{l_i\}_{i=1}^{m} \subset J$. The associated matrix Lie
 algebra $\mathfrak{g}$, that is, a real subspace of complex matrices that is
 closed under the matrix commutator $i \comm{h}{g} =i ( hg-gh)$, is dubbed
 dynamical Lie algebra (DLA). Hence, the elements of $\mathcal{G}$ span all
