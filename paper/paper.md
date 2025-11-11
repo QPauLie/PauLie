@@ -140,17 +140,37 @@ generator sets those that have optimal generation rate, i.e. the sets that gener
 $\mathfrak{su}(2^n)$  the fastest.
 In [@Smith_2025] it is derived that these are exactly generating sets with a
 fraction of anticommuting pairs of generators out of the total number of pairs
-to be approximatly $0.706$. Analytically this fraction maximizes a particular
+to be approximately $0.706$. Analytically this fraction maximizes a particular
 q-Pochhammer symbol. We can reframe the problem in terms of the anticommutation
 graph. Optimal universal generating sets have an anticommutation graph with
 approximately $\lfloor 0.706 \cdot { n \choose 2} \rfloor$  edges. To search
 for such graphs, we start with the canonical graph of $\mathfrak{su}(2^n)$. We
 can obtain the canonical graph by the algorithm described in the previous
 section. The canonical graph is the anticommutation graph with minimal
-connectivity, hence we are guranteed to be below the target anticommutation
+connectivity, hence we are guaranteed to be below the target anticommutation
 fraction. We iterate over the edge set of the canonical graph and perform a
 contraction such that the anticommutation fraction increases and become closer
-to the target value until we reach the target value.  
+to the target value until we reach the target value. In the following example of usage 
+we find the optimal universal Pauli string generator set in dimension four. 
+
+.. code-block:: python
+
+    from paulie.application.get_optimal_su2_n import get_optimal_su_2_n_generators
+    from paulie.common.two_local_generators import G_LIE
+    from paulie.common.pauli_string_factory import get_pauli_string as p
+
+    n = 4  # dimension of the system
+    initial_generators = p(G_LIE["a12"], n=n) # some universal generator set
+    optimal_generators = get_optimal_su_2_n_generators(initial_generators)
+    print(f" {optimal_generators} fraction={optimal_generators.get_anticommutation_fraction()}")
+
+
+which outputs:
+
+.. code-block:: bash
+
+     XZYX,ZZXZ,IYYY,XZYY,IXZX,YYXY,YYYY,ZZIX,XXZY fraction=0.6944444444444444
+
 
 # Citations 
 
