@@ -1,5 +1,8 @@
 name: Draft PDF
-on: [push]
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: write
 
 jobs:
   paper:
@@ -11,6 +14,7 @@ jobs:
       - name: Build draft PDF
         uses: openjournals/openjournals-draft-action@master
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           journal: joss
           # This should be the path to the paper within your repo.
           paper-path: paper/paper.md
@@ -22,3 +26,10 @@ jobs:
           # PDF. Note, this should be the same directory as the input
           # paper.md
           path: paper/paper.pdf
+      - name: Commit PDF to repository
+        uses: EndBug/add-and-commit@v9
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: '(auto) Paper PDF Draft'
+          # This should be the path to the paper within your repo.
+          add: 'paper/*.pdf' #to commit all PDFs in the paper directory
