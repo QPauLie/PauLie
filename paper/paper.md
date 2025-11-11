@@ -137,8 +137,9 @@ and the system is fully controllable. To characterise spin chains, we employ the
 
 # Optimal universal generator set  
 
-We target to find among all universal generator sets those that have optimal
-generation rate, i.e. the sets that generate $\mathfrak{su}(2^n)$  the fastest.
+With the feature `get_optimal_su_2_n_generators` we find among all universal 
+generator sets those that have optimal generation rate, i.e. the sets that generate 
+$\mathfrak{su}(2^n)$  the fastest.
 In [@Smith_2025] it is derived that these are exactly generating sets with a
 fraction of anticommuting pairs of generators out of the total number of pairs
 to be approximatly $0.706$. Analytically this fraction maximizes a particular
