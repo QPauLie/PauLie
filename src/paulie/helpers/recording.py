@@ -14,6 +14,11 @@ class FrameGraph:
     ) -> None:
         """
         Constructor
+        Args:
+            vertices: list of vertices
+            edges: list of edges
+            edge_labels: list of edge's labels
+        Returns: None
         """
         self.vertices = vertices
         self.edges = edges
@@ -23,6 +28,9 @@ class FrameGraph:
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]:
         """
         Get graph pf the frame
+        Args: empty
+        Returns:
+            the vertices, edges, and labels of edges
         """
         return self.vertices.copy(), self.edges.copy(), self.edge_labels
 
@@ -38,6 +46,21 @@ class FrameRecord:
                  title:str=None, init:bool=False) -> None:
         """
         Constructor
+        Args:
+             graph: frame of graph
+             lighting: lighting
+             appending: appending
+             contracting: contracting
+             lits: list of lited vertices
+             p: lited Pauli string in legs long 1
+             q: unlited Pauli string in legs long 1
+             removing_vertices: list of removing vertices
+             replacing_vertices: list of replacing vertices
+             dependent: dependent vertix
+             title: title
+             init: init state
+        Returns:
+            None
         """
         self.graph = graph
         self.lighting = str(lighting) if lighting else None
@@ -57,6 +80,9 @@ class FrameRecord:
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]:
         """
         Get graph of record's frame
+        Args: empty
+        Returns:
+            the vertices, edges, and labels of edges
         """
         if not self.graph:
             return None
@@ -64,24 +90,37 @@ class FrameRecord:
     def get_lighting(self) -> str:
         """
         Get lighting
+        Args: empty
+        Returns:
+           lighting
         """
         return self.lighting
 
     def get_title(self) -> str:
         """
         Get title
+        Args: empty
+        Returns:
+            title
         """
         return self.title
 
     def is_appending(self) -> bool:
         """
         Check appending
+        Args: empty
+        Returns:
+            True if not appending
         """
         return not self.appending
 
     def get_is_appending(self, vertix: str) -> bool:
         """
         Check vertix is appending
+        Args:
+            vertix: vertix
+        Returns:
+            True if vertix is appending
         """
         if not self.appending:
             return False
@@ -90,6 +129,11 @@ class FrameRecord:
     def get_is_contracting(self, vertix:str) -> bool:
         """
         Check vertix is contracting
+        Args:
+            vertix: vertix
+        Returns:
+            True if vertix is contracting
+
         """
         if not self.contracting:
             return False
@@ -98,6 +142,10 @@ class FrameRecord:
     def get_is_p(self, vertix:str) -> bool:
         """
         Check vertix is p
+        Args:
+            vertix: vertix
+        Returns:
+            True if vertix is lited in leg long 1
         """
         if not self.p:
             return False
@@ -106,6 +154,10 @@ class FrameRecord:
     def get_is_q(self, vertix:str) -> bool:
         """
         Check vertix is q
+        Args:
+            vertix: vertix
+        Returns:
+            True if vertix is unlited in leg long 1
         """
         if not self.q:
             return False
@@ -114,6 +166,10 @@ class FrameRecord:
     def get_is_dependent(self, vertix:str) -> bool:
         """
         Check vertix is dependent
+        Args:
+            vertix: vertix
+        Returns:
+            True if vertix is dependent
         """
         if not self.dependent:
             return False
@@ -122,30 +178,49 @@ class FrameRecord:
     def get_is_lits(self, vertix:str) -> bool:
         """
         Check vertix is lited
+        Args:
+            vertix: vertix
+        Returns:
+            True if vertix is lited
         """
         return vertix in self.lits
 
     def is_removing(self) -> bool:
         """
         Check is removing
+        Args:
+            vertix: vertix
+        Returns:
+            True if vertix is not removing
         """
         return not self.removing_vertices
 
     def get_is_removing(self, vertix:str) -> bool:
         """
         Check vertix is removing
+        Args:
+            vertix: vertix
+        Returns:
+            True if vertix is removing
         """
         return vertix in self.removing_vertices
 
     def get_is_replacing(self, vertix:str) -> bool:
         """
         Check vertix is replacing
+        Args:
+            vertix: vertix
+        Returns:
+            True if vertix is replacing
         """
         return vertix in self.replacing_vertices
 
     def get_init(self) -> bool:
         """
         Get init frame 
+        Args: empty
+        Returns:
+            True if init state
         """
         return self.init
 
@@ -157,15 +232,21 @@ class RecordGraph:
     def __init__(self) -> None:
         """
         Constructor
+        Args: empty
+        Returns: None
         """
         self.frames: FrameRecord = []
         self.positions = {}
         self.x_position_lighting = 0
 
 
-    def append_frame(self, frame: FrameRecord):
+    def append_frame(self, frame: FrameRecord) -> None:
         """
         Append frame
+        Args:
+            frame: frame of record
+        Returns:
+            None
         """
         self.frames.append(frame)
 
@@ -177,7 +258,22 @@ class RecordGraph:
                dependent:PauliString=None, title:str=None,
                init:bool=False) -> None:
         """
-         Make frame and append to record
+        Make frame and append to record
+        Args:
+             graph: frame of graph
+             lighting: lighting
+             appending: appending
+             contracting: contracting
+             lits: list of lited vertices
+             p: lited Pauli string in legs long 1
+             q: unlited Pauli string in legs long 1
+             removing_vertices: list of removing vertices
+             replacing_vertices: list of replacing vertices
+             dependent: dependent vertix
+             title: title
+             init: init state
+        Returns:
+            None
         """
         self.append_frame(FrameRecord(graph, lighting=lighting, appending=appending,
                                       contracting=contracting, lits=lits, p=p, q=q,
@@ -189,6 +285,13 @@ class RecordGraph:
     def get_frame(self, index:int) -> FrameRecord:
         """
         Get frame
+        Args:
+            index: index of frame
+        Returns:
+            frame of record
+        Raises:
+              ValueError:
+                 if index grate number of frames
         """
         if index > len(self.frames) - 1:
             raise ValueError("Out of index")
@@ -196,13 +299,18 @@ class RecordGraph:
 
     def clear(self) -> None:
         """
-         Clear of the record
+        Clear of the record
+        Args: empty
+        Returns: None
         """
         self.frames = []
 
     def get_size(self) -> int:
         """
         Get size of record
+        Args: empty
+        Returns:
+            number of frames
         """
         return len(self.frames)
 
@@ -210,6 +318,10 @@ class RecordGraph:
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]|None:
         """
         Get graph by index
+        Args:
+            index: index of frame
+        Returns:
+            the vertices, edges, and labels of edges
         """
         while index > -1:
             frame = self.get_frame(index)
@@ -223,6 +335,10 @@ class RecordGraph:
     def get_is_prev(self, index:int) -> bool:
         """
         Get the graph in the previous frame
+        Args: 
+            index: index of frame
+        Returns:
+            True if graph is None
         """
         frame = self.get_frame(index)
         return frame.get_graph() is None
@@ -230,24 +346,38 @@ class RecordGraph:
     def set_positions(self, positions:dict[str,np.array]) -> None:
         """
         Set positions
+        Args:
+            positions: positions of vertices
+        Returns:
+            None
         """
         self.positions = positions
 
     def get_positions(self) -> dict[str,np.array]:
         """
         Get positions
+        Args: empty
+        Returns:
+            positions of vertices
         """
         return self.positions
 
     def set_x_position_lighting(self, x_position_lighting:int) -> None:
         """
         Set x position of lighting
+        Args:
+            x_position_lighting: x position of lighting
+        Returns:
+            None
         """
         self.x_position_lighting = x_position_lighting
 
     def get_x_position_lighting(self) -> int:
         """
         Get x position of lighting
+        Args: empty
+        Returns:
+            x position of lighting
         """
         return self.x_position_lighting
 
@@ -261,6 +391,22 @@ def recording_graph(record:RecordGraph, collection:list[PauliString]=None,
                     init:str=False) -> None:
     """
     Recording graph
+    Args:
+        record: record
+        collection: list of vertices
+        lighting: lighting
+        appending: appending
+        contracting: contracting
+        lits: list of lited vertices
+        p: lited Pauli string in legs long 1
+        q: unlited Pauli string in legs long 1
+        removing_vertices: list of removing vertices
+        replacing_vertices: list of replacing vertices
+        dependent: dependent vertix
+        title: title
+        init: init state
+    Returns:
+       None
     """
     graph = None
     if collection is not None:

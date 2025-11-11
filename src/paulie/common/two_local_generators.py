@@ -35,7 +35,11 @@ G_LIE: dict[str, list[str]] = {
 
 def _a3(n:int) -> str|None:
     """
-    a3 algebra
+    Get algebra for a3 algebra
+    Args:
+        n: a length of Pauli string
+    Returns:
+        algebra for a3 algebra
     """
     match n % 8 :
         case 0:
@@ -52,7 +56,11 @@ def _a3(n:int) -> str|None:
 
 def _a5(n:int) -> str|None:
     """
-    a5 algebra
+    Get algebra for a5 algebra
+    Args:
+        n: a length of Pauli string
+    Returns:
+        algebra for a5 algebra
     """
     match n % 6:
         case 0:
@@ -67,7 +75,11 @@ def _a5(n:int) -> str|None:
 
 def _a6(n:int) -> str|None:
     """
-    a6 algebra
+    Get algebra for a6 algebra
+    Args:
+        n: a length of Pauli string
+    Returns:
+        algebra for a6 algebra
     """
     if n % 2 == 1: #odd
         return f"su({2**(n-1)})"
@@ -77,19 +89,31 @@ def _a6(n:int) -> str|None:
 
 def _a7(n:int) -> str|None:
     """
-    a7 algebra
+    Get algebra for a7 algebra
+    Args:
+        n: a length of Pauli string
+    Returns:
+        algebra for a7 algebra
     """
     return _a6(n)
 
 def _a10(n:int) -> str|None:
     """
-    a10 algebra
+    Get algebra for a10 algebra
+    Args:
+        n: a length of Pauli string
+    Returns:
+        algebra for a10 algebra
     """
     return _a6(n)
 
 def two_local_algebras(n:int) -> dict[str, str]:
     """
-    A dictionary of the DLAs n>=3
+    Get a dictionary of the DLAs n>=3
+     Args:
+        n: a length of Pauli string
+    Returns:
+        a dictionary of the DLAs n>=3
     """
 
     return  {
@@ -126,12 +150,19 @@ def two_local_algebras(n:int) -> dict[str, str]:
 
 
 def get_lie_algebra(name:str) -> list[str]:
-    """Returns generators of Lie algebra by name. 
-       Args:
-            name (str): name of Lie algebra
+    """
+    Get generators of Lie algebra by name. 
+    Args:
+        name (str): name of Lie algebra
+    Returns: generators of Lie algebra by name. 
     """
     return G_LIE[name]
 
 def get_lie_algebras() -> dict[str, list[str]]:
-    """Returns the dictionary of generators of Lie algebras."""
+    """
+    Get the dictionary of generators of Lie algebras.
+    Args: empty
+    Returns:
+        the dictionary of generators of Lie algebras.
+    """
     return G_LIE
