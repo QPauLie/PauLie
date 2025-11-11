@@ -153,8 +153,7 @@ contraction such that the anticommutation fraction increases and become closer
 to the target value until we reach the target value. In the following example of usage 
 we find the optimal universal Pauli string generator set in dimension four. 
 
-.. code-block:: python
-
+```python
     from paulie.application.get_optimal_su2_n import get_optimal_su_2_n_generators
     from paulie.common.two_local_generators import G_LIE
     from paulie.common.pauli_string_factory import get_pauli_string as p
@@ -163,14 +162,13 @@ we find the optimal universal Pauli string generator set in dimension four.
     initial_generators = p(G_LIE["a12"], n=n) # some universal generator set
     optimal_generators = get_optimal_su_2_n_generators(initial_generators)
     print(f" {optimal_generators} fraction={optimal_generators.get_anticommutation_fraction()}")
-
+```
 
 which outputs:
 
-.. code-block:: bash
-
+```bash
      XZYX,ZZXZ,IYYY,XZYY,IXZX,YYXY,YYYY,ZZIX,XXZY fraction=0.6944444444444444
-
+```
 
 # Citations 
 
