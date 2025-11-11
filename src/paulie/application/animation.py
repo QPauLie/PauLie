@@ -11,6 +11,12 @@ def animation_anti_commutation_graph(generators: PauliStringCollection,
     """
     Animation building transformation anti-commutation graph
     generators - list of generators
+    Args:
+        generators: collection of Pauli strings
+        storage: storage of animation
+        interval: intrval
+    Returns:
+        None
     """
     record = RecordGraph()
     generators.set_record(record)

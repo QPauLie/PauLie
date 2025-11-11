@@ -7,11 +7,26 @@ from random import randint, choice
 
 
 def get_random(n: int) -> str:
-    """ Get random Pauli String lenght n """
+    """
+    Get random Pauli String length n
+    Args: 
+        n: a length of Pauli string
+    Returns:
+      random Pauli string
+    """
     return''.join([choice("IXYZ") for _ in range(n)])
 
 def get_random_k_local(k:int, n:int) -> str:
-    """ Get random k local Pauli String lenght n """
+    """
+    Get random k local Pauli String length n
+    Args:
+        k: a length of locality
+        n: a lenght of Pauli string
+    Returns:
+        random k local Pauli String length n
+    Raises:
+         ValueError if k > n
+    """
     if k > n:
         raise ValueError("Invalid args: first arg grater than second")
     pauli_string = get_random(k)
@@ -22,5 +37,12 @@ def get_random_k_local(k:int, n:int) -> str:
     return pauli_string
 
 def get_random_list(n:int, size: int) -> list[str]:
-    """ Get random list of Pauli String lenght n """
+    """
+    Get random list of Pauli String length n
+    Args: 
+         n: a length of Pauli string
+         size: size of array
+    Returns:
+        random list of Pauli String length n
+    """
     return [get_random(n) for _ in range(size)]

@@ -39,6 +39,12 @@ class RecordingMorphFactory(Debug):
     def __init__(self, debug:bool = False, record:RecordGraph=None) -> None:
         """
         Constructor
+        Args:
+            debug: debug mode
+            record: record
+        Returns:
+            None
+
         """
         super().__init__(debug)
         self.legs = [] # center is zero leg
@@ -52,30 +58,49 @@ class RecordingMorphFactory(Debug):
     def set_debug(self, debug:bool) -> None:
         """
         Set debug flag
+        Args:
+            debug: debug mode
+        Returns:
+            None
         """
         self.debug = debug
 
     def set_lighting(self, lighting:PauliString) -> None:
         """
         Set lighting
+        Args:
+            lighting: Paulie string, which is lightning
+        Returns:
+            None
         """
         self.lighting = lighting
 
     def get_lighting(self) -> PauliString:
         """
         Get lighting
+        Args: empty
+        Returns:
+            lighting
         """
         return self.lighting
 
     def get_morph(self) -> Morph:
         """
         Get canonical graph form
+        Args: empty
+        Returns:
+            canonical form
         """
         return Morph(self.legs, self.dependents)
 
     def lit(self, lighting:PauliString, vertix:PauliString) -> PauliString:
         """
         Lit vertix
+        Args:
+            lighting: lighting
+            vertix: the vertix that will be lited by lightning
+        Returns:
+            new lighting
         """
         lighting = lighting@vertix
         if self.is_included(lighting):
@@ -86,7 +111,12 @@ class RecordingMorphFactory(Debug):
 
     def get_lits(self, lighting:PauliString, vertices:list[PauliString]=None) -> list[PauliString]:
         """
-        Return highlighted vertices (connected to the selected vertex).
+        Get lited vertices (connected to the selected vertex).
+        Args:
+            lighting: lighting
+            vertices: list of vertices
+        Returns:
+            list of lited vertices (connected to the selected vertex).
         """
         if vertices is None:
             vertices = self.get_vertices()
@@ -96,18 +126,29 @@ class RecordingMorphFactory(Debug):
     def is_empty(self) -> bool:
         """
         Checking for emptiness
+        Args: empty
+        Returns:
+            True if graph is empty
         """
         return len(self.legs) == 0
 
     def is_empty_legs(self) -> bool:
         """
         Checking for missing legs
+        Args: empty
+        Returns:
+            True if graph no core
         """
         return len(self.legs) < 3
 
     def _find_in_leg(self, leg:list[PauliString], v:PauliString)->int:
         """
         Find vertix in leg
+        Args: 
+            leg: list of vertices
+            v: required vertex
+        Returns:
+            index of vertix in the leg
         """
         try:
             index = leg.index(v)
@@ -118,6 +159,10 @@ class RecordingMorphFactory(Debug):
     def find(self, v:PauliString) -> tuple[int, int]:
         """
         Find vertix
+        Args: 
+            v: required vertex
+        Returns:
+            tuple index of leg and index vertix in the leg
         """
         for i, leg in enumerate(self.legs):
             index = self._find_in_leg(leg, v)
@@ -128,6 +173,10 @@ class RecordingMorphFactory(Debug):
     def is_included(self, v: PauliString) -> bool:
         """
         Checking a vertex for inclusion in the graph
+        Args: 
+            v: required vertex
+        Returns:
+            True if vertex in the graph
         """
         leg_index = self.find(v)[0]
         return leg_index > -1
@@ -135,12 +184,18 @@ class RecordingMorphFactory(Debug):
     def get_vertices(self) -> list[PauliString]:
         """
         Get graph vertices
+        Args: empty
+        Returns:
+           a list of vertices in the graph
         """
         return [v for leg in self.legs for v in leg]
 
     def get_center(self) -> PauliString:
         """
         Get center
+        Args: empty
+        Returns:
+           a canter of the graph
         """
         if self.is_empty():
             return None
@@ -149,6 +204,9 @@ class RecordingMorphFactory(Debug):
     def set_center(self, v:PauliString) -> None:
         """
         Set center
+        Args: 
+            v: vertex of the graph center
+        Returns: None
         """
         if self.is_empty() is False:
             raise MorphFactoryException("Center is setted")
@@ -157,6 +215,9 @@ class RecordingMorphFactory(Debug):
     def get_long_leg(self) -> list[PauliString]:
         """
         Get long leg
+        Args: empty
+        Returns:
+          a list of vertices in long leg
         """
         if self.is_empty_legs():
             raise MorphFactoryException("No legs")
@@ -165,6 +226,9 @@ class RecordingMorphFactory(Debug):
     def get_one_vertix(self) -> PauliString:
         """
         Get one vertix in leg
+        Args: empty
+        Returns:
+            сontrol vertex in the graph
         """
         if self.is_empty_legs():
             raise MorphFactoryException("No legs")
@@ -173,6 +237,9 @@ class RecordingMorphFactory(Debug):
     def _gen_one_legs(self) -> Generator[list[list[PauliString]], None, None]:
         """
         Generate vertices included in single legs
+        Args: empty
+        Yields:
+            Vertices included in legs of length 1
         """
         if self.is_empty_legs():
             raise MorphFactoryException("No legs")
@@ -185,6 +252,9 @@ class RecordingMorphFactory(Debug):
     def get_one_vertices(self) -> list[PauliString]:
         """
         Get vertices included in single legs
+        Args: empty
+        Returns:
+            a list of vertices included in legs of length 1
         """
         vertices = []
         for leg in self._gen_one_legs():
@@ -194,7 +264,14 @@ class RecordingMorphFactory(Debug):
     def get_pq(self, lighting:PauliString
     ) -> tuple[PauliString|None,PauliString|None,PauliString|None]:
         """
-        Get pq 
+        Get pq
+        Args:
+            lighting: lighting
+        Returns:
+            tuple:
+                pq: p@q where p and q are vertices 
+                    in one leg, and p is lited, q is unlited 
+                p: lited vertix
         """
         one_verices = self.get_one_vertices()
         lits = self.get_lits(lighting, one_verices)
@@ -212,6 +289,9 @@ class RecordingMorphFactory(Debug):
     def _gen_two_legs(self) -> Generator[list[list[PauliString]], None, None]:
         """
         Generate vertices included in two legs
+        Args: empty
+        Yields:
+          legs long 2
         """
         if self.is_empty_legs():
             raise MorphFactoryException("No legs")
@@ -225,18 +305,27 @@ class RecordingMorphFactory(Debug):
     def get_two_legs(self) -> list[tuple[PauliString, PauliString]]:
         """
         Get vertices included in two legs
+        Args: empty
+        Returns:
+            a list of vertices included in two legs
         """
         return [(leg[0].copy(), leg[1].copy()) for leg in self._gen_two_legs()]
 
     def get_count_two_legs(self) -> int:
         """
         Get the number of legs of length two
+        Args: empty
+        Returns:
+           number of legs long 2
         """
         return len(self.get_two_legs())
 
     def is_two_leg(self) -> bool:
         """
         Checking the leg for length two
+        Args: empty
+        Returns:
+            True if there is a leg of length 2
         """
         count_two_legs = self.get_count_two_legs()
         if count_two_legs == 0:
@@ -250,6 +339,9 @@ class RecordingMorphFactory(Debug):
     def _gen_long_legs(self) -> Generator[list[list[PauliString]], None, None]:
         """
         Generate long leg vertices
+        Args: empty
+        Yields:
+           vertices from long leg
         """
         if self.is_empty_legs():
             raise MorphFactoryException("No legs")
@@ -262,12 +354,25 @@ class RecordingMorphFactory(Debug):
     def get_long_legs(self) -> list[list[PauliString]]:
         """
         Get long leg vertices
+        Args: empty
+        Returns:
+           a list of vertices from long leg
         """
         return [leg.copy() for leg in self._gen_long_legs()]
 
     def append(self, v:PauliString, lit:PauliString) -> None:
         """
         Append vertix to graph
+        Args: 
+            v: added vertex
+            lit: the vertex to which is added
+        Returns:
+            None
+        Raises:
+           MorphFactoryException:
+              if No vertix
+              or lit is not last in leg
+              or can't append
         """
         leg_index, vertix_index = self.find(lit)
         if leg_index == -1:
@@ -291,7 +396,14 @@ class RecordingMorphFactory(Debug):
 
     def append_to_two_center(self, lighting:PauliString) -> None:
         """
-        Append vertix to two wertices graph
+        Append vertix to two vertices graph
+        Args: 
+            lighting: lighting
+        Returns:
+            None
+        Raises:
+              NotConnectedException:
+                 if lighting is not connected
         """
         center = self.get_center()
         if len(self.legs) == 1:
@@ -334,6 +446,10 @@ class RecordingMorphFactory(Debug):
     def remove(self, v: PauliString) -> None:
         """
         Removing a graph vertex
+        Args: 
+            v: vertix
+        Returns:
+            None
         """
         leg_index, vertix_index = self.find(v)
         if leg_index == -1:
@@ -360,6 +476,11 @@ class RecordingMorphFactory(Debug):
     def replace(self, v:PauliString, v_new:PauliString) -> None:
         """
         Replacing a graph vertex with an equivalent one
+        Args: 
+            v: removed vertices
+            v_new: added vertices
+        Returns:
+            None
         """
         leg_index, vertix_index = self.find(v)
         if leg_index == -1:
@@ -369,6 +490,10 @@ class RecordingMorphFactory(Debug):
     def print_state(self, lighting:PauliString = None) -> None:
         """
         Debug output of graph state
+        Args:
+            lighting: lighting
+        Returns:
+            None
         """
         if self.debug is False:
             return
@@ -395,7 +520,12 @@ class RecordingMorphFactory(Debug):
 
     def get_lit_indexes(self, vertices:list[PauliString], lits:[PauliString]) -> list[int]:
         """
-        Get the indices of the lited vertices in lits 
+        Get the indices of the lited vertices in lits
+        Args:
+            vertices: list of vertices
+            lits: list of lited vertices
+        Returns:
+            list of indexes of lited vertices in vertices
         """
         indexes = []
         for i, v in enumerate(vertices):
@@ -406,6 +536,13 @@ class RecordingMorphFactory(Debug):
     def _append_three_graph(self) -> Self:
         """
         Step I. Construct a graph of three vertices
+        Args: empty
+        Returns: self
+        Raises:
+            AppendedException:
+               if success
+           DependentException:
+               if added vertix is dependent
         """
         lighting = self.get_lighting()
         self.print_vertix(lighting, "Check and build graph with three vertices")
@@ -427,6 +564,13 @@ class RecordingMorphFactory(Debug):
 
     def _append_one_legs_in_different_state(self) -> Self:
         """
+        Args: empty
+        Returns: self
+        Raises:
+            AppendedException:
+               if success
+           DependentException:
+               if added vertix is dependent
         Step II. Legs of length 1 in different initial lit states.
         """
 
@@ -481,6 +625,13 @@ class RecordingMorphFactory(Debug):
     def _lit_only_long_leg(self) -> Self:
         """
         Step III. Lit only the long leg
+        Args: empty
+        Returns: self
+        Raises:
+            AppendedException:
+               if success
+           DependentException:
+               if added vertix is dependent
         """
         lighting = self.get_lighting()
         self.print_vertix(lighting, "Lit only long leg")
@@ -644,6 +795,13 @@ class RecordingMorphFactory(Debug):
     def _lit_center(self) -> Self:
         """
         Lit center
+        Args: empty
+        Returns: self
+        Raises:
+            AppendedException:
+               if success
+           DependentException:
+               if added vertix is dependent
         """
         lighting = self.get_lighting()
         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
@@ -667,6 +825,13 @@ class RecordingMorphFactory(Debug):
     def _reduce_long_leg_more_than_one_lits(self) -> Self:
         """
         Step IV. Reducing the long leg lits to standard configurations
+        Args: empty
+        Returns: self
+        Raises:
+            AppendedException:
+               if success
+           DependentException:
+               if added vertix is dependent
         """
         lighting = self.get_lighting()
         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
@@ -774,6 +939,13 @@ class RecordingMorphFactory(Debug):
     def _append_long_leg_first_and_center_lit(self) -> Self:
         """
         Step V. Append long leg with first lit and center
+        Args: empty
+        Returns: self
+        Raises:
+            AppendedException:
+               if success
+           DependentException:
+               if added vertix is dependent
         """
         lighting = self.get_lighting()
         self.print_vertix(lighting, "Append long leg with first lit and center")
@@ -895,6 +1067,13 @@ class RecordingMorphFactory(Debug):
     def _append_long_leg_only_last_lit(self) -> Self:
         """
         Step VI. Append if long leg last and center are lited
+        Args: empty
+        Returns: self
+        Raises:
+            AppendedException:
+               if success
+           DependentException:
+               if added vertix is dependent
         """
         lighting = self.get_lighting()
         self.print_vertix(lighting, "Append if long leg last and center are lited")
@@ -957,6 +1136,13 @@ class RecordingMorphFactory(Debug):
     def _append_long_leg_last_and_first_lit(self) -> None:
         """
         Step VII. Append if long leg last, first and center are lited
+        Args: empty
+        Returns: self
+        Raises:
+            AppendedException:
+               if success
+           DependentException:
+               if added vertix is dependent
         """
         lighting = self.get_lighting()
         self.print_vertix(lighting, "Append if long leg last, first and center are lited")
@@ -990,6 +1176,14 @@ class RecordingMorphFactory(Debug):
     def _pipeline(self, lighting:PauliString) -> None:
         """
         Pipeline
+        Args: 
+            lighting: lighting
+        Returns: None
+        Raises:
+            AppendedException:
+               if success
+            DependentException:
+               if added vertix is dependent
         """
         self.print_vertix(lighting, "Appending vertix to graph")
         # pipeline building
@@ -1006,12 +1200,19 @@ class RecordingMorphFactory(Debug):
     def append_delayed(self, v:PauliString) -> None:
         """
         Append to delayed
+        Args:
+            v: vertix
+        Return: None
         """
         self.delayed_vertices.append(v)
 
     def restore_delayed(self, vertices:list[PauliString]) -> list[PauliString]:
         """
         Restore to delayed
+        Args:
+            vertices: a list of vertices
+        Returns:
+            a list of vertices
         """
         for i in range(len(self.delayed_vertices) - 1, -1, -1):
             vertices.insert(0, self.delayed_vertices[i])
@@ -1021,12 +1222,20 @@ class RecordingMorphFactory(Debug):
     def set_debug_vertix(self, lighting:PauliString) -> None:
         """
         Set debug vertix
+        Args:
+            lighting: lighting
+        Returns:
+            None
         """
         self.debug_lighting = lighting
 
     def set_debug_break(self, lighting:PauliString) -> None:
         """
         Set debug break
+        Args:
+            lighting: lighting
+        Returns:
+            None
         """
         if lighting == self.debug_lighting:
             self.debug_break = True
@@ -1034,6 +1243,11 @@ class RecordingMorphFactory(Debug):
     def debugbreak(self, number:int=None, lighting:PauliString=None, append:bool=True) -> None:
         """
         Debug break
+        Args:
+            number: number vertices in graph
+            lighting: lighting
+            append: break on append
+        Returns: None
         """
         if self.is_break():
             if append:
@@ -1050,17 +1264,22 @@ class RecordingMorphFactory(Debug):
     def is_break(self) -> bool:
         """
         Check debug
+        Args: empty
+        Returns:
+            True if debug mode
         """
         return self.debug_break
 
     def _get_anti_commutates(self, pauli_string:PauliString,
                              generators:list[PauliString]) -> list[PauliString]:
         """
-            Get a collection of non-commuting Pauli strings
-            Args:
-                Pauli string to which commutators are defined
+        Get a collection of non-commuting Pauli strings
+        Args:
+            Pauli string to which commutators are defined
             generators: The area of Pauli strings over which to build a graph.
             If not specified, then collection
+        Returns:
+            a list of non-commuting Pauli strings
         """
         return [g for g in generators
                if g != pauli_string and not pauli_string|g]
@@ -1068,7 +1287,15 @@ class RecordingMorphFactory(Debug):
 
     def _get_max_connected(self, generators:list[PauliString]
     ) -> tuple[PauliString|None, list[PauliString]|None]:
-        """Get the Pauli string that has the maximum number of non-commutable"""
+        """
+        Get the Pauli string that has the maximum number of non-commutable
+        Args: 
+            generators: list of Pauli strings
+        Returns:
+            tuple:
+                 PauliString
+                 list of Pauli strings connected with first
+        """
         if len(generators) == 0:
             return None, None
         pauli_string = generators[0]
@@ -1082,7 +1309,14 @@ class RecordingMorphFactory(Debug):
 
     def _append_to_queue(self, queue_pauli_strings:list[PauliString],
                          pauli_strings:list[PauliString]) -> None:
-        """Append the next related Pauli string to the queue"""
+        """
+        Append the next related Pauli string to the queue
+        Args:
+            queue_pauli_strings: queue of Pauli strings
+            pauli_strings: list of Pauli strings
+        Returns:
+            None
+        """
         for p in pauli_strings:
             if p in queue_pauli_strings:
                 pauli_strings.remove(p)
@@ -1103,7 +1337,13 @@ class RecordingMorphFactory(Debug):
             return
 
     def _get_queue(self, generators:list[PauliString]) -> list[PauliString]:
-        """Get associated sequence of Pauli strings"""
+        """
+        Get associated sequence of Pauli strings
+        Args:
+            generators: list of Pauli strings
+        Returns: 
+            associated sequence of Pauli strings
+        """
         new_generators = generators.copy()
         new_generators.sort()
         queue_pauli_strings = []
@@ -1123,6 +1363,10 @@ class RecordingMorphFactory(Debug):
     def build(self, generators:list[PauliString]) -> Self:
         """
         Transform a connected graph to a cononic type.
+        Args:
+            generators: list of Pauli strings
+        Returns:
+            self
         """
         if len(generators) == 0:
             return self

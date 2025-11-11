@@ -13,7 +13,7 @@ def get_graph(generators:list[PauliString], commutators:list[PauliString]=None
     Args:
         generators: Array of PauliString
         commutators: The area of Pauli strings over which to build a graph. 
-    Returns the vertices, edges, and labels of edges
+    Returns: the vertices, edges, and labels of edges
     """
     if not commutators:
         commutators = []

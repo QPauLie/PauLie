@@ -12,6 +12,12 @@ def second_moment(
     """
     Computes the second-order twirl of an operator M by projecting it onto the
     subspace of quadratic symmetries.
+    Args:
+        operator_m: collection of Pauli strings
+        system_generators: collection of Pauli strings
+    Returns:
+        the second-order twirl of an operator M by projecting it onto the
+        subspace of quadratic symmetries
     """
     # Get the unnormalized basis directly from the collection object
     orthonormal_basis = system_generators.get_full_quadratic_basis(normalized=True)
