@@ -78,7 +78,7 @@ class PauliStringCollection:
     def set_record(self, record:RecordGraph) -> None:
         """
         In order to animate the transformations that lead to the canonical graph
-        and thus to the classifcation, set record of type RecordGraph
+        and thus to the classification, set record of type RecordGraph
         Args:
             record - record of type RecordGraph
         Returns: None
@@ -181,8 +181,8 @@ class PauliStringCollection:
         """
         Multiplication on collection
         Args:
-            a: first paulistring collection
-            b: second paulistring collection
+            a: first Paulistring collection
+            b: second Paulistring collection
         Returns:
             the result of multiplication a * b
         """
@@ -215,7 +215,7 @@ class PauliStringCollection:
 
     def expand(self, n: int) -> None:
         """
-        Expands each string in the collection to specificed length n by taking
+        Expands each string in the collection to specified length n by taking
         the tensor product with identities
         Args:
             n: - new length of Paulistring in collection
@@ -261,7 +261,7 @@ class PauliStringCollection:
 
     def insert(self, i: int, p: PauliString) -> None:
         """
-        Insert a specificed Pauli string to the collection at a specificed position
+        Insert a specified Pauli string to the collection at a specified position
         Args:
             i: position to insert
             p: Paulistring arbitrary length
@@ -274,7 +274,7 @@ class PauliStringCollection:
 
     def remove(self, p: PauliString) -> None:
         """
-        Remove a specificed Pauli string from the collection
+        Remove a specified Pauli string from the collection
         Args:
             p: Paulistring
         Returns: None
@@ -477,7 +477,7 @@ class PauliStringCollection:
         Get the subgraphs of the anticommutation graph induced by the connected components
         Args: empty
         Returns: 
-            list of connected subgraphps 
+            list of connected subgraphs
         """
         vertices, edges, _ = self.get_graph()
 
@@ -872,7 +872,7 @@ class PauliStringCollection:
 
     def list_connections(self):
         """ 
-        get list of conections
+        get list of connections
         Args: empty
         Returns:
             Returns a list of pairs of connected vertices in an anti-commutative graph     

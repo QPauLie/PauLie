@@ -1,7 +1,7 @@
 Optimal universal generator sets
 ======================
 
-Here we demonstarte the feature `get_optimal_su_2_n_generators` with which we obtain generating
+Here we demonstarte the feature :code:`get_optimal_su_2_n_generators` with which we obtain generating
 sets of :math:`\mathfrak{su}(2^n)` that have optimal generation rate.
 To this end, we start with some universal generator set and find the graph with an anticommutation
 fraction nearest to :math:`0.706`.
