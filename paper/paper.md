@@ -154,45 +154,21 @@ to the target value until we reach the target value. In the following example of
 we find the optimal universal Pauli string generator set in dimension four. 
 
 ```python
-    from paulie.application.get_optimal_su2_n import get_optimal_su_2_n_generators
-    from paulie.common.two_local_generators import G_LIE
-    from paulie.common.pauli_string_factory import get_pauli_string as p
+from paulie.application.get_optimal_su2_n import get_optimal_su_2_n_generators
+from paulie.common.two_local_generators import G_LIE
+from paulie.common.pauli_string_factory import get_pauli_string as p
 
-    n = 4  # dimension of the system
-    initial_generators = p(G_LIE["a12"], n=n) # some universal generator set
-    optimal_generators = get_optimal_su_2_n_generators(initial_generators)
-    print(f" {optimal_generators} fraction={optimal_generators.get_anticommutation_fraction()}")
+n = 4  # dimension of the system
+initial_generators = p(G_LIE["a12"], n=n) # some universal generator set
+optimal_generators = get_optimal_su_2_n_generators(initial_generators)
+print(f" {optimal_generators} fraction={optimal_generators.get_anticommutation_fraction()}")
 ```
 
 which outputs:
 
 ```bash
-     XZYX,ZZXZ,IYYY,XZYY,IXZX,YYXY,YYYY,ZZIX,XXZY fraction=0.6944444444444444
+ XZYX,ZZXZ,IYYY,XZYY,IXZX,YYXY,YYYY,ZZIX,XXZY fraction=0.6944444444444444
 ```
-
-# Citations 
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without
-a preferred citation) then you can do it with the example BibTeX entry below
-for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
-
-# Figures
-
-Figures can be included like this:
-![Caption for example figure.\label{fig:example}](figure.png)
-and referenced from text using \autoref{fig:example}.
-
-Figure sizes can be customized by adding an optional second parameter:
-![Caption for example figure.](figure.png){ width=20% }
 
 # Acknowledgements
 
