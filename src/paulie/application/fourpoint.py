@@ -23,6 +23,8 @@ def fourpoint(generators: PauliStringCollection,
         q: Pauli string Q
         r: Pauli string R
         s: Pauli string S
+    Returns:
+        the four point according to Proposition 2
     """
     commutant = generators.get_commutants()
     rp = r@p

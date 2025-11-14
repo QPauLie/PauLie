@@ -10,12 +10,26 @@ TOKENS.add(SIZE)
 
 
 def _is_token(char: str) -> bool:
-    """Check if a character is a valid token."""
+    """
+    Check if a character is a valid token.
+    Args: 
+        char: char
+    Returns:
+        True if char is token
+    """
     return char in TOKENS
 
 
 def _is_number(char: str) -> bool:
-    """Check if a character is a number, raise exception if invalid token."""
+    """
+    Check if a character is a number, raise exception if invalid token.
+    Args: 
+        char: char
+    Returns:
+        True if char is number
+    Raises:
+        ValueError: If the input char format is invalid
+    """
     try:
         int(char)
         return True
@@ -26,7 +40,15 @@ def _is_number(char: str) -> bool:
 
 
 def _to_int(position: str) -> int:
-    """Convert string to int, raise exception if invalid."""
+    """
+    Convert string to int, raise exception if invalid.
+    Args: 
+        position: string representation of number 
+    Returns:
+        int representaion of number
+    Raises:
+        ValueError: If the input position format is invalid
+    """
     try:
         return int(position)
     except ValueError as e:

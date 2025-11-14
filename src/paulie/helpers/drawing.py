@@ -15,6 +15,12 @@ def plot_graph(vertices:list[str],
                edge_labels:dict[tuple[str,str],str] = None) -> None:
     """
     Plot graph
+    Args:
+         vertices: list of vertices
+         edges: list of edges
+         edge_labels: list of labels
+    Returns:
+        None
     """
     graph = nx.Graph()
     graph.add_nodes_from(vertices)
@@ -31,6 +37,11 @@ def plot_graph_by_nodes(nodes:PauliStringCollection,
 ) -> None:
     """
     Plot graph by nodes
+    Args:
+        nodes: collection of Pauli strings
+        commutators: collection of commutators (Pauli strings)
+    Returns:
+        None
     """
     if not commutators:
         commutators = []
@@ -42,12 +53,21 @@ def animation_graph(record: RecordGraph, interval:int=1000,
 ) -> None:
     """
     Animate graph building
+    Args:
+        record: record
+        interval: interval
+        repeat: repeat
+        storage: storage
+    Returns:
+        None
     """
     graph = nx.Graph()
     fig, ax = plt.subplots(figsize=(6,4))
     def clear() -> None:
         """
         Clear frame
+        Args: empty
+        Returns: None
         """
         ax.clear()
         graph.remove_nodes_from(list(n for n in graph.nodes))
@@ -57,6 +77,11 @@ def animation_graph(record: RecordGraph, interval:int=1000,
                         center:str) -> tuple[dict[str,np.array], int]:
         """
         Build position of vertices in canonical graph
+        Args:
+            edges: list of edges
+            center: center
+        Returns:
+           positions of verticex and postion of lighting
         """
         legs = []
         positions = {}

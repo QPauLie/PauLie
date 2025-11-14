@@ -54,45 +54,82 @@ class PauliStringCollection:
             self.generators.append(g)
 
     def get(self) -> list[PauliString]:
-        """ Get an array of Pauli strings of type PauliString
-         corresponding to the generator elements """
+        """
+        Get an array of Pauli strings of type PauliString
+        corresponding to the generator elements
+        Args: empty
+        Returns:
+            an array of Pauli strings of type PauliString
+            corresponding to the generator elements
+        """
         return self.generators
 
     def get_len(self) -> int:
-        """Get len string"""
+        """
+        Get the length of string in collection
+        Args: empty
+        Returns:
+            the length of string in collection
+        """
         if len(self) == 0:
             return 0
         return len(self.generators[0])
 
     def set_record(self, record:RecordGraph) -> None:
-        """ In order to animate the transformations that lead to the canonical graph
-        and thus to the classifcation, set record of type RecordGraph
-            Args:
-                 record - record of type RecordGraph
+        """
+        In order to animate the transformations that lead to the canonical graph
+        and thus to the classification, set record of type RecordGraph
+        Args:
+            record - record of type RecordGraph
+        Returns: None
         """
         self.record = record
 
     def get_record(self) -> RecordGraph:
         """
-        Get record
+        Get the record of graph construction
+        Args: empty
+        Returns: the record of graph construction
         """
         return self.record
 
     def __str__(self) -> str:
-        """Convert PauliStringCollection to readable string (e.g., "XYZI, YYYS")"""
+        """
+        Convert PauliStringCollection to readable string (e.g., "XYZI, YYYS")
+        Args: empty
+        Returns:
+            readable string (e.g., "XYZI, YYYS")
+        """
         return ",".join([str(g) for g in self.generators])
 
     def __len__(self) -> int:
-        """ Returns the number of generators in the collection"""
+        """ 
+        Get length of collection
+        Args: empty
+        Returns: the number of generators in the collection
+        """
         return len(self.generators)
 
     def __iter__(self) -> Self:
-        """ Iterator over the generators """
+        """
+        Iterator over the generators
+        Args: empty
+        Returns:
+           Iterator over the generators
+        """
         self.nextpos = 0
         return self
 
     def __next__(self) -> PauliString:
-        """Next iterator value"""
+        """
+        Next iterator value
+        Args: empty
+        Returns:
+           next iterator value
+        Raises:
+           StopIteration:
+               end of collection
+        """
         if self.nextpos >= len(self):
             # we are done
             raise StopIteration
@@ -101,28 +138,54 @@ class PauliStringCollection:
         return value
 
     def __delitem__(self, key) -> PauliString:
-        """Overloading the remove operator for a collection"""
+        """
+        Overloading the remove operator for a collection
+        Args: 
+            key: index key in collection
+        Returns: the result of the remove operator
+        """
         self.classification = None
         del self.generators[key]
 
     def __copy__(self) -> Self:
-        """Overloading the collection copy operator"""
+        """
+        Overloading the collection copy operator
+        Args: empty
+        Returns: copy of self
+        """
         return PauliStringCollection(self.generators)
 
     def copy(self) -> Self:
-        """ Copy collection"""
+        """
+        Copy collection
+        Args: empty
+        Returns: copy of self
+        """
         return PauliStringCollection(self.generators)
 
     def __add__(self, p: PauliString) -> Self:
-        """Overloading the addition operator with a collection"""
+        """
+        Overloading the addition operator with a collection
+        Args: 
+            p: PauliString
+        Returns: PauliStringCollection with appended PauliString
+
+        """
         self.classification = None
         new_generators = []
         for g in self.generators:
             new_generators.append(g + p)
         return PauliStringCollection(new_generators)
 
-    def mul(self, a:PauliString, b:PauliString) -> Self:
-        """ multiplication on collection"""
+    def mul(self, a:Self, b:Self) -> Self:
+        """
+        Multiplication on collection
+        Args:
+            a: first Paulistring collection
+            b: second Paulistring collection
+        Returns:
+            the result of multiplication a * b
+        """
         self.classification = None
         new_generators = []
         for ga in a.generators:
@@ -130,17 +193,35 @@ class PauliStringCollection:
                 new_generators.append(ga + gb)
         return PauliStringCollection(new_generators)
 
-    def __mul__(self, other:PauliString) -> Self:
-        """Overloading the multiplication operator with a collection"""
+    def __mul__(self, other:Self) -> Self:
+        """
+        Overloading the multiplication operator with a collection
+        Args: 
+            other: collection
+        Returns:
+            the result of multiplication self * other
+        """
         return self.mul(self, other)
 
-    def __rmul__(self, other:PauliString) -> Self:
-        """Overloading the right multiplication operator with a collection"""
+    def __rmul__(self, other:Self) -> Self:
+        """
+        Overloading the right multiplication operator with a collection
+        Args: 
+            other: collection
+        Returns:
+            the result of multiplication other * self
+        """
         return self.mul(other, self)
 
     def expand(self, n: int) -> None:
-        """ Expands each string in the collection to specificed length n by taking
-        the tensor product with identities"""
+        """
+        Expands each string in the collection to specified length n by taking
+        the tensor product with identities
+        Args:
+            n: - new length of Paulistring in collection
+        Returns:
+            None
+        """
         self.classification = None
         new_generators = []
         for g in enumerate(self.generators):
@@ -148,9 +229,15 @@ class PauliStringCollection:
         self.generators = new_generators
 
     def _processing(self, p: PauliString) -> PauliString:
-        """ Enforcing that each string in the collection
+        """
+        Enforcing that each string in the collection
         is of the same size.  Each string will be expanded
-        with identities to have the length of the longest Pauli string."""
+        with identities to have the length of the longest Pauli string.
+        Args: 
+            p: Paulistring arbitrary length
+        Returns:
+            The Paulistring is the same length as the collection element
+        """
         if len(self.generators) == 0:
             return p
         longest = len(max(self.generators, key=len))
@@ -161,50 +248,92 @@ class PauliStringCollection:
         return p
 
     def append(self, p: PauliString) -> None:
-        """Append a specified Pauli string to the collection to the end """
+        """
+        Append a specified Pauli string to the collection to the end
+        Args: 
+            p: Paulistring arbitrary length
+        Returns: None
+        """
         self.classification = None
         p = self._processing(p)
         if p not in self.generators:
             self.generators.append(p)
 
     def insert(self, i: int, p: PauliString) -> None:
-        """Insert a specificed Pauli string to the collection at a specificed position"""
+        """
+        Insert a specified Pauli string to the collection at a specified position
+        Args:
+            i: position to insert
+            p: Paulistring arbitrary length
+        Returns: None
+        """
         self.classification = None
         p = self._processing(p)
         if p not in self.generators:
             self.generators.insert(i, p)
 
     def remove(self, p: PauliString) -> None:
-        """Remove a specificed Pauli string from the collection"""
+        """
+        Remove a specified Pauli string from the collection
+        Args:
+            p: Paulistring
+        Returns: None
+        """
         self.classification = None
         if p in self.generators:
             self.generators.remove(p)
 
     def index(self, p: PauliString) -> int:
-        """Returns the index of a given Pauli string inside the collection"""
+        """
+        Get the index of a given Pauli string inside the collection
+        Args:
+            p: Paulistring
+        Returns:
+            the index of a given Pauli string inside the collection
+        """
         return self.generators.index(p)
 
     def get_size(self) -> int:
-        """ Get the length of the Pauli Strings in the collection"""
+        """
+        Get the length of string in collection
+        Args: empty
+        Returns:
+            the length of string in collection
+        """
         return 0 if len(self.generators) == 0 else len(self.generators[0])
 
     def create_instance(self, n: int = None, pauli_str: str = None) -> PauliString:
         """
         Create a new instance of the same type as the rest of the Pauli strings in the collection
+        Args:
+            n: length of new PauliString
+            pauli_str: string representation of the Paulistring
+        Returns:
+               new PauliString
+        Raises:
+              PauliStringCollectionException:
+                   Empty collection
         """
         if len(self.generators) == 0:
             raise PauliStringCollectionException("Empty generator")
         return self.generators[0].create_instance(n=n, pauli_str=pauli_str)
 
     def sort(self) -> Self:
-        """ Sort the collection Pauli strings according to their bit value
-         given by the bitarray representation """
+        """
+        Sort the collection Pauli strings according to their bit value
+        given by the bitarray representation 
+        Args: empty
+        Returns: Self
+        """
         self.generators.sort()
         return self
 
     def get_anticommutation_fraction(self) -> float:
         """
         Computes the fraction of anticommuting pairs of generators
+        Args: empty
+        Returns:
+            the fraction of anticommuting pairs of generators
         """
         anti_commute_count = 0
         pair = 0
@@ -216,13 +345,20 @@ class PauliStringCollection:
 
     def get_pair(self) -> int:
         """
-        get number pair
+        Get the maximum possible number of pairs
+        of vertices in the graph
+        Args: empty
+        Returns: the maximum possible number of pairs
+        of vertices in the graph
         """
         return len(self)*(len(self) - 1)/2
 
     def get_anticommutation_pair(self) -> int:
         """
-        get number of anticommutation pair
+        get the number of anticommutation pair
+        Args: empty
+        Returns:
+            the number of anticommutation pair
         """
         anti_commute_count = 0
         for x,y in combinations(self.generators, r=2):
@@ -232,10 +368,14 @@ class PauliStringCollection:
         #n_com = n*(n-1)/2
         return anti_commute_count
 
-    def get_commutants(self) -> 'PauliStringCollection':
+    def get_commutants(self) -> Self:
         """
         Get the set of Pauli strings that commute with ALL generators in this collection.
         This finds the linear symmetries L_j of the system.
+        Args: empty
+        Returns: PauliStringCollection of the set of Pauli strings
+        that commute with ALL generators in this collection.
+
         """
         if not self.generators:
             # If there are no generators, all Paulis are symmetries by definition.
@@ -295,6 +435,9 @@ class PauliStringCollection:
         Get the commutator graph whose vertices are all Paulistrings of a given dimension
         and an edge between two vertices exist if there is a element in the generator
         to which the one vertex anticommutes with to the other vertex.
+        Args: empty
+        Retrurns: the vertices, edges, and labels of edges of graph
+
         """
         n = self.get_size()
         i = PauliString(n=n)
@@ -302,9 +445,12 @@ class PauliStringCollection:
 
     def get_frame_potential(self) -> int:
         """
-        Returns the frame potential of the system
-        generated by the collection.
+        Get the frame potential of the system
         The frame potential is a measure of quantum choas.
+        Args: empty
+        Returns:
+            the frame potential of the system
+            generated by the collection.
         """
         vertices, edges = self.get_commutator_graph()
         graph = nx.Graph()
@@ -314,14 +460,25 @@ class PauliStringCollection:
         n_iso =len(list(nx.isolates(graph)))
         return n_comp*n_iso
 
-    def _convert(self, generators: list[str]) -> str:
-        """Convert a list of type string to List of type PauliString"""
+    def _convert(self, generators: list[str]) -> Self:
+        """
+        Convert a list of type string to List of type PauliString
+        Args: 
+            generators: a list of string representation of PauliString
+        Returns: 
+            PauliStringCollection of the list of generators
+        """
         return PauliStringCollection(
             [self.create_instance(pauli_str=g) for g in generators]
         )
 
     def get_subgraphs(self) -> list[Self]:
-        """ Get the subgraphs of the anticommutation graph induced by the connected components"""
+        """
+        Get the subgraphs of the anticommutation graph induced by the connected components
+        Args: empty
+        Returns: 
+            list of connected subgraphs
+        """
         vertices, edges, _ = self.get_graph()
 
         g = nx.Graph()
@@ -331,7 +488,11 @@ class PauliStringCollection:
                sorted(nx.connected_components(g), key=len, reverse=True)]
 
     def classify(self) -> Classification:
-        """ Returns a set of canonical graphs corresponding to the direct sum Lie algebra"""
+        """
+        Build canonical graph
+        Args: empty
+        Returns: a result of building canonical graphs corresponding to the direct sum Lie algebra
+        """
         subgraphs = self.get_subgraphs()
         self.classification = Classification()
         for subgraph in subgraphs:
@@ -344,14 +505,22 @@ class PauliStringCollection:
         return self.classification
 
     def get_class(self) -> Classification:
-        """ Get the set of canonical graphs used for the classification """
+        """
+        Get the set of canonical graphs used for the classification
+        Args: empty
+        Returns:
+            the set of canonical graphs used for the classification
+        """
         if self.classification is None:
             self.classification = self.classify()
         return self.classification
 
     def get_algebra(self) -> str:
         """
-         Get the dynamical Lie algebra generated by the set of Pauli strings
+        Get the dynamical Lie algebra generated by the set of Pauli strings
+        Args: empty
+        Returns:
+            the dynamical Lie algebra generated by the set of Pauli strings
         """
         classification = self.get_class()
         return classification.get_algebra()
@@ -359,6 +528,10 @@ class PauliStringCollection:
     def is_algebra(self, algebra:str) -> bool:
         """
         Checks whether the classifed algebra complies with a given algebra
+        Args: 
+            algebra: name of the algebra
+        Returns:
+               True if the collection forms the specified algebra
         """
         classification = self.get_class()
         return classification.is_algebra(algebra)
@@ -366,7 +539,10 @@ class PauliStringCollection:
     def is_in(self, generators: Self) -> bool:
         """
         Testing generators in algebra. All Pauli strings of one algebra are dependent on another.
-        return bool
+        Args: 
+            generators: generator collection
+        Returns:
+            True when all generators can be obtained from DLA self
         """
         if len(self) == 0:
             return False
@@ -391,13 +567,20 @@ class PauliStringCollection:
         """
         Testing for equivalence of two algebras.
         All Pauli strings of one algebra are dependent on another.
-        return bool
+        Args: 
+            generators: generator collection
+        Returns:
+            True when two collections of generators are equivalent
         """
         return self.is_in(generators) and generators.is_in(self)
 
     def select_dependents(self, generators: Self) -> Self:
         """
-        Select dependents
+        Select dependents from self
+        Args: 
+            generators: generator collection
+        Returns:
+           a collection of dependent Pauli strings
         """
         if len(self) == 0:
             return False
@@ -418,6 +601,9 @@ class PauliStringCollection:
     def get_space(self) -> Self:
         """
         Get all space
+        Args: empty
+        Returns:
+          a collection of all Pauli strings formed by a collection of generators
         """
         all_space = PauliStringCollection([g
                     for g in PauliString(n=self.get_len()).gen_all_pauli_strings()
@@ -425,7 +611,12 @@ class PauliStringCollection:
         return self.select_dependents(all_space)
 
     def gen_generators(self) -> Generator[list[list[PauliString]], None, None]:
-        """Get generators"""
+        """
+        Get generators
+        Args: empty
+        Returns:
+            a generator of collections of generators of the same algebra as self.
+        """
         classification = self.get_class()
         gen = classification.gen_generators()
         while True:
@@ -440,26 +631,48 @@ class PauliStringCollection:
     def get_dla_dim(self) -> int:
         """
         Get the dimension of the classified dynamical Lie algebra
+        Args: empty
+        Returns:
+            the dimension of the classified dynamical Lie algebra
         """
         return self.get_class().get_dla_dim()
 
     def get_dependents(self) -> Self:
-        """Get a list of dependent strings in the collection"""
+        """
+        Get a list of dependent strings in the collection
+        Args: empty
+        Returns:
+            a list of dependent strings in the collection
+        """
         return PauliStringCollection(self.get_class().get_dependents())
 
     def get_independents(self) -> Self:
-        """Get independents"""
+        """
+        Get independents
+        Args: empty
+        Returns:
+            a list of independent strings in the collection
+        """
         dependents = self.get_class().get_dependents()
         return PauliStringCollection([v for v in self if v not in dependents])
 
     def get_canonic_vertices(self) -> Self:
-        """Get a list of canonic strings in the collection"""
+        """
+        Get a list of canonic strings in the collection
+        Args: empty
+        Returns:
+            a list of canonic strings in the collection
+        """
         return PauliStringCollection(self.get_class().get_vertices())
 
     def get_canonic_graph(
         self,
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]:
-        """Get the canonical representation of a graph"""
+        """
+        Get the canonical representation of a graph
+        Args: empty
+        Returns: the vertices, edges, and labels of edges
+        """
         classification = self.get_class()
         generators = PauliStringCollection(classification.get_vertices())
         return generators.get_graph()
@@ -470,10 +683,11 @@ class PauliStringCollection:
         """
         Get a collection of non-commuting Pauli strings
         Args:
-            Pauli string to which commutators are defined
-        generators: The area of Pauli strings over which to build a graph.
-        If not specified, then collection
-
+           pauli_string:  Pauli string to which commutators are defined
+           generators: The area of Pauli strings over which to build a graph.
+                       If not specified, then collection
+        Returns:
+            a collection of non-commuting Pauli strings
         """
         if generators is None:
             generators = self.generators
@@ -485,10 +699,11 @@ class PauliStringCollection:
         """
         Get a collection of non-commuting Pauli strings
         Args:
-            Pauli string to which commutators are defined
-        generators: The area of Pauli strings over which to build a graph.
-        If not specified, then collection
-
+           pauli_string:  Pauli string to which commutators are defined
+           generators: The area of Pauli strings over which to build a graph.
+                       If not specified, then collection
+        Returns:
+            a collection of non-commuting Pauli strings
         """
         if generators is None:
             generators = self.generators
@@ -509,6 +724,7 @@ class PauliStringCollection:
                 each representing a connected component of the selected graph.
         Raises:
             ValueError: If graph_type is not 'anticommutator' or 'commutator'.
+        Returns: the vertices, edges, and labels of edges
         """
         if graph_type == 'anticommutator':
             nodes, edges = self.get_graph() # The anti-commutation graph
@@ -521,7 +737,7 @@ class PauliStringCollection:
 
     def _get_connected_components(self, nodes: list[str],
                                   edges: list[tuple[str, str]]
-                                  ) -> list['PauliStringCollection']:
+                                  ) -> list[Self]:
         """
         Helper method to compute connected components from nodes and edges.
         Args:
@@ -543,13 +759,17 @@ class PauliStringCollection:
         return [self._convert(subgraph) for subgraph in connected_components]
 
     def get_symmetries_for_component(
-        self, linear_symmetries: 'PauliStringCollection'
-    ) -> list['PauliStringLinear']:
+        self, linear_symmetries: Self
+    ) -> list[PauliStringLinear]:
         """
         Private helper: Computes the quadratic symmetries for THIS collection,
         assuming THIS collection is a single connected component (C_k) and
         is provided with a pre-computed list of linear symmetries (L_j).
         This method performs the inner loop of the full calculation.
+        Args: 
+            linear_symmetries: linear symmetries
+        Returns:
+            a list of linear combinations
         """
         # Convert this component collection into a single PauliStringLinear object
         component_as_linear = PauliStringLinear([(1.0, str(s)) for s in self])
@@ -565,7 +785,7 @@ class PauliStringCollection:
         return quadratic_symmetries_for_this_component
 
 
-    def get_full_quadratic_basis(self, normalized: bool = False) -> list['PauliStringLinear']:
+    def get_full_quadratic_basis(self, normalized: bool = False) -> list[PauliStringLinear]:
         """
         Public Method: Calculates the full basis of quadratic symmetries for this system.
 
@@ -613,7 +833,13 @@ class PauliStringCollection:
         return normalized_basis
 
     def find(self, pauli_string: PauliString) -> int:
-        """Find index pauli string in collection"""
+        """
+        Find index pauli string in collection
+        Args:
+            pauli_string: Paulistring
+        Returns:
+            index pauli string in collection
+        """
         for i, p in enumerate(self.generators):
             if p == pauli_string:
                 return i
@@ -622,8 +848,11 @@ class PauliStringCollection:
     def replace(self, pauli_string: PauliString, new_pauli_string: PauliString) -> None:
         """
         Replacing one Pauli string with another
-        pauli_string - The Pauli string that will be replaced
-        new_pauli_string - New Pauli string
+        Args:
+            pauli_string: the Pauli string that will be replaced
+            new_pauli_string: new Pauli string
+        Returns:
+            None
         """
         index = self.find(pauli_string)
         if index != -1:
@@ -632,24 +861,44 @@ class PauliStringCollection:
     def contract(self, pauli_string: PauliString, contracted_pauli_string: PauliString) -> None:
         """
         Contracting pauli string other pauli string
-        pauli_string - The Pauli string that will be replaced with the contract
-        contracted_pauli_string - Contractable Pauli string
         pauli_string will be replaced on pauli_string @ contracted_pauli_string
-
+        Args:
+            pauli_string: the Pauli string that will be replaced with the contract
+            contracted_pauli_string: contractable Pauli string
+        Returns:
+            None
         """
         self.replace(pauli_string, pauli_string@contracted_pauli_string)
 
     def list_connections(self):
-        """ list conections"""
+        """ 
+        get list of connections
+        Args: empty
+        Returns:
+            Returns a list of pairs of connected vertices in an anti-commutative graph     
+        """
         return [(x, y, len(x.get_anti_commutants(self)), len(y.get_anti_commutants(self)))
                for x,y in combinations(self.generators, r=2) if not x|y]
 
     def _get_delta(self, generators: Self, number_connections:int)->int:
-        """get delta connections"""
+        """
+        Get the difference between the required number and the number of connections in the graph
+        Args: 
+            generators: generator collection
+            number_connections: required number of connections
+        Returns:
+            the difference between the required number and the number of connections in the graph
+        """
         return number_connections - generators.get_anticommutation_pair()
 
     def find_generators_with_connection(self, number_connections:int)->Self:
-        """Get generators with connections"""
+        """
+        Get generators with connections
+        Args:
+            number_connections: required number of connections
+        Returns: 
+            a collection of generators with the required number of connections
+        """
         generators = self.copy().get_canonic_vertices()
         max_iter = number_connections//2
         i = 0
