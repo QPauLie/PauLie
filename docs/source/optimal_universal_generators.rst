@@ -1,5 +1,5 @@
 Optimal universal generator sets
-======================
+================================
 
 Here we demonstarte the feature :code:`get_optimal_su_2_n_generators` with which we obtain generating
 sets of :math:`\mathfrak{su}(2^n)` that have optimal generation rate.
