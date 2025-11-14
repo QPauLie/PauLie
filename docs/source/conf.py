@@ -23,8 +23,17 @@ release = '0.0.1'
 
 extensions = [
 'sphinx.ext.autodoc',
+'sphinx.ext.autosummary',
+'sphinx.ext.napoleon',
+"sphinx_autodoc_typehints",
 'sphinx.ext.mathjax',
+'sphinx.ext.intersphinx',
 ]
+
+autosummary_generate = True
+autodoc_typehints = "description"
+napoleon_google_docstring = True
+napoleon_numpy_docstring = True
 
 templates_path = ['_templates']
 exclude_patterns = []

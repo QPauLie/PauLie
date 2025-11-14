@@ -38,7 +38,7 @@ def get_last(n:int) -> PauliString:
 
 def get_pauli_string(o, n:int = None) -> PauliString|PauliStringCollection:
     """
-    Get Pauli strings in their current representation
+    Get Pauli strings in their current representation.
     Args: 
          o - a Pauli string or a collection of Pauli strings.
          n - length of Pauli strings

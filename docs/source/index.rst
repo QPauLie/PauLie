@@ -20,6 +20,7 @@ Paulistrings.
     second_moment
     matrix_decomposition
     optimal_universal_generators
+    api/index
 
 .. toctree::
    :hidden:

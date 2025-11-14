@@ -1,5 +1,5 @@
 Classification of Pauli DLAs
-======================
+============================
 
 This tutorial will illustrate how to use :code:`paulie` to classify the dynamical Lie algebra of a circuit given
 the generators consisting of Paulistrings.
