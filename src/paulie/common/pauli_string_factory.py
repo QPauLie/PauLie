@@ -10,18 +10,21 @@ from paulie.common.pauli_string_collection import PauliStringCollection
 
 def get_identity(n: int) -> PauliString:
     """
-    Get an identity of a given length
-    Args: n - lenght of Pauli string
-    returns identity
+    Get an identity of a given length.
+    Args:
+        n (int): length of Pauli string
+    Returns:
+        Any: identity
     """
     return PauliString(n=n)
 
 def get_single(n: int, i: int, label: str) -> PauliString:
     """
-    Get a Pauli string with a single value at position
-    Args: n - lenght of Pauli string
-          i - position
-          label - PauliString in single position
+    Get a Pauli string with a single value at position.
+    Args:
+        n (int): length of Pauli string
+        i (int): position
+        label (str): PauliString in single position
     """
     p = get_identity(n)
     p[i] = label
@@ -29,22 +32,23 @@ def get_single(n: int, i: int, label: str) -> PauliString:
 
 def get_last(n:int) -> PauliString:
     """
-    Get an all Y of a given length
-    Args: n - lenght of Pauli string
-    returns all Y
+    Get an all Y of a given length.
+    Args:
+        n (int): length of Pauli string
+    Returns:
+         Any: All Y
     """
     return PauliString(bits = bitarray([1] * (2 * n)))
 
 def get_pauli_string(o, n:int = None) -> PauliString|PauliStringCollection:
     """
-    Get Pauli strings in their current representation
+    Get Pauli strings in their current representation.
     Args: 
-         o - a Pauli string or a collection of Pauli strings.
-         n - length of Pauli strings
-    Returns If o is a Pauli string, then its current instantiation value n is created
-    otherwise PauliStringCollection is created - a collection of Pauli strings.
-    Given n, the collection is expanded as k-local.
-    Where k is the maximum length of a Pauli string in a given collection
+         o: a Pauli string or a collection of Pauli strings.
+         n (int): length of Pauli strings
+    Returns:
+         If o is a Pauli string, then its current instantiation value n is created otherwise PauliStringCollection is created - a collection of Pauli strings.
+         Given n, the collection is expanded as k-local. Where k is the maximum length of a Pauli string in a given collection.
     """
     if isinstance(o, str):
         return PauliString(pauli_str=o, n=n)
