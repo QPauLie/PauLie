@@ -23,6 +23,7 @@ six="^1.17.0"
 pauliarray = { git = "https://github.com/algolab-quantique/pauliarray.git" }
 pytest = "^8.3.5"
 tqdm = "^4.67.1"
+sphinx-autodoc-typehints = "^1.25.2"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.9.4"
