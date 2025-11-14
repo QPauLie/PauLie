@@ -5,5 +5,7 @@ API Reference
    :toctree: generated/
    :recursive:
 
+   paulie.application
    paulie.common
    paulie.classifier
+   paulie.helpers
