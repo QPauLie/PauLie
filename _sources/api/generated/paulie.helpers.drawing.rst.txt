@@ -1,0 +1,14 @@
+paulie.helpers.drawing
+======================
+
+.. automodule:: paulie.helpers.drawing
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      animation_graph
+      plot_graph
+      plot_graph_by_nodes
+   

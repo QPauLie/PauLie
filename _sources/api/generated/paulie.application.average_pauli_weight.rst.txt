@@ -1,0 +1,16 @@
+paulie.application.average\_pauli\_weight
+=========================================
+
+.. automodule:: paulie.application.average_pauli_weight
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      average_pauli_weight
+      avg_pauli_weights
+      avg_pauli_weights_from_strings
+      get_pauli_weights
+      quantum_fourier_entropy
+   

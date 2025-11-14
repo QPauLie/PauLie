@@ -1,0 +1,15 @@
+﻿paulie.classifier
+=================
+
+.. automodule:: paulie.classifier
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   classification
+   morph_factory
+   recording_morph_factory

@@ -1,0 +1,15 @@
+paulie.application.pauli\_compiler
+==================================
+
+.. automodule:: paulie.application.pauli_compiler
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      count_anticommuting_positions
+      derive_generating_operators
+      nested_adjoint
+      pauli_compiler
+   

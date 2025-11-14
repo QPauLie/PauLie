@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>paulie.common.pauli_string_linear &#8212; paulie 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="paulie.common.pauli_string_parser" href="paulie.common.pauli_string_parser.html" />
+    <link rel="prev" title="paulie.common.pauli_string_factory" href="paulie.common.pauli_string_factory.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-paulie.common.pauli_string_linear">
+<span id="paulie-common-pauli-string-linear"></span><h1>paulie.common.pauli_string_linear<a class="headerlink" href="#module-paulie.common.pauli_string_linear" title="Link to this heading">¶</a></h1>
+<p>Representation of a Pauli string as a bitarray.</p>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PauliStringLinear</span></code>(combinations)</p></td>
+<td><p>Representation of a linear combination of Pauli string.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Exceptions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PauliStringLinearException</span></code></p></td>
+<td><p>Exception for the linear combination of Pauli strings class</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">paulie</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../classification.html">Classification of Pauli DLAs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../commutator_graph.html">Commutator graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../average_graph_complexity.html">Average graph complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../matrix_decomposition.html">Matrix decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimal_universal_generators.html">Optimal universal generator sets</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="paulie.application.html">paulie.application</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="paulie.common.html">paulie.common</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="paulie.common.get_graph.html">paulie.common.get_graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paulie.common.pauli_string_bitarray.html">paulie.common.pauli_string_bitarray</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paulie.common.pauli_string_collection.html">paulie.common.pauli_string_collection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paulie.common.pauli_string_factory.html">paulie.common.pauli_string_factory</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">paulie.common.pauli_string_linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paulie.common.pauli_string_parser.html">paulie.common.pauli_string_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paulie.common.random_pauli_strings.html">paulie.common.random_pauli_strings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paulie.common.two_local_generators.html">paulie.common.two_local_generators</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.html">paulie.classifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.helpers.html">paulie.helpers</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AmanieOxana/PauLie">Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/unitary-fund-764231928676089909">Discord</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="paulie.common.html">paulie.common</a><ul>
+      <li>Previous: <a href="paulie.common.pauli_string_factory.html" title="previous chapter">paulie.common.pauli_string_factory</a></li>
+      <li>Next: <a href="paulie.common.pauli_string_parser.html" title="next chapter">paulie.common.pauli_string_parser</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, PauLie contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/api/generated/paulie.common.pauli_string_linear.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

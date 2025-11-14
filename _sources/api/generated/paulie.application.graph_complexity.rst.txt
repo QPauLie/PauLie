@@ -1,0 +1,12 @@
+paulie.application.graph\_complexity
+====================================
+
+.. automodule:: paulie.application.graph_complexity
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      average_graph_complexity
+   

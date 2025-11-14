@@ -1,0 +1,13 @@
+paulie.application.get\_optimal\_su2\_n
+=======================================
+
+.. automodule:: paulie.application.get_optimal_su2_n
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      get_optimal_connections_su_2_n
+      get_optimal_su_2_n_generators
+   

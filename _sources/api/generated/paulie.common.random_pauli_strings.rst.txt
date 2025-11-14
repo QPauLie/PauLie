@@ -1,0 +1,14 @@
+paulie.common.random\_pauli\_strings
+====================================
+
+.. automodule:: paulie.common.random_pauli_strings
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      get_random
+      get_random_k_local
+      get_random_list
+   

@@ -1,0 +1,23 @@
+paulie.common.pauli\_string\_factory
+====================================
+
+.. automodule:: paulie.common.pauli_string_factory
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      gen_k_local
+      gen_k_local_generators
+      get_identity
+      get_last
+      get_pauli_string
+      get_single
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Used
+   

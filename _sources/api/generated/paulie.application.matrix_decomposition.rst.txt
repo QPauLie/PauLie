@@ -1,0 +1,13 @@
+paulie.application.matrix\_decomposition
+========================================
+
+.. automodule:: paulie.application.matrix_decomposition
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      matrix_decomposition
+      matrix_decomposition_diagonal
+   

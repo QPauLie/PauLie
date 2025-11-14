@@ -1,0 +1,12 @@
+paulie.application.fourpoint
+============================
+
+.. automodule:: paulie.application.fourpoint
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      fourpoint
+   

@@ -1,0 +1,25 @@
+﻿paulie.application
+==================
+
+.. automodule:: paulie.application
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   animation
+   average_pauli_weight
+   charges
+   fourpoint
+   get_optimal_su2_n
+   graph_complexity
+   matrix_decomposition
+   otoc
+   pauli_compiler
+   pauli_compiler_optimal
+   plot
+   reach
+   second_moment

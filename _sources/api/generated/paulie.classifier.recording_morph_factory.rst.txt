@@ -1,0 +1,22 @@
+paulie.classifier.recording\_morph\_factory
+===========================================
+
+.. automodule:: paulie.classifier.recording_morph_factory
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      RecordingMorphFactory
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      AppendedException
+      DebugException
+      DependentException
+      MorphFactoryException
+      NotConnectedException
+   

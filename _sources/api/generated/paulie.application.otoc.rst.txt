@@ -1,0 +1,12 @@
+paulie.application.otoc
+=======================
+
+.. automodule:: paulie.application.otoc
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      average_otoc
+   

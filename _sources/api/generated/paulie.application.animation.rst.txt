@@ -1,0 +1,12 @@
+paulie.application.animation
+============================
+
+.. automodule:: paulie.application.animation
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      animation_anti_commutation_graph
+   

@@ -1,0 +1,24 @@
+paulie.classifier.morph\_factory
+================================
+
+.. automodule:: paulie.classifier.morph_factory
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      MorphFactory
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      AppendedException
+      CheckAppendedException
+      DebugException
+      DependentException
+      MorphFactoryException
+      NotConnectedException
+      RaiseException
+   

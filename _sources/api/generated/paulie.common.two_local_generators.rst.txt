@@ -1,0 +1,14 @@
+paulie.common.two\_local\_generators
+====================================
+
+.. automodule:: paulie.common.two_local_generators
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      get_lie_algebra
+      get_lie_algebras
+      two_local_algebras
+   

@@ -1,0 +1,12 @@
+paulie.application.charges
+==========================
+
+.. automodule:: paulie.application.charges
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      non_commuting_charges
+   

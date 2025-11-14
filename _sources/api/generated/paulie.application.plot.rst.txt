@@ -1,0 +1,12 @@
+paulie.application.plot
+=======================
+
+.. automodule:: paulie.application.plot
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      plot_anti_commutation_graph
+   

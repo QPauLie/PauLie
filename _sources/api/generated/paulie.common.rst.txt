@@ -1,0 +1,20 @@
+﻿paulie.common
+=============
+
+.. automodule:: paulie.common
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   get_graph
+   pauli_string_bitarray
+   pauli_string_collection
+   pauli_string_factory
+   pauli_string_linear
+   pauli_string_parser
+   random_pauli_strings
+   two_local_generators

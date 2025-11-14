@@ -1,0 +1,21 @@
+paulie.classifier.classification
+================================
+
+.. automodule:: paulie.classifier.classification
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Classification
+      Morph
+      TypeAlgebra
+      TypeGraph
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      ClassificatonException
+   

@@ -1,0 +1,18 @@
+paulie.common.pauli\_string\_linear
+===================================
+
+.. automodule:: paulie.common.pauli_string_linear
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      PauliStringLinear
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      PauliStringLinearException
+   

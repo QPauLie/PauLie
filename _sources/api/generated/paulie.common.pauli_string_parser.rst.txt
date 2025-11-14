@@ -1,0 +1,12 @@
+paulie.common.pauli\_string\_parser
+===================================
+
+.. automodule:: paulie.common.pauli_string_parser
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      pauli_string_parser
+   

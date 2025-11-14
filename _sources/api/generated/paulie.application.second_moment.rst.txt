@@ -1,0 +1,12 @@
+paulie.application.second\_moment
+=================================
+
+.. automodule:: paulie.application.second_moment
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      second_moment
+   

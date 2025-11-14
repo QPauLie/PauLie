@@ -1,0 +1,20 @@
+paulie.helpers.recording
+========================
+
+.. automodule:: paulie.helpers.recording
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      recording_graph
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      FrameGraph
+      FrameRecord
+      RecordGraph
+   

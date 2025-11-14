@@ -1,0 +1,20 @@
+paulie.helpers.printing
+=======================
+
+.. automodule:: paulie.helpers.printing
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      print_lit_vertices
+      print_vertices
+      print_vertix
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Debug
+   

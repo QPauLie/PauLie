@@ -1,0 +1,12 @@
+paulie.common.get\_graph
+========================
+
+.. automodule:: paulie.common.get_graph
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      get_graph
+   

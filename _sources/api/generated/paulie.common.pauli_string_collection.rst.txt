@@ -1,0 +1,18 @@
+paulie.common.pauli\_string\_collection
+=======================================
+
+.. automodule:: paulie.common.pauli_string_collection
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      PauliStringCollection
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      PauliStringCollectionException
+   

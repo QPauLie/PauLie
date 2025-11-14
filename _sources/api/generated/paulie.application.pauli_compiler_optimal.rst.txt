@@ -1,0 +1,25 @@
+paulie.application.pauli\_compiler\_optimal
+===========================================
+
+.. automodule:: paulie.application.pauli_compiler_optimal
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      choose_u_for_b
+      compile_target
+      construct_universal_set
+      left_a_minimal
+      left_map_over_a
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      OptimalPauliCompiler
+      PauliCompilerConfig
+      SubsystemCompiler
+      SubsystemCompilerConfig
+   

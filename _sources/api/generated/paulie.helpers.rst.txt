@@ -1,0 +1,15 @@
+﻿paulie.helpers
+==============
+
+.. automodule:: paulie.helpers
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   drawing
+   printing
+   recording

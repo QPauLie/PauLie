@@ -1,0 +1,12 @@
+paulie.common.pauli\_string\_bitarray
+=====================================
+
+.. automodule:: paulie.common.pauli_string_bitarray
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      PauliString
+   
