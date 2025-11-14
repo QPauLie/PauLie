@@ -19,6 +19,7 @@ Paulistrings.
     average_graph_complexity
     second_moment
     matrix_decomposition
+    optimal_universal_generators
     api/index
 
 .. toctree::

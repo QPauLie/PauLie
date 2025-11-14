@@ -21,6 +21,8 @@ def average_otoc(generators: PauliStringCollection,
         generators: Generating set of the Pauli string DLA.
         v: Pauli string V
         w: Pauli string W
+    Returns:
+        the Haar averaged out-of-time-order correlator F between two Pauli strings W and V.
     """
     # Number of elements in connected component of V that anti-commute with W
     anti_commute_count = 0
