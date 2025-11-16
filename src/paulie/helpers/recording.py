@@ -48,17 +48,17 @@ class FrameRecord:
         Constructor
         Args:
              graph: frame of graph
-             lighting: lighting
-             appending: appending
-             contracting: contracting
+             lighting: canonical graph join candidate
+             appending: Pauli string for appending
+             contracting: Pauli string for contracting
              lits: list of lited vertices
              p: lited Pauli string in legs long 1
              q: unlited Pauli string in legs long 1
              removing_vertices: list of removing vertices
              replacing_vertices: list of replacing vertices
              dependent: dependent vertix
-             title: title
-             init: init state
+             title: title of frame
+             init: init state of building
         Returns:
             None
         """
@@ -118,7 +118,7 @@ class FrameRecord:
         """
         Check vertix is appending
         Args:
-            vertix: vertix
+            vertix: vertix for checking
         Returns:
             True if vertix is appending
         """
@@ -130,7 +130,7 @@ class FrameRecord:
         """
         Check vertix is contracting
         Args:
-            vertix: vertix
+            vertix: vertix for checking
         Returns:
             True if vertix is contracting
 
@@ -143,7 +143,7 @@ class FrameRecord:
         """
         Check vertix is p
         Args:
-            vertix: vertix
+            vertix: vertix for checking
         Returns:
             True if vertix is lited in leg long 1
         """
@@ -155,7 +155,7 @@ class FrameRecord:
         """
         Check vertix is q
         Args:
-            vertix: vertix
+            vertix: vertix for checking
         Returns:
             True if vertix is unlited in leg long 1
         """
@@ -167,7 +167,7 @@ class FrameRecord:
         """
         Check vertix is dependent
         Args:
-            vertix: vertix
+            vertix: vertix for checking
         Returns:
             True if vertix is dependent
         """
@@ -179,7 +179,7 @@ class FrameRecord:
         """
         Check vertix is lited
         Args:
-            vertix: vertix
+            vertix: vertix for checking
         Returns:
             True if vertix is lited
         """
@@ -189,7 +189,7 @@ class FrameRecord:
         """
         Check is removing
         Args:
-            vertix: vertix
+            vertix: vertix for checking
         Returns:
             True if vertix is not removing
         """
@@ -199,7 +199,7 @@ class FrameRecord:
         """
         Check vertix is removing
         Args:
-            vertix: vertix
+            vertix: vertix for checking
         Returns:
             True if vertix is removing
         """
@@ -209,7 +209,7 @@ class FrameRecord:
         """
         Check vertix is replacing
         Args:
-            vertix: vertix
+            vertix: vertix for checking
         Returns:
             True if vertix is replacing
         """
@@ -223,8 +223,6 @@ class FrameRecord:
             True if init state
         """
         return self.init
-
-
 class RecordGraph:
     """
     Record of graph
@@ -261,17 +259,17 @@ class RecordGraph:
         Make frame and append to record
         Args:
              graph: frame of graph
-             lighting: lighting
-             appending: appending
-             contracting: contracting
+             lighting: canonical graph join candidate
+             appending: Pauli string for appending
+             contracting: Pauli string for contracting
              lits: list of lited vertices
              p: lited Pauli string in legs long 1
              q: unlited Pauli string in legs long 1
              removing_vertices: list of removing vertices
              replacing_vertices: list of replacing vertices
              dependent: dependent vertix
-             title: title
-             init: init state
+             title: title of frame
+             init: init state of building
         Returns:
             None
         """
@@ -392,19 +390,19 @@ def recording_graph(record:RecordGraph, collection:list[PauliString]=None,
     """
     Recording graph
     Args:
-        record: record
+        record: record of graph building
         collection: list of vertices
-        lighting: lighting
-        appending: appending
-        contracting: contracting
+        lighting: canonical graph join candidate
+        appending: Pauli string for appending
+        contracting: Pauli string for contracting
         lits: list of lited vertices
         p: lited Pauli string in legs long 1
         q: unlited Pauli string in legs long 1
         removing_vertices: list of removing vertices
         replacing_vertices: list of replacing vertices
         dependent: dependent vertix
-        title: title
-        init: init state
+        title: title of frame
+        init: init state of building
     Returns:
        None
     """

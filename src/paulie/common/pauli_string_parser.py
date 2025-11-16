@@ -13,7 +13,7 @@ def _is_token(char: str) -> bool:
     """
     Check if a character is a valid token.
     Args: 
-        char: char
+        char: char for checking in tokens
     Returns:
         True if char is token
     """
@@ -24,7 +24,7 @@ def _is_number(char: str) -> bool:
     """
     Check if a character is a number, raise exception if invalid token.
     Args: 
-        char: char
+        char: char for checking in numbers
     Returns:
         True if char is number
     Raises:

@@ -215,7 +215,7 @@ class PauliString:
         """
         Sets a specified Pauli at a given position in the Paulistring
         Args:
-            pauli_string: PauliString
+            pauli_string: Pauli string to set in position
         Returns: None
 
         """
@@ -250,7 +250,7 @@ class PauliString:
         """
         Pauli string addition operator
         Args:
-             other: The Pauli string
+             other: The Pauli string to add
         Returns: the result of adding
         """
         other = self._ensure_pauli_string(other)
@@ -260,7 +260,7 @@ class PauliString:
         """
         Overloading | operator of two Pauli strings like commutes_with
         Args:
-             other: The Pauli string
+             other: The Pauli string to commutes_with
         Returns: the result of commutes_with
         """
         return self.commutes_with(other)
@@ -269,7 +269,7 @@ class PauliString:
         """
         Overloading ^ operator of two Pauli strings like adjoint_map
         Args:
-             other: The Pauli string
+             other: The Pauli string to adjoint_map
         Returns: the result of adjoint_map
         """
         return self.adjoint_map(other)
@@ -278,7 +278,7 @@ class PauliString:
         """
         Overloading @ operator of two Pauli strings like multiply
         Args:
-             other: The Pauli string
+             other: The Pauli string to multiply
         Returns: the result of multiply
         """
         return self.multiply(other)
@@ -331,7 +331,7 @@ class PauliString:
         """
         Check if this Pauli string commutes with another
         Args:
-             other: The Pauli string
+             other: The Pauli string to commutes
         Returns:
              True if they commute, False if they anticommute
         Raises:
@@ -391,7 +391,7 @@ class PauliString:
         """
         Tensor product of this Pauli string with another
         Args:
-             other: The Pauli string
+             other: The Pauli string to tensor product
         Returns:
             the result of the tensor product self on other
         """
@@ -408,7 +408,7 @@ class PauliString:
         Proportional multiplication operator of two Pauli strings
 
         Args:
-             other: The Pauli string
+             other: The Pauli string to multiplication
         Returns:
              the PauliString proportional to the multiplication 
         Raises:
@@ -426,7 +426,7 @@ class PauliString:
         """
         Compute the adjoint map ad_A(B) = [A,B]
         Args:
-             other: The Pauli string
+             other: The Pauli string to adjoint map with self
         Returns: 
                None if the commutator is zero (i.e., if A and B commute)
                Otherwise returns a PauliString proportional to the commutator
