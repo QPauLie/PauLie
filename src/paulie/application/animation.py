@@ -13,8 +13,19 @@ def animation_anti_commutation_graph(generators: PauliStringCollection,
     generators - list of generators
     Args:
         generators: collection of Pauli strings
-        storage: storage of animation
-        interval: intrval
+        storage: storage in file: 
+                 dictionary: filename: path to file
+                             writer: specifies the software used
+                                     to write the animation. 
+                                     Common options include:
+                                    'ffmpeg' (for MP4, AVI, etc.,
+                                     requires FFmpeg to be installed and accessible
+                                     in your system's PATH, or its path specified via
+                                     matplotlib.rcParams['animation.ffmpeg_path']).
+                                    'pillow' (for GIF, requires the Pillow library).
+                                    'imagemagick' (for GIF, requires ImageMagick).
+
+        interval: interval between recording frames
     Returns:
         None
     """

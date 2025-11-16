@@ -97,7 +97,7 @@ class RecordingMorphFactory(Debug):
         """
         Lit vertix
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
             vertix: the vertix that will be lited by lightning
         Returns:
             new lighting
@@ -113,7 +113,7 @@ class RecordingMorphFactory(Debug):
         """
         Get lited vertices (connected to the selected vertex).
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
             vertices: list of vertices
         Returns:
             list of lited vertices (connected to the selected vertex).
@@ -266,7 +266,7 @@ class RecordingMorphFactory(Debug):
         """
         Get pq
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             tuple:
                 pq: p@q where p and q are vertices 
@@ -398,7 +398,7 @@ class RecordingMorphFactory(Debug):
         """
         Append vertix to two vertices graph
         Args: 
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             None
         Raises:
@@ -447,7 +447,7 @@ class RecordingMorphFactory(Debug):
         """
         Removing a graph vertex
         Args: 
-            v: vertix
+            v: removed vertix
         Returns:
             None
         """
@@ -491,7 +491,7 @@ class RecordingMorphFactory(Debug):
         """
         Debug output of graph state
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             None
         """
@@ -1177,7 +1177,7 @@ class RecordingMorphFactory(Debug):
         """
         Pipeline
         Args: 
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns: None
         Raises:
             AppendedException:
@@ -1201,7 +1201,7 @@ class RecordingMorphFactory(Debug):
         """
         Append to delayed
         Args:
-            v: vertix
+            v: vertix to append in delayed
         Return: None
         """
         self.delayed_vertices.append(v)
@@ -1223,7 +1223,7 @@ class RecordingMorphFactory(Debug):
         """
         Set debug vertix
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             None
         """
@@ -1233,7 +1233,7 @@ class RecordingMorphFactory(Debug):
         """
         Set debug break
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             None
         """
@@ -1245,7 +1245,7 @@ class RecordingMorphFactory(Debug):
         Debug break
         Args:
             number: number vertices in graph
-            lighting: lighting
+            lighting: canonical graph join candidate
             append: break on append
         Returns: None
         """

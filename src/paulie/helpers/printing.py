@@ -9,8 +9,8 @@ def print_vertix(debug:bool, vertix:PauliString,
     Prnting vertix if debug
     Args:
         debug: debug flag
-        vertix: vertix
-        title: title
+        vertix: vertix to print
+        title: title to print
     Returns:
         None
     """
@@ -23,8 +23,8 @@ def print_vertices(debug:bool, vertices:list[PauliString],
     Prnting list of vertices if debug
     Args:
         debug: debug flag
-        vertices: list of vertices
-        title: title
+        vertices: list of vertices to print
+        title: title to print
     Returns:
         None
     """
@@ -43,9 +43,9 @@ def print_lit_vertices(debug:bool, vertices:list[PauliString],
     Prnting list of vertices with lits if debug
     Args:
         debug: debug flag
-        vertices: list of vertices
+        vertices: list of vertices to print
         lits: list of lited vertices
-        title: title
+        title: title to print
     Returns:
         None
     """
@@ -115,8 +115,8 @@ class Debug:
         """
         Prnting vertix if debug
         Args:
-            vertix: vertix
-            title: title
+            vertix: vertix to print
+            title: title to print
         Returns:
             None
         """
@@ -128,8 +128,8 @@ class Debug:
         """
         Prnting list of vertices if debug
         Args:
-            vertices: list of vertices
-            title: title
+            vertices: list of vertices to print
+            title: title to print
         Returns:
             None
         """
@@ -139,7 +139,7 @@ class Debug:
         """
         Print title
         Args:
-            title: title
+            title: title to print
         Returns:
             None
         """
@@ -154,9 +154,9 @@ class Debug:
         """
         Prnting list of vertices with lits if debug
         Args:
-            vertices: list of vertices
+            vertices: list of vertices to print
             lits: list of lited vertices
-            title: title
+            title: title to print
         Returns:
             None
         """
@@ -169,7 +169,7 @@ class Debug:
         Pauli string equality check
         Args:
             vertix: vertix
-            paulistring: Pauli string
+            paulistring: Pauli string to equality check
        Returns:
            True if vertix equals Pauli string
         """

@@ -20,7 +20,7 @@ def get_single(n: int, i: int, label: str) -> PauliString:
     """
     Get a Pauli string with a single value at position
     Args: n - length of Pauli string
-          i - position
+          i - position in Pauli string
           label - PauliString in single position
     Returns: PauliString with set label
     """
@@ -83,7 +83,7 @@ class Used:
     def append(self, p: PauliString) -> None:
         """Append to set
         Args:
-            p: Pauli string
+            p: Pauli string to append in the set
         Returns:
             None
         """
@@ -93,7 +93,7 @@ class Used:
         """
         Checking a Pauli string in a set
         Args:
-            p: Pauli string
+            p: Pauli string for checking in the used
         Returns:
             True if Pauli string in a set
         """
@@ -105,7 +105,7 @@ def gen_k_local(n: int, p: PauliString, used:Used=None) -> Generator[list[PauliS
     Generates k-local Pauli strings.
     Args:
       n: a length of Paulistring
-      p: Pauli string
+      p: local Pauli string 
       used: a repository of already generated strings
     Returns:
       k-local string generator

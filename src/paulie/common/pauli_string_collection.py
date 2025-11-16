@@ -80,7 +80,8 @@ class PauliStringCollection:
         In order to animate the transformations that lead to the canonical graph
         and thus to the classification, set record of type RecordGraph
         Args:
-            record - record of type RecordGraph
+            record: record of type RecordGraph, recording
+                    the construction of canonical graphics
         Returns: None
         """
         self.record = record
@@ -115,7 +116,7 @@ class PauliStringCollection:
         Iterator over the generators
         Args: empty
         Returns:
-           Iterator over the generators
+           iterator over the generators
         """
         self.nextpos = 0
         return self
@@ -167,7 +168,7 @@ class PauliStringCollection:
         """
         Overloading the addition operator with a collection
         Args: 
-            p: PauliString
+            p: Pauli string to add
         Returns: PauliStringCollection with appended PauliString
 
         """
@@ -181,8 +182,8 @@ class PauliStringCollection:
         """
         Multiplication on collection
         Args:
-            a: first Paulistring collection
-            b: second Paulistring collection
+            a: first Pauli string collection to multiplication
+            b: second Pauli string collection to multiplication
         Returns:
             the result of multiplication a * b
         """
@@ -197,7 +198,7 @@ class PauliStringCollection:
         """
         Overloading the multiplication operator with a collection
         Args: 
-            other: collection
+            other: collection for multiplication on self
         Returns:
             the result of multiplication self * other
         """
@@ -207,7 +208,7 @@ class PauliStringCollection:
         """
         Overloading the right multiplication operator with a collection
         Args: 
-            other: collection
+            other: collection for right multiplication on self
         Returns:
             the result of multiplication other * self
         """
@@ -234,7 +235,7 @@ class PauliStringCollection:
         is of the same size.  Each string will be expanded
         with identities to have the length of the longest Pauli string.
         Args: 
-            p: Paulistring arbitrary length
+            p: Pauli string arbitrary length
         Returns:
             The Paulistring is the same length as the collection element
         """
@@ -251,7 +252,7 @@ class PauliStringCollection:
         """
         Append a specified Pauli string to the collection to the end
         Args: 
-            p: Paulistring arbitrary length
+            p: Paulistring arbitrary for appending to the end
         Returns: None
         """
         self.classification = None
@@ -264,7 +265,7 @@ class PauliStringCollection:
         Insert a specified Pauli string to the collection at a specified position
         Args:
             i: position to insert
-            p: Paulistring arbitrary length
+            p: Paulistring arbitrary length for inserting in position
         Returns: None
         """
         self.classification = None
@@ -276,7 +277,7 @@ class PauliStringCollection:
         """
         Remove a specified Pauli string from the collection
         Args:
-            p: Paulistring
+            p: Pauli string for removing from collection
         Returns: None
         """
         self.classification = None
@@ -287,7 +288,7 @@ class PauliStringCollection:
         """
         Get the index of a given Pauli string inside the collection
         Args:
-            p: Paulistring
+            p: Pauli string for searching in collection
         Returns:
             the index of a given Pauli string inside the collection
         """
@@ -307,9 +308,10 @@ class PauliStringCollection:
         Create a new instance of the same type as the rest of the Pauli strings in the collection
         Args:
             n: length of new PauliString
-            pauli_str: string representation of the Paulistring
+            pauli_str: string representation of the Pauli string
+                       for new instance, if None then identity
         Returns:
-               new PauliString
+               new created PauliString object
         Raises:
               PauliStringCollectionException:
                    Empty collection
@@ -540,7 +542,7 @@ class PauliStringCollection:
         """
         Testing generators in algebra. All Pauli strings of one algebra are dependent on another.
         Args: 
-            generators: generator collection
+            generators: generator collection for checking
         Returns:
             True when all generators can be obtained from DLA self
         """
@@ -568,7 +570,7 @@ class PauliStringCollection:
         Testing for equivalence of two algebras.
         All Pauli strings of one algebra are dependent on another.
         Args: 
-            generators: generator collection
+            generators: generator collection for checking
         Returns:
             True when two collections of generators are equivalent
         """
@@ -578,7 +580,7 @@ class PauliStringCollection:
         """
         Select dependents from self
         Args: 
-            generators: generator collection
+            generators: generator collection for selecting
         Returns:
            a collection of dependent Pauli strings
         """
@@ -767,7 +769,7 @@ class PauliStringCollection:
         is provided with a pre-computed list of linear symmetries (L_j).
         This method performs the inner loop of the full calculation.
         Args: 
-            linear_symmetries: linear symmetries
+            linear_symmetries: collection of linear symmetries
         Returns:
             a list of linear combinations
         """
@@ -836,7 +838,7 @@ class PauliStringCollection:
         """
         Find index pauli string in collection
         Args:
-            pauli_string: Paulistring
+            pauli_string: Pauli string for searching
         Returns:
             index pauli string in collection
         """
@@ -850,7 +852,7 @@ class PauliStringCollection:
         Replacing one Pauli string with another
         Args:
             pauli_string: the Pauli string that will be replaced
-            new_pauli_string: new Pauli string
+            new_pauli_string: new Pauli string on place the old Pauli string
         Returns:
             None
         """
@@ -884,7 +886,7 @@ class PauliStringCollection:
         """
         Get the difference between the required number and the number of connections in the graph
         Args: 
-            generators: generator collection
+            generators: generator collection of graph
             number_connections: required number of connections
         Returns:
             the difference between the required number and the number of connections in the graph

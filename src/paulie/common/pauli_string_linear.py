@@ -114,7 +114,7 @@ class PauliStringLinear(PauliString):
         It simplifies both objects and compares their terms using a tolerance
         for floating-point coefficients.
         Args:
-            other: other linear combination
+            other: other linear combination for equality check
         Returns:
             True if other == self
         """
@@ -145,7 +145,7 @@ class PauliStringLinear(PauliString):
         """
         Overloading < operator for two linear combination of Pauli strings
         Args:
-             other: The Pauli string to compare with
+             other: the linear combination to compare with
         Returns:
              the result of the comparison
         Raises:
@@ -158,7 +158,7 @@ class PauliStringLinear(PauliString):
         """
         Overloading <= operator of two Pauli strings
         Args:
-             other: The Pauli string to compare with
+             other: the linear combination to compare with
         Returns:
              the result of the comparison
         Raises:
@@ -171,7 +171,7 @@ class PauliStringLinear(PauliString):
         """
         Overloading > operator of two Pauli strings
         Args:
-             other: The Pauli string to compare with
+             other: the linear combination to compare with
         Returns:
              the result of the comparison
         Raises:
@@ -184,7 +184,7 @@ class PauliStringLinear(PauliString):
         """
         Overloading >= operator of two Pauli strings
         Args:
-             other: The Pauli string to compare with
+             other: the linear combination to compare with
         Returns:
              the result of the comparison
         Raises:
@@ -197,7 +197,7 @@ class PauliStringLinear(PauliString):
         """
         Overloading != operator of two Pauli strings
         Args:
-             other: The Pauli string to compare with
+             other: the linear combination to compare with
         Returns:
              the result of the comparison
         Raises:
@@ -254,8 +254,8 @@ class PauliStringLinear(PauliString):
         """
         Sets a specified combination at a given position in the Paulistring
         Args:
-            position: a position in lianer combination
-            combination: pair of weight and Paulistring
+            position: the position in lianer combination
+            combination: pair of weight and Paulistring to set in the position
         Returns:
             None
         """
@@ -291,7 +291,7 @@ class PauliStringLinear(PauliString):
         """
         Performs a robust addition of two linear combinations.
         Args:
-            other: linear combinations
+            other: linear combinations to add
         Returns:
             the result of self + other
         """
@@ -311,7 +311,7 @@ class PauliStringLinear(PauliString):
         """
         Performs in-place addition.
         Args:
-            other: linear combinations
+            other: the linear combinations to inner add
         Returns:
             the result of self += other
 
@@ -326,7 +326,7 @@ class PauliStringLinear(PauliString):
         """
         Overloading | operator of two Pauli strings like commutes_with
         Args:
-            other: linear combinations
+            other: the linear combinations to commutes with
         Returns:
             True if self commutes with other
         """
@@ -336,7 +336,7 @@ class PauliStringLinear(PauliString):
         """
         Overloading ^ operator of two linear combination of Pauli strings like adjoint_map
         Args:
-            other: linear combinations
+            other: the linear combinations to adjoint map
         Returns: 
            adjoint map of self and other
         """
@@ -395,7 +395,7 @@ class PauliStringLinear(PauliString):
         """
         Overloading @ operator of two Pauli strings like multiply
         Args:
-            other: linear combinations
+            other: the linear combinations for right math multiplication
         Returns:
             the result of right multiplying two linear combinations
         """
@@ -408,7 +408,7 @@ class PauliStringLinear(PauliString):
         """
         Performs reverse scalar multiplication: scalar * self.
         Args: 
-            scalar: complex a number
+            scalar: the complex number for right multiplication
         Returns:
             the result of right multiplying linear combination on scalar
         """
@@ -419,7 +419,7 @@ class PauliStringLinear(PauliString):
         """
         Performs scalar multiplication: self * scalar.
         Args: 
-            scalar: complex a number
+            scalar: the complex number for scalar multiplication
         Returns:
             the result of multiplying linear combination on scalar
         """
@@ -456,7 +456,7 @@ class PauliStringLinear(PauliString):
         Multiplication operator of two linear combination
         of Pauli strings
         Args:
-            other: linear combinations
+            other: the linear combinations for multiplication
         Returns:
             a PauliString proportional to the multiplication
         """
@@ -474,7 +474,8 @@ class PauliStringLinear(PauliString):
         """
         Check if this Pauli string commutes with another
         Args:
-            other: linear combinations
+            other: the linear combinations for checking
+                   commutes
         Returns:
             True if they commute, False if they anticommute
         """
@@ -534,7 +535,7 @@ class PauliStringLinear(PauliString):
         """
         Tensor product of this linear combination with another
         Args:
-            other: linear combinations
+            other: linear combinations to tensor product
         Returns:
             the result of the tensor product self on other
         Raises:
@@ -549,7 +550,7 @@ class PauliStringLinear(PauliString):
         Kroniker multiplication pauli string on linear combination
         of Pauli strings
         Args:
-            other: linear combinations
+            other: the linear combinations for Kroniker multiplication
         Returns:
             a linera combination of PauliString
         """
@@ -563,7 +564,7 @@ class PauliStringLinear(PauliString):
         Right Kroniker multiplication pauli string on linear combination
         of Pauli strings
         Args:
-            other: linear combinations
+            other: the linear combinations for right Kroniker multiplication
         Returns:
             a linera comination of PauliString
         """
@@ -606,7 +607,7 @@ class PauliStringLinear(PauliString):
         """
         Compute the adjoint map ad_A(B) = [A,B]
         Args:
-            other: linear combinations
+            other: linear combinations for the adjoint map
         Returns: None if the commutator is zero (i.e., if A and B commute)
                  Otherwise returns a PauliString proportional to the commutator
         Raises:

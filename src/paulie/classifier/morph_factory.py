@@ -105,7 +105,7 @@ class MorphFactory(Debug):
         """
         Lit vertix
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
             vertix: the vertix that will be lited by lightning
         Returns:
             new lighting
@@ -121,7 +121,7 @@ class MorphFactory(Debug):
         """
         Get lited vertices (connected to the selected vertex).
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
             vertices: list of vertices
         Returns:
             list of lited vertices (connected to the selected vertex).
@@ -274,7 +274,7 @@ class MorphFactory(Debug):
         """
         Get pq
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             tuple:
                 pq: p@q where p and q are vertices 
@@ -410,7 +410,7 @@ class MorphFactory(Debug):
         """
         Append vertix to two vertices graph
         Args: 
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             None
         Raises:
@@ -443,7 +443,7 @@ class MorphFactory(Debug):
         """
         Dependency check when attaching a vertex to the center of the graph
         Args: 
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             None
         Raises:
@@ -465,7 +465,7 @@ class MorphFactory(Debug):
         """
         Joining a vertex to the center of the graph
         Args: 
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             None
         """
@@ -477,7 +477,7 @@ class MorphFactory(Debug):
         """
         Removing a graph vertex
         Args: 
-            v: vertix
+            v: removed vertex 
         Returns:
             None
         """
@@ -521,7 +521,7 @@ class MorphFactory(Debug):
         """
         Debug output of graph state
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             None
         """
@@ -983,7 +983,7 @@ class MorphFactory(Debug):
         """
         Pipeline
         Args: 
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns: None
         Raises:
             AppendedException:
@@ -1008,7 +1008,7 @@ class MorphFactory(Debug):
         """
         Append to delayed
         Args:
-            v: vertix
+            v: vertix to append in delayed
         Return: None
         """
         self.delayed_vertices.append(v)
@@ -1030,7 +1030,7 @@ class MorphFactory(Debug):
         """
         Set debug vertix
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             None
         """
@@ -1040,7 +1040,7 @@ class MorphFactory(Debug):
         """
         Set debug break
         Args:
-            lighting: lighting
+            lighting: canonical graph join candidate
         Returns:
             None
         """
@@ -1053,7 +1053,7 @@ class MorphFactory(Debug):
         Debug break
         Args:
             number: number vertices in graph
-            lighting: lighting
+            lighting: canonical graph join candidate
             append: break on append
         Returns: None
         """

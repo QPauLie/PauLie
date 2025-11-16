@@ -54,10 +54,20 @@ def animation_graph(record: RecordGraph, interval:int=1000,
     """
     Animate graph building
     Args:
-        record: record
-        interval: interval
-        repeat: repeat
-        storage: storage
+        record: record of animation
+        interval: interval between recording frames
+        repeat: if true, then the recording is played cyclically
+        storage: storage in file: 
+                 dictionary: filename: path to file
+                             writer: specifies the software used
+                                     to write the animation. 
+                                     Common options include:
+                                    'ffmpeg' (for MP4, AVI, etc.,
+                                     requires FFmpeg to be installed and accessible
+                                     in your system's PATH, or its path specified via
+                                     matplotlib.rcParams['animation.ffmpeg_path']).
+                                    'pillow' (for GIF, requires the Pillow library).
+                                    'imagemagick' (for GIF, requires ImageMagick).
     Returns:
         None
     """
@@ -79,7 +89,7 @@ def animation_graph(record: RecordGraph, interval:int=1000,
         Build position of vertices in canonical graph
         Args:
             edges: list of edges
-            center: center
+            center: vertix of center
         Returns:
            positions of verticex and postion of lighting
         """

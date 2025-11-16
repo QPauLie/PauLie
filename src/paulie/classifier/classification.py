@@ -377,7 +377,7 @@ class Classification:
         """
         Algebra inclusion check
         Args: 
-           algebra: algebra
+           algebra: name of algebra
         Returns:
             True if algebra equals graph algebra
         """
@@ -389,7 +389,7 @@ class Classification:
         """
         Reformat algebra
         Args: 
-            algebra: 
+            algebra: name of algebra
         Returns:
             reformatted algebra
         """
@@ -414,7 +414,7 @@ class Classification:
         """
         Checking for compliance with a given algebra
         Args:
-            algebra: algebra
+            algebra: name of algebra
         Returns:
             True if the adgebra matches
         """
@@ -434,7 +434,7 @@ class Classification:
         """
         Get subalgebras
         Args:
-            algebra: algebra
+            algebra: name of algebra
         Returns:
             list of subalgebras
         """
@@ -478,7 +478,7 @@ class Classification:
         """
         Get algebra isomorphism
         Args:
-            algebra: algebra
+            algebra: name of algebra
         Returns: 
             an isomorphic representation of algebra
         """
