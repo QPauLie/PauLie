@@ -73,7 +73,8 @@ class PauliStringCollection:
 
     def set_record(self, record:RecordGraph) -> None:
         """
-        In order to animate the transformations that lead to the canonical graph and thus to the classification, set record of type RecordGraph.
+        In order to animate the transformations that lead to the canonical graph
+        and thus to the classification, set record of type RecordGraph.
         Args:
             record: Record of type RecordGraph, recording the construction of canonical graphics.
         Returns: None
@@ -209,7 +210,8 @@ class PauliStringCollection:
 
     def expand(self, n: int) -> None:
         """
-        Expands each string in the collection to specified length n by taking the tensor product with identities.
+        Expands each string in the collection to specified length n
+        by taking the tensor product with identities.
         Args:
             n: New length of Pauli string in collection.
         Returns:
@@ -223,7 +225,9 @@ class PauliStringCollection:
 
     def _processing(self, p: PauliString) -> PauliString:
         """
-        Enforcing that each string in the collection is of the same size. Each string will be expanded with identities to have the length of the longest Pauli string.
+        Enforcing that each string in the collection is of the same size.
+        Each string will be expanded with identities
+        to have the length of the longest Pauli string.
         Args: 
             p: Pauli string arbitrary length.
         Returns:

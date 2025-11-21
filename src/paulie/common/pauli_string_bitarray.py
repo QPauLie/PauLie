@@ -437,7 +437,8 @@ class PauliString:
         Args:
             other: Pauli string to adjoint map with self.
         Returns: 
-            None if the commutator is zero (i.e., if A and B commute). Otherwise, returns a PauliString proportional to the commutator.
+            None if the commutator is zero (i.e., if A and B commute).
+            Otherwise, returns a PauliString proportional to the commutator.
         Raises:
             ValueError:
                 len(self.bits) != len(other.bits)
@@ -473,7 +474,8 @@ class PauliString:
 
     def expand(self, n: int) -> Self:
         """
-        Increasing the size of the Pauli string by taking the tensor product with identities in the end.
+        Increasing the size of the Pauli string
+        by taking the tensor product with identities in the end.
         Args:
             n (int): New Pauli string length.
         Returns:
@@ -501,7 +503,8 @@ class PauliString:
         """
         Get a list of Pauli strings that commute with this string.
         Args:
-            generators: Collection of Pauli strings on which commutant is searched. If not specified, then the search area is all Pauli strings of the same size.
+            generators: Collection of Pauli strings on which commutant is searched.
+            If not specified, then the search area is all Pauli strings of the same size.
         Returns:
             List of Pauli strings that commute with this string.
         """
@@ -514,7 +517,8 @@ class PauliString:
         """
         Get a list of Pauli strings that no-commute with this string.
         Args:
-            generators: Collection of Pauli strings on which commutant is searched. If not specified, then the search area is all Pauli strings of the same size.
+            generators: Collection of Pauli strings on which commutant is searched.
+            If not specified, then the search area is all Pauli strings of the same size.
         Returns:
             List of Pauli strings that no-commute with this string.
         """
@@ -527,7 +531,8 @@ class PauliString:
         """
         Get nested of Pauli string.
         Args:
-            generators: Collection of Pauli strings on which commutant is searched. If not specified, then the search area is all Pauli strings of the same size.
+            generators: Collection of Pauli strings on which commutant is searched.
+            If not specified, then the search area is all Pauli strings of the same size.
         Returns:
             Nested of Pauli string.
         """
