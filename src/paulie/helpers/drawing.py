@@ -14,11 +14,11 @@ def plot_graph(vertices:list[str],
                edges:list[tuple[str,str]],
                edge_labels:dict[tuple[str,str],str] = None) -> None:
     """
-    Plot graph
+    Plot graph.
     Args:
-         vertices: list of vertices
-         edges: list of edges
-         edge_labels: list of labels
+        vertices: List of vertices.
+        edges: List of edges.
+        edge_labels: List of labels.
     Returns:
         None
     """
@@ -36,10 +36,10 @@ def plot_graph_by_nodes(nodes:PauliStringCollection,
                         commutators:PauliStringCollection|list[PauliString]=None
 ) -> None:
     """
-    Plot graph by nodes
+    Plot graph by nodes.
     Args:
-        nodes: collection of Pauli strings
-        commutators: collection of commutators (Pauli strings)
+        nodes: Collection of Pauli strings.
+        commutators: Collection of commutators (Pauli strings).
     Returns:
         None
     """
@@ -52,22 +52,15 @@ def animation_graph(record: RecordGraph, interval:int=1000,
                     repeat:bool=False, storage:dict[str,str]=None
 ) -> None:
     """
-    Animate graph building
+    Animate graph building.
     Args:
-        record: record of animation
-        interval: interval between recording frames
-        repeat: if true, then the recording is played cyclically
-        storage: storage in file: 
-                 dictionary: filename: path to file
-                             writer: specifies the software used
-                                     to write the animation. 
-                                     Common options include:
-                                    'ffmpeg' (for MP4, AVI, etc.,
-                                     requires FFmpeg to be installed and accessible
-                                     in your system's PATH, or its path specified via
-                                     matplotlib.rcParams['animation.ffmpeg_path']).
-                                    'pillow' (for GIF, requires the Pillow library).
-                                    'imagemagick' (for GIF, requires ImageMagick).
+        record: Record of animation.
+        interval: Interval between recording frames.
+        repeat: If true, then the recording is played cyclically.
+        storage: Storage in file: dictionary: filename: path to file writer: Specifies the software used to write the animation. Common options include:
+            'ffmpeg' (for MP4, AVI, etc., requires FFmpeg to be installed and accessible in your system's PATH, or its path specified via matplotlib.rcParams['animation.ffmpeg_path']).
+            'pillow' (for GIF, requires the Pillow library).
+            'imagemagick' (for GIF, requires ImageMagick).
     Returns:
         None
     """
@@ -75,9 +68,9 @@ def animation_graph(record: RecordGraph, interval:int=1000,
     fig, ax = plt.subplots(figsize=(6,4))
     def clear() -> None:
         """
-        Clear frame
-        Args: empty
-        Returns: None
+        Clear frame.
+        Returns:
+            None
         """
         ax.clear()
         graph.remove_nodes_from(list(n for n in graph.nodes))
@@ -86,12 +79,12 @@ def animation_graph(record: RecordGraph, interval:int=1000,
     def build_positions(edges:list[tuple[str,str]],
                         center:str) -> tuple[dict[str,np.array], int]:
         """
-        Build position of vertices in canonical graph
+        Build position of vertices in canonical graph.
         Args:
-            edges: list of edges
-            center: vertix of center
+            edges: List of edges.
+            center: Vertix of center.
         Returns:
-           positions of verticex and postion of lighting
+           Positions of verticex and postion of lighting.
         """
         legs = []
         positions = {}
