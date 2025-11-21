@@ -57,10 +57,12 @@ def animation_graph(record: RecordGraph, interval:int=1000,
         generators: Collection of Pauli strings.
         storage: Storage in file: dictionary: filename: path to file writer:
         Specifies the software used to write the animation. Common options include:
-        'ffmpeg' (for MP4, AVI, etc., requires FFmpeg to be installed and accessible in your system's PATH,
+        'ffmpeg' (for MP4, AVI, etc., requires FFmpeg to be installed
+        and accessible in your system's PATH,
         or its path specified via matplotlib.rcParams['animation.ffmpeg_path']).
         'pillow' (for GIF, requires the Pillow library).
         'imagemagick' (for GIF, requires ImageMagick).
+        interval: Interval between recording frames.
     Returns:
         None
     """
