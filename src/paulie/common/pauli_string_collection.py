@@ -304,7 +304,8 @@ class PauliStringCollection:
         Create a new instance of the same type as the rest of the Pauli strings in the collection.
         Args:
             n: Length of new Pauli string.
-            pauli_str: String representation of the Pauli string for new instance, if None then identity.
+            pauli_str: String representation of the Pauli string for new instance,
+            if None then identity.
         Returns:
                New created PauliString object.
         Raises:
@@ -316,7 +317,8 @@ class PauliStringCollection:
 
     def sort(self) -> Self:
         """
-        Sort the collection Pauli strings according to their bit value given by the bitarray representation
+        Sort the collection Pauli strings according to
+        their bit value given by the bitarray representation
         Returns:
             Self
         """
@@ -361,9 +363,12 @@ class PauliStringCollection:
 
     def get_commutants(self) -> Self:
         """
-        Get the set of Pauli strings that commute with ALL generators in this collection. This finds the linear symmetries L_j of the system.
+        Get the set of Pauli strings that commute
+        with ALL generators in this collection.
+        This finds the linear symmetries L_j of the system.
         Returns:
-            PauliStringCollection of the set of Pauli strings that commute with ALL generators in this collection.
+            PauliStringCollection of the set of Pauli strings
+            that commute with ALL generators in this collection.
 
         """
         if not self.generators:
@@ -392,7 +397,8 @@ class PauliStringCollection:
         """
         Get Pauli strings that do not commute with the entire collection.
         Args:
-            generators: Generators, Pauli string search list. If empty, then all lines are the same length
+            generators: Generators, Pauli string search list.
+            If empty, then all lines are the same length
         Returns:
             Anticommutant of the set of Pauli strings.
         """
@@ -408,7 +414,8 @@ class PauliStringCollection:
         self, generators: list[PauliString] | Self = None
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]:
         """
-        Get the anticommutation graph whose vertices are the generators and edges are determined by the commutator between the vertices.
+        Get the anticommutation graph whose vertices are the generators
+        and edges are determined by the commutator between the vertices.
         Args:
             generators: Area of Pauli strings over which to build a graph.
         Returns:
@@ -419,7 +426,10 @@ class PauliStringCollection:
     def get_commutator_graph(self
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]:
         """
-        Get the commutator graph whose vertices are all Paulistrings of a given dimension and an edge between two vertices exist if there is a element in the generator to which the one vertex anticommutes with to the other vertex.
+        Get the commutator graph whose vertices are all Paulistrings
+        of a given dimension and an edge between two vertices exist
+        if there is a element in the generator to which
+        the one vertex anticommutes with to the other vertex.
 
         Returns:
             Vertices, edges, and labels of edges of graph.
@@ -546,7 +556,8 @@ class PauliStringCollection:
 
     def is_eq(self, generators: Self) -> bool:
         """
-        Testing for equivalence of two algebras. All Pauli strings of one algebra are dependent on another.
+        Testing for equivalence of two algebras.
+        All Pauli strings of one algebra are dependent on another.
         Args: 
             generators: Generator collection for checking.
         Returns:
@@ -658,7 +669,8 @@ class PauliStringCollection:
         Get a collection of non-commuting Pauli strings.
         Args:
            pauli_string: Pauli string to which commutators are defined.
-           generators: Area of Pauli strings over which to build a graph. If not specified, then collection.
+           generators: Area of Pauli strings over which to build a graph.
+           If not specified, then collection.
         Returns:
             Collection of non-commuting Pauli strings.
         """
@@ -673,7 +685,8 @@ class PauliStringCollection:
         Get a collection of non-commuting Pauli strings.
         Args:
            pauli_string: Pauli string to which commutators are defined.
-           generators: Area of Pauli strings over which to build a graph. If not specified, then collection.
+           generators: Area of Pauli strings over which to build a graph.
+           If not specified, then collection.
         Returns:
             Collection of non-commuting Pauli strings.
         """
@@ -687,10 +700,13 @@ class PauliStringCollection:
                              graph_type: str = 'anticommutator'
                              ) -> list['PauliStringCollection']:
         """
-        Computes the connected components of the specified graph (anticommutator or commutator) constructed from the Pauli strings in the collection.
+        Computes the connected components of the specified graph (anticommutator
+        or commutator) constructed from the Pauli strings in the collection.
         Args:
-            graph_type (str): Type of graph to use for finding components. Must be either 'anticommutator' (default) or 'commutator'.
-            list[PauliStringCollection]: List of PauliStringCollection objects, each representing a connected component of the selected graph.
+            graph_type (str): Type of graph to use for finding components.
+            Must be either 'anticommutator' (default) or 'commutator'.
+            list[PauliStringCollection]: List of PauliStringCollection objects,
+            each representing a connected component of the selected graph.
         Raises:
             ValueError: If graph_type is not 'anticommutator' or 'commutator'.
         Returns: Vertices, edges, and labels of edges.
@@ -713,7 +729,8 @@ class PauliStringCollection:
             nodes (list[str]): List of node strings.
             edges (list[tuple[str, str]]): List of edges as tuples of node strings.
         Returns:
-            list[PauliStringCollection]: List of PauliStringCollection objects, each representing a connected component.
+            list[PauliStringCollection]: List of PauliStringCollection objects,
+            each representing a connected component.
         """
         # Create a graph from the nodes and edges
         graph = nx.Graph()
@@ -730,7 +747,10 @@ class PauliStringCollection:
         self, linear_symmetries: Self
     ) -> list[PauliStringLinear]:
         """
-        Private helper: Computes the quadratic symmetries for THIS collection, assuming THIS collection is a single connected component (C_k) and is provided with a pre-computed list of linear symmetries (L_j). This method performs the inner loop of the full calculation.
+        Private helper: Computes the quadratic symmetries for THIS collection,
+        assuming THIS collection is a single connected component (C_k)
+        and is provided with a pre-computed list of linear symmetries (L_j).
+        This method performs the inner loop of the full calculation.
         Args: 
             linear_symmetries: Collection of linear symmetries.
         Returns:
@@ -760,7 +780,8 @@ class PauliStringCollection:
         3. Loops through each component and calls the internal helper to get the Q_kj.
         
         Args:
-            normalized (bool): If True, returns an ORTHONORMAL basis. If False (default), returns an ORTHOGONAL basis.
+            normalized (bool): If True, returns an ORTHONORMAL basis.
+            If False (default), returns an ORTHOGONAL basis.
         Returns:
             List of PauliStringLinear objects representing the basis.
         """
@@ -824,7 +845,8 @@ class PauliStringCollection:
 
     def contract(self, pauli_string: PauliString, contracted_pauli_string: PauliString) -> None:
         """
-        Contracting pauli string with other pauli string, pauli_string will be replaced on pauli_string @ contracted_pauli_string.
+        Contracting pauli string with other pauli string,
+        pauli_string will be replaced on pauli_string @ contracted_pauli_string.
         Args:
             pauli_string: Pauli string that will be replaced with the contract.
             contracted_pauli_string: Contractable Pauli string.
