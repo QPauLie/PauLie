@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Classifier &#8212; paulie 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Helpers" href="paulie.helpers.html" />
+    <link rel="prev" title="Common" href="paulie.common.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="classifier">
+<h1>Classifier<a class="headerlink" href="#classifier" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.AppendedException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">AppendedException</span></span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.AppendedException" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>The vertix is appended</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">Classification</span></span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Algebra classification class</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">morph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.add" title="Link to this definition">¶</a></dt>
+<dd><p>Add canonical form
+:param morph: canonical form</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>morph</strong> (<a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph" title="paulie.classifier.classification.Morph"><em>Morph</em></a>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.contains_algebra">
+<span class="sig-name descname"><span class="pre">contains_algebra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algebra</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.contains_algebra" title="Link to this definition">¶</a></dt>
+<dd><p>Algebra inclusion check
+:param algebra: name of algebra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if algebra equals graph algebra</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>algebra</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.gen_generators">
+<span class="sig-name descname"><span class="pre">gen_generators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.gen_generators" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of independent strings of Pauli algebra
+Args: empty
+:Yields: a list of generators</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Generator</em>[list[list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]], None, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.get_algebra">
+<span class="sig-name descname"><span class="pre">get_algebra</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.get_algebra" title="Link to this definition">¶</a></dt>
+<dd><p>Get algebra
+Args: empty
+Returns: algebra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.get_dependents">
+<span class="sig-name descname"><span class="pre">get_dependents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.get_dependents" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of dependent strings of Pauli algebra
+Args: empty
+:returns: a list of dependent strings of Pauli algebra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.get_dla_dim">
+<span class="sig-name descname"><span class="pre">get_dla_dim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.get_dla_dim" title="Link to this definition">¶</a></dt>
+<dd><p>Get the dimension of the classified dynamical Lie algebra
+Args: empty
+:returns: the dimension of the classified dynamical Lie algebra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.get_isomorphism">
+<span class="sig-name descname"><span class="pre">get_isomorphism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algebra</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.get_isomorphism" title="Link to this definition">¶</a></dt>
+<dd><p>Get algebra isomorphism
+:param algebra: name of algebra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an isomorphic representation of algebra</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>algebra</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.get_isomorphisms">
+<span class="sig-name descname"><span class="pre">get_isomorphisms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.get_isomorphisms" title="Link to this definition">¶</a></dt>
+<dd><p>Get dictionary of isomorphisms
+Args: empty
+:returns: dictionary of isomorphisms</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.get_morphs">
+<span class="sig-name descname"><span class="pre">get_morphs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.get_morphs" title="Link to this definition">¶</a></dt>
+<dd><p>Get canonical form
+Args: empty
+:returns: canonical form</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph" title="paulie.classifier.classification.Morph"><em>Morph</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.get_subalgebras">
+<span class="sig-name descname"><span class="pre">get_subalgebras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algebra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.get_subalgebras" title="Link to this definition">¶</a></dt>
+<dd><p>Get subalgebras
+:param algebra: name of algebra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of subalgebras</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>algebra</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.get_vertices">
+<span class="sig-name descname"><span class="pre">get_vertices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.get_vertices" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of independent strings of Pauli algebra
+Args: empty
+:returns: a list of independent strings of Pauli algebra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Classification.is_algebra">
+<span class="sig-name descname"><span class="pre">is_algebra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algebra</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Classification.is_algebra" title="Link to this definition">¶</a></dt>
+<dd><p>Checking for compliance with a given algebra
+:param algebra: name of algebra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the adgebra matches</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>algebra</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Debug">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">Debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Debug" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Debug class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>debug</strong> (<em>bool</em>)</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Debug.debuging">
+<span class="sig-name descname"><span class="pre">debuging</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Debug.debuging" title="Link to this definition">¶</a></dt>
+<dd><p>Switch to debug mode
+Args: empty
+Returns: None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Debug.get_debug">
+<span class="sig-name descname"><span class="pre">get_debug</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Debug.get_debug" title="Link to this definition">¶</a></dt>
+<dd><p>Get debug flag
+Args: empty
+:returns: True if debug flag setted in True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Debug.is_pauli_string">
+<span class="sig-name descname"><span class="pre">is_pauli_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paulistring</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Debug.is_pauli_string" title="Link to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Pauli string equality check
+Args:</p>
+<blockquote>
+<div><p>vertix: vertix
+paulistring: Pauli string to equality check</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if vertix equals Pauli string</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vertix</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>paulistring</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Debug.print_lit_vertices">
+<span class="sig-name descname"><span class="pre">print_lit_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Debug.print_lit_vertices" title="Link to this definition">¶</a></dt>
+<dd><p>Prnting list of vertices with lits if debug
+:param vertices: list of vertices to print
+:param lits: list of lited vertices
+:param title: title to print</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>lits</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>title</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Debug.print_title">
+<span class="sig-name descname"><span class="pre">print_title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Debug.print_title" title="Link to this definition">¶</a></dt>
+<dd><p>Print title
+:param title: title to print</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>title</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Debug.print_vertices">
+<span class="sig-name descname"><span class="pre">print_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Debug.print_vertices" title="Link to this definition">¶</a></dt>
+<dd><p>Prnting list of vertices if debug
+:param vertices: list of vertices to print
+:param title: title to print</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>title</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Debug.print_vertix">
+<span class="sig-name descname"><span class="pre">print_vertix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Debug.print_vertix" title="Link to this definition">¶</a></dt>
+<dd><p>Prnting vertix if debug
+:param vertix: vertix to print
+:param title: title to print</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vertix</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>title</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Debug.restore">
+<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Debug.restore" title="Link to this definition">¶</a></dt>
+<dd><p>Restore debug mode
+Args: empty
+Returns: None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Debug.set_debug">
+<span class="sig-name descname"><span class="pre">set_debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Debug.set_debug" title="Link to this definition">¶</a></dt>
+<dd><p>Set debug flag
+:param debug: debug flag</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>debug</strong> (<em>bool</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.DebugException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">DebugException</span></span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.DebugException" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Debug exception</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.DependentException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">DependentException</span></span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.DependentException" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Vertex dependent</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">Morph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependents</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class of canonical form of a graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>legs</strong> (<em>list</em><em>[</em><em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em><em>]</em>)</p></li>
+<li><p><strong>dependents</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.check_algebra_properties">
+<span class="sig-name descname"><span class="pre">check_algebra_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_algebra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.check_algebra_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Check properties of algebra
+:param type_algebra: type of algebra
+:param nc: number control vertices
+:param size: size of algebra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the same algebra</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>type_algebra</strong> (<em>TypeAlgebra</em>)</p></li>
+<li><p><strong>nc</strong> (<em>int</em>)</p></li>
+<li><p><strong>size</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.counts">
+<span class="sig-name descname"><span class="pre">counts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.counts" title="Link to this definition">¶</a></dt>
+<dd><p>Get number of leg types
+Args: empty
+:returns: tuple of number legs length 1, 2, and long vertices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ClassificatonException</strong> – if graph of non-canonical type</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.gen_generators">
+<span class="sig-name descname"><span class="pre">gen_generators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.gen_generators" title="Link to this definition">¶</a></dt>
+<dd><p>Generate generators
+Args: empty
+:Yields: list of generators</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Generator</em>[list[list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]], None, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.gen_independent_pair">
+<span class="sig-name descname"><span class="pre">gen_independent_pair</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.gen_independent_pair" title="Link to this definition">¶</a></dt>
+<dd><p>Generate independent pairs
+Args: empty
+:Yields: All independent pairs of Pauli string in canonic graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Generator</em>[list[list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]], None, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.gen_pq">
+<span class="sig-name descname"><span class="pre">gen_pq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.gen_pq" title="Link to this definition">¶</a></dt>
+<dd><p>Generate pq
+Args: empty
+:Yields: <em>Dictionary</em> –           w: vertix of graph</p>
+<blockquote>
+<div><p>v: other vertix of graph
+vw: v&#64;w
+neighbour: True if w and v are neighbour</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Generator</em>[list[dict], None, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.get_algebra_properties">
+<span class="sig-name descname"><span class="pre">get_algebra_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.get_algebra_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Get properties of algebra
+Args: empty
+:returns: tuple of type of algebra, number one legs, expanent params</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<em>TypeAlgebra</em>, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.get_dependents">
+<span class="sig-name descname"><span class="pre">get_dependents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.get_dependents" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of dependent Pauli strings
+Args: empty
+:returns: a list of dependent Pauli strings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.get_legs">
+<span class="sig-name descname"><span class="pre">get_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.get_legs" title="Link to this definition">¶</a></dt>
+<dd><p>Get legs
+Args: eempty
+:returns: a list of legs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.get_properties">
+<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.get_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Get graph properties
+Args: empty
+:returns: tuple of type of graph, number legs length 1, 2, and long vertices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ClassificatonException</strong> – if graph of non-canonical type</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[<em>TypeGraph</em>, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.get_type">
+<span class="sig-name descname"><span class="pre">get_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.get_type" title="Link to this definition">¶</a></dt>
+<dd><p>Get graph type
+Args: empty
+:returns: type of graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>TypeGraph</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.get_vertices">
+<span class="sig-name descname"><span class="pre">get_vertices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.get_vertices" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of graph vertices
+Args: empty
+:returns: a list of Pauli strings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.is_empty">
+<span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.is_empty" title="Link to this definition">¶</a></dt>
+<dd><p>Checking for emptiness of a graph
+Args: empty
+:returns: True if length of legs is zero</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.Morph.is_empty_legs">
+<span class="sig-name descname"><span class="pre">is_empty_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.Morph.is_empty_legs" title="Link to this definition">¶</a></dt>
+<dd><p>Checking for missing legs in a graph
+Args: empty
+:returns: True if only center</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.MorphFactoryException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">MorphFactoryException</span></span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.MorphFactoryException" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Morph factory exception</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.NotConnectedException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">NotConnectedException</span></span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.NotConnectedException" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>No connection with cononic graph</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">PauliString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representation of a Pauli string as a bitarray.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>)</p></li>
+<li><p><strong>pauli_str</strong> (<em>str</em>)</p></li>
+<li><p><strong>bits</strong> (<em>bitarray</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.adjoint_map">
+<span class="sig-name descname"><span class="pre">adjoint_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.adjoint_map" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the adjoint map ad_A(B) = [A,B].
+:param other: Pauli string to adjoint map with self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None if the commutator is zero (i.e., if A and B commute).
+Otherwise, returns a PauliString proportional to the commutator.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – len(self.bits) != len(other.bits)</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>str</em><em> | </em><em>Self</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.commutes_with">
+<span class="sig-name descname"><span class="pre">commutes_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.commutes_with" title="Link to this definition">¶</a></dt>
+<dd><p>Check if this Pauli string commutes with another.
+:param other: Pauli string to commutes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if they commute, False if they anticommute.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – len(self) != len(other)</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>str</em><em> | </em><em>Self</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.complex_conj">
+<span class="sig-name descname"><span class="pre">complex_conj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.complex_conj" title="Link to this definition">¶</a></dt>
+<dd><p>Get the complex conjugate of the Pauli string.
+:returns: Complex conjugate of the Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>self</strong> (<em>Self</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[complex, str | <em>Self</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Copy Pauli string.
+:returns: Copy of self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.create_instance">
+<span class="sig-name descname"><span class="pre">create_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.create_instance" title="Link to this definition">¶</a></dt>
+<dd><p>Create a Pauli string instance.
+:param n: Length of the Pauli string.
+:param pauli_str: String representation of a Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Intensity of a Pauli string.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>)</p></li>
+<li><p><strong>pauli_str</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.expand" title="Link to this definition">¶</a></dt>
+<dd><p>Increasing the size of the Pauli string
+by taking the tensor product with identities in the end.
+:param n: New Pauli string length.
+:type n: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pauli string of extend length.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>n</strong> (<em>int</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.gen_all_pauli_strings">
+<span class="sig-name descname"><span class="pre">gen_all_pauli_strings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.gen_all_pauli_strings" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a list of Pauli strings that commute with this string.
+:Yields: Commutant of the Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Generator</em>[list[<em>Self</em>], None, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.get_anti_commutants">
+<span class="sig-name descname"><span class="pre">get_anti_commutants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.get_anti_commutants" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of Pauli strings that no-commute with this string.
+:param generators: Collection of Pauli strings on which commutant is searched.
+:param If not specified:
+:param then the search area is all Pauli strings of the same size.:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of Pauli strings that no-commute with this string.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>generators</strong> (<em>list</em><em>[</em><em>Self</em><em>]</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<em>Self</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.get_commutants">
+<span class="sig-name descname"><span class="pre">get_commutants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.get_commutants" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of Pauli strings that commute with this string.
+:param generators: Collection of Pauli strings on which commutant is searched.
+:param If not specified:
+:param then the search area is all Pauli strings of the same size.:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of Pauli strings that commute with this string.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>generators</strong> (<em>list</em><em>[</em><em>Self</em><em>]</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<em>Self</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.get_count_non_trivially">
+<span class="sig-name descname"><span class="pre">get_count_non_trivially</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.get_count_non_trivially" title="Link to this definition">¶</a></dt>
+<dd><p>Get count non-trivially.
+:returns: Count non-trivially.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.get_diagonal_index">
+<span class="sig-name descname"><span class="pre">get_diagonal_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.get_diagonal_index" title="Link to this definition">¶</a></dt>
+<dd><p>Get index in diagonal matrix decomposition vector.
+:returns: Index in matrix decomposition vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.get_index">
+<span class="sig-name descname"><span class="pre">get_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.get_index" title="Link to this definition">¶</a></dt>
+<dd><p>Get index in matrix decomposition vector.
+:returns: Index in matrix decomposition vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.get_matrix">
+<span class="sig-name descname"><span class="pre">get_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.get_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Get matrix representation for Pauli string.
+:returns: Matrix representation for the Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>array</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.get_nested">
+<span class="sig-name descname"><span class="pre">get_nested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.get_nested" title="Link to this definition">¶</a></dt>
+<dd><p>Get nested of Pauli string.
+:param generators: Collection of Pauli strings on which commutant is searched.
+:param If not specified:
+:param then the search area is all Pauli strings of the same size.:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Nested of Pauli string.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>generators</strong> (<em>list</em><em>[</em><em>Self</em><em>]</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[tuple[<em>Self</em>, <em>Self</em>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.get_substring">
+<span class="sig-name descname"><span class="pre">get_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.get_substring" title="Link to this definition">¶</a></dt>
+<dd><p>Get a substring of Paulis inside the Pauli string.
+:param start: Index to begin extracting the string.
+:param length: Length of each substring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Substring of the Pauli string.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>start</strong> (<em>int</em>)</p></li>
+<li><p><strong>length</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.get_weight_in_matrix">
+<span class="sig-name descname"><span class="pre">get_weight_in_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b_matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.get_weight_in_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Get weight in diagonal matrix decomposition vector.
+:param b_matrix: Matrix decomposition vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Weight in diagonal matrix decomposition vector.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Incorrect matrix size.</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>b_matrix</strong> (<em>ndarray</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>complex128</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.inc">
+<span class="sig-name descname"><span class="pre">inc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.inc" title="Link to this definition">¶</a></dt>
+<dd><p>Pauli string increment operator.
+:returns: Pauli string whose bit representation is greater than 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.is_identity">
+<span class="sig-name descname"><span class="pre">is_identity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.is_identity" title="Link to this definition">¶</a></dt>
+<dd><p>Check if this Pauli string is the identity.
+:returns: True if self is the identity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.multiply">
+<span class="sig-name descname"><span class="pre">multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.multiply" title="Link to this definition">¶</a></dt>
+<dd><p>Proportional multiplication operator of two Pauli strings.
+:param other: Pauli string to multiplication.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PauliString proportional to the multiplication.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – len(self.bits) != len(other.bits)</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>str</em><em> | </em><em>Self</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.set_substring">
+<span class="sig-name descname"><span class="pre">set_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.set_substring" title="Link to this definition">¶</a></dt>
+<dd><p>Set substring starting at position <cite>start</cite>.
+:param start: Index to begin the string.
+:param pauli_string: Substring of PauliString.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>start</strong> (<em>int</em>)</p></li>
+<li><p><strong>pauli_string</strong> (<em>str</em><em> | </em><em>Self</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.sign">
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.sign" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the phase of the product of two Pauli strings: self * other.
+The product is defined as P1 * P2 = phase * P3. This method returns the phase.</p>
+<p>This implementation uses the correct symplectic product formalism, which can
+be found in various literature, including the supplemental material of
+the paper referenced in the related GitHub issue.
+See also: arxiv.org:2405.19287</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString" title="paulie.classifier.recording_morph_factory.PauliString"><em>PauliString</em></a>) – Pauli string to multiply with.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex phase of the product (1, -1, 1j, or -1j) .</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – len(self) != len(other)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>complex</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.PauliString.tensor">
+<span class="sig-name descname"><span class="pre">tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.PauliString.tensor" title="Link to this definition">¶</a></dt>
+<dd><p>Tensor product of this Pauli string with another.
+:param other: Pauli string to tensor product.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Result of the tensor product self on another.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>other</strong> (<em>Self</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">RecordGraph</span></span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Record of graph</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contracting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removing_vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacing_vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph.append" title="Link to this definition">¶</a></dt>
+<dd><p>Make frame and append to record
+:param graph: frame of graph
+:param lighting: canonical graph join candidate
+:param appending: Pauli string for appending
+:param contracting: Pauli string for contracting
+:param lits: list of lited vertices
+:param p: lited Pauli string in legs long 1
+:param q: unlited Pauli string in legs long 1
+:param removing_vertices: list of removing vertices
+:param replacing_vertices: list of replacing vertices
+:param dependent: dependent vertix
+:param title: title of frame
+:param init: init state of building</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>graph</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.FrameGraph" title="paulie.helpers.recording.FrameGraph"><em>FrameGraph</em></a>)</p></li>
+<li><p><strong>lighting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>appending</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>contracting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>lits</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>p</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>q</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>removing_vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>replacing_vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>dependent</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>title</strong> (<em>str</em>)</p></li>
+<li><p><strong>init</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph.append_frame">
+<span class="sig-name descname"><span class="pre">append_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph.append_frame" title="Link to this definition">¶</a></dt>
+<dd><p>Append frame
+:param frame: frame of record</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>frame</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.FrameRecord" title="paulie.helpers.recording.FrameRecord"><em>FrameRecord</em></a>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph.clear" title="Link to this definition">¶</a></dt>
+<dd><p>Clear of the record
+Args: empty
+Returns: None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph.get_frame">
+<span class="sig-name descname"><span class="pre">get_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_frame" title="Link to this definition">¶</a></dt>
+<dd><p>Get frame
+:param index: index of frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>frame of record</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if index grate number of frames</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.FrameRecord" title="paulie.helpers.recording.FrameRecord"><em>FrameRecord</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph.get_graph">
+<span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Get graph by index
+:param index: index of frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the vertices, edges, and labels of edges</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph.get_is_prev">
+<span class="sig-name descname"><span class="pre">get_is_prev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_is_prev" title="Link to this definition">¶</a></dt>
+<dd><p>Get the graph in the previous frame
+:param index: index of frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if graph is None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>index</strong> (<em>int</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph.get_positions">
+<span class="sig-name descname"><span class="pre">get_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_positions" title="Link to this definition">¶</a></dt>
+<dd><p>Get positions
+Args: empty
+:returns: positions of vertices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, <em>array</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph.get_size">
+<span class="sig-name descname"><span class="pre">get_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_size" title="Link to this definition">¶</a></dt>
+<dd><p>Get size of record
+Args: empty
+:returns: number of frames</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph.get_x_position_lighting">
+<span class="sig-name descname"><span class="pre">get_x_position_lighting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_x_position_lighting" title="Link to this definition">¶</a></dt>
+<dd><p>Get x position of lighting
+Args: empty
+:returns: x position of lighting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph.set_positions">
+<span class="sig-name descname"><span class="pre">set_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph.set_positions" title="Link to this definition">¶</a></dt>
+<dd><p>Set positions
+:param positions: positions of vertices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>array</em><em>]</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordGraph.set_x_position_lighting">
+<span class="sig-name descname"><span class="pre">set_x_position_lighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_position_lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordGraph.set_x_position_lighting" title="Link to this definition">¶</a></dt>
+<dd><p>Set x position of lighting
+:param x_position_lighting: x position of lighting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>x_position_lighting</strong> (<em>int</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">RecordingMorphFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#paulie.classifier.recording_morph_factory.Debug" title="paulie.helpers.printing.Debug"><code class="xref py py-class docutils literal notranslate"><span class="pre">Debug</span></code></a></p>
+<p>Factory for constructing a canonical graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>debug</strong> (<em>bool</em>)</p></li>
+<li><p><strong>record</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.RecordGraph" title="paulie.helpers.recording.RecordGraph"><em>RecordGraph</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.append" title="Link to this definition">¶</a></dt>
+<dd><p>Append vertix to graph
+:param v: added vertex
+:param lit: the vertex to which is added</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#paulie.classifier.recording_morph_factory.MorphFactoryException" title="paulie.classifier.recording_morph_factory.MorphFactoryException"><strong>MorphFactoryException</strong></a> – if No vertix
+    or lit is not last in leg
+    or can’t append</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>lit</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.append_delayed">
+<span class="sig-name descname"><span class="pre">append_delayed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.append_delayed" title="Link to this definition">¶</a></dt>
+<dd><p>Append to delayed
+:param v: vertix to append in delayed</p>
+<p>Return: None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>v</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.append_to_two_center">
+<span class="sig-name descname"><span class="pre">append_to_two_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.append_to_two_center" title="Link to this definition">¶</a></dt>
+<dd><p>Append vertix to two vertices graph
+:param lighting: canonical graph join candidate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#paulie.classifier.recording_morph_factory.NotConnectedException" title="paulie.classifier.recording_morph_factory.NotConnectedException"><strong>NotConnectedException</strong></a> – if lighting is not connected</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lighting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.build" title="Link to this definition">¶</a></dt>
+<dd><p>Transform a connected graph to a cononic type.
+:param generators: list of Pauli strings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>generators</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.debugbreak">
+<span class="sig-name descname"><span class="pre">debugbreak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.debugbreak" title="Link to this definition">¶</a></dt>
+<dd><p>Debug break
+:param number: number vertices in graph
+:param lighting: canonical graph join candidate
+:param append: break on append</p>
+<p>Returns: None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number</strong> (<em>int</em>)</p></li>
+<li><p><strong>lighting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>append</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.find" title="Link to this definition">¶</a></dt>
+<dd><p>Find vertix
+:param v: required vertex</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple index of leg and index vertix in the leg</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>v</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_center">
+<span class="sig-name descname"><span class="pre">get_center</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_center" title="Link to this definition">¶</a></dt>
+<dd><p>Get center
+Args: empty
+:returns: a canter of the graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_count_two_legs">
+<span class="sig-name descname"><span class="pre">get_count_two_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_count_two_legs" title="Link to this definition">¶</a></dt>
+<dd><p>Get the number of legs of length two
+Args: empty
+:returns: number of legs long 2</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lighting">
+<span class="sig-name descname"><span class="pre">get_lighting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lighting" title="Link to this definition">¶</a></dt>
+<dd><p>Get lighting
+Args: empty
+:returns: lighting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lit_indexes">
+<span class="sig-name descname"><span class="pre">get_lit_indexes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lit_indexes" title="Link to this definition">¶</a></dt>
+<dd><p>Get the indices of the lited vertices in lits
+:param vertices: list of vertices
+:param lits: list of lited vertices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of indexes of lited vertices in vertices</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>lits</strong> (<em>[</em><em>&lt;class 'paulie.common.pauli_string_bitarray.PauliString'&gt;</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lits">
+<span class="sig-name descname"><span class="pre">get_lits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lits" title="Link to this definition">¶</a></dt>
+<dd><p>Get lited vertices (connected to the selected vertex).
+:param lighting: canonical graph join candidate
+:param vertices: list of vertices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of lited vertices (connected to the selected vertex).</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>lighting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_long_leg">
+<span class="sig-name descname"><span class="pre">get_long_leg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_long_leg" title="Link to this definition">¶</a></dt>
+<dd><p>Get long leg
+Args: empty
+:returns: a list of vertices in long leg</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_long_legs">
+<span class="sig-name descname"><span class="pre">get_long_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_long_legs" title="Link to this definition">¶</a></dt>
+<dd><p>Get long leg vertices
+Args: empty
+:returns: a list of vertices from long leg</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_morph">
+<span class="sig-name descname"><span class="pre">get_morph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_morph" title="Link to this definition">¶</a></dt>
+<dd><p>Get canonical graph form
+Args: empty
+:returns: canonical form</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph" title="paulie.classifier.classification.Morph"><em>Morph</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_one_vertices">
+<span class="sig-name descname"><span class="pre">get_one_vertices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_one_vertices" title="Link to this definition">¶</a></dt>
+<dd><p>Get vertices included in single legs
+Args: empty
+:returns: a list of vertices included in legs of length 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_one_vertix">
+<span class="sig-name descname"><span class="pre">get_one_vertix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_one_vertix" title="Link to this definition">¶</a></dt>
+<dd><p>Get one vertix in leg
+Args: empty
+:returns: сontrol vertex in the graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_pq">
+<span class="sig-name descname"><span class="pre">get_pq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_pq" title="Link to this definition">¶</a></dt>
+<dd><p>Get pq
+:param lighting: canonical graph join candidate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>pq: p&#64;q where p and q are vertices</dt><dd><p>in one leg, and p is lited, q is unlited</p>
+</dd>
+</dl>
+<p>p: lited vertix</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lighting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_two_legs">
+<span class="sig-name descname"><span class="pre">get_two_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_two_legs" title="Link to this definition">¶</a></dt>
+<dd><p>Get vertices included in two legs
+Args: empty
+:returns: a list of vertices included in two legs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[tuple[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>, <a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_vertices">
+<span class="sig-name descname"><span class="pre">get_vertices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_vertices" title="Link to this definition">¶</a></dt>
+<dd><p>Get graph vertices
+Args: empty
+:returns: a list of vertices in the graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_break">
+<span class="sig-name descname"><span class="pre">is_break</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_break" title="Link to this definition">¶</a></dt>
+<dd><p>Check debug
+Args: empty
+:returns: True if debug mode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_empty">
+<span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_empty" title="Link to this definition">¶</a></dt>
+<dd><p>Checking for emptiness
+Args: empty
+:returns: True if graph is empty</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_empty_legs">
+<span class="sig-name descname"><span class="pre">is_empty_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_empty_legs" title="Link to this definition">¶</a></dt>
+<dd><p>Checking for missing legs
+Args: empty
+:returns: True if graph no core</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_included">
+<span class="sig-name descname"><span class="pre">is_included</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_included" title="Link to this definition">¶</a></dt>
+<dd><p>Checking a vertex for inclusion in the graph
+:param v: required vertex</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if vertex in the graph</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>v</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_two_leg">
+<span class="sig-name descname"><span class="pre">is_two_leg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_two_leg" title="Link to this definition">¶</a></dt>
+<dd><p>Checking the leg for length two
+Args: empty
+:returns: True if there is a leg of length 2</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.lit">
+<span class="sig-name descname"><span class="pre">lit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.lit" title="Link to this definition">¶</a></dt>
+<dd><p>Lit vertix
+:param lighting: canonical graph join candidate
+:param vertix: the vertix that will be lited by lightning</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>new lighting</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>lighting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>vertix</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.print_state">
+<span class="sig-name descname"><span class="pre">print_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.print_state" title="Link to this definition">¶</a></dt>
+<dd><p>Debug output of graph state
+:param lighting: canonical graph join candidate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>lighting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.remove" title="Link to this definition">¶</a></dt>
+<dd><p>Removing a graph vertex
+:param v: removed vertix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>v</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.replace">
+<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.replace" title="Link to this definition">¶</a></dt>
+<dd><p>Replacing a graph vertex with an equivalent one
+:param v: removed vertices
+:param v_new: added vertices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>v</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>v_new</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.restore_delayed">
+<span class="sig-name descname"><span class="pre">restore_delayed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.restore_delayed" title="Link to this definition">¶</a></dt>
+<dd><p>Restore to delayed
+:param vertices: a list of vertices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a list of vertices</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_center">
+<span class="sig-name descname"><span class="pre">set_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_center" title="Link to this definition">¶</a></dt>
+<dd><p>Set center
+:param v: vertex of the graph center</p>
+<p>Returns: None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>v</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_debug">
+<span class="sig-name descname"><span class="pre">set_debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_debug" title="Link to this definition">¶</a></dt>
+<dd><p>Set debug flag
+:param debug: debug mode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>debug</strong> (<em>bool</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_debug_break">
+<span class="sig-name descname"><span class="pre">set_debug_break</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_debug_break" title="Link to this definition">¶</a></dt>
+<dd><p>Set debug break
+:param lighting: canonical graph join candidate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>lighting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_debug_vertix">
+<span class="sig-name descname"><span class="pre">set_debug_vertix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_debug_vertix" title="Link to this definition">¶</a></dt>
+<dd><p>Set debug vertix
+:param lighting: canonical graph join candidate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>lighting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_lighting">
+<span class="sig-name descname"><span class="pre">set_lighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_lighting" title="Link to this definition">¶</a></dt>
+<dd><p>Set lighting
+:param lighting: Paulie string, which is lightning</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>lighting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.recording_graph">
+<span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">recording_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contracting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removing_vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacing_vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.recording_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Recording graph
+:param record: record of graph building
+:param collection: list of vertices
+:param lighting: canonical graph join candidate
+:param appending: Pauli string for appending
+:param contracting: Pauli string for contracting
+:param lits: list of lited vertices
+:param p: lited Pauli string in legs long 1
+:param q: unlited Pauli string in legs long 1
+:param removing_vertices: list of removing vertices
+:param replacing_vertices: list of replacing vertices
+:param dependent: dependent vertix
+:param title: title of frame
+:param init: init state of building</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>record</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.RecordGraph" title="paulie.helpers.recording.RecordGraph"><em>RecordGraph</em></a>)</p></li>
+<li><p><strong>collection</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>lighting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>appending</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>contracting</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>lits</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>p</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>q</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>removing_vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>replacing_vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>dependent</strong> (<a class="reference internal" href="paulie.helpers.html#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>title</strong> (<em>str</em>)</p></li>
+<li><p><strong>init</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">paulie</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification.html">Classification of Pauli DLAs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commutator_graph.html">Commutator graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../average_graph_complexity.html">Average graph complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../matrix_decomposition.html">Matrix decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimal_universal_generators.html">Optimal universal generator sets</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="paulie.application.html">Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.common.html">Common</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Classifier</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.AppendedException"><code class="docutils literal notranslate"><span class="pre">AppendedException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification"><code class="docutils literal notranslate"><span class="pre">Classification</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.add"><code class="docutils literal notranslate"><span class="pre">Classification.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.contains_algebra"><code class="docutils literal notranslate"><span class="pre">Classification.contains_algebra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.gen_generators"><code class="docutils literal notranslate"><span class="pre">Classification.gen_generators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.get_algebra"><code class="docutils literal notranslate"><span class="pre">Classification.get_algebra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.get_dependents"><code class="docutils literal notranslate"><span class="pre">Classification.get_dependents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.get_dla_dim"><code class="docutils literal notranslate"><span class="pre">Classification.get_dla_dim()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.get_isomorphism"><code class="docutils literal notranslate"><span class="pre">Classification.get_isomorphism()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.get_isomorphisms"><code class="docutils literal notranslate"><span class="pre">Classification.get_isomorphisms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.get_morphs"><code class="docutils literal notranslate"><span class="pre">Classification.get_morphs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.get_subalgebras"><code class="docutils literal notranslate"><span class="pre">Classification.get_subalgebras()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.get_vertices"><code class="docutils literal notranslate"><span class="pre">Classification.get_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Classification.is_algebra"><code class="docutils literal notranslate"><span class="pre">Classification.is_algebra()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Debug"><code class="docutils literal notranslate"><span class="pre">Debug</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Debug.debuging"><code class="docutils literal notranslate"><span class="pre">Debug.debuging()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Debug.get_debug"><code class="docutils literal notranslate"><span class="pre">Debug.get_debug()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Debug.is_pauli_string"><code class="docutils literal notranslate"><span class="pre">Debug.is_pauli_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Debug.print_lit_vertices"><code class="docutils literal notranslate"><span class="pre">Debug.print_lit_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Debug.print_title"><code class="docutils literal notranslate"><span class="pre">Debug.print_title()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Debug.print_vertices"><code class="docutils literal notranslate"><span class="pre">Debug.print_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Debug.print_vertix"><code class="docutils literal notranslate"><span class="pre">Debug.print_vertix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Debug.restore"><code class="docutils literal notranslate"><span class="pre">Debug.restore()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Debug.set_debug"><code class="docutils literal notranslate"><span class="pre">Debug.set_debug()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.DebugException"><code class="docutils literal notranslate"><span class="pre">DebugException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.DependentException"><code class="docutils literal notranslate"><span class="pre">DependentException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph"><code class="docutils literal notranslate"><span class="pre">Morph</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.check_algebra_properties"><code class="docutils literal notranslate"><span class="pre">Morph.check_algebra_properties()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.counts"><code class="docutils literal notranslate"><span class="pre">Morph.counts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.gen_generators"><code class="docutils literal notranslate"><span class="pre">Morph.gen_generators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.gen_independent_pair"><code class="docutils literal notranslate"><span class="pre">Morph.gen_independent_pair()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.gen_pq"><code class="docutils literal notranslate"><span class="pre">Morph.gen_pq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.get_algebra_properties"><code class="docutils literal notranslate"><span class="pre">Morph.get_algebra_properties()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.get_dependents"><code class="docutils literal notranslate"><span class="pre">Morph.get_dependents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.get_legs"><code class="docutils literal notranslate"><span class="pre">Morph.get_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.get_properties"><code class="docutils literal notranslate"><span class="pre">Morph.get_properties()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.get_type"><code class="docutils literal notranslate"><span class="pre">Morph.get_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.get_vertices"><code class="docutils literal notranslate"><span class="pre">Morph.get_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.is_empty"><code class="docutils literal notranslate"><span class="pre">Morph.is_empty()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.Morph.is_empty_legs"><code class="docutils literal notranslate"><span class="pre">Morph.is_empty_legs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.MorphFactoryException"><code class="docutils literal notranslate"><span class="pre">MorphFactoryException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.NotConnectedException"><code class="docutils literal notranslate"><span class="pre">NotConnectedException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString"><code class="docutils literal notranslate"><span class="pre">PauliString</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.adjoint_map"><code class="docutils literal notranslate"><span class="pre">PauliString.adjoint_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.commutes_with"><code class="docutils literal notranslate"><span class="pre">PauliString.commutes_with()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.complex_conj"><code class="docutils literal notranslate"><span class="pre">PauliString.complex_conj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.copy"><code class="docutils literal notranslate"><span class="pre">PauliString.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.create_instance"><code class="docutils literal notranslate"><span class="pre">PauliString.create_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.expand"><code class="docutils literal notranslate"><span class="pre">PauliString.expand()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.gen_all_pauli_strings"><code class="docutils literal notranslate"><span class="pre">PauliString.gen_all_pauli_strings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.get_anti_commutants"><code class="docutils literal notranslate"><span class="pre">PauliString.get_anti_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.get_commutants"><code class="docutils literal notranslate"><span class="pre">PauliString.get_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.get_count_non_trivially"><code class="docutils literal notranslate"><span class="pre">PauliString.get_count_non_trivially()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.get_diagonal_index"><code class="docutils literal notranslate"><span class="pre">PauliString.get_diagonal_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.get_index"><code class="docutils literal notranslate"><span class="pre">PauliString.get_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.get_matrix"><code class="docutils literal notranslate"><span class="pre">PauliString.get_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.get_nested"><code class="docutils literal notranslate"><span class="pre">PauliString.get_nested()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.get_substring"><code class="docutils literal notranslate"><span class="pre">PauliString.get_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.get_weight_in_matrix"><code class="docutils literal notranslate"><span class="pre">PauliString.get_weight_in_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.inc"><code class="docutils literal notranslate"><span class="pre">PauliString.inc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.is_identity"><code class="docutils literal notranslate"><span class="pre">PauliString.is_identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.multiply"><code class="docutils literal notranslate"><span class="pre">PauliString.multiply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.set_substring"><code class="docutils literal notranslate"><span class="pre">PauliString.set_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.sign"><code class="docutils literal notranslate"><span class="pre">PauliString.sign()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.PauliString.tensor"><code class="docutils literal notranslate"><span class="pre">PauliString.tensor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph"><code class="docutils literal notranslate"><span class="pre">RecordGraph</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph.append"><code class="docutils literal notranslate"><span class="pre">RecordGraph.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph.append_frame"><code class="docutils literal notranslate"><span class="pre">RecordGraph.append_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph.clear"><code class="docutils literal notranslate"><span class="pre">RecordGraph.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_frame"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_graph"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_is_prev"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_is_prev()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_positions"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_positions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_size"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph.get_x_position_lighting"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_x_position_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph.set_positions"><code class="docutils literal notranslate"><span class="pre">RecordGraph.set_positions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordGraph.set_x_position_lighting"><code class="docutils literal notranslate"><span class="pre">RecordGraph.set_x_position_lighting()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.append"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.append_delayed"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.append_delayed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.append_to_two_center"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.append_to_two_center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.build"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.build()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.debugbreak"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.debugbreak()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.find"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.find()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_center"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_count_two_legs"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_count_two_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lighting"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lit_indexes"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_lit_indexes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lits"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_lits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_long_leg"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_long_leg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_long_legs"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_long_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_morph"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_morph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_one_vertices"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_one_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_one_vertix"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_one_vertix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_pq"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_pq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_two_legs"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_two_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_vertices"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_break"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.is_break()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_empty"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.is_empty()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_empty_legs"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.is_empty_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_included"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.is_included()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_two_leg"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.is_two_leg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.lit"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.lit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.print_state"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.print_state()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.remove"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.replace"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.replace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.restore_delayed"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.restore_delayed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_center"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.set_center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_debug"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.set_debug()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_debug_break"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.set_debug_break()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_debug_vertix"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.set_debug_vertix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_lighting"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.set_lighting()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.classifier.recording_morph_factory.recording_graph"><code class="docutils literal notranslate"><span class="pre">recording_graph()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.helpers.html">Helpers</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AmanieOxana/PauLie">Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/unitary-fund-764231928676089909">Discord</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">API Reference</a><ul>
+      <li>Previous: <a href="paulie.common.html" title="previous chapter">Common</a></li>
+      <li>Next: <a href="paulie.helpers.html" title="next chapter">Helpers</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, PauLie contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/api/paulie.classifier.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

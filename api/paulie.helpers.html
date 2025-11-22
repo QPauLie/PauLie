@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Helpers &#8212; paulie 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Classifier" href="paulie.classifier.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="helpers">
+<h1>Helpers<a class="headerlink" href="#helpers" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameGraph">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.helpers.recording.</span></span><span class="sig-name descname"><span class="pre">FrameGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameGraph" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>edges</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>)</p></li>
+<li><p><strong>edge_labels</strong> (<em>dict</em><em>[</em><em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameGraph.get_graph">
+<span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameGraph.get_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Get graph pf the frame
+Args: empty
+:returns: the vertices, edges, and labels of edges</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.helpers.recording.</span></span><span class="sig-name descname"><span class="pre">FrameRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lighting=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appending=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contracting=&lt;class</span> <span class="pre">'paulie.common.pauli_string_bitarray.PauliString'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lits=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removing_vertices=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacing_vertices=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependent=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Frame of record</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> (<a class="reference internal" href="#paulie.helpers.recording.FrameGraph" title="paulie.helpers.recording.FrameGraph"><em>FrameGraph</em></a>)</p></li>
+<li><p><strong>lighting</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>appending</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>lits</strong> (<em>list</em><em>[</em><a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>p</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>q</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>removing_vertices</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>replacing_vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>dependent</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>title</strong> (<em>str</em>)</p></li>
+<li><p><strong>init</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_graph">
+<span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Get graph of record’s frame
+Args: empty
+:returns: the vertices, edges, and labels of edges</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_init">
+<span class="sig-name descname"><span class="pre">get_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_init" title="Link to this definition">¶</a></dt>
+<dd><p>Get init frame
+Args: empty
+:returns: True if init state</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_is_appending">
+<span class="sig-name descname"><span class="pre">get_is_appending</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_is_appending" title="Link to this definition">¶</a></dt>
+<dd><p>Check vertix is appending
+:param vertix: vertix for checking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if vertix is appending</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vertix</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_is_contracting">
+<span class="sig-name descname"><span class="pre">get_is_contracting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_is_contracting" title="Link to this definition">¶</a></dt>
+<dd><p>Check vertix is contracting
+:param vertix: vertix for checking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if vertix is contracting</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vertix</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_is_dependent">
+<span class="sig-name descname"><span class="pre">get_is_dependent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_is_dependent" title="Link to this definition">¶</a></dt>
+<dd><p>Check vertix is dependent
+:param vertix: vertix for checking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if vertix is dependent</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vertix</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_is_lits">
+<span class="sig-name descname"><span class="pre">get_is_lits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_is_lits" title="Link to this definition">¶</a></dt>
+<dd><p>Check vertix is lited
+:param vertix: vertix for checking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if vertix is lited</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vertix</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_is_p">
+<span class="sig-name descname"><span class="pre">get_is_p</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_is_p" title="Link to this definition">¶</a></dt>
+<dd><p>Check vertix is p
+:param vertix: vertix for checking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if vertix is lited in leg long 1</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vertix</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_is_q">
+<span class="sig-name descname"><span class="pre">get_is_q</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_is_q" title="Link to this definition">¶</a></dt>
+<dd><p>Check vertix is q
+:param vertix: vertix for checking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if vertix is unlited in leg long 1</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vertix</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_is_removing">
+<span class="sig-name descname"><span class="pre">get_is_removing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_is_removing" title="Link to this definition">¶</a></dt>
+<dd><p>Check vertix is removing
+:param vertix: vertix for checking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if vertix is removing</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vertix</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_is_replacing">
+<span class="sig-name descname"><span class="pre">get_is_replacing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_is_replacing" title="Link to this definition">¶</a></dt>
+<dd><p>Check vertix is replacing
+:param vertix: vertix for checking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if vertix is replacing</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vertix</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_lighting">
+<span class="sig-name descname"><span class="pre">get_lighting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_lighting" title="Link to this definition">¶</a></dt>
+<dd><p>Get lighting
+Args: empty
+:returns: lighting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.get_title">
+<span class="sig-name descname"><span class="pre">get_title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.get_title" title="Link to this definition">¶</a></dt>
+<dd><p>Get title
+Args: empty
+:returns: title</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.is_appending">
+<span class="sig-name descname"><span class="pre">is_appending</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.is_appending" title="Link to this definition">¶</a></dt>
+<dd><p>Check appending
+Args: empty
+:returns: True if not appending</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.FrameRecord.is_removing">
+<span class="sig-name descname"><span class="pre">is_removing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.FrameRecord.is_removing" title="Link to this definition">¶</a></dt>
+<dd><p>Check is removing
+:param vertix: vertix for checking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if vertix is not removing</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.helpers.recording.</span></span><span class="sig-name descname"><span class="pre">PauliString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representation of a Pauli string as a bitarray.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>)</p></li>
+<li><p><strong>pauli_str</strong> (<em>str</em>)</p></li>
+<li><p><strong>bits</strong> (<em>bitarray</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.adjoint_map">
+<span class="sig-name descname"><span class="pre">adjoint_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.adjoint_map" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the adjoint map ad_A(B) = [A,B].
+:param other: Pauli string to adjoint map with self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None if the commutator is zero (i.e., if A and B commute).
+Otherwise, returns a PauliString proportional to the commutator.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – len(self.bits) != len(other.bits)</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>str</em><em> | </em><em>Self</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.commutes_with">
+<span class="sig-name descname"><span class="pre">commutes_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.commutes_with" title="Link to this definition">¶</a></dt>
+<dd><p>Check if this Pauli string commutes with another.
+:param other: Pauli string to commutes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if they commute, False if they anticommute.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – len(self) != len(other)</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>str</em><em> | </em><em>Self</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.complex_conj">
+<span class="sig-name descname"><span class="pre">complex_conj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.complex_conj" title="Link to this definition">¶</a></dt>
+<dd><p>Get the complex conjugate of the Pauli string.
+:returns: Complex conjugate of the Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>self</strong> (<em>Self</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[complex, str | <em>Self</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Copy Pauli string.
+:returns: Copy of self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.create_instance">
+<span class="sig-name descname"><span class="pre">create_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.create_instance" title="Link to this definition">¶</a></dt>
+<dd><p>Create a Pauli string instance.
+:param n: Length of the Pauli string.
+:param pauli_str: String representation of a Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Intensity of a Pauli string.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>)</p></li>
+<li><p><strong>pauli_str</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.expand" title="Link to this definition">¶</a></dt>
+<dd><p>Increasing the size of the Pauli string
+by taking the tensor product with identities in the end.
+:param n: New Pauli string length.
+:type n: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pauli string of extend length.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>n</strong> (<em>int</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.gen_all_pauli_strings">
+<span class="sig-name descname"><span class="pre">gen_all_pauli_strings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.gen_all_pauli_strings" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a list of Pauli strings that commute with this string.
+:Yields: Commutant of the Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Generator</em>[list[<em>Self</em>], None, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.get_anti_commutants">
+<span class="sig-name descname"><span class="pre">get_anti_commutants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.get_anti_commutants" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of Pauli strings that no-commute with this string.
+:param generators: Collection of Pauli strings on which commutant is searched.
+:param If not specified:
+:param then the search area is all Pauli strings of the same size.:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of Pauli strings that no-commute with this string.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>generators</strong> (<em>list</em><em>[</em><em>Self</em><em>]</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<em>Self</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.get_commutants">
+<span class="sig-name descname"><span class="pre">get_commutants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.get_commutants" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of Pauli strings that commute with this string.
+:param generators: Collection of Pauli strings on which commutant is searched.
+:param If not specified:
+:param then the search area is all Pauli strings of the same size.:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of Pauli strings that commute with this string.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>generators</strong> (<em>list</em><em>[</em><em>Self</em><em>]</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<em>Self</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.get_count_non_trivially">
+<span class="sig-name descname"><span class="pre">get_count_non_trivially</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.get_count_non_trivially" title="Link to this definition">¶</a></dt>
+<dd><p>Get count non-trivially.
+:returns: Count non-trivially.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.get_diagonal_index">
+<span class="sig-name descname"><span class="pre">get_diagonal_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.get_diagonal_index" title="Link to this definition">¶</a></dt>
+<dd><p>Get index in diagonal matrix decomposition vector.
+:returns: Index in matrix decomposition vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.get_index">
+<span class="sig-name descname"><span class="pre">get_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.get_index" title="Link to this definition">¶</a></dt>
+<dd><p>Get index in matrix decomposition vector.
+:returns: Index in matrix decomposition vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.get_matrix">
+<span class="sig-name descname"><span class="pre">get_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.get_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Get matrix representation for Pauli string.
+:returns: Matrix representation for the Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>array</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.get_nested">
+<span class="sig-name descname"><span class="pre">get_nested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.get_nested" title="Link to this definition">¶</a></dt>
+<dd><p>Get nested of Pauli string.
+:param generators: Collection of Pauli strings on which commutant is searched.
+:param If not specified:
+:param then the search area is all Pauli strings of the same size.:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Nested of Pauli string.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>generators</strong> (<em>list</em><em>[</em><em>Self</em><em>]</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[tuple[<em>Self</em>, <em>Self</em>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.get_substring">
+<span class="sig-name descname"><span class="pre">get_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.get_substring" title="Link to this definition">¶</a></dt>
+<dd><p>Get a substring of Paulis inside the Pauli string.
+:param start: Index to begin extracting the string.
+:param length: Length of each substring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Substring of the Pauli string.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>start</strong> (<em>int</em>)</p></li>
+<li><p><strong>length</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.get_weight_in_matrix">
+<span class="sig-name descname"><span class="pre">get_weight_in_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b_matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.get_weight_in_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Get weight in diagonal matrix decomposition vector.
+:param b_matrix: Matrix decomposition vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Weight in diagonal matrix decomposition vector.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Incorrect matrix size.</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>b_matrix</strong> (<em>ndarray</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>complex128</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.inc">
+<span class="sig-name descname"><span class="pre">inc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.inc" title="Link to this definition">¶</a></dt>
+<dd><p>Pauli string increment operator.
+:returns: Pauli string whose bit representation is greater than 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.is_identity">
+<span class="sig-name descname"><span class="pre">is_identity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.is_identity" title="Link to this definition">¶</a></dt>
+<dd><p>Check if this Pauli string is the identity.
+:returns: True if self is the identity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.multiply">
+<span class="sig-name descname"><span class="pre">multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.multiply" title="Link to this definition">¶</a></dt>
+<dd><p>Proportional multiplication operator of two Pauli strings.
+:param other: Pauli string to multiplication.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PauliString proportional to the multiplication.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – len(self.bits) != len(other.bits)</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>str</em><em> | </em><em>Self</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.set_substring">
+<span class="sig-name descname"><span class="pre">set_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.set_substring" title="Link to this definition">¶</a></dt>
+<dd><p>Set substring starting at position <cite>start</cite>.
+:param start: Index to begin the string.
+:param pauli_string: Substring of PauliString.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>start</strong> (<em>int</em>)</p></li>
+<li><p><strong>pauli_string</strong> (<em>str</em><em> | </em><em>Self</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.sign">
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.sign" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the phase of the product of two Pauli strings: self * other.
+The product is defined as P1 * P2 = phase * P3. This method returns the phase.</p>
+<p>This implementation uses the correct symplectic product formalism, which can
+be found in various literature, including the supplemental material of
+the paper referenced in the related GitHub issue.
+See also: arxiv.org:2405.19287</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.helpers.recording.PauliString"><em>PauliString</em></a>) – Pauli string to multiply with.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex phase of the product (1, -1, 1j, or -1j) .</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – len(self) != len(other)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>complex</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.PauliString.tensor">
+<span class="sig-name descname"><span class="pre">tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.PauliString.tensor" title="Link to this definition">¶</a></dt>
+<dd><p>Tensor product of this Pauli string with another.
+:param other: Pauli string to tensor product.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Result of the tensor product self on another.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>other</strong> (<em>Self</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Self</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.helpers.recording.</span></span><span class="sig-name descname"><span class="pre">RecordGraph</span></span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Record of graph</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contracting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removing_vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacing_vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph.append" title="Link to this definition">¶</a></dt>
+<dd><p>Make frame and append to record
+:param graph: frame of graph
+:param lighting: canonical graph join candidate
+:param appending: Pauli string for appending
+:param contracting: Pauli string for contracting
+:param lits: list of lited vertices
+:param p: lited Pauli string in legs long 1
+:param q: unlited Pauli string in legs long 1
+:param removing_vertices: list of removing vertices
+:param replacing_vertices: list of replacing vertices
+:param dependent: dependent vertix
+:param title: title of frame
+:param init: init state of building</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>graph</strong> (<a class="reference internal" href="#paulie.helpers.recording.FrameGraph" title="paulie.helpers.recording.FrameGraph"><em>FrameGraph</em></a>)</p></li>
+<li><p><strong>lighting</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>appending</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>contracting</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>lits</strong> (<em>list</em><em>[</em><a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>p</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>q</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>removing_vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>replacing_vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>dependent</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>title</strong> (<em>str</em>)</p></li>
+<li><p><strong>init</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph.append_frame">
+<span class="sig-name descname"><span class="pre">append_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph.append_frame" title="Link to this definition">¶</a></dt>
+<dd><p>Append frame
+:param frame: frame of record</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>frame</strong> (<a class="reference internal" href="#paulie.helpers.recording.FrameRecord" title="paulie.helpers.recording.FrameRecord"><em>FrameRecord</em></a>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph.clear" title="Link to this definition">¶</a></dt>
+<dd><p>Clear of the record
+Args: empty
+Returns: None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph.get_frame">
+<span class="sig-name descname"><span class="pre">get_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph.get_frame" title="Link to this definition">¶</a></dt>
+<dd><p>Get frame
+:param index: index of frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>frame of record</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if index grate number of frames</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#paulie.helpers.recording.FrameRecord" title="paulie.helpers.recording.FrameRecord"><em>FrameRecord</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph.get_graph">
+<span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph.get_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Get graph by index
+:param index: index of frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the vertices, edges, and labels of edges</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph.get_is_prev">
+<span class="sig-name descname"><span class="pre">get_is_prev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph.get_is_prev" title="Link to this definition">¶</a></dt>
+<dd><p>Get the graph in the previous frame
+:param index: index of frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if graph is None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>index</strong> (<em>int</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph.get_positions">
+<span class="sig-name descname"><span class="pre">get_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph.get_positions" title="Link to this definition">¶</a></dt>
+<dd><p>Get positions
+Args: empty
+:returns: positions of vertices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, <em>array</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph.get_size">
+<span class="sig-name descname"><span class="pre">get_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph.get_size" title="Link to this definition">¶</a></dt>
+<dd><p>Get size of record
+Args: empty
+:returns: number of frames</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph.get_x_position_lighting">
+<span class="sig-name descname"><span class="pre">get_x_position_lighting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph.get_x_position_lighting" title="Link to this definition">¶</a></dt>
+<dd><p>Get x position of lighting
+Args: empty
+:returns: x position of lighting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph.set_positions">
+<span class="sig-name descname"><span class="pre">set_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph.set_positions" title="Link to this definition">¶</a></dt>
+<dd><p>Set positions
+:param positions: positions of vertices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>array</em><em>]</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.helpers.recording.RecordGraph.set_x_position_lighting">
+<span class="sig-name descname"><span class="pre">set_x_position_lighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_position_lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.RecordGraph.set_x_position_lighting" title="Link to this definition">¶</a></dt>
+<dd><p>Set x position of lighting
+:param x_position_lighting: x position of lighting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>x_position_lighting</strong> (<em>int</em>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.helpers.recording.get_graph">
+<span class="sig-prename descclassname"><span class="pre">paulie.helpers.recording.</span></span><span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commutators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.get_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Get anticommutator graph
+:param generators: array of PauliString
+:param commutators: The area of Pauli strings over which to build a graph.
+:param flag_labels: boolean indicating whether to include labels in the graph.</p>
+<p>Returns: the vertices, edges, and labels of edges</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> (<em>list</em><em>[</em><a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>commutators</strong> (<em>list</em><em>[</em><a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>flag_labels</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]] | tuple[list[str], list[tuple[str, str]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.helpers.recording.recording_graph">
+<span class="sig-prename descclassname"><span class="pre">paulie.helpers.recording.</span></span><span class="sig-name descname"><span class="pre">recording_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contracting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removing_vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacing_vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.recording.recording_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Recording graph
+:param record: record of graph building
+:param collection: list of vertices
+:param lighting: canonical graph join candidate
+:param appending: Pauli string for appending
+:param contracting: Pauli string for contracting
+:param lits: list of lited vertices
+:param p: lited Pauli string in legs long 1
+:param q: unlited Pauli string in legs long 1
+:param removing_vertices: list of removing vertices
+:param replacing_vertices: list of replacing vertices
+:param dependent: dependent vertix
+:param title: title of frame
+:param init: init state of building</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>record</strong> (<a class="reference internal" href="#paulie.helpers.recording.RecordGraph" title="paulie.helpers.recording.RecordGraph"><em>RecordGraph</em></a>)</p></li>
+<li><p><strong>collection</strong> (<em>list</em><em>[</em><a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>lighting</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>appending</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>contracting</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>lits</strong> (<em>list</em><em>[</em><a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>p</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>q</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>removing_vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>replacing_vertices</strong> (<em>list</em><em>[</em><a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>)</p></li>
+<li><p><strong>dependent</strong> (<a class="reference internal" href="#paulie.helpers.recording.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>)</p></li>
+<li><p><strong>title</strong> (<em>str</em>)</p></li>
+<li><p><strong>init</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">paulie</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification.html">Classification of Pauli DLAs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commutator_graph.html">Commutator graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../average_graph_complexity.html">Average graph complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../matrix_decomposition.html">Matrix decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimal_universal_generators.html">Optimal universal generator sets</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="paulie.application.html">Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.common.html">Common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.html">Classifier</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.helpers.recording.FrameGraph"><code class="docutils literal notranslate"><span class="pre">FrameGraph</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameGraph.get_graph"><code class="docutils literal notranslate"><span class="pre">FrameGraph.get_graph()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord"><code class="docutils literal notranslate"><span class="pre">FrameRecord</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_graph"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_init"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_is_appending"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_appending()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_is_contracting"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_contracting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_is_dependent"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_dependent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_is_lits"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_lits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_is_p"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_p()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_is_q"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_q()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_is_removing"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_removing()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_is_replacing"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_replacing()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_lighting"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.get_title"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_title()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.is_appending"><code class="docutils literal notranslate"><span class="pre">FrameRecord.is_appending()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.FrameRecord.is_removing"><code class="docutils literal notranslate"><span class="pre">FrameRecord.is_removing()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.helpers.recording.PauliString"><code class="docutils literal notranslate"><span class="pre">PauliString</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.adjoint_map"><code class="docutils literal notranslate"><span class="pre">PauliString.adjoint_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.commutes_with"><code class="docutils literal notranslate"><span class="pre">PauliString.commutes_with()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.complex_conj"><code class="docutils literal notranslate"><span class="pre">PauliString.complex_conj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.copy"><code class="docutils literal notranslate"><span class="pre">PauliString.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.create_instance"><code class="docutils literal notranslate"><span class="pre">PauliString.create_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.expand"><code class="docutils literal notranslate"><span class="pre">PauliString.expand()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.gen_all_pauli_strings"><code class="docutils literal notranslate"><span class="pre">PauliString.gen_all_pauli_strings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.get_anti_commutants"><code class="docutils literal notranslate"><span class="pre">PauliString.get_anti_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.get_commutants"><code class="docutils literal notranslate"><span class="pre">PauliString.get_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.get_count_non_trivially"><code class="docutils literal notranslate"><span class="pre">PauliString.get_count_non_trivially()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.get_diagonal_index"><code class="docutils literal notranslate"><span class="pre">PauliString.get_diagonal_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.get_index"><code class="docutils literal notranslate"><span class="pre">PauliString.get_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.get_matrix"><code class="docutils literal notranslate"><span class="pre">PauliString.get_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.get_nested"><code class="docutils literal notranslate"><span class="pre">PauliString.get_nested()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.get_substring"><code class="docutils literal notranslate"><span class="pre">PauliString.get_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.get_weight_in_matrix"><code class="docutils literal notranslate"><span class="pre">PauliString.get_weight_in_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.inc"><code class="docutils literal notranslate"><span class="pre">PauliString.inc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.is_identity"><code class="docutils literal notranslate"><span class="pre">PauliString.is_identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.multiply"><code class="docutils literal notranslate"><span class="pre">PauliString.multiply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.set_substring"><code class="docutils literal notranslate"><span class="pre">PauliString.set_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.sign"><code class="docutils literal notranslate"><span class="pre">PauliString.sign()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.PauliString.tensor"><code class="docutils literal notranslate"><span class="pre">PauliString.tensor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph"><code class="docutils literal notranslate"><span class="pre">RecordGraph</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph.append"><code class="docutils literal notranslate"><span class="pre">RecordGraph.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph.append_frame"><code class="docutils literal notranslate"><span class="pre">RecordGraph.append_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph.clear"><code class="docutils literal notranslate"><span class="pre">RecordGraph.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph.get_frame"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph.get_graph"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph.get_is_prev"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_is_prev()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph.get_positions"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_positions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph.get_size"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph.get_x_position_lighting"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_x_position_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph.set_positions"><code class="docutils literal notranslate"><span class="pre">RecordGraph.set_positions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.helpers.recording.RecordGraph.set_x_position_lighting"><code class="docutils literal notranslate"><span class="pre">RecordGraph.set_x_position_lighting()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.helpers.recording.get_graph"><code class="docutils literal notranslate"><span class="pre">get_graph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.helpers.recording.recording_graph"><code class="docutils literal notranslate"><span class="pre">recording_graph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AmanieOxana/PauLie">Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/unitary-fund-764231928676089909">Discord</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">API Reference</a><ul>
+      <li>Previous: <a href="paulie.classifier.html" title="previous chapter">Classifier</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, PauLie contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/api/paulie.helpers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
