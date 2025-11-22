@@ -10,7 +10,6 @@ The :code:`paulie` package is an open-source library for studying various algebr
 This first release focuses on the classification of the circuit's dynamical Lie algebra given the generators as
 Paulistrings.
 
-
 .. toctree::
 
     getting_started

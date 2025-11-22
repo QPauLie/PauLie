@@ -1,9 +1,9 @@
 API Reference
 =============
 
-.. autosummary::
-   :toctree: generated/
-   :recursive:
+.. toctree::
+   :maxdepth: 1
+   :caption: Modules
 
    paulie.application
    paulie.common

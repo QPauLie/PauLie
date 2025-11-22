@@ -30,6 +30,7 @@ extensions = [
 ]
 
 autosummary_generate = True
+autosummary_generate_overwrite = True
 autodoc_typehints = "description"
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
