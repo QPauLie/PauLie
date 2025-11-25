@@ -1,116 +1,87 @@
-"""Test the PauliCompiler with examples"""
+"""Tests for the Pauli Compiler implemented in PauLie.
+
+Validates that the returned sequence G satisfies
+    nested_adjoint(G[:-1], G[-1]) == target
+for a selection of small k, N, and target strings.
+"""
+from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_factory import get_pauli_string
-from paulie.application.pauli_compiler import pauli_compiler, nested_adjoint
+from paulie.application.pauli_compiler import (
+    compile_target,
+    OptimalPauliCompiler,
+    PauliCompilerConfig,
+    construct_universal_set,
+)
 
 
-def test_pauli_compiler() -> None:
-    """Test the PauliCompiler with examples"""
-    # Define parameters
-    n = 4  # Total number of qubits
-    k = 3  # Number of qubits in first subsystem (V acts on k qubits)
-    # Create the example sets
-    # A is a set of Pauli strings on k qubits
-    a_set = [
-        get_pauli_string("XII"),  # X₁
-        get_pauli_string("IXI"),  # X₂
-        get_pauli_string("IIX"),  # X₃
-        get_pauli_string("ZII"),  # Z₁
-        get_pauli_string("IZI"),  # Z₂
-        get_pauli_string("IIZ"),  # Z₃
-        get_pauli_string("YII"),  # Y₁
-        get_pauli_string("IYI"),  # Y₂
-        get_pauli_string("IIY")   # Y₃
-    ]
-    # B is a set of Pauli strings on (N-k) qubits
-    b_set = [
-        get_pauli_string("X"),  # X₄
-        get_pauli_string("Z"),  # Z₄
-        get_pauli_string("Y")   # Y₄
-    ]
-    # A_prime is A⊗I^{⊗(N-k)}
-    a_prime_set = [
-        get_pauli_string("XIII"),  # X₁⊗I₄
-        get_pauli_string("IXII"),  # X₂⊗I₄
-        get_pauli_string("IIXI"),  # X₃⊗I₄
-        get_pauli_string("ZIII"),  # Z₁⊗I₄
-        get_pauli_string("IZII"),  # Z₂⊗I₄
-        get_pauli_string("IIZI"),  # Z₃⊗I₄
-        get_pauli_string("YIII"),  # Y₁⊗I₄
-        get_pauli_string("IYII"),  # Y₂⊗I₄
-        get_pauli_string("IIYI")   # Y₃⊗I₄
-    ]
-    # B_prime is U_B⊗B
-    b_prime_set = [
-        get_pauli_string("XIIX"),  # X₁⊗X₄
-        get_pauli_string("XIIZ"),  # X₁⊗Z₄
-        get_pauli_string("XIIY"),  # X₁⊗Y₄
-        get_pauli_string("ZIIX"),  # Z₁⊗X₄
-        get_pauli_string("ZIIZ"),  # Z₁⊗Z₄
-        get_pauli_string("ZIIY")   # Z₁⊗Y₄
-    ]
-    print("=" * 50)
-    print(f"Testing PauliCompiler with {n} qubits, k={k}")
-    print("=" * 50)
-    # Example 1: XYZI
-    print("\n" + "=" * 50)
-    print("EXAMPLE 1: Compiling XYZI")
-    print("=" * 50)
-    target1 = get_pauli_string("XYZI")
-    sequence1 = pauli_compiler(target1, a_set, a_prime_set, b_set, b_prime_set, k, n)
-    print("\nCompiled sequence:")
-    for i, pauli in enumerate(sequence1):
-        print(f"  G_{i+1}: {pauli}")
-    result1 = nested_adjoint(sequence1[:-1], sequence1[-1])
-    if result1:
-        print(f"\nResult: {result1}")
-        print(f"Matches target: {result1 == target1}")
-    else:
-        print("\nThe sequence produced a zero commutator")
-    # Example 2: XIII (a case where W=I)
-    print("\n" + "=" * 50)
-    print("EXAMPLE 2: Compiling XIII (W=I case)")
-    print("=" * 50)
-    target2 = get_pauli_string("XIII")
-    sequence2 = pauli_compiler(target2, a_set, a_prime_set, b_set, b_prime_set, k, n)
-    print("\nCompiled sequence:")
-    for i, pauli in enumerate(sequence2):
-        print(f"  G_{i+1}: {pauli}")
-    result2 = nested_adjoint(sequence2[:-1], sequence2[-1])
-    if result2:
-        print(f"\nResult: {result2}")
-        print(f"Matches target: {result2 == target2}")
-    else:
-        print("\nThe sequence produced a zero commutator")
-    # Example 3: IIIZ (a case where V=I)
-    print("\n" + "=" * 50)
-    print("EXAMPLE 3: Compiling IIIZ (V=I case)")
-    print("=" * 50)
-    target3 = get_pauli_string("IIIZ")
-    sequence3 = pauli_compiler(target3, a_set, b_prime_set, b_set, b_prime_set, k, n)
-    print("\nCompiled sequence:")
-    for i, pauli in enumerate(sequence3):
-        print(f"  G_{i+1}: {pauli}")
-    result3 = nested_adjoint(sequence3[:-1], sequence3[-1])
-    if result3:
-        print(f"\nResult: {result3}")
-        print(f"Matches target: {result3 == target3}")
-    else:
-        print("\nThe sequence produced a zero commutator")
-    # More examples to test robustness
-    print("\n" + "=" * 50)
-    print("EXAMPLE 4: Compiling XZYI (general case)")
-    print("=" * 50)
-    target4 = get_pauli_string("XZYI")
-    sequence4 = pauli_compiler(target4, a_set, a_prime_set, b_set, b_prime_set, k, n)
-    print("\nCompiled sequence:")
-    for i, pauli in enumerate(sequence4):
-        print(f"  G_{i+1}: {pauli}")
-    result4 = nested_adjoint(sequence4[:-1], sequence4[-1])
-    if result4:
-        print(f"\nResult: {result4}")
-        print(f"Matches target: {result4 == target4}")
-    else:
-        print("\nThe sequence produced a zero commutator")
+def nested_adjoint(operators: list[PauliString], target: PauliString) -> PauliString:
+    """
+    Compute nested adjoint maps: ad_{A_1}...ad_{A_{n-1}}(A_n)
+    Returns None if any commutator is zero
 
-if __name__ == "__main__":
-    test_pauli_compiler()
+    Args:
+        operators: List of PauliString operators [A_1, A_2, ..., A_n]
+        target: Target PauliString A_n
+    """
+    if not operators:
+        return target
+    current = target
+    for op in reversed(operators):
+        result = op ^ current
+        if result is None:
+            return None
+        current = result
+    return current
+
+
+def _assert_compiles(target_str: str, k: int) -> None:
+    """Assert compiles"""
+    target = get_pauli_string(target_str)
+    seq = compile_target(target, k_left=k)
+    assert seq, f"Empty sequence for target={target_str}, k={k}"
+    res = nested_adjoint(seq[:-1], seq[-1])
+    assert res is not None and res == target, (
+        f"Compilation failed: target={target_str}, k={k}, got={res}"
+    )
+
+
+def test_compile_target_smoke_cases() -> None:
+    """Test compile target smoke cases"""
+
+    # (k, N, target)
+    cases = [
+        (2, 3, "XII"),    # V=X1, W=I
+        (2, 3, "IIY"),    # V=I,  W=Y
+        (2, 3, "YII"),    # V=Y1, W=I
+        (2, 4, "IZXI"),   # V=Z2, W=XI
+        (2, 4, "IIYZ"),   # V=I,  W=YZ
+        (3, 5, "IIZXI"),  # V=Z3, W=XI
+        (3, 5, "IIIYZ"),  # V=I,  W=YZ
+    ]
+    for (k, N, t) in cases:
+        assert len(t) == N
+        _assert_compiles(t, k)
+
+
+def test_class_compile_api() -> None:
+    """
+    Test class compile api
+    One class-based call to ensure V/W API works
+    """
+    k, N = 2, 4
+    cfg = PauliCompilerConfig(k_left=k, n_total=N)
+    opc = OptimalPauliCompiler(cfg)
+    # Target: V=Z2, W=XI => target "IZXI"
+    V = get_pauli_string("IZ").get_substring(0, k)
+    W = get_pauli_string("XI").get_substring(0, N - k)
+    seq = opc.compile(V, W)
+    target = get_pauli_string("IZXI")
+    res = nested_adjoint(seq[:-1], seq[-1])
+    assert res is not None and res == target
+
+
+def test_universal_set_size_minimal() -> None:
+    """Test universal set size minimal"""
+    for (k, N) in [(2, 3), (2, 4), (3, 5)]:
+        U = construct_universal_set(N, k)
+        assert len(U) == 2 * N + 1
