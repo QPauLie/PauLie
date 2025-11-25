@@ -6,7 +6,7 @@ for a selection of small k, N, and target strings.
 """
 from paulie.common.pauli_string_factory import get_pauli_string
 from paulie.application.pauli_compiler import nested_adjoint
-from paulie.application.pauli_compiler_optimal import (
+from paulie.application.pauli_compiler import (
     compile_target,
     OptimalPauliCompiler,
     PauliCompilerConfig,
