@@ -36,6 +36,7 @@ G_LIE: dict[str, list[str]] = {
 def _a3(n:int) -> str|None:
     """
     Get algebra for a3 algebra
+
     Args:
         n: a length of Pauli string
     Returns:
@@ -57,6 +58,7 @@ def _a3(n:int) -> str|None:
 def _a5(n:int) -> str|None:
     """
     Get algebra for a5 algebra
+
     Args:
         n: a length of Pauli string
     Returns:
@@ -76,6 +78,7 @@ def _a5(n:int) -> str|None:
 def _a6(n:int) -> str|None:
     """
     Get algebra for a6 algebra
+
     Args:
         n: a length of Pauli string
     Returns:
@@ -90,6 +93,7 @@ def _a6(n:int) -> str|None:
 def _a7(n:int) -> str|None:
     """
     Get algebra for a7 algebra
+
     Args:
         n: a length of Pauli string
     Returns:
@@ -100,6 +104,7 @@ def _a7(n:int) -> str|None:
 def _a10(n:int) -> str|None:
     """
     Get algebra for a10 algebra
+
     Args:
         n: a length of Pauli string
     Returns:
@@ -110,7 +115,8 @@ def _a10(n:int) -> str|None:
 def two_local_algebras(n:int) -> dict[str, str]:
     """
     Get a dictionary of the DLAs n>=3
-     Args:
+
+    Args:
         n: a length of Pauli string
     Returns:
         a dictionary of the DLAs n>=3
@@ -152,6 +158,7 @@ def two_local_algebras(n:int) -> dict[str, str]:
 def get_lie_algebra(name:str) -> list[str]:
     """
     Get generators of Lie algebra by name. 
+
     Args:
         name (str): name of Lie algebra
     Returns: generators of Lie algebra by name. 
@@ -161,7 +168,7 @@ def get_lie_algebra(name:str) -> list[str]:
 def get_lie_algebras() -> dict[str, list[str]]:
     """
     Get the dictionary of generators of Lie algebras.
-    Args: empty
+
     Returns:
         the dictionary of generators of Lie algebras.
     """

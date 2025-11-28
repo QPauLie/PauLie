@@ -15,6 +15,7 @@ def plot_graph(vertices:list[str],
                edge_labels:dict[tuple[str,str],str] = None) -> None:
     """
     Plot graph.
+
     Args:
         vertices: List of vertices.
         edges: List of edges.
@@ -37,6 +38,7 @@ def plot_graph_by_nodes(nodes:PauliStringCollection,
 ) -> None:
     """
     Plot graph by nodes.
+
     Args:
         nodes: Collection of Pauli strings.
         commutators: Collection of commutators (Pauli strings).
@@ -53,6 +55,7 @@ def animation_graph(record: RecordGraph, interval:int=1000,
 ) -> None:
     """
     Animate graph building.
+
     Args:
         generators: Collection of Pauli strings.
         storage: Storage in file: dictionary: filename: path to file writer:
@@ -71,6 +74,7 @@ def animation_graph(record: RecordGraph, interval:int=1000,
     def clear() -> None:
         """
         Clear frame.
+
         Returns:
             None
         """
@@ -82,6 +86,7 @@ def animation_graph(record: RecordGraph, interval:int=1000,
                         center:str) -> tuple[dict[str,np.array], int]:
         """
         Build position of vertices in canonical graph.
+
         Args:
             edges: List of edges.
             center: Vertix of center.

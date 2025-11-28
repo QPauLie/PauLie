@@ -39,6 +39,7 @@ class Morph:
     def __init__(self, legs:list[list[PauliString]], dependents:list[PauliString]) -> None:
         """
         Constructor
+
         Args:
            legs: list of legs
            dependents: list of dependents
@@ -51,7 +52,7 @@ class Morph:
     def is_empty(self) -> bool:
         """
         Checking for emptiness of a graph
-        Args: empty
+
         Returns:
             True if length of legs is zero
         """
@@ -60,7 +61,7 @@ class Morph:
     def is_empty_legs(self) -> bool:
         """
         Checking for missing legs in a graph
-        Args: empty
+
         Returns:
             True if only center
 
@@ -70,7 +71,7 @@ class Morph:
     def get_vertices(self) -> list[PauliString]:
         """
         Get a list of graph vertices
-        Args: empty
+
         Returns: 
             a list of Pauli strings
 
@@ -80,7 +81,7 @@ class Morph:
     def get_dependents(self) -> list[PauliString]:
         """
         Get a list of dependent Pauli strings
-        Args: empty
+
         Returns: 
             a list of dependent Pauli strings
         """
@@ -89,7 +90,7 @@ class Morph:
     def get_legs(self) -> list[list[PauliString]]:
         """
         Get legs
-        Args: eempty
+
         Returns: 
             a list of legs
         """
@@ -99,7 +100,7 @@ class Morph:
     def counts(self) -> tuple[int,int,int]:
         """
         Get number of leg types
-        Args: empty
+
         Returns:
             tuple of number legs length 1, 2, and long vertices
         Raises:
@@ -136,7 +137,7 @@ class Morph:
     def get_properties(self) -> tuple[TypeGraph,int,int,int]:
         """
         Get graph properties
-        Args: empty
+
         Returns:
             tuple of type of graph, number legs length 1, 2, and long vertices
         Raises:
@@ -162,7 +163,7 @@ class Morph:
     def get_type(self) -> TypeGraph:
         """
         Get graph type
-        Args: empty
+
         Returns:
              type of graph
         """
@@ -172,7 +173,7 @@ class Morph:
     def get_algebra_properties(self) -> tuple[TypeAlgebra,int,int]:
         """
         Get properties of algebra
-        Args: empty
+
         Returns:
             tuple of type of algebra, number one legs, expanent params
 
@@ -194,6 +195,7 @@ class Morph:
                                  nc:int = None, size:int = None) -> bool:
         """
         Check properties of algebra
+
         Args:
              type_algebra: type of algebra
              nc: number control vertices
@@ -219,7 +221,7 @@ class Morph:
         )-> Generator[list[list[PauliString]], None, None]:
         """
         Generate independent pairs
-        Args: empty
+
         Yields:
              All independent pairs of Pauli string in canonic graph
         """
@@ -238,13 +240,13 @@ class Morph:
         )-> Generator[list[dict], None, None]:
         """
         Generate pq
-        Args: empty
+
         Yields:
-              Dictionary:
-                        w: vertix of graph
-                        v: other vertix of graph
-                        vw: v@w
-                        neighbour: True if w and v are neighbour
+            Dictionary:
+                w: vertix of graph
+                v: other vertix of graph
+                vw: v@w
+                neighbour: True if w and v are neighbour
         """
         for i in range(len(self.legs) - 1, 0, -1):
             leg = self.legs[i]
@@ -270,7 +272,8 @@ class Morph:
     )->bool:
         """
         Incriminate the generator
-        Args: 
+
+        Args:
              i: current index of vertices
              init_vertices: initial list of vertices
              vertix_generators: list of vertex pair dictionaries
@@ -301,7 +304,7 @@ class Morph:
         )-> Generator[list[list[PauliString]], None, None]:
         """
         Generate generators
-        Args: empty
+
         Yields:
             list of generators
         """
@@ -325,7 +328,7 @@ class Classification:
     def __init__(self) -> None:
         """
         Constructor
-        Args: empty
+
         Returns: None
         """
         self.morphs: set[Morph] = set()
@@ -333,7 +336,8 @@ class Classification:
     def add(self, morph: Morph) -> None:
         """
         Add canonical form
-        Args: 
+
+        Args:
              morph: canonical form
         Returns:
             None  
@@ -343,7 +347,7 @@ class Classification:
     def get_morphs(self) -> Morph:
         """
         Get canonical form
-        Args: empty
+
         Returns:
             canonical form
         """
@@ -352,7 +356,7 @@ class Classification:
     def get_algebra(self) -> str:
         """
         Get algebra
-        Args: empty
+
         Returns: algebra
         """
         algebras = {}
@@ -376,7 +380,8 @@ class Classification:
     def contains_algebra(self, algebra:str) -> bool:
         """
         Algebra inclusion check
-        Args: 
+
+        Args:
            algebra: name of algebra
         Returns:
             True if algebra equals graph algebra
@@ -388,7 +393,8 @@ class Classification:
     def _parse_algebra(self, algebra:str) -> str:
         """
         Reformat algebra
-        Args: 
+
+        Args:
             algebra: name of algebra
         Returns:
             reformatted algebra
@@ -413,6 +419,7 @@ class Classification:
     def is_algebra(self, algebra:str) -> bool:
         """
         Checking for compliance with a given algebra
+
         Args:
             algebra: name of algebra
         Returns:
@@ -433,6 +440,7 @@ class Classification:
     def get_subalgebras(self, algebra:str=None) -> list[str]:
         """
         Get subalgebras
+
         Args:
             algebra: name of algebra
         Returns:
@@ -447,7 +455,7 @@ class Classification:
     def get_vertices(self) -> list[PauliString]:
         """
         Get a list of independent strings of Pauli algebra
-        Args: empty
+
         Returns:
             a list of independent strings of Pauli algebra
         """
@@ -456,7 +464,7 @@ class Classification:
     def get_dependents(self) -> list[PauliString]:
         """
         Get a list of dependent strings of Pauli algebra
-        Args: empty
+
         Returns:
             a list of dependent strings of Pauli algebra
         """
@@ -465,7 +473,7 @@ class Classification:
     def get_isomorphisms(self) -> dict[str, str]:
         """
         Get dictionary of isomorphisms
-        Args: empty
+
         Returns:
             dictionary of isomorphisms
         """
@@ -477,6 +485,7 @@ class Classification:
     def get_isomorphism(self, algebra:str)->str:
         """
         Get algebra isomorphism
+
         Args:
             algebra: name of algebra
         Returns: 
@@ -506,7 +515,7 @@ class Classification:
     def get_dla_dim(self) -> int:
         """
         Get the dimension of the classified dynamical Lie algebra
-        Args: empty
+
         Returns:
             the dimension of the classified dynamical Lie algebra
         """
@@ -537,7 +546,8 @@ class Classification:
     ) -> bool:
         """
         Incriminate the generator
-        Args: 
+
+        Args:
             ms: index in list of generators
             morphs: canonic form
             morph_generators: list of generators
@@ -562,7 +572,7 @@ class Classification:
     def gen_generators(self) -> Generator[list[list[PauliString]], None, None]:
         """
         Get a list of independent strings of Pauli algebra
-        Args: empty
+
         Yields: 
            a list of generators
         """

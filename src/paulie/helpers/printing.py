@@ -6,11 +6,12 @@ from paulie.common.pauli_string_bitarray import PauliString
 def print_vertix(debug:bool, vertix:PauliString,
                  title:str="") -> None:
     """
-    Prnting vertix if debug
+    Printing vertix if debug.
+
     Args:
-        debug: debug flag
-        vertix: vertix to print
-        title: title to print
+        debug: Debug flag.
+        vertix: Vertix to print.
+        title: Title to print.
     Returns:
         None
     """
@@ -20,11 +21,12 @@ def print_vertix(debug:bool, vertix:PauliString,
 def print_vertices(debug:bool, vertices:list[PauliString],
                    title:str = "") -> None:
     """
-    Prnting list of vertices if debug
+    Printing list of vertices if debug.
+
     Args:
-        debug: debug flag
-        vertices: list of vertices to print
-        title: title to print
+        debug: Debug flag.
+        vertices: Vertices to print.
+        title: Title to print.
     Returns:
         None
     """
@@ -40,12 +42,13 @@ def print_lit_vertices(debug:bool, vertices:list[PauliString],
                        lits:list[PauliString],
                        title:str = "") -> None:
     """
-    Prnting list of vertices with lits if debug
+    Printing list of vertices with lits if debug.
+
     Args:
-        debug: debug flag
-        vertices: list of vertices to print
-        lits: list of lited vertices
-        title: title to print
+        debug: Debug flag.
+        vertices: List of vertices to print.
+        lits: List of lited vertices.
+        title: Title to print.
     Returns:
         None
     """
@@ -66,9 +69,10 @@ class Debug:
     """
     def __init__(self, debug:bool) -> None:
         """
-        Constuctor
+        Constructor.
+
         Args:
-            debug: debug flag
+            debug: Debug flag.
         Returns:
             None
         """
@@ -77,18 +81,19 @@ class Debug:
 
     def get_debug(self) -> bool:
         """
-        Get debug flag
-        Args: empty
+        Get debug flag.
+
         Returns:
-            True if debug flag setted in True
+            True if debug flag is set in True.
         """
         return self.debug
 
     def set_debug(self, debug:bool) -> None:
         """
-        Set debug flag
+        Set debug flag.
+
         Args:
-            debug: debug flag
+            debug: Debug flag.
         Returns:
             None
         """
@@ -96,16 +101,16 @@ class Debug:
 
     def debuging(self) -> None:
         """
-        Switch to debug mode
-        Args: empty
+        Switch to debug mode.
+
         Returns: None
         """
         self.debug = True
 
     def restore(self) -> None:
         """
-        Restore debug mode
-        Args: empty
+        Restore debug mode.
+
         Returns: None
         """
         self.debug = self.save_debug
@@ -113,10 +118,11 @@ class Debug:
     def print_vertix(self, vertix:PauliString,
                      title:str="") -> None:
         """
-        Prnting vertix if debug
+        Printing vertix if debug.
+
         Args:
-            vertix: vertix to print
-            title: title to print
+            vertix: Vertix to print.
+            title: Title to print.
         Returns:
             None
         """
@@ -126,10 +132,11 @@ class Debug:
     def print_vertices(self, vertices: list[PauliString],
                        title:str="") -> None:
         """
-        Prnting list of vertices if debug
+        Printing list of vertices if debug.
+
         Args:
-            vertices: list of vertices to print
-            title: title to print
+            vertices: List of vertices to print.
+            title: Title to print.
         Returns:
             None
         """
@@ -137,9 +144,10 @@ class Debug:
 
     def print_title(self, title:str) -> None:
         """
-        Print title
+        Print title.
+
         Args:
-            title: title to print
+            title: Title to print.
         Returns:
             None
         """
@@ -152,11 +160,12 @@ class Debug:
                            lits:list[PauliString],
                            title:str = "") -> None:
         """
-        Prnting list of vertices with lits if debug
+        Printing list of vertices with lits if debug.
+
         Args:
-            vertices: list of vertices to print
-            lits: list of lited vertices
-            title: title to print
+            vertices: List of vertices to print.
+            lits: List of lited vertices.
+            title: Title to print.
         Returns:
             None
         """
@@ -166,11 +175,12 @@ class Debug:
                         vertix:PauliString,
                         paulistring:PauliString) -> bool:
         """
-        Pauli string equality check
+        Pauli string equality check.
+
         Args:
-            vertix: vertix
-            paulistring: Pauli string to equality check
-       Returns:
-           True if vertix equals Pauli string
+            vertix: Vertix.
+            paulistring: Pauli string to equality check.
+        Returns:
+           True if vertix equals Pauli string.
         """
         return paulistring == vertix

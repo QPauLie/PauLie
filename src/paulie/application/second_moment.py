@@ -12,6 +12,7 @@ def second_moment(
     """
     Computes the second-order twirl of an operator M by projecting it onto the
     subspace of quadratic symmetries.
+
     Args:
         operator_m: collection of Pauli strings
         system_generators: collection of Pauli strings

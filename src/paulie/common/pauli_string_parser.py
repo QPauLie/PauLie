@@ -12,10 +12,11 @@ TOKENS.add(SIZE)
 def _is_token(char: str) -> bool:
     """
     Check if a character is a valid token.
-    Args: 
-        char: char for checking in tokens
+
+    Args:
+        char: Char for checking in tokens.
     Returns:
-        True if char is token
+        True if char is token.
     """
     return char in TOKENS
 
@@ -23,12 +24,13 @@ def _is_token(char: str) -> bool:
 def _is_number(char: str) -> bool:
     """
     Check if a character is a number, raise exception if invalid token.
-    Args: 
-        char: char for checking in numbers
+
+    Args:
+        char: Char for checking in numbers.
     Returns:
-        True if char is number
+        True if char is number.
     Raises:
-        ValueError: If the input char format is invalid
+        ValueError: If the input char format is invalid.
     """
     try:
         int(char)
@@ -42,12 +44,13 @@ def _is_number(char: str) -> bool:
 def _to_int(position: str) -> int:
     """
     Convert string to int, raise exception if invalid.
-    Args: 
-        position: string representation of number 
+
+    Args:
+        position: String representation of number .
     Returns:
-        int representaion of number
+        Int representation of number.
     Raises:
-        ValueError: If the input position format is invalid
+        ValueError: If the input position format is invalid.
     """
     try:
         return int(position)
@@ -58,15 +61,13 @@ def _to_int(position: str) -> int:
 def pauli_string_parser(pauli_string: str) -> str:
     """
     Parse a Pauli string representation and return the expanded form.
-    
+
     Args:
         pauli_string (str): String representation like "X_4s10", "ZYX_4s10", etc.
-        
     Returns:
-        str: Expanded Pauli string with I's in unspecified positions
-        
+        str: Expanded Pauli string with I's in unspecified positions.
     Raises:
-        ValueError: If the input string format is invalid
+        ValueError: If the input string format is invalid.
     """
     new_pauli_string = ""
     i = 0
