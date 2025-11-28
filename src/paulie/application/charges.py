@@ -10,9 +10,10 @@ def non_commuting_charges(generators: PauliStringCollection)->PauliStringCollect
     Non-commuting charges describe non-Abelian symmetries — that is, elements of the
     stabilizer of the DLA that do not commute with each other.
 
-    Args: 
-         generators: collection of Pauli strings
-    Returns: list of charges as strings
+    Args:
+        generators: Collection of Pauli strings.
+    Returns:
+        List of charges as strings.
     """
     non_q = PauliStringCollection()
     comm = generators.get_commutants()

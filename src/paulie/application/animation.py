@@ -10,7 +10,8 @@ def animation_anti_commutation_graph(generators: PauliStringCollection,
                                      storage=None, interval:int =1000) -> None:
     """
     Animation building transformation anti-commutation graph
-    generators - list of generators
+    generators - list of generators.
+
     Args:
         generators: Collection of Pauli strings.
         storage: Storage in file: dictionary: filename: path to file writer:

@@ -7,9 +7,10 @@ from paulie.common.pauli_string_collection import PauliStringCollection
 
 def plot_anti_commutation_graph(generators:PauliStringCollection) -> None:
     """
-    Plot anti-commutation graph after tranform graph to canonic
+    Plot anti-commutation graph after transform graph to canonic.
+
     Args:
-        generators: collection of Pauli strings
+        generators: Collection of Pauli strings.
     Returns:
         None
     """

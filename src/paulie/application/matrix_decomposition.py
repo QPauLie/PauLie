@@ -28,9 +28,9 @@ def _mat_to_vec(matrix: np.ndarray) -> np.ndarray:
                                                           [vec(C)]
 
     Args:
-        matrix: The matrix to vectorize.
+        matrix: Matrix to vectorize.
     Returns:
-        vector of matrix
+        Vector of matrix.
     """
     log2n = int(matrix.shape[0]).bit_length() - 1
     row = np.zeros(4 ** log2n, dtype=np.int64)
@@ -44,9 +44,9 @@ def matrix_decomposition(matrix: np.ndarray) -> np.ndarray:
     Get the weight vector corresponding to the Pauli basis decomposition of a matrix.
 
     Args:
-        matrix: The matrix to be decomposed.
+        matrix: Matrix to be decomposed.
     Returns:
-        the weight vector corresponding to the Pauli basis decomposition of a matrix.
+        Weight vector corresponding to the Pauli basis decomposition of a matrix.
     """
     if matrix.ndim != 2:
         raise ValueError("matrix must be a 2D ndarray")
@@ -75,9 +75,9 @@ def matrix_decomposition_diagonal(diag: np.ndarray) -> np.ndarray:
     Get the weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.
 
     Args:
-        diag: The main diagonal of the diagonal matrix to be decomposed.
+        diag: Main diagonal of the diagonal matrix to be decomposed.
     Returns:
-        the weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.
+        Weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.
     """
     if diag.ndim != 1:
         raise ValueError("matrix must be a 1D ndarray")

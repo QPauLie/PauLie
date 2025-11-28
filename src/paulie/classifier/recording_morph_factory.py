@@ -27,6 +27,7 @@ class NotConnectedException(Exception):
     """
     No connection with cononic graph
     """
+
 class MorphFactoryException(Exception):
     """
     Morph factory exception
@@ -39,6 +40,7 @@ class RecordingMorphFactory(Debug):
     def __init__(self, debug:bool = False, record:RecordGraph=None) -> None:
         """
         Constructor
+
         Args:
             debug: debug mode
             record: record
@@ -58,6 +60,7 @@ class RecordingMorphFactory(Debug):
     def set_debug(self, debug:bool) -> None:
         """
         Set debug flag
+
         Args:
             debug: debug mode
         Returns:
@@ -68,6 +71,7 @@ class RecordingMorphFactory(Debug):
     def set_lighting(self, lighting:PauliString) -> None:
         """
         Set lighting
+
         Args:
             lighting: Paulie string, which is lightning
         Returns:
@@ -78,7 +82,7 @@ class RecordingMorphFactory(Debug):
     def get_lighting(self) -> PauliString:
         """
         Get lighting
-        Args: empty
+
         Returns:
             lighting
         """
@@ -87,7 +91,7 @@ class RecordingMorphFactory(Debug):
     def get_morph(self) -> Morph:
         """
         Get canonical graph form
-        Args: empty
+
         Returns:
             canonical form
         """
@@ -96,6 +100,7 @@ class RecordingMorphFactory(Debug):
     def lit(self, lighting:PauliString, vertix:PauliString) -> PauliString:
         """
         Lit vertix
+
         Args:
             lighting: canonical graph join candidate
             vertix: the vertix that will be lited by lightning
@@ -112,6 +117,7 @@ class RecordingMorphFactory(Debug):
     def get_lits(self, lighting:PauliString, vertices:list[PauliString]=None) -> list[PauliString]:
         """
         Get lited vertices (connected to the selected vertex).
+
         Args:
             lighting: canonical graph join candidate
             vertices: list of vertices
@@ -126,7 +132,7 @@ class RecordingMorphFactory(Debug):
     def is_empty(self) -> bool:
         """
         Checking for emptiness
-        Args: empty
+
         Returns:
             True if graph is empty
         """
@@ -135,7 +141,7 @@ class RecordingMorphFactory(Debug):
     def is_empty_legs(self) -> bool:
         """
         Checking for missing legs
-        Args: empty
+
         Returns:
             True if graph no core
         """
@@ -144,7 +150,8 @@ class RecordingMorphFactory(Debug):
     def _find_in_leg(self, leg:list[PauliString], v:PauliString)->int:
         """
         Find vertix in leg
-        Args: 
+
+        Args:
             leg: list of vertices
             v: required vertex
         Returns:
@@ -159,7 +166,8 @@ class RecordingMorphFactory(Debug):
     def find(self, v:PauliString) -> tuple[int, int]:
         """
         Find vertix
-        Args: 
+
+        Args:
             v: required vertex
         Returns:
             tuple index of leg and index vertix in the leg
@@ -173,7 +181,8 @@ class RecordingMorphFactory(Debug):
     def is_included(self, v: PauliString) -> bool:
         """
         Checking a vertex for inclusion in the graph
-        Args: 
+
+        Args:
             v: required vertex
         Returns:
             True if vertex in the graph
@@ -184,7 +193,7 @@ class RecordingMorphFactory(Debug):
     def get_vertices(self) -> list[PauliString]:
         """
         Get graph vertices
-        Args: empty
+
         Returns:
            a list of vertices in the graph
         """
@@ -193,7 +202,7 @@ class RecordingMorphFactory(Debug):
     def get_center(self) -> PauliString:
         """
         Get center
-        Args: empty
+
         Returns:
            a canter of the graph
         """
@@ -204,7 +213,8 @@ class RecordingMorphFactory(Debug):
     def set_center(self, v:PauliString) -> None:
         """
         Set center
-        Args: 
+
+        Args:
             v: vertex of the graph center
         Returns: None
         """
@@ -215,7 +225,7 @@ class RecordingMorphFactory(Debug):
     def get_long_leg(self) -> list[PauliString]:
         """
         Get long leg
-        Args: empty
+
         Returns:
           a list of vertices in long leg
         """
@@ -226,7 +236,7 @@ class RecordingMorphFactory(Debug):
     def get_one_vertix(self) -> PauliString:
         """
         Get one vertix in leg
-        Args: empty
+
         Returns:
             сontrol vertex in the graph
         """
@@ -237,7 +247,7 @@ class RecordingMorphFactory(Debug):
     def _gen_one_legs(self) -> Generator[list[list[PauliString]], None, None]:
         """
         Generate vertices included in single legs
-        Args: empty
+
         Yields:
             Vertices included in legs of length 1
         """
@@ -252,7 +262,7 @@ class RecordingMorphFactory(Debug):
     def get_one_vertices(self) -> list[PauliString]:
         """
         Get vertices included in single legs
-        Args: empty
+
         Returns:
             a list of vertices included in legs of length 1
         """
@@ -264,14 +274,15 @@ class RecordingMorphFactory(Debug):
     def get_pq(self, lighting:PauliString
     ) -> tuple[PauliString|None,PauliString|None,PauliString|None]:
         """
-        Get pq
+        Get pq.
+
         Args:
-            lighting: canonical graph join candidate
+            lighting: Canonical graph join candidate.
         Returns:
             tuple:
                 pq: p@q where p and q are vertices 
-                    in one leg, and p is lited, q is unlited 
-                p: lited vertix
+                in one leg, and p is lited, q is unlited.
+                p: Lited vertix.
         """
         one_verices = self.get_one_vertices()
         lits = self.get_lits(lighting, one_verices)
@@ -289,7 +300,7 @@ class RecordingMorphFactory(Debug):
     def _gen_two_legs(self) -> Generator[list[list[PauliString]], None, None]:
         """
         Generate vertices included in two legs
-        Args: empty
+
         Yields:
           legs long 2
         """
@@ -305,7 +316,7 @@ class RecordingMorphFactory(Debug):
     def get_two_legs(self) -> list[tuple[PauliString, PauliString]]:
         """
         Get vertices included in two legs
-        Args: empty
+
         Returns:
             a list of vertices included in two legs
         """
@@ -314,7 +325,7 @@ class RecordingMorphFactory(Debug):
     def get_count_two_legs(self) -> int:
         """
         Get the number of legs of length two
-        Args: empty
+
         Returns:
            number of legs long 2
         """
@@ -323,7 +334,7 @@ class RecordingMorphFactory(Debug):
     def is_two_leg(self) -> bool:
         """
         Checking the leg for length two
-        Args: empty
+
         Returns:
             True if there is a leg of length 2
         """
@@ -339,7 +350,7 @@ class RecordingMorphFactory(Debug):
     def _gen_long_legs(self) -> Generator[list[list[PauliString]], None, None]:
         """
         Generate long leg vertices
-        Args: empty
+
         Yields:
            vertices from long leg
         """
@@ -354,7 +365,7 @@ class RecordingMorphFactory(Debug):
     def get_long_legs(self) -> list[list[PauliString]]:
         """
         Get long leg vertices
-        Args: empty
+
         Returns:
            a list of vertices from long leg
         """
@@ -363,7 +374,8 @@ class RecordingMorphFactory(Debug):
     def append(self, v:PauliString, lit:PauliString) -> None:
         """
         Append vertix to graph
-        Args: 
+
+        Args:
             v: added vertex
             lit: the vertex to which is added
         Returns:
@@ -397,7 +409,8 @@ class RecordingMorphFactory(Debug):
     def append_to_two_center(self, lighting:PauliString) -> None:
         """
         Append vertix to two vertices graph
-        Args: 
+
+        Args:
             lighting: canonical graph join candidate
         Returns:
             None
@@ -446,7 +459,8 @@ class RecordingMorphFactory(Debug):
     def remove(self, v: PauliString) -> None:
         """
         Removing a graph vertex
-        Args: 
+
+        Args:
             v: removed vertix
         Returns:
             None
@@ -476,7 +490,8 @@ class RecordingMorphFactory(Debug):
     def replace(self, v:PauliString, v_new:PauliString) -> None:
         """
         Replacing a graph vertex with an equivalent one
-        Args: 
+
+        Args:
             v: removed vertices
             v_new: added vertices
         Returns:
@@ -490,6 +505,7 @@ class RecordingMorphFactory(Debug):
     def print_state(self, lighting:PauliString = None) -> None:
         """
         Debug output of graph state
+
         Args:
             lighting: canonical graph join candidate
         Returns:
@@ -521,6 +537,7 @@ class RecordingMorphFactory(Debug):
     def get_lit_indexes(self, vertices:list[PauliString], lits:[PauliString]) -> list[int]:
         """
         Get the indices of the lited vertices in lits
+
         Args:
             vertices: list of vertices
             lits: list of lited vertices
@@ -536,7 +553,7 @@ class RecordingMorphFactory(Debug):
     def _append_three_graph(self) -> Self:
         """
         Step I. Construct a graph of three vertices
-        Args: empty
+
         Returns: self
         Raises:
             AppendedException:
@@ -564,7 +581,7 @@ class RecordingMorphFactory(Debug):
 
     def _append_one_legs_in_different_state(self) -> Self:
         """
-        Args: empty
+
         Returns: self
         Raises:
             AppendedException:
@@ -625,7 +642,7 @@ class RecordingMorphFactory(Debug):
     def _lit_only_long_leg(self) -> Self:
         """
         Step III. Lit only the long leg
-        Args: empty
+
         Returns: self
         Raises:
             AppendedException:
@@ -795,7 +812,7 @@ class RecordingMorphFactory(Debug):
     def _lit_center(self) -> Self:
         """
         Lit center
-        Args: empty
+
         Returns: self
         Raises:
             AppendedException:
@@ -825,7 +842,7 @@ class RecordingMorphFactory(Debug):
     def _reduce_long_leg_more_than_one_lits(self) -> Self:
         """
         Step IV. Reducing the long leg lits to standard configurations
-        Args: empty
+
         Returns: self
         Raises:
             AppendedException:
@@ -939,7 +956,7 @@ class RecordingMorphFactory(Debug):
     def _append_long_leg_first_and_center_lit(self) -> Self:
         """
         Step V. Append long leg with first lit and center
-        Args: empty
+
         Returns: self
         Raises:
             AppendedException:
@@ -1067,7 +1084,7 @@ class RecordingMorphFactory(Debug):
     def _append_long_leg_only_last_lit(self) -> Self:
         """
         Step VI. Append if long leg last and center are lited
-        Args: empty
+
         Returns: self
         Raises:
             AppendedException:
@@ -1136,7 +1153,7 @@ class RecordingMorphFactory(Debug):
     def _append_long_leg_last_and_first_lit(self) -> None:
         """
         Step VII. Append if long leg last, first and center are lited
-        Args: empty
+
         Returns: self
         Raises:
             AppendedException:
@@ -1176,7 +1193,8 @@ class RecordingMorphFactory(Debug):
     def _pipeline(self, lighting:PauliString) -> None:
         """
         Pipeline
-        Args: 
+
+        Args:
             lighting: canonical graph join candidate
         Returns: None
         Raises:
@@ -1200,6 +1218,7 @@ class RecordingMorphFactory(Debug):
     def append_delayed(self, v:PauliString) -> None:
         """
         Append to delayed
+
         Args:
             v: vertix to append in delayed
         Return: None
@@ -1209,6 +1228,7 @@ class RecordingMorphFactory(Debug):
     def restore_delayed(self, vertices:list[PauliString]) -> list[PauliString]:
         """
         Restore to delayed
+
         Args:
             vertices: a list of vertices
         Returns:
@@ -1222,6 +1242,7 @@ class RecordingMorphFactory(Debug):
     def set_debug_vertix(self, lighting:PauliString) -> None:
         """
         Set debug vertix
+
         Args:
             lighting: canonical graph join candidate
         Returns:
@@ -1232,6 +1253,7 @@ class RecordingMorphFactory(Debug):
     def set_debug_break(self, lighting:PauliString) -> None:
         """
         Set debug break
+
         Args:
             lighting: canonical graph join candidate
         Returns:
@@ -1243,6 +1265,7 @@ class RecordingMorphFactory(Debug):
     def debugbreak(self, number:int=None, lighting:PauliString=None, append:bool=True) -> None:
         """
         Debug break
+
         Args:
             number: number vertices in graph
             lighting: canonical graph join candidate
@@ -1264,7 +1287,7 @@ class RecordingMorphFactory(Debug):
     def is_break(self) -> bool:
         """
         Check debug
-        Args: empty
+
         Returns:
             True if debug mode
         """
@@ -1274,6 +1297,7 @@ class RecordingMorphFactory(Debug):
                              generators:list[PauliString]) -> list[PauliString]:
         """
         Get a collection of non-commuting Pauli strings
+
         Args:
             Pauli string to which commutators are defined
             generators: The area of Pauli strings over which to build a graph.
@@ -1289,7 +1313,8 @@ class RecordingMorphFactory(Debug):
     ) -> tuple[PauliString|None, list[PauliString]|None]:
         """
         Get the Pauli string that has the maximum number of non-commutable
-        Args: 
+
+        Args:
             generators: list of Pauli strings
         Returns:
             tuple:
@@ -1311,6 +1336,7 @@ class RecordingMorphFactory(Debug):
                          pauli_strings:list[PauliString]) -> None:
         """
         Append the next related Pauli string to the queue
+
         Args:
             queue_pauli_strings: queue of Pauli strings
             pauli_strings: list of Pauli strings
@@ -1339,6 +1365,7 @@ class RecordingMorphFactory(Debug):
     def _get_queue(self, generators:list[PauliString]) -> list[PauliString]:
         """
         Get associated sequence of Pauli strings
+
         Args:
             generators: list of Pauli strings
         Returns: 
@@ -1363,6 +1390,7 @@ class RecordingMorphFactory(Debug):
     def build(self, generators:list[PauliString]) -> Self:
         """
         Transform a connected graph to a cononic type.
+
         Args:
             generators: list of Pauli strings
         Returns:

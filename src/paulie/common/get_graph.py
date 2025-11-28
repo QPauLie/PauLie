@@ -9,12 +9,14 @@ def get_graph(generators:list[PauliString], commutators:list[PauliString]=None
 ) -> (tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]
      |tuple[list[str], list[tuple[str, str]]]):
     """
-    Get anticommutator graph
+    Get anticommutator graph.
+
     Args:
-        generators: array of PauliString
-        commutators: The area of Pauli strings over which to build a graph.
-        flag_labels: boolean indicating whether to include labels in the graph.
-    Returns: the vertices, edges, and labels of edges
+        generators: Array of PauliString.
+        commutators: Area of Pauli strings over which to build a graph.
+        flag_labels: Boolean indicating whether to include labels in the graph.
+    Returns:
+        Vertices, edges, and labels of edges.
     """
     if not commutators:
         commutators = []

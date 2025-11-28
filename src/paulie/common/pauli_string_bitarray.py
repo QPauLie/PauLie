@@ -25,6 +25,7 @@ class PauliString:
     def __init__(self, n: int = None, pauli_str: str = None, bits: bitarray = None) -> None:
         """Initialize a Pauli string.
         
+
         Args:
             n: Length of the Pauli string.
             pauli_str: String representation of a Pauli string.
@@ -57,6 +58,7 @@ class PauliString:
     def get_diagonal_index(self) -> int:
         """
         Get index in diagonal matrix decomposition vector.
+
         Returns:
             Index in matrix decomposition vector.
         """
@@ -68,7 +70,8 @@ class PauliString:
     def get_weight_in_matrix(self, b_matrix: np.ndarray) -> np.complex128:
         """
         Get weight in diagonal matrix decomposition vector.
-        Args: 
+
+        Args:
             b_matrix: Matrix decomposition vector.
         Returns:
             Weight in diagonal matrix decomposition vector.
@@ -89,6 +92,7 @@ class PauliString:
 
     def create_instance(self, n: int = None, pauli_str: str = None):
         """Create a Pauli string instance.
+
            Args:
                 n: Length of the Pauli string.
                 pauli_str: String representation of a Pauli string.
@@ -108,7 +112,8 @@ class PauliString:
     def _ensure_pauli_string(self, other:str|Self):
         """
         Get self Pauli string representation.
-        Args: 
+
+        Args:
             other: Pauli string representation.
         Returns:
             Self representation.
@@ -118,6 +123,7 @@ class PauliString:
     def __eq__(self, other:str|Self) -> bool:
         """
         Overloading the equality operator relating two Pauli strings.
+
         Args:
              other: Pauli string to compare with.
         Returns:
@@ -129,6 +135,7 @@ class PauliString:
     def __lt__(self, other:str|Self) -> bool:
         """
         Overloading < operator for two Pauli strings.
+
         Args:
              other: Pauli string to compare with.
         Returns:
@@ -140,6 +147,7 @@ class PauliString:
     def __le__(self, other:str|Self) -> bool:
         """
         Overloading <= operator of two Pauli strings.
+
         Args:
              other: Pauli string to compare with.
         Returns:
@@ -151,6 +159,7 @@ class PauliString:
     def __gt__(self, other:str|Self) -> bool:
         """
         Overloading > operator of two Pauli strings.
+
         Args:
              other: Pauli string to compare with.
         Returns:
@@ -162,6 +171,7 @@ class PauliString:
     def __ge__(self, other:str|Self) -> bool:
         """
         Overloading >= operator of two Pauli strings.
+
         Args:
              other: Pauli string to compare with.
         Returns:
@@ -173,6 +183,7 @@ class PauliString:
     def __ne__(self, other:str|Self) -> bool:
         """
         Overloading != operator of two Pauli strings.
+
         Args:
              other: Pauli string to compare with.
         Returns:
@@ -184,6 +195,7 @@ class PauliString:
     def __hash__(self) -> int:
         """
         Make Pauli string hashable so it can be used in sets.
+
         Returns:
             Hash of Pauli string.
         """
@@ -192,6 +204,7 @@ class PauliString:
     def __len__(self) -> int:
         """
         Get the length of the Pauli string.
+
         Returns:
             Length of the Pauli string.
         """
@@ -200,6 +213,7 @@ class PauliString:
     def __iter__(self) -> Self:
         """
         Get Pauli String Iterator.
+
         Returns:
             Iterator of the Pauli string.
         """
@@ -209,6 +223,7 @@ class PauliString:
     def __next__(self) -> Self:
         """
         Get the value of the next position of the Pauli string.
+
         Returns:
             Value of the next position of the Pauli string.
         Raises:
@@ -224,6 +239,7 @@ class PauliString:
     def __setitem__(self, position: int, pauli_string: str|Self):
         """
         Sets a specified Pauli at a given position in the Pauli string.
+
         Args:
             pauli_string: Pauli string to set in position.
         Returns:
@@ -234,6 +250,7 @@ class PauliString:
     def __getitem__(self, position: int) -> Self:
         """
         Gets the PauliString at specified position.
+
         Args:
             position: Position in Pauli string.
         Returns:
@@ -252,6 +269,7 @@ class PauliString:
     def copy(self) -> Self:
         """ 
         Copy Pauli string.
+
         Returns:
             Copy of self.
         """
@@ -260,6 +278,7 @@ class PauliString:
     def __add__(self, other:str|Self):
         """
         Pauli string addition operator.
+
         Args:
              other: Pauli string to add.
         Returns:
@@ -271,6 +290,7 @@ class PauliString:
     def __or__(self, other:str|Self)->bool:
         """
         Overloading | operator of two Pauli strings like commutes_with.
+
         Args:
              other: Pauli string to commutes_with.
         Returns:
@@ -281,6 +301,7 @@ class PauliString:
     def __xor__(self, other:str|Self):
         """
         Overloading ^ operator of two Pauli strings like adjoint_map.
+
         Args:
              other: Pauli string to adjoint_map.
         Returns:
@@ -291,6 +312,7 @@ class PauliString:
     def __matmul__(self, other:str|Self):
         """
         Overloading @ operator of two Pauli strings like multiply.
+
         Args:
              other: Pauli string to multiply.
         Returns:
@@ -335,6 +357,7 @@ class PauliString:
     def complex_conj(self: Self) -> tuple[complex, str | Self]:
         """
         Get the complex conjugate of the Pauli string.
+
         Returns:
             Complex conjugate of the Pauli string.
         """
@@ -344,6 +367,7 @@ class PauliString:
     def commutes_with(self, other:str|Self) -> bool:
         """
         Check if this Pauli string commutes with another.
+
         Args:
             other: Pauli string to commutes.
         Returns:
@@ -364,6 +388,7 @@ class PauliString:
     def get_substring(self, start: int, length: int = 1) -> Self:
         """
         Get a substring of Paulis inside the Pauli string.
+
         Args:
             start: Index to begin extracting the string.
             length: Length of each substring.
@@ -375,6 +400,7 @@ class PauliString:
     def set_substring(self, start: int, pauli_string:str|Self) -> None:
         """
         Set substring starting at position `start`.
+
         Args:
             start: Index to begin the string.
             pauli_string: Substring of PauliString.
@@ -392,6 +418,7 @@ class PauliString:
     def is_identity(self) -> bool:
         """
         Check if this Pauli string is the identity.
+
         Returns:
             True if self is the identity.
         """
@@ -400,6 +427,7 @@ class PauliString:
     def tensor(self, other: Self) -> Self:
         """
         Tensor product of this Pauli string with another.
+
         Args:
             other: Pauli string to tensor product.
         Returns:
@@ -416,6 +444,7 @@ class PauliString:
     def multiply(self, other:str|Self) -> Self:
         """
         Proportional multiplication operator of two Pauli strings.
+
         Args:
             other: Pauli string to multiplication.
         Returns:
@@ -434,6 +463,7 @@ class PauliString:
     def adjoint_map(self, other:str|Self) -> Self:
         """
         Compute the adjoint map ad_A(B) = [A,B].
+
         Args:
             other: Pauli string to adjoint map with self.
         Returns: 
@@ -460,6 +490,7 @@ class PauliString:
     def inc(self) -> Self:
         """
         Pauli string increment operator.
+
         Returns:
             Pauli string whose bit representation is greater than 1.
         """
@@ -476,6 +507,7 @@ class PauliString:
         """
         Increasing the size of the Pauli string
         by taking the tensor product with identities in the end.
+
         Args:
             n (int): New Pauli string length.
         Returns:
@@ -502,6 +534,7 @@ class PauliString:
     def get_commutants(self, generators:list[Self] = None) -> list[Self]:
         """
         Get a list of Pauli strings that commute with this string.
+
         Args:
             generators: Collection of Pauli strings on which commutant is searched.
             If not specified, then the search area is all Pauli strings of the same size.
@@ -516,6 +549,7 @@ class PauliString:
     def get_anti_commutants(self, generators:list[Self] = None) -> list[Self]:
         """
         Get a list of Pauli strings that no-commute with this string.
+
         Args:
             generators: Collection of Pauli strings on which commutant is searched.
             If not specified, then the search area is all Pauli strings of the same size.
@@ -530,6 +564,7 @@ class PauliString:
     def get_nested(self, generators:list[Self] = None) ->list[tuple[Self, Self]]:
         """
         Get nested of Pauli string.
+
         Args:
             generators: Collection of Pauli strings on which commutant is searched.
             If not specified, then the search area is all Pauli strings of the same size.
@@ -554,6 +589,7 @@ class PauliString:
     def _match_matrix(self, v:str) -> np.array:
         """
          Matching matrix for the string item.
+
          Args:
              v: Item of Pauli string.
          Returns:
@@ -572,6 +608,7 @@ class PauliString:
     def get_matrix(self) -> np.array:
         """
         Get matrix representation for Pauli string.
+
         Returns:
             Matrix representation for the Pauli string.
         """

@@ -31,7 +31,7 @@ extensions = [
 
 autosummary_generate = True
 autosummary_generate_overwrite = True
-autodoc_typehints = "description"
+autodoc_typehints = "none"
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
 
@@ -43,7 +43,8 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
+
 html_static_path = ['_static']
+html_css_files = ['custom.css']
 mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 html_extra_path=['media']
