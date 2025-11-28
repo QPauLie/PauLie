@@ -841,9 +841,9 @@ class PauliStringLinear(PauliString):
         return all(abs(coeff) < 1e-12 for coeff, _ in self)
 
     def norm(self) -> float:
-        f"""
+        """
         Calculates the Frobenius norm of the coefficient vector.
-        The norm is sqrt(∑ \|cᵢ\|²), where cᵢ are the coefficients of the
+        The norm is sqrt(∑ |cᵢ|²), where cᵢ are the coefficients of the
         Pauli strings in the linear combination.
 
         Returns:
