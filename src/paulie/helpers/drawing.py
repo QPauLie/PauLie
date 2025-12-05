@@ -91,9 +91,9 @@ def animation_graph(record: RecordGraph, interval:int=1000,
 
         Args:
             edges: List of edges.
-            center: Vertix of center.
+            center: Vertex of center.
         Returns:
-           Positions of verticex and postion of lighting.
+            Positions of vertices and position of lighting.
         """
         legs = []
         positions = {}
