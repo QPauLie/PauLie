@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Application &#8212; paulie 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=30674c74" />
+    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Common" href="paulie.common.html" />
+    <link rel="prev" title="API Reference" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="application">
+<h1>Application<a class="headerlink" href="#application" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.animation.animation_anti_commutation_graph">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.animation.</span></span><span class="sig-name descname"><span class="pre">animation_anti_commutation_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.animation.animation_anti_commutation_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Animation building transformation anti-commutation graph
+generators - list of generators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Collection of Pauli strings.</p></li>
+<li><p><strong>storage</strong> – Storage in file.
+dictionary:
+filename: path to file.
+writer: Specifies the software used to write the animation.
+Common options include:
+‘ffmpeg’ (for MP4, AVI, etc., requires FFmpeg to be installed
+and accessible in your system’s PATH,
+or its path specified via matplotlib.rcParams[‘animation.ffmpeg_path’]).
+‘pillow’ (for GIF, requires the Pillow library).
+‘imagemagick’ (for GIF, requires ImageMagick).</p></li>
+<li><p><strong>interval</strong> – Interval between recording frames.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.average_pauli_weight.average_pauli_weight">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.average_pauli_weight.</span></span><span class="sig-name descname"><span class="pre">average_pauli_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.average_pauli_weight.average_pauli_weight" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the average Pauli weight (influence) for an operator O.
+I(O) = sum_P |P| * c_P**2</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.average_pauli_weight.avg_pauli_weights">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.average_pauli_weight.</span></span><span class="sig-name descname"><span class="pre">avg_pauli_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.average_pauli_weight.avg_pauli_weights" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the average Pauli weights of an operator O.
+I(O) = sum_P |P| * c_P**2</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.average_pauli_weight.avg_pauli_weights_from_strings">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.average_pauli_weight.</span></span><span class="sig-name descname"><span class="pre">avg_pauli_weights_from_strings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_strings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.average_pauli_weight.avg_pauli_weights_from_strings" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the average Pauli weights of an operator O, given a list of Pauli strings.:
+This is useful to reduce the calculation, when testing.
+I(O) = sum_P |P| * c_P**2</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.average_pauli_weight.get_pauli_weights">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.average_pauli_weight.</span></span><span class="sig-name descname"><span class="pre">get_pauli_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identity_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.average_pauli_weight.get_pauli_weights" title="Link to this definition">¶</a></dt>
+<dd><p>Generates the weight |P| for each of the 4**num_qubits Pauli operators.
+The weight is the number of non-identity terms in the Pauli string.
+The ordering corresponds to the output of matrix_decomposition, default is ‘I’ at position 0.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.average_pauli_weight.quantum_fourier_entropy">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.average_pauli_weight.</span></span><span class="sig-name descname"><span class="pre">quantum_fourier_entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.average_pauli_weight.quantum_fourier_entropy" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the quantum Fourier entropy of an operator O.
+H(O) = -sum_P c_P**2 * log(c_P**2)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.charges.non_commuting_charges">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.charges.</span></span><span class="sig-name descname"><span class="pre">non_commuting_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.charges.non_commuting_charges" title="Link to this definition">¶</a></dt>
+<dd><p>Non-commuting charges describe non-Abelian symmetries — that is, elements of the
+stabilizer of the DLA that do not commute with each other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>generators</strong> – Collection of Pauli strings.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of charges as strings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.fourpoint.fourpoint">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.fourpoint.</span></span><span class="sig-name descname"><span class="pre">fourpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.fourpoint.fourpoint" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the four point according to Proposition 2.
+For PQ, RS prop L this reduces to the average OTOC of P and Q.</p>
+<p>(arXiV: 2502.16404)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Generating set of the Pauli string DLA.</p></li>
+<li><p><strong>p</strong> – Pauli string P</p></li>
+<li><p><strong>q</strong> – Pauli string Q</p></li>
+<li><p><strong>r</strong> – Pauli string R</p></li>
+<li><p><strong>s</strong> – Pauli string S</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Four point according to Proposition 2.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.get_optimal_su2_n.get_optimal_connections_su_2_n">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.get_optimal_su2_n.</span></span><span class="sig-name descname"><span class="pre">get_optimal_connections_su_2_n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.get_optimal_su2_n.get_optimal_connections_su_2_n" title="Link to this definition">¶</a></dt>
+<dd><p>Get optimal number of connections in anticommutation graph for su(2**n)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.get_optimal_su2_n.get_optimal_su_2_n_generators">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.get_optimal_su2_n.</span></span><span class="sig-name descname"><span class="pre">get_optimal_su_2_n_generators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.get_optimal_su2_n.get_optimal_su_2_n_generators" title="Link to this definition">¶</a></dt>
+<dd><p>Get optimal generator set for su(2**n)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.graph_complexity.average_graph_complexity">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.graph_complexity.</span></span><span class="sig-name descname"><span class="pre">average_graph_complexity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.graph_complexity.average_graph_complexity" title="Link to this definition">¶</a></dt>
+<dd><p>Get the average graph complexity of a Pauli string w.r.t an evoltion
+generated by a given generator set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Generating set of the time evolution.</p></li>
+<li><p><strong>p</strong> – Pauli string to compute the average graph complexity of.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Average graph complexity of a Pauli string w.r.t an evolution
+generated by a given generator set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.matrix_decomposition.matrix_decomposition">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.matrix_decomposition.</span></span><span class="sig-name descname"><span class="pre">matrix_decomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.matrix_decomposition.matrix_decomposition" title="Link to this definition">¶</a></dt>
+<dd><p>Get the weight vector corresponding to the Pauli basis decomposition of a matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>matrix</strong> – Matrix to be decomposed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Weight vector corresponding to the Pauli basis decomposition of a matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.matrix_decomposition.matrix_decomposition_diagonal">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.matrix_decomposition.</span></span><span class="sig-name descname"><span class="pre">matrix_decomposition_diagonal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diag</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.matrix_decomposition.matrix_decomposition_diagonal" title="Link to this definition">¶</a></dt>
+<dd><p>Get the weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>diag</strong> – Main diagonal of the diagonal matrix to be decomposed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.otoc.average_otoc">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.otoc.</span></span><span class="sig-name descname"><span class="pre">average_otoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.otoc.average_otoc" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the Haar averaged out-of-time-order correlator F between two Pauli strings W and V.
+We write it as
+<span class="math notranslate nohighlight">\(E_U[F(W, U^H &#64; V &#64; U)] = E_U[tr[W &#64; U^H &#64; V &#64; U &#64; W &#64; U^H &#64; V &#64; U]] / d\)</span>
+where U sampled according to the Haar measure on the Lie group corresponding to
+the DLA generated by generators and d is the dimension of the Hilbert space.</p>
+<p>We can compute this via the commutator graph as
+<span class="math notranslate nohighlight">\(1 - 2 * |{W, P} = 0 : P in connected component of V| / |connected component of V|\)</span>
+(arXiV:2502.16404)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Generating set of the Pauli string DLA.</p></li>
+<li><p><strong>v</strong> – Pauli string V</p></li>
+<li><p><strong>w</strong> – Pauli string W</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Haar averaged out-of-time-order correlator F between two Pauli strings W and V.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.OptimalPauliCompiler">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.application.pauli_compiler.</span></span><span class="sig-name descname"><span class="pre">OptimalPauliCompiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.OptimalPauliCompiler" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Optimal PauliCompiler</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.OptimalPauliCompiler.compile">
+<span class="sig-name descname"><span class="pre">compile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V_left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W_right</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.OptimalPauliCompiler.compile" title="Link to this definition">¶</a></dt>
+<dd><p>Compile</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.OptimalPauliCompiler.extend_left">
+<span class="sig-name descname"><span class="pre">extend_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_left</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.OptimalPauliCompiler.extend_left" title="Link to this definition">¶</a></dt>
+<dd><p>Extend left</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.PauliCompilerConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.application.pauli_compiler.</span></span><span class="sig-name descname"><span class="pre">PauliCompilerConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k_left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.PauliCompilerConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Config of PauliCompiler</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.SubsystemCompiler">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.application.pauli_compiler.</span></span><span class="sig-name descname"><span class="pre">SubsystemCompiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.SubsystemCompiler" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>subsystem compiler</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.SubsystemCompiler.extend_left">
+<span class="sig-name descname"><span class="pre">extend_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_left</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.SubsystemCompiler.extend_left" title="Link to this definition">¶</a></dt>
+<dd><p>Extend left</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.SubsystemCompiler.extend_pair">
+<span class="sig-name descname"><span class="pre">extend_pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_right</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.SubsystemCompiler.extend_pair" title="Link to this definition">¶</a></dt>
+<dd><p>Extend pair</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.SubsystemCompiler.factor_w_orders">
+<span class="sig-name descname"><span class="pre">factor_w_orders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_right</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.SubsystemCompiler.factor_w_orders" title="Link to this definition">¶</a></dt>
+<dd><p>factor w orders</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.SubsystemCompiler.subsystem_compiler">
+<span class="sig-name descname"><span class="pre">subsystem_compiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_right</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.SubsystemCompiler.subsystem_compiler" title="Link to this definition">¶</a></dt>
+<dd><p>Subsystem compiler</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.SubsystemCompilerConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.application.pauli_compiler.</span></span><span class="sig-name descname"><span class="pre">SubsystemCompilerConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k_left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_total</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.SubsystemCompilerConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Config of subsystem compiler</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.choose_u_for_b">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.pauli_compiler.</span></span><span class="sig-name descname"><span class="pre">choose_u_for_b</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.choose_u_for_b" title="Link to this definition">¶</a></dt>
+<dd><p>Choose the left tag operator used for coupling to right-side B’s.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.compile_target">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.pauli_compiler.</span></span><span class="sig-name descname"><span class="pre">compile_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_left</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.compile_target" title="Link to this definition">¶</a></dt>
+<dd><p>Compile target</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.construct_universal_set">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.pauli_compiler.</span></span><span class="sig-name descname"><span class="pre">construct_universal_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.construct_universal_set" title="Link to this definition">¶</a></dt>
+<dd><p>Construct universal set</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.left_a_minimal">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.pauli_compiler.</span></span><span class="sig-name descname"><span class="pre">left_a_minimal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.left_a_minimal" title="Link to this definition">¶</a></dt>
+<dd><p>Return minimal adjoint-universal set on the left: {Xi, Zi} plus Z…Z.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.pauli_compiler.left_map_over_a">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.pauli_compiler.</span></span><span class="sig-name descname"><span class="pre">left_map_over_a</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V_from</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_to</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.left_map_over_a" title="Link to this definition">¶</a></dt>
+<dd><p>left map over a</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.plot.plot_anti_commutation_graph">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.plot.</span></span><span class="sig-name descname"><span class="pre">plot_anti_commutation_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.plot.plot_anti_commutation_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Plot anti-commutation graph after transform graph to canonic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>generators</strong> – Collection of Pauli strings.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.application.second_moment.second_moment">
+<span class="sig-prename descclassname"><span class="pre">paulie.application.second_moment.</span></span><span class="sig-name descname"><span class="pre">second_moment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator_m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.second_moment.second_moment" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the second-order twirl of an operator M by projecting it onto the
+subspace of quadratic symmetries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operator_m</strong> – collection of Pauli strings</p></li>
+<li><p><strong>system_generators</strong> – collection of Pauli strings</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the second-order twirl of an operator M by projecting it onto the
+subspace of quadratic symmetries</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">paulie</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification.html">Classification of Pauli DLAs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commutator_graph.html">Commutator graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../average_graph_complexity.html">Average graph complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../matrix_decomposition.html">Matrix decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimal_universal_generators.html">Optimal universal generator sets</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.animation.animation_anti_commutation_graph"><code class="docutils literal notranslate"><span class="pre">animation_anti_commutation_graph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.average_pauli_weight.average_pauli_weight"><code class="docutils literal notranslate"><span class="pre">average_pauli_weight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.average_pauli_weight.avg_pauli_weights"><code class="docutils literal notranslate"><span class="pre">avg_pauli_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.average_pauli_weight.avg_pauli_weights_from_strings"><code class="docutils literal notranslate"><span class="pre">avg_pauli_weights_from_strings()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.average_pauli_weight.get_pauli_weights"><code class="docutils literal notranslate"><span class="pre">get_pauli_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.average_pauli_weight.quantum_fourier_entropy"><code class="docutils literal notranslate"><span class="pre">quantum_fourier_entropy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.charges.non_commuting_charges"><code class="docutils literal notranslate"><span class="pre">non_commuting_charges()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.fourpoint.fourpoint"><code class="docutils literal notranslate"><span class="pre">fourpoint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.get_optimal_su2_n.get_optimal_connections_su_2_n"><code class="docutils literal notranslate"><span class="pre">get_optimal_connections_su_2_n()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.get_optimal_su2_n.get_optimal_su_2_n_generators"><code class="docutils literal notranslate"><span class="pre">get_optimal_su_2_n_generators()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.graph_complexity.average_graph_complexity"><code class="docutils literal notranslate"><span class="pre">average_graph_complexity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.matrix_decomposition.matrix_decomposition"><code class="docutils literal notranslate"><span class="pre">matrix_decomposition()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.matrix_decomposition.matrix_decomposition_diagonal"><code class="docutils literal notranslate"><span class="pre">matrix_decomposition_diagonal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.otoc.average_otoc"><code class="docutils literal notranslate"><span class="pre">average_otoc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.pauli_compiler.OptimalPauliCompiler"><code class="docutils literal notranslate"><span class="pre">OptimalPauliCompiler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.application.pauli_compiler.OptimalPauliCompiler.compile"><code class="docutils literal notranslate"><span class="pre">OptimalPauliCompiler.compile()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.application.pauli_compiler.OptimalPauliCompiler.extend_left"><code class="docutils literal notranslate"><span class="pre">OptimalPauliCompiler.extend_left()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.pauli_compiler.PauliCompilerConfig"><code class="docutils literal notranslate"><span class="pre">PauliCompilerConfig</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.pauli_compiler.SubsystemCompiler"><code class="docutils literal notranslate"><span class="pre">SubsystemCompiler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.application.pauli_compiler.SubsystemCompiler.extend_left"><code class="docutils literal notranslate"><span class="pre">SubsystemCompiler.extend_left()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.application.pauli_compiler.SubsystemCompiler.extend_pair"><code class="docutils literal notranslate"><span class="pre">SubsystemCompiler.extend_pair()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.application.pauli_compiler.SubsystemCompiler.factor_w_orders"><code class="docutils literal notranslate"><span class="pre">SubsystemCompiler.factor_w_orders()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.application.pauli_compiler.SubsystemCompiler.subsystem_compiler"><code class="docutils literal notranslate"><span class="pre">SubsystemCompiler.subsystem_compiler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.pauli_compiler.SubsystemCompilerConfig"><code class="docutils literal notranslate"><span class="pre">SubsystemCompilerConfig</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.pauli_compiler.choose_u_for_b"><code class="docutils literal notranslate"><span class="pre">choose_u_for_b()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.pauli_compiler.compile_target"><code class="docutils literal notranslate"><span class="pre">compile_target()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.pauli_compiler.construct_universal_set"><code class="docutils literal notranslate"><span class="pre">construct_universal_set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.pauli_compiler.left_a_minimal"><code class="docutils literal notranslate"><span class="pre">left_a_minimal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.pauli_compiler.left_map_over_a"><code class="docutils literal notranslate"><span class="pre">left_map_over_a()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.plot.plot_anti_commutation_graph"><code class="docutils literal notranslate"><span class="pre">plot_anti_commutation_graph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.application.second_moment.second_moment"><code class="docutils literal notranslate"><span class="pre">second_moment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.common.html">Common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.html">Classifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.helpers.html">Helpers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to PauLie</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AmanieOxana/PauLie">Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/unitary-fund-764231928676089909">Discord</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">API Reference</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">API Reference</a></li>
+      <li>Next: <a href="paulie.common.html" title="next chapter">Common</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, PauLie contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/api/paulie.application.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
