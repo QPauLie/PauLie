@@ -20,6 +20,7 @@ Paulistrings.
     matrix_decomposition
     optimal_universal_generators
     api/index
+    contributing
 
 .. toctree::
    :hidden:
