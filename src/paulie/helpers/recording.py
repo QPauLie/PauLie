@@ -13,13 +13,14 @@ class FrameGraph:
                  edge_labels:dict[tuple[str,str],str] = None
     ) -> None:
         """
-        Constructor
+        Constructor.
 
         Args:
-            vertices: list of vertices
-            edges: list of edges
-            edge_labels: list of edge's labels
-        Returns: None
+            vertices: List of vertices.
+            edges: List of edges.
+            edge_labels: List of edge's labels.
+        Returns:
+            None
         """
         self.vertices = vertices
         self.edges = edges
@@ -28,16 +29,16 @@ class FrameGraph:
     def get_graph(self
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]:
         """
-        Get graph pf the frame
+        Get graph pf the frame.
 
         Returns:
-            the vertices, edges, and labels of edges
+            Vertices, edges, and labels of edges.
         """
         return self.vertices.copy(), self.edges.copy(), self.edge_labels
 
 class FrameRecord:
     """
-    Frame of record
+    Frame of record.
     """
     def __init__(self, graph:FrameGraph=None, lighting:PauliString=None,
                  appending:PauliString=None,  contracting=PauliString,
@@ -46,21 +47,21 @@ class FrameRecord:
                  replacing_vertices:list[PauliString]=None, dependent:PauliString=None,
                  title:str=None, init:bool=False) -> None:
         """
-        Constructor
+        Constructor.
 
         Args:
-             graph: frame of graph
-             lighting: canonical graph join candidate
-             appending: Pauli string for appending
-             contracting: Pauli string for contracting
-             lits: list of lited vertices
-             p: lited Pauli string in legs long 1
-             q: unlited Pauli string in legs long 1
-             removing_vertices: list of removing vertices
-             replacing_vertices: list of replacing vertices
-             dependent: dependent vertix
-             title: title of frame
-             init: init state of building
+            graph: Frame of graph.
+            lighting: Canonical graph join candidate.
+            appending: Pauli string for appending.
+            contracting: Pauli string for contracting.
+            lits: List of lited vertices.
+            p: Lited Pauli string in legs long 1.
+            q: Unlited Pauli string in legs long 1.
+            removing_vertices: List of removing vertices.
+            replacing_vertices: List of replacing vertices.
+            dependent: Dependent vertex.
+            title: Title of frame.
+            init: Init state of building.
         Returns:
             None
         """
@@ -81,169 +82,168 @@ class FrameRecord:
     def get_graph(self
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]:
         """
-        Get graph of record's frame
+        Get graph of record's frame.
 
         Returns:
-            the vertices, edges, and labels of edges
+            Vertices, edges, and labels of edges.
         """
         if not self.graph:
             return None
         return self.graph.get_graph()
     def get_lighting(self) -> str:
         """
-        Get lighting
+        Get lighting.
 
         Returns:
-           lighting
+            Lighting.
         """
         return self.lighting
 
     def get_title(self) -> str:
         """
-        Get title
+        Get title.
 
         Returns:
-            title
+            Title.
         """
         return self.title
 
     def is_appending(self) -> bool:
         """
-        Check appending
+        Check appending.
 
         Returns:
-            True if not appending
+            True if not appending.
         """
         return not self.appending
 
-    def get_is_appending(self, vertix: str) -> bool:
+    def get_is_appending(self, vertex: str) -> bool:
         """
-        Check vertix is appending
+        Check vertex is appending.
 
         Args:
-            vertix: vertix for checking
+            vertex: Vertex for checking.
         Returns:
-            True if vertix is appending
+            True if vertex is appending.
         """
         if not self.appending:
             return False
-        return self.appending == vertix
+        return self.appending == vertex
 
-    def get_is_contracting(self, vertix:str) -> bool:
+    def get_is_contracting(self, vertex:str) -> bool:
         """
-        Check vertix is contracting
+        Check vertex is contracting.
 
         Args:
-            vertix: vertix for checking
+            vertex: Vertex for checking.
         Returns:
-            True if vertix is contracting
+            True if vertex is contracting.
 
         """
         if not self.contracting:
             return False
-        return self.contracting == vertix
+        return self.contracting == vertex
 
-    def get_is_p(self, vertix:str) -> bool:
+    def get_is_p(self, vertex:str) -> bool:
         """
-        Check vertix is p
+        Check vertex is p.
 
         Args:
-            vertix: vertix for checking
+            vertex: vVrtex for checking.
         Returns:
-            True if vertix is lited in leg long 1
+            True if vertex is lited in leg long 1.
         """
         if not self.p:
             return False
-        return self.p == vertix
+        return self.p == vertex
 
-    def get_is_q(self, vertix:str) -> bool:
+    def get_is_q(self, vertex:str) -> bool:
         """
-        Check vertix is q
+        Check vertex is q.
 
         Args:
-            vertix: vertix for checking
+            vertex: Vertex for checking.
         Returns:
-            True if vertix is unlited in leg long 1
+            True if vertex is unlited in leg long 1.
         """
         if not self.q:
             return False
-        return self.q == vertix
+        return self.q == vertex
 
-    def get_is_dependent(self, vertix:str) -> bool:
+    def get_is_dependent(self, vertex:str) -> bool:
         """
-        Check vertix is dependent
+        Check vertex is dependent.
 
         Args:
-            vertix: vertix for checking
+            vertex: Vertex for checking.
         Returns:
-            True if vertix is dependent
+            True if vertex is dependent.
         """
         if not self.dependent:
             return False
-        return self.dependent == vertix
+        return self.dependent == vertex
 
-    def get_is_lits(self, vertix:str) -> bool:
+    def get_is_lits(self, vertex:str) -> bool:
         """
-        Check vertix is lited
+        Check vertex is lited.
 
         Args:
-            vertix: vertix for checking
+            vertex: Vertex for checking.
         Returns:
-            True if vertix is lited
+            True if vertex is lited.
         """
-        return vertix in self.lits
+        return vertex in self.lits
 
     def is_removing(self) -> bool:
         """
-        Check is removing
+        Check is removing.
 
-        Args:
-            vertix: vertix for checking
         Returns:
-            True if vertix is not removing
+            True if vertex is not removing.
         """
         return not self.removing_vertices
 
-    def get_is_removing(self, vertix:str) -> bool:
+    def get_is_removing(self, vertex:str) -> bool:
         """
-        Check vertix is removing
+        Check vertex is removing.
 
         Args:
-            vertix: vertix for checking
+            vertex: Vertex for checking.
         Returns:
-            True if vertix is removing
+            True if vertex is removing.
         """
-        return vertix in self.removing_vertices
+        return vertex in self.removing_vertices
 
-    def get_is_replacing(self, vertix:str) -> bool:
+    def get_is_replacing(self, vertex:str) -> bool:
         """
-        Check vertix is replacing
+        Check vertex is replacing.
 
         Args:
-            vertix: vertix for checking
+            vertex: Vertex for checking.
         Returns:
-            True if vertix is replacing
+            True if vertex is replacing.
         """
-        return vertix in self.replacing_vertices
+        return vertex in self.replacing_vertices
 
     def get_init(self) -> bool:
         """
-        Get init frame 
+        Get init frame.
 
         Returns:
-            True if init state
+            True if init state.
         """
         return self.init
 
 class RecordGraph:
     """
-    Record of graph
+    Record of graph.
     """
     def __init__(self) -> None:
         """
-        Constructor
+        Constructor.
 
-        Returns: None
+        Returns:
+            None
         """
         self.frames: FrameRecord = []
         self.positions = {}
@@ -252,10 +252,10 @@ class RecordGraph:
 
     def append_frame(self, frame: FrameRecord) -> None:
         """
-        Append frame
+        Append frame.
 
         Args:
-            frame: frame of record
+            frame: Frame of record.
         Returns:
             None
         """
@@ -269,21 +269,21 @@ class RecordGraph:
                dependent:PauliString=None, title:str=None,
                init:bool=False) -> None:
         """
-        Make frame and append to record
+        Make frame and append to record.
 
         Args:
-             graph: frame of graph
-             lighting: canonical graph join candidate
-             appending: Pauli string for appending
-             contracting: Pauli string for contracting
-             lits: list of lited vertices
-             p: lited Pauli string in legs long 1
-             q: unlited Pauli string in legs long 1
-             removing_vertices: list of removing vertices
-             replacing_vertices: list of replacing vertices
-             dependent: dependent vertix
-             title: title of frame
-             init: init state of building
+            graph: Frame of graph.
+            lighting: Canonical graph join candidate.
+            appending: Pauli string for appending.
+            contracting: Pauli string for contracting.
+            lits: List of lited vertices.
+            p: Lited Pauli string in legs long 1.
+            q: Unlited Pauli string in legs long 1.
+            removing_vertices: List of removing vertices.
+            replacing_vertices: List of replacing vertices.
+            dependent: Dependent vertex.
+            title: Title of frame.
+            init: Init state of building.
         Returns:
             None
         """
@@ -296,15 +296,15 @@ class RecordGraph:
 
     def get_frame(self, index:int) -> FrameRecord:
         """
-        Get frame
+        Get frame.
 
         Args:
-            index: index of frame
+            index: Index of frame.
         Returns:
-            frame of record
+            Frame of record.
         Raises:
-              ValueError:
-                 if index grate number of frames
+            ValueError:
+                If index grate number of frames.
         """
         if index > len(self.frames) - 1:
             raise ValueError("Out of index")
@@ -312,30 +312,31 @@ class RecordGraph:
 
     def clear(self) -> None:
         """
-        Clear of the record
+        Clear of the record.
 
-        Returns: None
+        Returns:
+            None
         """
         self.frames = []
 
     def get_size(self) -> int:
         """
-        Get size of record
+        Get size of record.
 
         Returns:
-            number of frames
+            Number of frames.
         """
         return len(self.frames)
 
     def get_graph(self, index
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]|None:
         """
-        Get graph by index
+        Get graph by index.
 
         Args:
-            index: index of frame
+            index: Index of frame.
         Returns:
-            the vertices, edges, and labels of edges
+            Vertices, edges, and labels of edges.
         """
         while index > -1:
             frame = self.get_frame(index)
@@ -348,22 +349,22 @@ class RecordGraph:
 
     def get_is_prev(self, index:int) -> bool:
         """
-        Get the graph in the previous frame
+        Get the graph in the previous frame.
 
         Args:
-            index: index of frame
+            index: Index of frame.
         Returns:
-            True if graph is None
+            True if graph is None.
         """
         frame = self.get_frame(index)
         return frame.get_graph() is None
 
     def set_positions(self, positions:dict[str,np.array]) -> None:
         """
-        Set positions
+        Set positions.
 
         Args:
-            positions: positions of vertices
+            positions: Positions of vertices.
         Returns:
             None
         """
@@ -371,19 +372,19 @@ class RecordGraph:
 
     def get_positions(self) -> dict[str,np.array]:
         """
-        Get positions
+        Get positions.
 
         Returns:
-            positions of vertices
+            Positions of vertices.
         """
         return self.positions
 
     def set_x_position_lighting(self, x_position_lighting:int) -> None:
         """
-        Set x position of lighting
+        Set x position of lighting.
 
         Args:
-            x_position_lighting: x position of lighting
+            x_position_lighting: x position of lighting.
         Returns:
             None
         """
@@ -391,10 +392,10 @@ class RecordGraph:
 
     def get_x_position_lighting(self) -> int:
         """
-        Get x position of lighting
+        Get x position of lighting.
 
         Returns:
-            x position of lighting
+            x position of lighting.
         """
         return self.x_position_lighting
 
@@ -410,21 +411,21 @@ def recording_graph(record:RecordGraph, collection:list[PauliString]=None,
     Recording graph
 
     Args:
-        record: record of graph building
-        collection: list of vertices
-        lighting: canonical graph join candidate
-        appending: Pauli string for appending
-        contracting: Pauli string for contracting
-        lits: list of lited vertices
-        p: lited Pauli string in legs long 1
-        q: unlited Pauli string in legs long 1
-        removing_vertices: list of removing vertices
-        replacing_vertices: list of replacing vertices
-        dependent: dependent vertix
-        title: title of frame
-        init: init state of building
+        record: Record of graph building.
+        collection: List of vertices.
+        lighting: Canonical graph join candidate.
+        appending: Pauli string for appending.
+        contracting: Pauli string for contracting.
+        lits: List of lited vertices.
+        p: Lited Pauli string in legs long 1.
+        q: Unlited Pauli string in legs long 1.
+        removing_vertices: List of removing vertices.
+        replacing_vertices: List of replacing vertices.
+        dependent: Dependent vertex.
+        title: Title of frame.
+        init: Init state of building.
     Returns:
-       None
+        None
     """
     graph = None
     if collection is not None:
