@@ -3,20 +3,20 @@ Printing graph
 """
 from paulie.common.pauli_string_bitarray import PauliString
 
-def print_vertix(debug:bool, vertix:PauliString,
+def print_vertex(debug:bool, vertex:PauliString,
                  title:str="") -> None:
     """
-    Printing vertix if debug.
+    Printing vertex if debug.
 
     Args:
         debug: Debug flag.
-        vertix: Vertix to print.
+        vertex: Vertex to print.
         title: Title to print.
     Returns:
         None
     """
     if debug:
-        print(f"{title} {vertix}")
+        print(f"{title} {vertex}")
 
 def print_vertices(debug:bool, vertices:list[PauliString],
                    title:str = "") -> None:
@@ -35,7 +35,7 @@ def print_vertices(debug:bool, vertices:list[PauliString],
 
     print(f"----{title}--lenght = {len(vertices)}")
     for v in vertices:
-        print_vertix(debug, v)
+        print_vertex(debug, v)
     print("-------------------")
 
 def print_lit_vertices(debug:bool, vertices:list[PauliString],
@@ -54,12 +54,12 @@ def print_lit_vertices(debug:bool, vertices:list[PauliString],
     """
     if debug is False:
         return
-    print(f"----{title}--lenght = {len(vertices)}")
+    print(f"----{title}--length = {len(vertices)}")
     for v in vertices:
         title = ""
         if v in lits:
             title = "*"
-        print_vertix(debug, v, title)
+        print_vertex(debug, v, title)
     print("-------------------")
 
 
@@ -115,18 +115,18 @@ class Debug:
         """
         self.debug = self.save_debug
 
-    def print_vertix(self, vertix:PauliString,
+    def print_vertex(self, vertex:PauliString,
                      title:str="") -> None:
         """
-        Printing vertix if debug.
+        Printing vertex if debug.
 
         Args:
-            vertix: Vertix to print.
+            vertex: Vertex to print.
             title: Title to print.
         Returns:
             None
         """
-        print_vertix(self.debug, vertix, title)
+        print_vertex(self.debug, vertex, title)
 
 
     def print_vertices(self, vertices: list[PauliString],
@@ -172,15 +172,15 @@ class Debug:
         print_lit_vertices(self.debug, vertices, lits, title)
 
     def is_pauli_string(self,
-                        vertix:PauliString,
+                        vertex:PauliString,
                         paulistring:PauliString) -> bool:
         """
         Pauli string equality check.
 
         Args:
-            vertix: Vertix.
+            vertex: Vertex.
             paulistring: Pauli string to equality check.
         Returns:
-           True if vertix equals Pauli string.
+           True if vertex equals Pauli string.
         """
-        return paulistring == vertix
+        return paulistring == vertex
