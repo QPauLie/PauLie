@@ -1,7 +1,6 @@
 """
 Recrding factory for constructing a canonical graph
 """
-import traceback
 from typing import Generator, Self
 from paulie.helpers.recording import recording_graph, RecordGraph
 from paulie.classifier.classification import Morph, Classification
@@ -1309,7 +1308,7 @@ class RecordingMorphFactory:
                 if lighting not in unappended:
                     unappended.append(lighting)
                     vertices.append(lighting)
-            except Exception as e:
+            except Exception:
                 unappended.append(lighting)
         classification = Classification()
         classification.add(self.get_morph())
