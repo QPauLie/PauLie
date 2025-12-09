@@ -3,7 +3,6 @@ Factory for constructing a canonical graph
 """
 import traceback
 from typing import Generator, Self
-from paulie.helpers.printing import Debug
 from paulie.classifier.classification import Morph
 from paulie.common.pauli_string_bitarray import PauliString
 
@@ -15,11 +14,6 @@ class AppendedException(Exception):
 class CheckAppendedException(Exception):
     """
     The vertex is appended
-    """
-
-class DebugException(Exception):
-    """
-    Debug exception
     """
 
 class DependentException(Exception):
@@ -41,38 +35,24 @@ class MorphFactoryException(Exception):
     Morph factory exception
     """
 
-class MorphFactory(Debug):
+class MorphFactory:
     """
     Factory for constructing a canonical graph
     """
-    def __init__(self, debug:bool = False) -> None:
+    def __init__(self) -> None:
         """
         Constructor
 
         Args:
-            debug: debug mode
         Returns:
             None
         """
-        super().__init__(debug)
         self.legs = [] # center is zero leg
         self.lighting = None
         self.delayed_vertices = []
-        self.debug_lighting = None
-        self.debug_break = False
         self.dependents = []
         self.is_check = False
 
-    def set_debug(self, debug:bool) -> None:
-        """
-        Set debug mode.
-
-        Args:
-            debug: Debug mode.
-        Returns:
-            None
-        """
-        self.debug = debug
 
     def set_lighting(self, lighting:PauliString) -> None:
         """
@@ -534,37 +514,6 @@ class MorphFactory(Debug):
             raise MorphFactoryException("No vertex")
         self.legs[leg_index][vertex_index] = v_new
 
-    def print_state(self, lighting:PauliString = None) -> None:
-        """
-        Debug output of graph state.
-
-        Args:
-            lighting: Canonical graph join candidate.
-        Returns:
-            None
-        """
-        if self.debug is False:
-            return
-        self.print_title(f"state graph {len(self.get_vertices())}")
-        if lighting is None:
-            for i, leg in enumerate(self.legs):
-                if i == 0:
-                    self.print_title("center")
-                    self.print_vertex(self.legs[i][0])
-                    continue
-                self.print_vertices(leg)
-            return
-        self.print_vertex(lighting, "print state")
-        lits = self.get_lits(lighting)
-        for i, leg in enumerate(self.legs):
-            if i == 0:
-                self.print_title("center")
-                clit = ""
-                if self.legs[i][0] in lits:
-                    clit = "*"
-                self.print_vertex(self.legs[i][0], clit)
-                continue
-            self.print_lit_vertices(leg, lits)
 
     def get_lit_indexes(self, vertices:list[PauliString], lits:list[PauliString]) -> list[int]:
         """
@@ -595,7 +544,6 @@ class MorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Check and build graph with three vertices")
         if self.is_empty():
             self.set_center(lighting)
             raise AppendedException
@@ -604,7 +552,6 @@ class MorphFactory(Debug):
         if self.is_empty_legs():
             self.append_to_two_center(lighting)
             raise AppendedException
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -621,7 +568,6 @@ class MorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Build graph with different one leg state")
         pq, p = self.get_pq(lighting)
         if pq is not None:
             lits = self.get_lits(lighting)
@@ -641,7 +587,6 @@ class MorphFactory(Debug):
                     self.append_delayed(long_leg[i])
                 self.remove(long_leg[4])
             raise AppendedException
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -658,7 +603,6 @@ class MorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Append fast")
         center = self.get_center()
         two_legs = self.get_two_legs()
         long_leg = self.get_long_leg()
@@ -674,7 +618,6 @@ class MorphFactory(Debug):
                 if long_leg[len(long_leg) - 1] in lits:
                     self.append(lighting, long_leg[len(long_leg) - 1])
                     raise AppendedException
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -691,7 +634,6 @@ class MorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Lit only long leg")
         omega = self.get_one_vertex()
         center = self.get_center()
         center_lits = self.get_lits(lighting, [center])
@@ -705,11 +647,9 @@ class MorphFactory(Debug):
         if len(long_leg) == 2:
             del two_legs[len(two_legs) - 1]
         elif len(long_leg) == 1:
-            self.print_state(lighting)
             self.set_lighting(lighting)
             return self
         if len(two_legs) == 0:
-            self.print_state(lighting)
             self.set_lighting(lighting)
             return self
         long_lits = self.get_lits(lighting, long_leg)
@@ -781,7 +721,6 @@ class MorphFactory(Debug):
                     lighting = self.lit(lighting, v1)
                     lighting = self.lit(lighting, v0)
                     lighting = self.lit(lighting, center)
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -798,7 +737,6 @@ class MorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Liting center")
         center = self.get_center()
         center_lits = self.get_lits(lighting, [center])
         if center not in center_lits:
@@ -808,7 +746,6 @@ class MorphFactory(Debug):
             first_lit = lit_indexes[0]
             for i in range(first_lit, -1, -1):
                 lighting = self.lit(lighting, long_leg[i])
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -826,7 +763,6 @@ class MorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Reduce long leg lits")
         long_leg = self.get_long_leg()
         #Offset the first vertex to the end of the linear leg. Since the leg is finite,
         #we will always reach the highlighting of one vertex,
@@ -859,7 +795,6 @@ class MorphFactory(Debug):
                     lighting = self.lit(lighting, long_leg[i])
             else:
                 lighting = self.lit(lighting, long_leg[second])
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -876,7 +811,6 @@ class MorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Append long leg with first lit and center")
         omega = self.get_one_vertex()
         center = self.get_center()
         lits = self.get_lits(lighting, [center, omega])
@@ -886,7 +820,6 @@ class MorphFactory(Debug):
         lits = self.get_lits(lighting, long_leg)
         if is_center_lit and len(lits) == 0:
             #lit only center
-            self.print_state(lighting)
             self.append_to_center(lighting)
             raise AppendedException
         lit_indexes = self.get_lit_indexes(long_leg, lits)
@@ -931,7 +864,6 @@ class MorphFactory(Debug):
             lighting = self.lit(lighting, center)
             self.append_to_center(lighting)
             raise AppendedException
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -948,7 +880,6 @@ class MorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Append if long leg last and center are lited")
         center = self.get_center()
         long_leg = self.get_long_leg()
         lits = self.get_lits(lighting, long_leg)
@@ -975,7 +906,6 @@ class MorphFactory(Debug):
                     self.append_delayed(long_leg[i])
                 self.remove(long_leg[4])
             raise AppendedException
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -992,7 +922,6 @@ class MorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Append if long leg last, first and center are lited")
         omega = self.get_one_vertex()
         center = self.get_center()
         long_leg = self.get_long_leg()
@@ -1021,7 +950,6 @@ class MorphFactory(Debug):
             DependentException:
                 If added vertex is dependent.
         """
-        self.print_vertex(lighting, "Appending vertex to graph")
         # pipeline building
         self.set_lighting(lighting)
         self._append_three_graph()
@@ -1059,61 +987,6 @@ class MorphFactory(Debug):
         self.delayed_vertices = []
         return vertices
 
-    def set_debug_vertex(self, lighting:PauliString) -> None:
-        """
-        Set debug vertex.
-
-        Args:
-            lighting: Canonical graph join candidate.
-        Returns:
-            None
-        """
-        self.debug_lighting = lighting
-
-    def set_debug_break(self, lighting:PauliString) -> None:
-        """
-        Set debug break.
-
-        Args:
-            lighting: Canonical graph join candidate.
-        Returns:
-            None
-        """
-        if lighting == self.debug_lighting:
-            self.debug_break = True
-
-    def debugbreak(self, number:int=None, lighting:PauliString=None,
-                   append:bool=True) -> None:
-        """
-        Debug break.
-
-        Args:
-            number: Number vertices in graph.
-            lighting: Canonical graph join candidate.
-            append: Break on append.
-        Returns:
-            None
-        """
-        if self.is_break():
-            if append:
-                self.append(lighting, self.get_center())
-            self.print_state(lighting)
-            raise DebugException()
-        if number is not None:
-            if number <= len(self.get_vertices()):
-                self.print_state(lighting)
-                raise DebugException()
-        if lighting is not None:
-            self.set_debug_break(lighting)
-
-    def is_break(self) -> bool:
-        """
-        Check debug.
-
-        Returns:
-            True if debug mode.
-        """
-        return self.debug_break
 
     def _get_anti_commutates(self, pauli_string:PauliString,
                              generators) -> list[PauliString]:
@@ -1220,21 +1093,16 @@ class MorphFactory(Debug):
         Returns:
             Self
         """
-        #self.debuging()
         if len(generators) == 0:
             return self
         vertices = self._get_queue(generators)
         queue = vertices.copy()
-        #self.set_debug(generators.get_debug())
-        self.print_vertices(vertices, "init")
         unappended = []
         self.dependents = []
-        #self.set_debug_vertex("ZYIIII")
         while len(vertices) > 0:
             lighting = vertices[0]
             vertices.remove(lighting)
             try:
-                #self.debugbreak(number=37, lighting = None)
                 self._pipeline(lighting)
             except AppendedException:
                 vertices = self.restore_delayed(vertices)
@@ -1242,37 +1110,19 @@ class MorphFactory(Debug):
                     unappended.remove(lighting)
             except DependentException:
                 self.dependents.append(lighting)
-                self.print_vertex(lighting, "Dependency")
                 vertices = self.restore_delayed(vertices)
             except NotConnectedException:
                 vertices = self.restore_delayed(vertices)
                 #exc_type, exc_obj, exc_tb = sys.exc_info()
-                self.print_vertex(lighting, f"Exception {traceback.format_exc()}")
                 if lighting not in unappended:
                     unappended.append(lighting)
                     vertices.append(lighting)
-            except DebugException:
-                #exc_type, exc_obj, exc_tb = sys.exc_info()
-                self.print_vertex(lighting, f"Debug exception {traceback.format_exc()}")
-                break
             except RaiseException:
-                self.debuging()
-                self.print_vertices(queue, "init")
                 self.restore()
                 break
             except Exception as e:
                 vertices = self.restore_delayed(vertices)
-                if self.debug:
-                    #exc_type, exc_obj, exc_tb = sys.exc_info()
-                    self.print_vertex(lighting, f"Exception {traceback.format_exc()}")
-                else:
-                    self.debuging()
-                    self.print_vertex(lighting, f"Exception {e}")
-                    self.restore()
                 unappended.append(lighting)
-        self.print_state()
-        self.print_vertices(unappended, "unappended")
-        self.print_vertices(self.dependents, "dependents")
         return self
 
     def is_eq(self, legs:list[list[PauliString]], generators:list[PauliString]) -> bool:
