@@ -1,7 +1,6 @@
 """
 Factory for constructing a canonical graph
 """
-import traceback
 from typing import Generator, Self
 from paulie.classifier.classification import Morph
 from paulie.common.pauli_string_bitarray import PauliString
@@ -1096,7 +1095,6 @@ class MorphFactory:
         if len(generators) == 0:
             return self
         vertices = self._get_queue(generators)
-        queue = vertices.copy()
         unappended = []
         self.dependents = []
         while len(vertices) > 0:
@@ -1120,7 +1118,7 @@ class MorphFactory:
             except RaiseException:
                 self.restore()
                 break
-            except Exception as e:
+            except Exception:
                 vertices = self.restore_delayed(vertices)
                 unappended.append(lighting)
         return self
