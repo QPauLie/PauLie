@@ -3,7 +3,6 @@ Recrding factory for constructing a canonical graph
 """
 import traceback
 from typing import Generator, Self
-from paulie.helpers.printing import Debug
 from paulie.helpers.recording import recording_graph, RecordGraph
 from paulie.classifier.classification import Morph, Classification
 from paulie.common.pauli_string_bitarray import PauliString
@@ -11,11 +10,6 @@ from paulie.common.pauli_string_bitarray import PauliString
 class AppendedException(Exception):
     """
     The vertex is appended.
-    """
-
-class DebugException(Exception):
-    """
-    Debug exception.
     """
 
 class DependentException(Exception):
@@ -33,40 +27,26 @@ class MorphFactoryException(Exception):
     Morph factory exception.
     """
 
-class RecordingMorphFactory(Debug):
+class RecordingMorphFactory:
     """
     Factory for constructing a canonical graph.
     """
-    def __init__(self, debug:bool = False, record:RecordGraph=None) -> None:
+    def __init__(self, record:RecordGraph=None) -> None:
         """
         Constructor.
 
         Args:
-            debug: Debug mode.
             record: Record.
         Returns:
             None
 
         """
-        super().__init__(debug)
         self.legs = [] # center is zero leg
         self.record = record
         self.lighting = None
         self.delayed_vertices = []
-        self.debug_lighting = None
-        self.debug_break = False
         self.dependents = []
 
-    def set_debug(self, debug:bool) -> None:
-        """
-        Set debug flag.
-
-        Args:
-            debug: Debug mode.
-        Returns:
-            None
-        """
-        self.debug = debug
 
     def set_lighting(self, lighting:PauliString) -> None:
         """
@@ -503,37 +483,6 @@ class RecordingMorphFactory(Debug):
             raise MorphFactoryException("No vertex")
         self.legs[leg_index][vertex_index] = v_new
 
-    def print_state(self, lighting:PauliString = None) -> None:
-        """
-        Debug output of graph state.
-
-        Args:
-            lighting: Canonical graph join candidate.
-        Returns:
-            None
-        """
-        if self.debug is False:
-            return
-        self.print_title(f"state graph {len(self.get_vertices())}")
-        if lighting is None:
-            for i, leg in enumerate(self.legs):
-                if i == 0:
-                    self.print_title("center")
-                    self.print_vertex(self.legs[i][0])
-                    continue
-                self.print_vertices(leg)
-            return
-        self.print_vertex(lighting, "print state")
-        lits = self.get_lits(lighting)
-        for i, leg in enumerate(self.legs):
-            if i == 0:
-                self.print_title("center")
-                clit = ""
-                if self.legs[i][0] in lits:
-                    clit = "*"
-                self.print_vertex(self.legs[i][0], clit)
-                continue
-            self.print_lit_vertices(leg, lits)
 
     def get_lit_indexes(self, vertices:list[PauliString], lits:[PauliString]) -> list[int]:
         """
@@ -564,7 +513,6 @@ class RecordingMorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Check and build graph with three vertices")
         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
         title=f"Step I: {lighting}")
         if self.is_empty():
@@ -577,7 +525,6 @@ class RecordingMorphFactory(Debug):
         if self.is_empty_legs():
             self.append_to_two_center(lighting)
             raise AppendedException
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -594,7 +541,6 @@ class RecordingMorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Build graph with different one leg state")
         pq, p, q = self.get_pq(lighting)
         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
         title=f"Step II: {lighting}")
@@ -637,7 +583,6 @@ class RecordingMorphFactory(Debug):
             recording_graph(self.record, collection=self.get_vertices(), lighting=lighting,
             lits=self.get_lits(lighting), appending=p, title=f"Step II: {lighting}")
             raise AppendedException
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -654,7 +599,6 @@ class RecordingMorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Lit only long leg")
         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
         title=f"Step III: {lighting}")
         omega = self.get_one_vertex()
@@ -674,11 +618,9 @@ class RecordingMorphFactory(Debug):
         if len(long_leg) == 2:
             del two_legs[len(two_legs) - 1]
         elif len(long_leg) == 1:
-            self.print_state(lighting)
             self.set_lighting(lighting)
             return self
         if len(two_legs) == 0:
-            self.print_state(lighting)
             self.set_lighting(lighting)
             return self
         long_lits = self.get_lits(lighting, long_leg)
@@ -808,7 +750,6 @@ class RecordingMorphFactory(Debug):
                     lighting = self.lit(lighting, center)
                     recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
                     contracting=center, title=f"Step III: {lighting}")
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -827,7 +768,6 @@ class RecordingMorphFactory(Debug):
         lighting = self.get_lighting()
         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
         title=f"Step IV: {lighting}")
-        self.print_vertex(lighting, "Liting center")
         center = self.get_center()
         center_lits = self.get_lits(lighting, [center])
         if center not in center_lits:
@@ -839,7 +779,6 @@ class RecordingMorphFactory(Debug):
                 lighting = self.lit(lighting, long_leg[i])
                 recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
                 contracting=long_leg[i], title=f"Step IV: {lighting}")
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -858,7 +797,6 @@ class RecordingMorphFactory(Debug):
         lighting = self.get_lighting()
         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
         title=f"Step IV: {lighting}")
-        self.print_vertex(lighting, "Reduce long leg lits")
         omega = self.get_one_vertex()
         center = self.get_center()
         long_leg = self.get_long_leg()
@@ -954,7 +892,6 @@ class RecordingMorphFactory(Debug):
                 lighting = self.lit(lighting, center)
                 recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
                 contracting=center, title=f"Step IV: {lighting}")
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -971,7 +908,6 @@ class RecordingMorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Append long leg with first lit and center")
         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
         title=f"Step V: {lighting}")
         omega = self.get_one_vertex()
@@ -983,7 +919,6 @@ class RecordingMorphFactory(Debug):
         lits = self.get_lits(lighting, long_leg)
         if is_center_lit and len(lits) == 0:
             #lit only center
-            self.print_state(lighting)
             self.append(lighting, center)
             recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
             appending=center, title=f"Step V: {lighting}")
@@ -1083,7 +1018,6 @@ class RecordingMorphFactory(Debug):
             appending=center, title=f"Step V: {lighting}")
             self.append(lighting, center)
             raise AppendedException
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -1100,7 +1034,6 @@ class RecordingMorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Append if long leg last and center are lited")
         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
         title=f"Step VI: {lighting}")
         center = self.get_center()
@@ -1153,7 +1086,6 @@ class RecordingMorphFactory(Debug):
             lits=self.get_lits(lighting), appending=lighting, title=f"Step VI: {lighting}")
             self.append(last_v, lighting)
             raise AppendedException
-        self.print_state(lighting)
         self.set_lighting(lighting)
         return self
 
@@ -1170,7 +1102,6 @@ class RecordingMorphFactory(Debug):
                 If added vertex is dependent.
         """
         lighting = self.get_lighting()
-        self.print_vertex(lighting, "Append if long leg last, first and center are lited")
         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
         title=f"Step VII: {lighting}")
         omega = self.get_one_vertex()
@@ -1212,7 +1143,6 @@ class RecordingMorphFactory(Debug):
             DependentException:
                 If added vertex is dependent.
         """
-        self.print_vertex(lighting, "Appending vertex to graph")
         # pipeline building
         self.set_lighting(lighting)
         self._append_three_graph()
@@ -1249,60 +1179,6 @@ class RecordingMorphFactory(Debug):
         self.delayed_vertices = []
         return vertices
 
-    def set_debug_vertex(self, lighting:PauliString) -> None:
-        """
-        Set debug vertex.
-
-        Args:
-            lighting: Canonical graph join candidate.
-        Returns:
-            None
-        """
-        self.debug_lighting = lighting
-
-    def set_debug_break(self, lighting:PauliString) -> None:
-        """
-        Set debug break.
-
-        Args:
-            lighting: canonical graph join candidate.
-        Returns:
-            None
-        """
-        if lighting == self.debug_lighting:
-            self.debug_break = True
-
-    def debugbreak(self, number:int=None, lighting:PauliString=None, append:bool=True) -> None:
-        """
-        Debug break.
-
-        Args:
-            number: Number vertices in graph.
-            lighting: Canonical graph join candidate.
-            append: Break on append.
-        Returns:
-            None
-        """
-        if self.is_break():
-            if append:
-                self.append(lighting, self.get_center())
-            self.print_state(lighting)
-            raise DebugException()
-        if number is not None:
-            if number <= len(self.get_vertices()):
-                self.print_state(lighting)
-                raise DebugException()
-        if lighting is not None:
-            self.set_debug_break(lighting)
-
-    def is_break(self) -> bool:
-        """
-        Check debug.
-
-        Returns:
-            True if debug mode.
-        """
-        return self.debug_break
 
     def _get_anti_commutates(self, pauli_string:PauliString,
                              generators:list[PauliString]) -> list[PauliString]:
@@ -1410,14 +1286,10 @@ class RecordingMorphFactory(Debug):
         if len(generators) == 0:
             return self
         vertices = self._get_queue(generators)
-        #self.set_debug(generators.get_debug())
-        #self.debuging()
         recording_graph(self.record, collection=vertices, title="Original graph", init=True)
-        self.print_vertices(vertices, "init")
         #self.recording(vertices=vertices)
         unappended = []
         self.dependents = []
-        #self.set_debug_vertex("ZYIIII")
         while len(vertices) > 0:
             lighting = vertices[0]
             #if len(self.get_vertices()) > 0:
@@ -1425,7 +1297,6 @@ class RecordingMorphFactory(Debug):
             title=f"Adding: {lighting}")
             vertices.remove(lighting)
             try:
-                #self.debugbreak(number=4, lighting = lighting)
                 self._pipeline(lighting)
             except AppendedException:
                 vertices = self.restore_delayed(vertices)
@@ -1433,29 +1304,15 @@ class RecordingMorphFactory(Debug):
                     unappended.remove(lighting)
             except DependentException:
                 self.dependents.append(lighting)
-                self.print_vertex(lighting, "Dependency")
                 vertices = self.restore_delayed(vertices)
             except NotConnectedException:
-                self.print_vertex(lighting, f"Exception {traceback.format_exc()}")
                 if lighting not in unappended:
                     unappended.append(lighting)
                     vertices.append(lighting)
-            except DebugException:
-                self.print_vertex(lighting, f"Debug exception {traceback.format_exc()}")
-                break
             except Exception as e:
-                if self.debug:
-                    self.print_vertex(lighting, f"Exception {traceback.format_exc()}")
-                else:
-                    self.debuging()
-                    self.print_vertex(lighting, f"Exception {e}")
-                    self.restore()
                 unappended.append(lighting)
         classification = Classification()
         classification.add(self.get_morph())
         recording_graph(self.record, collection=self.get_vertices(),
         title=f"Algebra: {classification.get_algebra()}")
-        self.print_state()
-        self.print_vertices(unappended, "unappended")
-        self.print_vertices(self.dependents, "dependents")
         return self
