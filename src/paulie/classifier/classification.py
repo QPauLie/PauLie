@@ -269,7 +269,8 @@ class Morph:
                               }
 
     def _inc_vertices_generator(self, i:int, init_vertices:list[PauliString],
-                                vertex_generators:list[PauliString], vertices:list[PauliString])->bool:
+                                vertex_generators:list[PauliString],
+                                vertices:list[PauliString])->bool:
         """
         Incriminate the generator.
 
