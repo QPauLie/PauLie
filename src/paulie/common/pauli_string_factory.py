@@ -45,7 +45,8 @@ def get_last(n:int) -> PauliString:
     """
     return PauliString(bits = bitarray([1] * (2 * n)))
 
-def get_pauli_string(o: PauliString|PauliStringCollection, n:int|None = None) -> PauliString|PauliStringCollection:
+def get_pauli_string(o: PauliString|PauliStringCollection,
+                     n:int|None = None) -> PauliString|PauliStringCollection:
     """
     Get Pauli strings in their current representation.
 
@@ -116,8 +117,8 @@ class Used:
         """
         return p in self.used
 
-
-def gen_k_local(n: int, p: PauliString, used:Used|None=None) -> Generator[list[PauliString], None, None]:
+def gen_k_local(n: int, p: PauliString, used:Used|None=None
+                ) -> Generator[list[PauliString], None, None]:
     """
     Generates k-local Pauli strings.
 

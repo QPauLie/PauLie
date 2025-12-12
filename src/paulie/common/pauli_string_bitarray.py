@@ -1,5 +1,5 @@
 """Representation of a Pauli string as a bitarray."""
-from typing import Self, Generator, Protocol
+from typing import Self, Generator
 from six.moves import reduce
 import numpy as np
 from bitarray import bitarray
@@ -22,7 +22,8 @@ SZ = np.array([[1,0],[0,-1]])
 class PauliString:
     """Representation of a Pauli string as a bitarray."""
 
-    def __init__(self, n: int|None = None, pauli_str: str|None = None, bits: bitarray|None = None) -> None:
+    def __init__(self, n: int|None = None, pauli_str: str|None = None,
+                 bits: bitarray|None = None) -> None:
         """Initialize a Pauli string.
         
 

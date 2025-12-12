@@ -268,8 +268,8 @@ class Morph:
                                 "neighbour": m == 0 and j == 0
                               }
 
-    def _inc_vertices_generator(self, i:int, init_vertices:list[PauliString], vertex_generators:list[PauliString], vertices:list[PauliString]
-    )->bool:
+    def _inc_vertices_generator(self, i:int, init_vertices:list[PauliString],
+                                vertex_generators:list[PauliString], vertices:list[PauliString])->bool:
         """
         Incriminate the generator.
 
@@ -543,8 +543,8 @@ class Classification:
                 dim+= dim_so(n)
         return dim
 
-    def _inc_morph_generator(self, ms:int, morphs:list[Morph], morph_generators:list[PauliString], current_morph_generators:list[PauliString]
-    ) -> bool:
+    def _inc_morph_generator(self, ms:int, morphs:list[Morph], morph_generators:list[PauliString],
+                             current_morph_generators:list[PauliString]) -> bool:
         """
         Incriminate the generator.
 
