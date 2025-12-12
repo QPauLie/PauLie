@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Contribute to PauLie &#8212; paulie 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=30674c74" />
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Helpers" href="api/paulie.helpers.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="contribute-to-paulie">
+<h1>Contribute to PauLie<a class="headerlink" href="#contribute-to-paulie" title="Link to this heading">¶</a></h1>
+<p>We welcome contributions from everyone! By participating in PauLie, you agree to follow our guidelines.</p>
+<ol class="arabic simple">
+<li><p>As stated in <a class="reference external" href="getting_started.html">Getting started</a>, ensure you have Python 3.12 or higher installed on your machine or in a virtual environment.</p></li>
+<li><p>You requires to <a class="reference external" href="https://python-poetry.org/docs/#installing-with-pipx">install poetry</a> to manage the dependencies of PauLie.</p></li>
+<li><p>Make sure you have a <a class="reference external" href="https://github.com/signup/free">GitHub account</a>.</p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo">Fork</a> the repository on GitHub.</p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository">Clone</a> your fork locally:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/QPauLie/PauLie.git
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>Navigate to your local clone PauLie reprository:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>PauLie
+</pre></div>
+</div>
+<ol class="arabic simple" start="7">
+<li><p>Install dependencies with Poetry:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>install
+</pre></div>
+</div>
+<p>Poetry will create a virtual environment and install all dependencies there. You are now ready to run, test, and develop the project.</p>
+<section id="making-changes">
+<h2>Making changes<a class="headerlink" href="#making-changes" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Before starting to create your ideas, make sure that your fork in up to date with the original PauLie repository:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>fetch<span class="w"> </span>upstream
+git<span class="w"> </span>checkout<span class="w"> </span>main
+git<span class="w"> </span>merge<span class="w"> </span>upstream/main
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Create your feature or idea on your local fork. It’s best to make changes on a dedicated <a class="reference external" href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository">branch</a>, with the branch name reflecting the feature or fix you are adding.</p></li>
+<li><p>Include tests and documentation for new features. If you’re adding a new feature, ensure you provide test cases and update the documentation. See <a class="reference internal" href="#adding-new-features"><span class="std std-ref">Adding a New Feature</span></a> for a detailed checklist.</p></li>
+<li><p>When the code is ready to go, make sure you run the <a class="reference internal" href="#functional-testing"><span class="std std-ref">test suite</span></a> using <code class="code docutils literal notranslate"><span class="pre">pytest</span></code>, <code class="code docutils literal notranslate"><span class="pre">ruff</span></code>, etc.</p></li>
+<li><p>Open a <a class="reference external" href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests">pull request (PR)</a> on your local fork. When your feature is ready for review, go to your fork of PauLie on GitHub and open a PR. Any subsequent commits to that branch will automatically be added to the open PR. This will commit your feature to the branch of your local fork.</p></li>
+<li><p>Open a pull request on original fork. Once your changes are ready for merging, go to the <a class="reference external" href="https://github.com/QPauLie/PauLie/pulls">original PauLie</a> on GitHub. Then, open PR, selecting “compare across fork” to submit your changes from your fork’s branch, and add a comment indicating that your code is ready for review. The code will be reviewed after the continuous integration (CI) workflow passes and the primary developer approves the review.</p></li>
+</ol>
+</section>
+<section id="adding-new-features">
+<span id="id1"></span><h2>Adding New Features<a class="headerlink" href="#adding-new-features" title="Link to this heading">¶</a></h2>
+<p>The new feature should follow these guidelines:</p>
+<ol class="arabic simple">
+<li><p>The function docstring should follow the Google style as outlined in <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/example_google.html">References in Docstrings</a>.</p></li>
+<li><p>The docstring for a new feature must include:</p>
+<ul class="simple">
+<li><p>A theoretical description of the feature.</p></li>
+<li><p>One or more examples in an <strong>Examples</strong> subsection.</p></li>
+<li><p>A <strong>References</strong> subsection.</p></li>
+</ul>
+</li>
+<li><p>All added lines must be covered by tests and appear in the <code class="code docutils literal notranslate"><span class="pre">pytest</span></code> code coverage report. See <a class="reference internal" href="#functional-testing"><span class="std std-ref">Testing</span></a> for more details.</p></li>
+<li><p>The code and unit tests for the new feature should follow the Code Style guidelines, using <code class="code docutils literal notranslate"><span class="pre">ruff</span></code> for <a class="reference internal" href="#lint-checking"><span class="std std-ref">lint checking</span></a>.</p></li>
+<li><p>The new feature must be added to the __init__.py file of its module to avoid import issues.</p></li>
+<li><p>If the new feature introduces a new module, it must be listed in docs/autoapi_members.rst so that it appears on the API Reference page via sphinx-autoapi.</p></li>
+</ol>
+<p>Before submitting a pull request, please make sure your changes pass all tests.</p>
+</section>
+<section id="functional-testing">
+<span id="id2"></span><h2>Functional Testing<a class="headerlink" href="#functional-testing" title="Link to this heading">¶</a></h2>
+<p>Ensure that both <code class="code docutils literal notranslate"><span class="pre">pytest</span></code> and <code class="code docutils literal notranslate"><span class="pre">pytest-cov</span></code> are installed on your machine.
+If they are not installed, follow the installation instructions for <a class="reference external" href="https://docs.pytest.org/en/stable/getting-started.html">pytest</a> and <a class="reference external" href="https://pytest-cov.readthedocs.io/en/latest/readme.html#installation">pytest-cov</a>.</p>
+<p>To verify that your code is working correctly, run the following commands in the PauLie directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-q
+</pre></div>
+</div>
+<p>The pytest module is used for running tests, and pytest-cov can generate local code coverage reports.
+Code coverage can be checked using the <code class="code docutils literal notranslate"><span class="pre">--cov-report=term-missing</span></code> option in <code class="code docutils literal notranslate"><span class="pre">pytest-cov</span></code>.</p>
+<p>Any changes to an existing module should have corresponding tests placed in its <code class="code docutils literal notranslate"><span class="pre">tests</span></code> directory (e.g., <code class="code docutils literal notranslate"><span class="pre">PauLie/tests/test_module.py</span></code>).</p>
+</section>
+<section id="lint-checking">
+<span id="id3"></span><h2>Lint Checking<a class="headerlink" href="#lint-checking" title="Link to this heading">¶</a></h2>
+<p>Formatting and linting are handled using <code class="code docutils literal notranslate"><span class="pre">ruff</span></code>. To install <code class="code docutils literal notranslate"><span class="pre">ruff</span></code>, refer to the official <a class="reference external" href="https://docs.astral.sh/ruff/installation/">ruff installation instructions</a>.</p>
+<p>To detect errors and style issues such as unused imports, undefined variables, style violations, and complexity problems, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check
+</pre></div>
+</div>
+<p>To verify that your code is formatted according to Ruff’s formatter rules, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>--check
+</pre></div>
+</div>
+<p>Note: without the <code class="code docutils literal notranslate"><span class="pre">--check</span></code> option, <code class="code docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">format</span></code> will modify your code automatically.</p>
+</section>
+<section id="document-building">
+<span id="doc-building"></span><h2>Document Building<a class="headerlink" href="#document-building" title="Link to this heading">¶</a></h2>
+<p>The sphinx is used in PauLie to build the HTML documentation, use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>sphinx-build<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>-W<span class="w"> </span>docs/source<span class="w"> </span>docs/_build/html
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">paulie</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classification.html">Classification of Pauli DLAs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commutator_graph.html">Commutator graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="average_graph_complexity.html">Average graph complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrix_decomposition.html">Matrix decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimal_universal_generators.html">Optimal universal generator sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contribute to PauLie</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#making-changes">Making changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-new-features">Adding New Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#functional-testing">Functional Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lint-checking">Lint Checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#document-building">Document Building</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AmanieOxana/PauLie">Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/unitary-fund-764231928676089909">Discord</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="api/paulie.helpers.html" title="previous chapter">Helpers</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, PauLie contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/contributing.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

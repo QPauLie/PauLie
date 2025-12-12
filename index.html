@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PauLie documentation &#8212; paulie 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=30674c74" />
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting started" href="getting_started.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="paulie-documentation">
+<h1>PauLie documentation<a class="headerlink" href="#paulie-documentation" title="Link to this heading">¶</a></h1>
+<p>The <code class="code docutils literal notranslate"><span class="pre">paulie</span></code> package is an open-source library for studying various algebraic properties of quantum circuits.
+This first release focuses on the classification of the circuit’s dynamical Lie algebra given the generators as
+Paulistrings.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#installing">Installing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="classification.html">Classification of Pauli DLAs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commutator_graph.html">Commutator graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="average_graph_complexity.html">Average graph complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="second_moment.html#theoretical-background">Theoretical Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="second_moment.html#usage-example">Usage Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="matrix_decomposition.html">Matrix decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimal_universal_generators.html">Optimal universal generator sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/paulie.application.html">Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.animation.animation_anti_commutation_graph"><code class="docutils literal notranslate"><span class="pre">animation_anti_commutation_graph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.average_pauli_weight.average_pauli_weight"><code class="docutils literal notranslate"><span class="pre">average_pauli_weight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.average_pauli_weight.avg_pauli_weights"><code class="docutils literal notranslate"><span class="pre">avg_pauli_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.average_pauli_weight.avg_pauli_weights_from_strings"><code class="docutils literal notranslate"><span class="pre">avg_pauli_weights_from_strings()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.average_pauli_weight.get_pauli_weights"><code class="docutils literal notranslate"><span class="pre">get_pauli_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.average_pauli_weight.quantum_fourier_entropy"><code class="docutils literal notranslate"><span class="pre">quantum_fourier_entropy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.charges.non_commuting_charges"><code class="docutils literal notranslate"><span class="pre">non_commuting_charges()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.fourpoint.fourpoint"><code class="docutils literal notranslate"><span class="pre">fourpoint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.get_optimal_su2_n.get_optimal_connections_su_2_n"><code class="docutils literal notranslate"><span class="pre">get_optimal_connections_su_2_n()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.get_optimal_su2_n.get_optimal_su_2_n_generators"><code class="docutils literal notranslate"><span class="pre">get_optimal_su_2_n_generators()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.graph_complexity.average_graph_complexity"><code class="docutils literal notranslate"><span class="pre">average_graph_complexity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.matrix_decomposition.matrix_decomposition"><code class="docutils literal notranslate"><span class="pre">matrix_decomposition()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.matrix_decomposition.matrix_decomposition_diagonal"><code class="docutils literal notranslate"><span class="pre">matrix_decomposition_diagonal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.otoc.average_otoc"><code class="docutils literal notranslate"><span class="pre">average_otoc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.OptimalPauliCompiler"><code class="docutils literal notranslate"><span class="pre">OptimalPauliCompiler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.OptimalPauliCompiler.compile"><code class="docutils literal notranslate"><span class="pre">OptimalPauliCompiler.compile()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.OptimalPauliCompiler.extend_left"><code class="docutils literal notranslate"><span class="pre">OptimalPauliCompiler.extend_left()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.PauliCompilerConfig"><code class="docutils literal notranslate"><span class="pre">PauliCompilerConfig</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.SubsystemCompiler"><code class="docutils literal notranslate"><span class="pre">SubsystemCompiler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.SubsystemCompiler.extend_left"><code class="docutils literal notranslate"><span class="pre">SubsystemCompiler.extend_left()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.SubsystemCompiler.extend_pair"><code class="docutils literal notranslate"><span class="pre">SubsystemCompiler.extend_pair()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.SubsystemCompiler.factor_w_orders"><code class="docutils literal notranslate"><span class="pre">SubsystemCompiler.factor_w_orders()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.SubsystemCompiler.subsystem_compiler"><code class="docutils literal notranslate"><span class="pre">SubsystemCompiler.subsystem_compiler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.SubsystemCompilerConfig"><code class="docutils literal notranslate"><span class="pre">SubsystemCompilerConfig</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.choose_u_for_b"><code class="docutils literal notranslate"><span class="pre">choose_u_for_b()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.compile_target"><code class="docutils literal notranslate"><span class="pre">compile_target()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.construct_universal_set"><code class="docutils literal notranslate"><span class="pre">construct_universal_set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.left_a_minimal"><code class="docutils literal notranslate"><span class="pre">left_a_minimal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.pauli_compiler.left_map_over_a"><code class="docutils literal notranslate"><span class="pre">left_map_over_a()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.plot.plot_anti_commutation_graph"><code class="docutils literal notranslate"><span class="pre">plot_anti_commutation_graph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.application.html#paulie.application.second_moment.second_moment"><code class="docutils literal notranslate"><span class="pre">second_moment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/paulie.common.html">Common</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.get_graph.get_graph"><code class="docutils literal notranslate"><span class="pre">get_graph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString"><code class="docutils literal notranslate"><span class="pre">PauliString</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.adjoint_map"><code class="docutils literal notranslate"><span class="pre">PauliString.adjoint_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.commutes_with"><code class="docutils literal notranslate"><span class="pre">PauliString.commutes_with()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.complex_conj"><code class="docutils literal notranslate"><span class="pre">PauliString.complex_conj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.copy"><code class="docutils literal notranslate"><span class="pre">PauliString.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.create_instance"><code class="docutils literal notranslate"><span class="pre">PauliString.create_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.expand"><code class="docutils literal notranslate"><span class="pre">PauliString.expand()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.gen_all_pauli_strings"><code class="docutils literal notranslate"><span class="pre">PauliString.gen_all_pauli_strings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.get_anti_commutants"><code class="docutils literal notranslate"><span class="pre">PauliString.get_anti_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.get_commutants"><code class="docutils literal notranslate"><span class="pre">PauliString.get_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.get_count_non_trivially"><code class="docutils literal notranslate"><span class="pre">PauliString.get_count_non_trivially()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.get_diagonal_index"><code class="docutils literal notranslate"><span class="pre">PauliString.get_diagonal_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.get_index"><code class="docutils literal notranslate"><span class="pre">PauliString.get_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.get_matrix"><code class="docutils literal notranslate"><span class="pre">PauliString.get_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.get_nested"><code class="docutils literal notranslate"><span class="pre">PauliString.get_nested()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.get_substring"><code class="docutils literal notranslate"><span class="pre">PauliString.get_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.get_weight_in_matrix"><code class="docutils literal notranslate"><span class="pre">PauliString.get_weight_in_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.inc"><code class="docutils literal notranslate"><span class="pre">PauliString.inc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.is_identity"><code class="docutils literal notranslate"><span class="pre">PauliString.is_identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.multiply"><code class="docutils literal notranslate"><span class="pre">PauliString.multiply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.set_substring"><code class="docutils literal notranslate"><span class="pre">PauliString.set_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.sign"><code class="docutils literal notranslate"><span class="pre">PauliString.sign()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_bitarray.PauliString.tensor"><code class="docutils literal notranslate"><span class="pre">PauliString.tensor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.append"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.classify"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.classify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.contract"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.contract()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.copy"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.create_instance"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.create_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.expand"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.expand()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.find"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.find()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.find_generators_with_connection"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.find_generators_with_connection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.gen_generators"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.gen_generators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_algebra"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_algebra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_anti_commutants"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_anti_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_anti_commutates"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_anti_commutates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_anticommutation_fraction"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_anticommutation_fraction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_anticommutation_pair"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_anticommutation_pair()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_canonic_graph"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_canonic_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_canonic_vertices"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_canonic_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_class"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_commutants"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_commutates"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_commutates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_commutator_graph"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_commutator_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_dependents"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_dependents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_dla_dim"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_dla_dim()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_frame_potential"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_frame_potential()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_full_quadratic_basis"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_full_quadratic_basis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_graph"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_graph_components"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_graph_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_independents"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_independents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_len"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_len()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_pair"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_pair()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_record"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_record()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_size"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_space"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_space()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_subgraphs"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_subgraphs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.get_symmetries_for_component"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_symmetries_for_component()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.index"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.insert"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.insert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.is_algebra"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.is_algebra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.is_eq"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.is_eq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.is_in"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.is_in()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.list_connections"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.list_connections()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.mul"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.mul()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.remove"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.replace"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.replace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.select_dependents"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.select_dependents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.set_record"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.set_record()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollection.sort"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.sort()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_collection.PauliStringCollectionException"><code class="docutils literal notranslate"><span class="pre">PauliStringCollectionException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_factory.Used"><code class="docutils literal notranslate"><span class="pre">Used</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_factory.Used.append"><code class="docutils literal notranslate"><span class="pre">Used.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_factory.Used.clear"><code class="docutils literal notranslate"><span class="pre">Used.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_factory.Used.is_used"><code class="docutils literal notranslate"><span class="pre">Used.is_used()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_factory.gen_k_local"><code class="docutils literal notranslate"><span class="pre">gen_k_local()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_factory.gen_k_local_generators"><code class="docutils literal notranslate"><span class="pre">gen_k_local_generators()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_factory.get_identity"><code class="docutils literal notranslate"><span class="pre">get_identity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_factory.get_last"><code class="docutils literal notranslate"><span class="pre">get_last()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_factory.get_pauli_string"><code class="docutils literal notranslate"><span class="pre">get_pauli_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_factory.get_single"><code class="docutils literal notranslate"><span class="pre">get_single()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.adjoint_map"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.adjoint_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.commutes_with"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.commutes_with()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.copy"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.expand"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.expand()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.exponential"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.exponential()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.gen_all_pauli_strings"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.gen_all_pauli_strings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.get_anti_commutants"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_anti_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.get_commutants"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.get_matrix"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.get_nested"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_nested()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.get_size"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.get_substring"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.h"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.h</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.inc"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.inc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.is_identity"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.is_identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.is_zero"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.is_zero()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.kron"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.kron()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.multiply"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.multiply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.norm"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.norm()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.quadratic"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.quadratic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.rkron"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.rkron()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.set_substring"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.set_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.simplify"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.simplify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.tensor"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.tensor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinear.trace"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.trace()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_linear.PauliStringLinearException"><code class="docutils literal notranslate"><span class="pre">PauliStringLinearException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.pauli_string_parser.pauli_string_parser"><code class="docutils literal notranslate"><span class="pre">pauli_string_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.random_pauli_strings.get_random"><code class="docutils literal notranslate"><span class="pre">get_random()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.random_pauli_strings.get_random_k_local"><code class="docutils literal notranslate"><span class="pre">get_random_k_local()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.random_pauli_strings.get_random_list"><code class="docutils literal notranslate"><span class="pre">get_random_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.two_local_generators.get_lie_algebra"><code class="docutils literal notranslate"><span class="pre">get_lie_algebra()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.two_local_generators.get_lie_algebras"><code class="docutils literal notranslate"><span class="pre">get_lie_algebras()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.common.html#paulie.common.two_local_generators.two_local_algebras"><code class="docutils literal notranslate"><span class="pre">two_local_algebras()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/paulie.classifier.html">Classifier</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification"><code class="docutils literal notranslate"><span class="pre">Classification</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.add"><code class="docutils literal notranslate"><span class="pre">Classification.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.contains_algebra"><code class="docutils literal notranslate"><span class="pre">Classification.contains_algebra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.gen_generators"><code class="docutils literal notranslate"><span class="pre">Classification.gen_generators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.get_algebra"><code class="docutils literal notranslate"><span class="pre">Classification.get_algebra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.get_dependents"><code class="docutils literal notranslate"><span class="pre">Classification.get_dependents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.get_dla_dim"><code class="docutils literal notranslate"><span class="pre">Classification.get_dla_dim()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.get_isomorphism"><code class="docutils literal notranslate"><span class="pre">Classification.get_isomorphism()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.get_isomorphisms"><code class="docutils literal notranslate"><span class="pre">Classification.get_isomorphisms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.get_morphs"><code class="docutils literal notranslate"><span class="pre">Classification.get_morphs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.get_subalgebras"><code class="docutils literal notranslate"><span class="pre">Classification.get_subalgebras()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.get_vertices"><code class="docutils literal notranslate"><span class="pre">Classification.get_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Classification.is_algebra"><code class="docutils literal notranslate"><span class="pre">Classification.is_algebra()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.ClassificatonException"><code class="docutils literal notranslate"><span class="pre">ClassificatonException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph"><code class="docutils literal notranslate"><span class="pre">Morph</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.check_algebra_properties"><code class="docutils literal notranslate"><span class="pre">Morph.check_algebra_properties()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.counts"><code class="docutils literal notranslate"><span class="pre">Morph.counts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.gen_generators"><code class="docutils literal notranslate"><span class="pre">Morph.gen_generators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.gen_independent_pair"><code class="docutils literal notranslate"><span class="pre">Morph.gen_independent_pair()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.gen_pq"><code class="docutils literal notranslate"><span class="pre">Morph.gen_pq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.get_algebra_properties"><code class="docutils literal notranslate"><span class="pre">Morph.get_algebra_properties()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.get_dependents"><code class="docutils literal notranslate"><span class="pre">Morph.get_dependents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.get_legs"><code class="docutils literal notranslate"><span class="pre">Morph.get_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.get_properties"><code class="docutils literal notranslate"><span class="pre">Morph.get_properties()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.get_type"><code class="docutils literal notranslate"><span class="pre">Morph.get_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.get_vertices"><code class="docutils literal notranslate"><span class="pre">Morph.get_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.is_empty"><code class="docutils literal notranslate"><span class="pre">Morph.is_empty()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.Morph.is_empty_legs"><code class="docutils literal notranslate"><span class="pre">Morph.is_empty_legs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.TypeAlgebra"><code class="docutils literal notranslate"><span class="pre">TypeAlgebra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.classification.TypeGraph"><code class="docutils literal notranslate"><span class="pre">TypeGraph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.AppendedException"><code class="docutils literal notranslate"><span class="pre">AppendedException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.CheckAppendedException"><code class="docutils literal notranslate"><span class="pre">CheckAppendedException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.DependentException"><code class="docutils literal notranslate"><span class="pre">DependentException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory"><code class="docutils literal notranslate"><span class="pre">MorphFactory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.append"><code class="docutils literal notranslate"><span class="pre">MorphFactory.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.append_delayed"><code class="docutils literal notranslate"><span class="pre">MorphFactory.append_delayed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.append_to_center"><code class="docutils literal notranslate"><span class="pre">MorphFactory.append_to_center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.append_to_two_center"><code class="docutils literal notranslate"><span class="pre">MorphFactory.append_to_two_center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.build"><code class="docutils literal notranslate"><span class="pre">MorphFactory.build()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.check_dependency_one_leg"><code class="docutils literal notranslate"><span class="pre">MorphFactory.check_dependency_one_leg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.find"><code class="docutils literal notranslate"><span class="pre">MorphFactory.find()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_center"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_count_two_legs"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_count_two_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_lighting"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_lit_indexes"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_lit_indexes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_lits"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_lits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_long_leg"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_long_leg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_long_legs"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_long_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_morph"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_morph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_one_vertex"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_one_vertex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_one_vertices"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_one_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_pq"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_pq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_two_legs"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_two_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.get_vertices"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.is_empty"><code class="docutils literal notranslate"><span class="pre">MorphFactory.is_empty()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.is_empty_legs"><code class="docutils literal notranslate"><span class="pre">MorphFactory.is_empty_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.is_eq"><code class="docutils literal notranslate"><span class="pre">MorphFactory.is_eq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.is_included"><code class="docutils literal notranslate"><span class="pre">MorphFactory.is_included()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.is_two_leg"><code class="docutils literal notranslate"><span class="pre">MorphFactory.is_two_leg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.lit"><code class="docutils literal notranslate"><span class="pre">MorphFactory.lit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.remove"><code class="docutils literal notranslate"><span class="pre">MorphFactory.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.replace"><code class="docutils literal notranslate"><span class="pre">MorphFactory.replace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.restore_delayed"><code class="docutils literal notranslate"><span class="pre">MorphFactory.restore_delayed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.select_dependents"><code class="docutils literal notranslate"><span class="pre">MorphFactory.select_dependents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.set_center"><code class="docutils literal notranslate"><span class="pre">MorphFactory.set_center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactory.set_lighting"><code class="docutils literal notranslate"><span class="pre">MorphFactory.set_lighting()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.MorphFactoryException"><code class="docutils literal notranslate"><span class="pre">MorphFactoryException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.NotConnectedException"><code class="docutils literal notranslate"><span class="pre">NotConnectedException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.morph_factory.RaiseException"><code class="docutils literal notranslate"><span class="pre">RaiseException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.AppendedException"><code class="docutils literal notranslate"><span class="pre">AppendedException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.DependentException"><code class="docutils literal notranslate"><span class="pre">DependentException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.MorphFactoryException"><code class="docutils literal notranslate"><span class="pre">MorphFactoryException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.NotConnectedException"><code class="docutils literal notranslate"><span class="pre">NotConnectedException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.append"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.append_delayed"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.append_delayed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.append_to_two_center"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.append_to_two_center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.build"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.build()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.find"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.find()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_center"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_count_two_legs"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_count_two_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lighting"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lit_indexes"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_lit_indexes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_lits"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_lits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_long_leg"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_long_leg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_long_legs"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_long_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_morph"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_morph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_one_vertex"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_one_vertex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_one_vertices"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_one_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_pq"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_pq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_two_legs"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_two_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_vertices"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_empty"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.is_empty()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_empty_legs"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.is_empty_legs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_included"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.is_included()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.is_two_leg"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.is_two_leg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.lit"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.lit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.remove"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.replace"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.replace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.restore_delayed"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.restore_delayed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_center"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.set_center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.classifier.html#paulie.classifier.recording_morph_factory.RecordingMorphFactory.set_lighting"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.set_lighting()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/paulie.helpers.html">Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.drawing.animation_graph"><code class="docutils literal notranslate"><span class="pre">animation_graph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.drawing.plot_graph"><code class="docutils literal notranslate"><span class="pre">plot_graph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.drawing.plot_graph_by_nodes"><code class="docutils literal notranslate"><span class="pre">plot_graph_by_nodes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameGraph"><code class="docutils literal notranslate"><span class="pre">FrameGraph</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameGraph.get_graph"><code class="docutils literal notranslate"><span class="pre">FrameGraph.get_graph()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord"><code class="docutils literal notranslate"><span class="pre">FrameRecord</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_graph"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_init"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_is_appending"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_appending()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_is_contracting"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_contracting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_is_dependent"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_dependent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_is_lits"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_lits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_is_p"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_p()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_is_q"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_q()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_is_removing"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_removing()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_is_replacing"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_is_replacing()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_lighting"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.get_title"><code class="docutils literal notranslate"><span class="pre">FrameRecord.get_title()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.is_appending"><code class="docutils literal notranslate"><span class="pre">FrameRecord.is_appending()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.FrameRecord.is_removing"><code class="docutils literal notranslate"><span class="pre">FrameRecord.is_removing()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph"><code class="docutils literal notranslate"><span class="pre">RecordGraph</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph.append"><code class="docutils literal notranslate"><span class="pre">RecordGraph.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph.append_frame"><code class="docutils literal notranslate"><span class="pre">RecordGraph.append_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph.clear"><code class="docutils literal notranslate"><span class="pre">RecordGraph.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph.get_frame"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph.get_graph"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph.get_is_prev"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_is_prev()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph.get_positions"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_positions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph.get_size"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph.get_x_position_lighting"><code class="docutils literal notranslate"><span class="pre">RecordGraph.get_x_position_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph.set_positions"><code class="docutils literal notranslate"><span class="pre">RecordGraph.set_positions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.RecordGraph.set_x_position_lighting"><code class="docutils literal notranslate"><span class="pre">RecordGraph.set_x_position_lighting()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/paulie.helpers.html#paulie.helpers.recording.recording_graph"><code class="docutils literal notranslate"><span class="pre">recording_graph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute to PauLie</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#making-changes">Making changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#adding-new-features">Adding New Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#functional-testing">Functional Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#lint-checking">Lint Checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#document-building">Document Building</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">paulie</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classification.html">Classification of Pauli DLAs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commutator_graph.html">Commutator graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="average_graph_complexity.html">Average graph complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrix_decomposition.html">Matrix decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimal_universal_generators.html">Optimal universal generator sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute to PauLie</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AmanieOxana/PauLie">Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/unitary-fund-764231928676089909">Discord</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="getting_started.html" title="next chapter">Getting started</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, PauLie contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
