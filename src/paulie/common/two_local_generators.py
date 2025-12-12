@@ -112,7 +112,7 @@ def _a10(n:int) -> str|None:
     """
     return _a6(n)
 
-def two_local_algebras(n:int) -> dict[str, str]:
+def two_local_algebras(n:int) -> dict[str, str|None]:
     """
     Get a dictionary of the DLAs n>=3
 

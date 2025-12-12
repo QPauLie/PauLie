@@ -191,8 +191,8 @@ class Morph:
             return TypeAlgebra.SU, one_legs, 2**(two_legs + 2)
         return None, None, None
 
-    def check_algebra_properties(self, type_algebra:TypeAlgebra = None,
-                                 nc:int = None, size:int = None) -> bool:
+    def check_algebra_properties(self, type_algebra:TypeAlgebra|None = None,
+                                 nc:int|None = None, size:int|None = None) -> bool:
         """
         Check properties of algebra.
 
@@ -237,7 +237,7 @@ class Morph:
                         yield [v, w]
 
     def gen_pq(self
-        )-> Generator[list[dict], None, None]:
+        )-> Generator[dict[str, list[PauliString]|int], None, None]:
         """
         Generate pq.
 
@@ -268,7 +268,7 @@ class Morph:
                                 "neighbour": m == 0 and j == 0
                               }
 
-    def _inc_vertices_generator(self, i, init_vertices, vertex_generators, vertices
+    def _inc_vertices_generator(self, i:int, init_vertices:list[PauliString], vertex_generators:list[PauliString], vertices:list[PauliString]
     )->bool:
         """
         Incriminate the generator.
@@ -344,7 +344,7 @@ class Classification:
         """
         self.morphs.add(morph)
 
-    def get_morphs(self) -> Morph:
+    def get_morphs(self) -> set[Morph]:
         """
         Get canonical form.
 
@@ -360,7 +360,7 @@ class Classification:
         Returns:
             Algebra.
         """
-        algebras = {}
+        algebras:dict[str, int] = {}
         for morph in self.morphs:
             type_algebra, nc, size = morph.get_algebra_properties()
             algebra = ""
@@ -391,7 +391,7 @@ class Classification:
         algebra.replace(" ", "")
         return _algebra.find(algebra) > -1
 
-    def _parse_algebra(self, algebra:str) -> str:
+    def _parse_algebra(self, algebra:str) -> list[str]:
         """
         Reformat algebra.
 
@@ -403,7 +403,7 @@ class Classification:
         algebra = algebra.replace(" ", "")
         algebras = algebra.split("+")
 
-        algs = {}
+        algs:dict[str, int] = {}
         for alg in algebras:
             name = alg
             q = 1
@@ -438,7 +438,7 @@ class Classification:
                 return False
         return True
 
-    def get_subalgebras(self, algebra:str=None) -> list[str]:
+    def get_subalgebras(self, algebra:str|None=None) -> list[str]:
         """
         Get subalgebras.
 
@@ -483,7 +483,7 @@ class Classification:
                 "so(4)":"2*su(2)"
                }
 
-    def get_isomorphism(self, algebra:str)->str:
+    def get_isomorphism(self, algebra:str)->str|None:
         """
         Get algebra isomorphism.
 
@@ -497,7 +497,7 @@ class Classification:
         if algebra not in self.get_isomorphisms():
             if '*' in algebra:
                 algebras = algebra.split("*")
-                n = algebras[0]
+                n = int(algebras[0])
                 core_algebra = algebras[1]
                 if core_algebra not in self.get_isomorphisms():
                     return None
@@ -521,13 +521,13 @@ class Classification:
             Dimension of the classified dynamical Lie algebra.
         """
 
-        def dim_su(n):
+        def dim_su(n:int) -> int:
             return n**2-1
 
-        def dim_so(n):
-            return n*(n-1)/2
+        def dim_so(n:int) -> int:
+            return n*(n-1)//2
 
-        def dim_sp(n):
+        def dim_sp(n:int) -> int:
             return n*(2*n+1)
 
         dim = 0
@@ -543,7 +543,7 @@ class Classification:
                 dim+= dim_so(n)
         return dim
 
-    def _inc_morph_generator(self, ms, morphs, morph_generators, current_morph_generators
+    def _inc_morph_generator(self, ms:int, morphs:list[Morph], morph_generators:list[PauliString], current_morph_generators:list[PauliString]
     ) -> bool:
         """
         Incriminate the generator.
@@ -575,7 +575,7 @@ class Classification:
         Get a list of independent strings of Pauli algebra.
 
         Yields: 
-            Llist of generators.
+            List of generators.
         """
         generators = []
         current_morph_generators = []

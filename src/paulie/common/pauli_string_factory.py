@@ -45,7 +45,7 @@ def get_last(n:int) -> PauliString:
     """
     return PauliString(bits = bitarray([1] * (2 * n)))
 
-def get_pauli_string(o, n:int = None) -> PauliString|PauliStringCollection:
+def get_pauli_string(o: PauliString|PauliStringCollection, n:int|None = None) -> PauliString|PauliStringCollection:
     """
     Get Pauli strings in their current representation.
 
@@ -77,6 +77,9 @@ class Used:
     """
     Helper class for monitoring previously created Pauli strings
     """
+
+    used: set[str]
+
     def __init__(self) -> None:
         """
         init class
@@ -114,7 +117,7 @@ class Used:
         return p in self.used
 
 
-def gen_k_local(n: int, p: PauliString, used:Used=None) -> Generator[list[PauliString], None, None]:
+def gen_k_local(n: int, p: PauliString, used:Used|None=None) -> Generator[list[PauliString], None, None]:
     """
     Generates k-local Pauli strings.
 
@@ -144,7 +147,7 @@ def gen_k_local(n: int, p: PauliString, used:Used=None) -> Generator[list[PauliS
 
 def gen_k_local_generators(n: int,
                            generators: 'Union[list[str], list[PauliString], PauliStringCollection]',
-                           used: Used = None) -> Generator[list[PauliString], None, None]:
+                           used:Used|None=None) -> Generator[list[PauliString], None, None]:
     """
     Generates k-local operators for a set of generators.
 
