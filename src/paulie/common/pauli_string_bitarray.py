@@ -22,7 +22,8 @@ SZ = np.array([[1,0],[0,-1]])
 class PauliString:
     """Representation of a Pauli string as a bitarray."""
 
-    def __init__(self, n: int = None, pauli_str: str = None, bits: bitarray = None) -> None:
+    def __init__(self, n: int|None = None, pauli_str: str|None = None,
+                 bits: bitarray|None = None) -> None:
         """Initialize a Pauli string.
         
 
@@ -86,11 +87,11 @@ class PauliString:
         if len_matrix == 2**len_string:
             index = self.get_diagonal_index()
             if index > -1:
-                return b_matrix[index]
-            return 0.0
-        return b_matrix[self.get_index()]
+                return np.complex128(b_matrix[index])
+            return np.complex128(0.0)
+        return np.complex128(b_matrix[self.get_index()])
 
-    def create_instance(self, n: int = None, pauli_str: str = None):
+    def create_instance(self, n: int|None = None, pauli_str: str|None = None) -> Self:
         """Create a Pauli string instance.
 
            Args:
@@ -109,7 +110,7 @@ class PauliString:
         """
         return "".join(self.bits.decode(CODEC))
 
-    def _ensure_pauli_string(self, other:str|Self):
+    def _ensure_pauli_string(self, other:str|Self) -> Self:
         """
         Get self Pauli string representation.
 
@@ -236,7 +237,7 @@ class PauliString:
         self.nextpos += 1
         return value
 
-    def __setitem__(self, position: int, pauli_string: str|Self):
+    def __setitem__(self, position: int, pauli_string: str|Self) -> None:
         """
         Sets a specified Pauli at a given position in the Pauli string.
 
@@ -275,7 +276,7 @@ class PauliString:
         """
         return PauliString(bits=self.bits)
 
-    def __add__(self, other:str|Self):
+    def __add__(self, other:str|Self) -> Self:
         """
         Pauli string addition operator.
 
@@ -298,7 +299,7 @@ class PauliString:
         """
         return self.commutes_with(other)
 
-    def __xor__(self, other:str|Self):
+    def __xor__(self, other:str|Self) -> Self:
         """
         Overloading ^ operator of two Pauli strings like adjoint_map.
 
@@ -309,7 +310,7 @@ class PauliString:
         """
         return self.adjoint_map(other)
 
-    def __matmul__(self, other:str|Self):
+    def __matmul__(self, other:str|Self) -> Self:
         """
         Overloading @ operator of two Pauli strings like multiply.
 
@@ -460,7 +461,7 @@ class PauliString:
         # Bitwise XOR is equivalent to mod-2 addition
         return PauliString(bits = self.bits ^ other.bits)
 
-    def adjoint_map(self, other:str|Self) -> Self:
+    def adjoint_map(self, other:str|Self) -> Self|None:
         """
         Compute the adjoint map ad_A(B) = [A,B].
 
@@ -531,7 +532,7 @@ class PauliString:
             pauli_string.inc()
         yield pauli_string.copy()
 
-    def get_commutants(self, generators:list[Self] = None) -> list[Self]:
+    def get_commutants(self, generators:list[Self]|None = None) -> list[Self]:
         """
         Get a list of Pauli strings that commute with this string.
 
@@ -546,7 +547,7 @@ class PauliString:
 
         return [g for g in generators if self|g]
 
-    def get_anti_commutants(self, generators:list[Self] = None) -> list[Self]:
+    def get_anti_commutants(self, generators:list[Self]|None = None) -> list[Self]:
         """
         Get a list of Pauli strings that no-commute with this string.
 
@@ -561,7 +562,7 @@ class PauliString:
 
         return [g for g in generators if not self|g]
 
-    def get_nested(self, generators:list[Self] = None) ->list[tuple[Self, Self]]:
+    def get_nested(self, generators:list[Self]|None = None) ->list[tuple[Self, Self]]:
         """
         Get nested of Pauli string.
 
@@ -586,7 +587,7 @@ class PauliString:
 
         return list(nested_pairs)
 
-    def _match_matrix(self, v:str) -> np.array:
+    def _match_matrix(self, v:str) -> np.ndarray:
         """
          Matching matrix for the string item.
 
@@ -605,7 +606,7 @@ class PauliString:
             case "Z":
                 return SZ
 
-    def get_matrix(self) -> np.array:
+    def get_matrix(self) -> np.ndarray:
         """
         Get matrix representation for Pauli string.
 
