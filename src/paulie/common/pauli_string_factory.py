@@ -46,7 +46,7 @@ def get_last(n:int) -> PauliString:
     return PauliString(bits = bitarray([1] * (2 * n)))
 
 def get_pauli_string(o: PauliString|PauliStringCollection,
-                     n:int|None = None) -> PauliString|PauliStringLinear|PauliStringCollection:
+                     n:int|None = None) -> PauliString|PauliStringCollection:
     """
     Get Pauli strings in their current representation.
 
