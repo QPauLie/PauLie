@@ -1,10 +1,12 @@
 """Representation of a Pauli string as a bitarray."""
+from __future__ import annotations
 from collections import defaultdict
-from typing import Self, Generator
+from typing import Self, Generator, Dict
 
 from six.moves import reduce
 import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
+from paulie.common.pauli_string_collection import PauliStringCollection
 
 
 class PauliStringLinearException(Exception):
@@ -47,7 +49,7 @@ class PauliStringLinear(PauliString):
             return True
         return False
 
-    def _print_complex(self, z: complex):
+    def _print_complex(self, z: complex) -> str:
         """
         Converting a complex number to a string representation.
 
@@ -57,13 +59,13 @@ class PauliStringLinear(PauliString):
             String representation of a complex number .
         """
         if z.imag == 0:
-            return "" if abs(z.real) == 1 else str(abs(z.real)) + "*"
+            return "" if abs(z.real) == 1 else f"{abs(z.real)}*"
         if z.real == 0:
-            return "i*" if abs(z.imag) == 1 else str(abs(z.imag)) + "*i*"
+            return "i*" if abs(z.imag) == 1 else f"{abs(z.imag)}*i*"
         if z.real > 0:
-            return "(" + z.real + "-" if z.imag < 0 else "+" + abs(z.imag) + ")*"
+            return f"({z.real}-" if z.imag < 0 else f"+{abs(z.imag)})*"
 
-        return "(" + abs(z.real) + "-" if z.imag > 0 else "+" + abs(z.imag) + ")*"
+        return f"({abs(z.real)}-" if z.imag > 0 else f"+{abs(z.imag)})*"
 
     def __str__(self) -> str:
         """
@@ -79,7 +81,7 @@ class PauliStringLinear(PauliString):
         # Sort by the Pauli string part for a canonical, consistent output
         sorted_combinations = sorted(simplified_self.combinations, key=lambda term: str(term[1]))
 
-        def _format_term(coeff, pauli_str):
+        def _format_term(coeff:complex, pauli_str:str|Self) -> str:
             if np.isclose(coeff.imag, 0):
                 val_str = f"{coeff.real:.8g}"
             elif np.isclose(coeff.real, 0):
@@ -112,7 +114,7 @@ class PauliStringLinear(PauliString):
         return "".join(terms)
 
 
-    def __eq__(self, other: Self)->bool:
+    def __eq__(self, other:object)->bool:
         """
         Performs a robust equality check between two PauliStringLinear objects.
         It simplifies both objects and compares their terms using a tolerance
@@ -146,7 +148,7 @@ class PauliStringLinear(PauliString):
 
         return True
 
-    def __lt__(self, other:Self) -> bool:
+    def __lt__(self, other:object) -> bool:
         """
         Overloading < operator for two linear combination of Pauli strings.
 
@@ -160,7 +162,7 @@ class PauliStringLinear(PauliString):
         """
         raise PauliStringLinearException("Not implemented")
 
-    def __le__(self, other:Self) -> bool:
+    def __le__(self, other:object) -> bool:
         """
         Overloading <= operator of two Pauli strings.
 
@@ -174,7 +176,7 @@ class PauliStringLinear(PauliString):
         """
         raise PauliStringLinearException("Not implemented")
 
-    def __gt__(self, other:Self) -> bool:
+    def __gt__(self, other:object) -> bool:
         """
         Overloading > operator of two Pauli strings.
 
@@ -188,7 +190,7 @@ class PauliStringLinear(PauliString):
         """
         raise PauliStringLinearException("Not implemented")
 
-    def __ge__(self, other:Self) -> bool:
+    def __ge__(self, other:object) -> bool:
         """
         Overloading >= operator of two Pauli strings.
 
@@ -202,7 +204,7 @@ class PauliStringLinear(PauliString):
         """
         raise PauliStringLinearException("Not implemented")
 
-    def __ne__(self, other:Self) -> bool:
+    def __ne__(self, other:object) -> bool:
         """
         Overloading != operator of two Pauli strings.
 
@@ -262,7 +264,7 @@ class PauliStringLinear(PauliString):
         self.nextpos += 1
         return value
 
-    def __setitem__(self, position: int, combination: tuple[complex,PauliString]):
+    def __setitem__(self, position: int, combination: tuple[complex,PauliString]) -> None:
         """
         Sets a specified combination at a given position in the Pauli string.
 
@@ -303,7 +305,7 @@ class PauliStringLinear(PauliString):
         """
         return PauliStringLinear(self.combinations)
 
-    def __add__(self, other):
+    def __add__(self, other:object) -> PauliStringLinear:
         """
         Performs a robust addition of two linear combinations.
 
@@ -312,8 +314,11 @@ class PauliStringLinear(PauliString):
         Returns:
             Result of self + other.
         """
+        if not isinstance(other, PauliStringLinear):
+            return NotImplemented
+
         # Use a dictionary to correctly sum coefficients
-        summed_coeffs = defaultdict(complex)
+        summed_coeffs:dict[str,complex] = defaultdict(complex)
         for coeff, pauli in self.combinations:
             summed_coeffs[str(pauli)] += coeff
         for coeff, pauli in other.combinations:
@@ -324,7 +329,7 @@ class PauliStringLinear(PauliString):
             return PauliStringLinear([])
         return PauliStringLinear(new_combinations)
 
-    def __iadd__(self, other):
+    def __iadd__(self, other:object) -> Self:
         """
         Performs in-place addition.
 
@@ -340,7 +345,7 @@ class PauliStringLinear(PauliString):
         return self
 
 
-    def __or__(self, other:Self)->bool:
+    def __or__(self, other:object)->bool:
         """
         Overloading | operator of two Pauli strings like commutes_with.
 
@@ -351,7 +356,7 @@ class PauliStringLinear(PauliString):
         """
         return self.commutes_with(other)
 
-    def __xor__(self, other:str|Self):
+    def __xor__(self, other:object)->bool:
         """
         Overloading ^ operator of two linear combination of Pauli strings like adjoint_map.
 
@@ -362,7 +367,7 @@ class PauliStringLinear(PauliString):
         """
         return self.adjoint_map(other)
 
-    def __matmul__(self, other: Self) -> Self:
+    def __matmul__(self, other: object) -> PauliString|PauliStringLinear|PauliStringCollection:
         """
         Overloading @ operator of two Pauli strings like multiply
         Performs the distributive multiplication of two linear combinations of Pauli strings.
@@ -412,7 +417,7 @@ class PauliStringLinear(PauliString):
         # Create a new PauliStringLinear and simplify it to collect common terms
         return p(new_pauli_terms).simplify()
 
-    def __rmatmul__(self, other:PauliString):
+    def __rmatmul__(self, other:object) -> PauliStringLinear:
         """
         Overloading @ operator of two Pauli strings like multiply.
 
@@ -421,6 +426,9 @@ class PauliStringLinear(PauliString):
         Returns:
             Result of right multiplying two linear combinations.
         """
+        if not isinstance(other, PauliStringLinear):
+            return NotImplemented
+
         new_combinations = []
         for c in self.combinations:
             new_combinations.append((c[0]*other.sign(c[1]), c[1]@other))
@@ -438,7 +446,7 @@ class PauliStringLinear(PauliString):
         # Scalar multiplication is commutative, so we can just call our existing __mul__
         return self.__mul__(scalar)
 
-    def __mul__(self, scalar: complex) -> Self:
+    def __mul__(self, scalar: complex) -> PauliString|PauliStringLinear|PauliStringCollection:
         """
         Performs scalar multiplication: self * scalar.
 
@@ -495,7 +503,7 @@ class PauliStringLinear(PauliString):
                 new_combinations.append((c[0]*o[0]*c[1].sign(o[1]), c[1]@o[1]))
         return PauliStringLinear(new_combinations)
 
-    def commutes_with(self, other:str|Self) -> bool:
+    def commutes_with(self, other:object) -> bool:
         """
         Check if this Pauli string commutes with another.
 
@@ -570,7 +578,7 @@ class PauliStringLinear(PauliString):
         raise PauliStringLinearException("Not implemented")
 
 
-    def kron(self, other:PauliString):
+    def kron(self, other:PauliString) -> PauliStringLinear:
         """
         Kroniker multiplication pauli string on linear combination
         of Pauli strings.
@@ -585,7 +593,7 @@ class PauliStringLinear(PauliString):
             new_combinations.append((c[0], c[1] + other))
         return PauliStringLinear(new_combinations)
 
-    def rkron(self, other:PauliString):
+    def rkron(self, other:PauliString) -> PauliStringLinear:
         """
         Right Kroniker multiplication pauli string on linear combination
         of Pauli strings.
@@ -631,12 +639,13 @@ class PauliStringLinear(PauliString):
         return PauliStringLinear(new_combinations)
 
 
-    def adjoint_map(self, other:str|Self) -> Self:
+    def adjoint_map(self, other:object) -> Self:
         """
         Compute the adjoint map ad_A(B) = [A,B].
 
         Args:
             other: Linear combinations for the adjoint map.
+        Returns:
         Returns:
             None if the commutator is zero (i.e., if A and B commute).
             Otherwise, returns a PauliString proportional to the commutator.
@@ -685,7 +694,7 @@ class PauliStringLinear(PauliString):
         """
         raise PauliStringLinearException("Not implemented")
 
-    def get_commutants(self, generators:list[Self] = None) -> list[Self]:
+    def get_commutants(self, generators:list[Self]|None = None) -> list[Self]:
         """
         Get a list of linear combinations that commute with this string.
 
@@ -701,7 +710,7 @@ class PauliStringLinear(PauliString):
         raise PauliStringLinearException("Not implemented")
 
 
-    def get_anti_commutants(self, generators:list[Self] = None) -> list[Self]:
+    def get_anti_commutants(self, generators:list[Self]|None = None) -> list[Self]:
         """
         Get a list of Pauli strings that no-commute with this string.
 
@@ -718,7 +727,7 @@ class PauliStringLinear(PauliString):
         raise PauliStringLinearException("Not implemented")
 
 
-    def get_nested(self, generators:list[Self] = None) ->list[tuple[Self, Self]]:
+    def get_nested(self, generators:list[Self]|None = None) ->list[tuple[Self, Self]]:
         """
         Get nested of Pauli string
 
@@ -735,7 +744,7 @@ class PauliStringLinear(PauliString):
         # Retrieve the Pauli strings that anticommute with self.
         raise PauliStringLinearException("Not implemented")
 
-    def get_matrix(self) -> np.array:
+    def get_matrix(self) -> np.ndarray:
         """
         Get matrix representation for Pauli string.
 
@@ -746,7 +755,7 @@ class PauliStringLinear(PauliString):
         return reduce(lambda matrix, c: matrix + c[0] * c[1].get_matrix()
                       if matrix is not None else c[0] * c[1].get_matrix(), self, None)
 
-    def exponential(self) -> np.array:
+    def exponential(self) -> np.ndarray:
         """
         Get the exponential of a linear combination of Paulistrings  .
 
@@ -756,7 +765,7 @@ class PauliStringLinear(PauliString):
         matrix = self.get_matrix()
         return np.exp(matrix)
 
-    def simplify(self) -> Self:
+    def simplify(self) -> PauliString|PauliStringLinear|PauliStringCollection:
         """
         Combines terms with the same Pauli string by summing their coefficients.
         Removes terms with coefficients close to zero.
@@ -770,7 +779,7 @@ class PauliStringLinear(PauliString):
         if not self.combinations:
             return self
 
-        summed_coeffs = defaultdict(complex)
+        summed_coeffs:Dict[str, complex] = defaultdict(complex)
         for coeff, pauli in self.combinations:
             summed_coeffs[str(pauli)] += coeff
 
@@ -794,7 +803,7 @@ class PauliStringLinear(PauliString):
         Returns:
             Complex value of the trace.
         """
-        identity_coeff = 0.0  # Initialize the coefficient of the Identity operator
+        identity_coeff: complex = 0.0j  # Initialize the coefficient of the Identity operator
 
         # Loop through the terms to find the coefficient of the Identity string
         for coeff, pauli in self:
@@ -805,13 +814,13 @@ class PauliStringLinear(PauliString):
 
         # If there was no identity term, its coefficient is zero, so trace is zero.
         if identity_coeff == 0:
-            return 0.0
+            return 0.0j
 
         # Get the number of qubits, n
         num_qubits = self.get_size()
 
         # The trace is coeff * 2^n
-        return identity_coeff * (2**num_qubits)
+        return complex(identity_coeff * (2**num_qubits))
 
     # It should get the qubit count from its first Pauli string.
     def get_size(self) -> int:
@@ -847,8 +856,8 @@ class PauliStringLinear(PauliString):
         Pauli strings in the linear combination.
 
         Returns:
-            the Frobenius norm of the coefficient vector
+            Frobenius norm of the coefficient vector.
         """
         # Sum the squared magnitudes of all coefficients
         sum_of_squares = sum(abs(coeff)**2 for coeff, _ in self.combinations)
-        return np.sqrt(sum_of_squares)
+        return float(np.sqrt(sum_of_squares))
