@@ -366,7 +366,7 @@ class PauliStringLinear(PauliString):
         """
         return self.adjoint_map(other)
 
-    def __matmul__(self, other: object) -> PauliString|PauliStringLinear|PauliStringCollection:
+    def __matmul__(self, other: object) -> PauliString|PauliStringLinea:
         """
         Overloading @ operator of two Pauli strings like multiply
         Performs the distributive multiplication of two linear combinations of Pauli strings.
@@ -764,7 +764,7 @@ class PauliStringLinear(PauliString):
         matrix = self.get_matrix()
         return np.exp(matrix)
 
-    def simplify(self) -> PauliString|PauliStringLinear|PauliStringCollection:
+    def simplify(self) -> PauliString|PauliStringLinear:
         """
         Combines terms with the same Pauli string by summing their coefficients.
         Removes terms with coefficients close to zero.
