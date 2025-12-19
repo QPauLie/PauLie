@@ -366,7 +366,7 @@ class PauliStringLinear(PauliString):
         """
         return self.adjoint_map(other)
 
-    def __matmul__(self, other: object) -> PauliString|PauliStringLinea:
+    def __matmul__(self, other: object) -> PauliString|PauliStringLinear:
         """
         Overloading @ operator of two Pauli strings like multiply
         Performs the distributive multiplication of two linear combinations of Pauli strings.
@@ -445,7 +445,7 @@ class PauliStringLinear(PauliString):
         # Scalar multiplication is commutative, so we can just call our existing __mul__
         return self.__mul__(scalar)
 
-    def __mul__(self, scalar: complex) -> PauliString|PauliStringLinear|PauliStringCollection:
+    def __mul__(self, scalar: complex) -> PauliString|PauliStringLinear:
         """
         Performs scalar multiplication: self * scalar.
 
