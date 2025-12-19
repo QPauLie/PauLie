@@ -6,7 +6,6 @@ from typing import Self, Generator, Dict
 from six.moves import reduce
 import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
-from paulie.common.pauli_string_collection import PauliStringCollection
 
 
 class PauliStringLinearException(Exception):
