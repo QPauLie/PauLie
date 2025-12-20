@@ -564,7 +564,8 @@ class PauliString:
 
         return [g for g in generators if not self|g]
 
-    def get_nested(self, generators:list[PauliString]|None = None) ->list[tuple[PauliString, PauliString]]:
+    def get_nested(self, generators:list[PauliString]|None = None
+                   ) ->list[tuple[PauliString, PauliString]]:
         """
         Get nested of Pauli string.
 

@@ -633,9 +633,9 @@ class PauliStringCollection:
         Returns:
           Collection of all Pauli strings formed by a collection of generators.
         """
-        all_space = PauliStringCollection([g
-                                           for g in PauliString(n=self.get_len()).gen_all_pauli_strings()
-                                           if g != PauliString(n=self.get_len())])
+        all_space = PauliStringCollection(
+            [g for g in PauliString(n=self.get_len()).gen_all_pauli_strings()
+            if g != PauliString(n=self.get_len())])
         return self.select_dependents(all_space)
 
     def gen_generators(self) -> Generator[PauliStringCollection, None, None]:
@@ -759,7 +759,7 @@ class PauliStringCollection:
         Returns: Vertices, edges, and labels of edges.
         """
         if graph_type == 'anticommutator':
-            nodes, edges, edge_labels = self.get_graph(self)  # The anti-commutation graph
+            nodes, edges = self.get_graph(self)  # The anti-commutation graph
         elif graph_type == 'commutator':
             nodes, edges = self.get_commutator_graph()  # The commutator graph
         else:
