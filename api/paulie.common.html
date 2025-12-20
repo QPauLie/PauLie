@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Common &#8212; paulie 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=30674c74" />
+    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Classifier" href="paulie.classifier.html" />
+    <link rel="prev" title="Application" href="paulie.application.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="common">
+<h1>Common<a class="headerlink" href="#common" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.get_graph.get_graph">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.get_graph.</span></span><span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commutators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.get_graph.get_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Get anticommutator graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Array of PauliString.</p></li>
+<li><p><strong>commutators</strong> – Area of Pauli strings over which to build a graph.</p></li>
+<li><p><strong>flag_labels</strong> – Boolean indicating whether to include labels in the graph.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Vertices, edges, and labels of edges.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_bitarray.</span></span><span class="sig-name descname"><span class="pre">PauliString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representation of a Pauli string as a bitarray.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.adjoint_map">
+<span class="sig-name descname"><span class="pre">adjoint_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.adjoint_map" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the adjoint map ad_A(B) = [A,B].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – Pauli string to adjoint map with self.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None if the commutator is zero (i.e., if A and B commute).
+Otherwise, returns a PauliString proportional to the commutator.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – len(self.bits) != len(other.bits)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.commutes_with">
+<span class="sig-name descname"><span class="pre">commutes_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.commutes_with" title="Link to this definition">¶</a></dt>
+<dd><p>Check if this Pauli string commutes with another.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – Pauli string to commutes.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if they commute, False if they anticommute.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – len(self) != len(other)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.complex_conj">
+<span class="sig-name descname"><span class="pre">complex_conj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.complex_conj" title="Link to this definition">¶</a></dt>
+<dd><p>Get the complex conjugate of the Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Complex conjugate of the Pauli string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Copy Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Copy of self.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.create_instance">
+<span class="sig-name descname"><span class="pre">create_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.create_instance" title="Link to this definition">¶</a></dt>
+<dd><p>Create a Pauli string instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – Length of the Pauli string.</p></li>
+<li><p><strong>pauli_str</strong> – String representation of a Pauli string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Intensity of a Pauli string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.expand" title="Link to this definition">¶</a></dt>
+<dd><p>Increasing the size of the Pauli string
+by taking the tensor product with identities in the end.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – New Pauli string length.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pauli string of extend length.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.gen_all_pauli_strings">
+<span class="sig-name descname"><span class="pre">gen_all_pauli_strings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.gen_all_pauli_strings" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a list of Pauli strings that commute with this string.
+:Yields: Commutant of the Pauli string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_anti_commutants">
+<span class="sig-name descname"><span class="pre">get_anti_commutants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_anti_commutants" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of Pauli strings that no-commute with this string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Collection of Pauli strings on which commutant is searched.</p></li>
+<li><p><strong>specified</strong> (<em>If not</em>)</p></li>
+<li><p><strong>size.</strong> (<em>then the search area is all Pauli strings</em><em> of </em><em>the same</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of Pauli strings that no-commute with this string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_commutants">
+<span class="sig-name descname"><span class="pre">get_commutants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_commutants" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of Pauli strings that commute with this string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Collection of Pauli strings on which commutant is searched.</p></li>
+<li><p><strong>specified</strong> (<em>If not</em>)</p></li>
+<li><p><strong>size.</strong> (<em>then the search area is all Pauli strings</em><em> of </em><em>the same</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of Pauli strings that commute with this string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_count_non_trivially">
+<span class="sig-name descname"><span class="pre">get_count_non_trivially</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_count_non_trivially" title="Link to this definition">¶</a></dt>
+<dd><p>Get count non-trivially.
+:returns: Count non-trivially.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_diagonal_index">
+<span class="sig-name descname"><span class="pre">get_diagonal_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_diagonal_index" title="Link to this definition">¶</a></dt>
+<dd><p>Get index in diagonal matrix decomposition vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Index in matrix decomposition vector.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_index">
+<span class="sig-name descname"><span class="pre">get_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_index" title="Link to this definition">¶</a></dt>
+<dd><p>Get index in matrix decomposition vector.
+:returns: Index in matrix decomposition vector.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_matrix">
+<span class="sig-name descname"><span class="pre">get_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Get matrix representation for Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Matrix representation for the Pauli string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_nested">
+<span class="sig-name descname"><span class="pre">get_nested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_nested" title="Link to this definition">¶</a></dt>
+<dd><p>Get nested of Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Collection of Pauli strings on which commutant is searched.</p></li>
+<li><p><strong>specified</strong> (<em>If not</em>)</p></li>
+<li><p><strong>size.</strong> (<em>then the search area is all Pauli strings</em><em> of </em><em>the same</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nested of Pauli string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_substring">
+<span class="sig-name descname"><span class="pre">get_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_substring" title="Link to this definition">¶</a></dt>
+<dd><p>Get a substring of Paulis inside the Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> – Index to begin extracting the string.</p></li>
+<li><p><strong>length</strong> – Length of each substring.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Substring of the Pauli string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_weight_in_matrix">
+<span class="sig-name descname"><span class="pre">get_weight_in_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b_matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_weight_in_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Get weight in diagonal matrix decomposition vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>b_matrix</strong> – Matrix decomposition vector.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Weight in diagonal matrix decomposition vector.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Incorrect matrix size.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.inc">
+<span class="sig-name descname"><span class="pre">inc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.inc" title="Link to this definition">¶</a></dt>
+<dd><p>Pauli string increment operator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pauli string whose bit representation is greater than 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.is_identity">
+<span class="sig-name descname"><span class="pre">is_identity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.is_identity" title="Link to this definition">¶</a></dt>
+<dd><p>Check if this Pauli string is the identity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if self is the identity.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.multiply">
+<span class="sig-name descname"><span class="pre">multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.multiply" title="Link to this definition">¶</a></dt>
+<dd><p>Proportional multiplication operator of two Pauli strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – Pauli string to multiplication.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>PauliString proportional to the multiplication.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – len(self.bits) != len(other.bits)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.set_substring">
+<span class="sig-name descname"><span class="pre">set_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.set_substring" title="Link to this definition">¶</a></dt>
+<dd><p>Set substring starting at position <cite>start</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> – Index to begin the string.</p></li>
+<li><p><strong>pauli_string</strong> – Substring of PauliString.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.sign">
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.sign" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the phase of the product of two Pauli strings: self * other.
+The product is defined as P1 * P2 = phase * P3. This method returns the phase.</p>
+<p>This implementation uses the correct symplectic product formalism, which can
+be found in various literature, including the supplemental material of
+the paper referenced in the related GitHub issue.
+See also: arxiv.org:2405.19287</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>) – Pauli string to multiply with.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex phase of the product (1, -1, 1j, or -1j) .</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – len(self) != len(other)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.tensor">
+<span class="sig-name descname"><span class="pre">tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.tensor" title="Link to this definition">¶</a></dt>
+<dd><p>Tensor product of this Pauli string with another.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – Pauli string to tensor product.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result of the tensor product self on another.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_collection.</span></span><span class="sig-name descname"><span class="pre">PauliStringCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for a collection of Pauli strings with various features.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.append" title="Link to this definition">¶</a></dt>
+<dd><p>Append a specified Pauli string to the collection to the end.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> (<a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>) – Pauli string arbitrary for appending to the end.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.classify">
+<span class="sig-name descname"><span class="pre">classify</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.classify" title="Link to this definition">¶</a></dt>
+<dd><p>Build canonical graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Result of building canonical graphs corresponding to the direct sum Lie algebra.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.contract">
+<span class="sig-name descname"><span class="pre">contract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pauli_string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contracted_pauli_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.contract" title="Link to this definition">¶</a></dt>
+<dd><p>Contracting pauli string with other pauli string,
+pauli_string will be replaced on pauli_string &#64; contracted_pauli_string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pauli_string</strong> – Pauli string that will be replaced with the contract.</p></li>
+<li><p><strong>contracted_pauli_string</strong> – Contractable Pauli string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Copy collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Copy of self.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.create_instance">
+<span class="sig-name descname"><span class="pre">create_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.create_instance" title="Link to this definition">¶</a></dt>
+<dd><p>Create a new instance of the same type as the rest of the Pauli strings in the collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – Length of new Pauli string.</p></li>
+<li><p><strong>pauli_str</strong> – String representation of the Pauli string for new instance,</p></li>
+<li><p><strong>identity.</strong> (<em>if None then</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New created PauliString object.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollectionException" title="paulie.common.pauli_string_collection.PauliStringCollectionException"><strong>PauliStringCollectionException</strong></a> – Empty collection</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.expand" title="Link to this definition">¶</a></dt>
+<dd><p>Expands each string in the collection to specified length n
+by taking the tensor product with identities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – New length of Pauli string in collection.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pauli_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.find" title="Link to this definition">¶</a></dt>
+<dd><p>Find index pauli string in collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pauli_string</strong> – Pauli string for searching.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Index pauli string in collection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.find_generators_with_connection">
+<span class="sig-name descname"><span class="pre">find_generators_with_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_connections</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.find_generators_with_connection" title="Link to this definition">¶</a></dt>
+<dd><p>Get generators with connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>number_connections</strong> – Required number of connections.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Collection of generators with the required number of connections.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.gen_generators">
+<span class="sig-name descname"><span class="pre">gen_generators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.gen_generators" title="Link to this definition">¶</a></dt>
+<dd><p>Get generators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Generator of collections of generators of the same algebra as self.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get an array of Pauli strings of type PauliString corresponding to the generator elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of Pauli strings of type PauliString corresponding to the generator elements.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_algebra">
+<span class="sig-name descname"><span class="pre">get_algebra</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_algebra" title="Link to this definition">¶</a></dt>
+<dd><p>Get the dynamical Lie algebra generated by the set of Pauli strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dynamical Lie algebra generated by the set of Pauli strings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_anti_commutants">
+<span class="sig-name descname"><span class="pre">get_anti_commutants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_anti_commutants" title="Link to this definition">¶</a></dt>
+<dd><p>Get Pauli strings that do not commute with the entire collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Generators, Pauli string search list.</p></li>
+<li><p><strong>empty</strong> (<em>If</em>)</p></li>
+<li><p><strong>length.</strong> (<em>then all lines are the same</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Anti-commutant of the set of Pauli strings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_anti_commutates">
+<span class="sig-name descname"><span class="pre">get_anti_commutates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pauli_string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_anti_commutates" title="Link to this definition">¶</a></dt>
+<dd><p>Get a collection of non-commuting Pauli strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pauli_string</strong> – Pauli string to which commutators are defined.</p></li>
+<li><p><strong>generators</strong> – Area of Pauli strings over which to build a graph.</p></li>
+<li><p><strong>specified</strong> (<em>If not</em>)</p></li>
+<li><p><strong>collection.</strong> (<em>then</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Collection of non-commuting Pauli strings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_anticommutation_fraction">
+<span class="sig-name descname"><span class="pre">get_anticommutation_fraction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_anticommutation_fraction" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the fraction of anticommuting pairs of generators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Fraction of anticommuting pairs of generators.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_anticommutation_pair">
+<span class="sig-name descname"><span class="pre">get_anticommutation_pair</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_anticommutation_pair" title="Link to this definition">¶</a></dt>
+<dd><p>Get the number of anticommutation pair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of anticommutation pair.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_canonic_graph">
+<span class="sig-name descname"><span class="pre">get_canonic_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_canonic_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Get the canonical representation of a graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vertices, edges, and labels of edges.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_canonic_vertices">
+<span class="sig-name descname"><span class="pre">get_canonic_vertices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_canonic_vertices" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of canonic strings in the collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of canonic strings in the collection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_class">
+<span class="sig-name descname"><span class="pre">get_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_class" title="Link to this definition">¶</a></dt>
+<dd><p>Get the set of canonical graphs used for the classification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Set of canonical graphs used for the classification.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_commutants">
+<span class="sig-name descname"><span class="pre">get_commutants</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_commutants" title="Link to this definition">¶</a></dt>
+<dd><p>Get the set of Pauli strings that commute
+with ALL generators in this collection.
+This finds the linear symmetries L_j of the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PauliStringCollection of the set of Pauli strings
+that commute with ALL generators in this collection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_commutates">
+<span class="sig-name descname"><span class="pre">get_commutates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pauli_string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_commutates" title="Link to this definition">¶</a></dt>
+<dd><p>Get a collection of non-commuting Pauli strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pauli_string</strong> – Pauli string to which commutators are defined.</p></li>
+<li><p><strong>generators</strong> – Area of Pauli strings over which to build a graph.</p></li>
+<li><p><strong>specified</strong> (<em>If not</em>)</p></li>
+<li><p><strong>collection.</strong> (<em>then</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Collection of non-commuting Pauli strings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_commutator_graph">
+<span class="sig-name descname"><span class="pre">get_commutator_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_commutator_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Get the commutator graph whose vertices are all Paulistrings
+of a given dimension and an edge between two vertices exist
+if there is an element in the generator to which
+the one vertex anticommutes with to the other vertex.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vertices and edges.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_dependents">
+<span class="sig-name descname"><span class="pre">get_dependents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_dependents" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of dependent strings in the collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of dependent strings in the collection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_dla_dim">
+<span class="sig-name descname"><span class="pre">get_dla_dim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_dla_dim" title="Link to this definition">¶</a></dt>
+<dd><p>Get the dimension of the classified dynamical Lie algebra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dimension of the classified dynamical Lie algebra.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_frame_potential">
+<span class="sig-name descname"><span class="pre">get_frame_potential</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_frame_potential" title="Link to this definition">¶</a></dt>
+<dd><p>Get the frame potential of the system. The frame potential is a measure of quantum chaos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Frame potential of the system generated by the collection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_full_quadratic_basis">
+<span class="sig-name descname"><span class="pre">get_full_quadratic_basis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_full_quadratic_basis" title="Link to this definition">¶</a></dt>
+<dd><p>Public Method: Calculates the full basis of quadratic symmetries for this system.</p>
+<dl class="simple">
+<dt>This method performs the complete, high-level operation:</dt><dd><ol class="arabic simple">
+<li><p>Finds the linear symmetries (L_j) for this system.</p></li>
+<li><p>Finds the connected components (C_k) of this system’s commutator graph.</p></li>
+<li><p>Loops through each component and calls the internal helper to get the Q_kj.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>normalized</strong> (<em>bool</em>) – If True, returns an ORTHONORMAL basis.</p></li>
+<li><p><strong>False</strong> (<em>If</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of PauliStringLinear objects representing the basis.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_graph">
+<span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Get the anticommutation graph whose vertices are the generators
+and edges are determined by the commutator between the vertices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>generators</strong> – Area of Pauli strings over which to build a graph.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Vertices, edges, and labels of edges of the anticommutation graph.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_graph_components">
+<span class="sig-name descname"><span class="pre">get_graph_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'anticommutator'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_graph_components" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the connected components of the specified graph (anticommutator
+or commutator) constructed from the Pauli strings in the collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph_type</strong> (<em>str</em>) – Type of graph to use for finding components.</p></li>
+<li><p><strong>'anticommutator'</strong> (<em>Must be either</em>)</p></li>
+<li><p><strong>list</strong><strong>[</strong><strong>PauliStringCollection</strong><strong>]</strong> – List of PauliStringCollection objects,</p></li>
+<li><p><strong>graph.</strong> (<em>each representing a connected component</em><em> of </em><em>the selected</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If graph_type is not ‘anticommutator’ or ‘commutator’.</p>
+</dd>
+</dl>
+<p>Returns: Vertices, edges, and labels of edges.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_independents">
+<span class="sig-name descname"><span class="pre">get_independents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_independents" title="Link to this definition">¶</a></dt>
+<dd><p>Get independents</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of independent strings in the collection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_len">
+<span class="sig-name descname"><span class="pre">get_len</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_len" title="Link to this definition">¶</a></dt>
+<dd><p>Get the length of string in collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Length of string in collection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_pair">
+<span class="sig-name descname"><span class="pre">get_pair</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_pair" title="Link to this definition">¶</a></dt>
+<dd><p>Get the maximum possible number of pairs of vertices in the graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Maximum possible number of pairs of vertices in the graph.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_record" title="Link to this definition">¶</a></dt>
+<dd><p>Get the record of graph construction.
+Returns: Record of graph construction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_size">
+<span class="sig-name descname"><span class="pre">get_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_size" title="Link to this definition">¶</a></dt>
+<dd><p>Get the length of string in collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Length of string in collection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_space">
+<span class="sig-name descname"><span class="pre">get_space</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_space" title="Link to this definition">¶</a></dt>
+<dd><p>Get all space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Collection of all Pauli strings formed by a collection of generators.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_subgraphs">
+<span class="sig-name descname"><span class="pre">get_subgraphs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_subgraphs" title="Link to this definition">¶</a></dt>
+<dd><p>Get the subgraphs of the anticommutation graph induced by the connected components.
+:returns: List of connected subgraphs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.get_symmetries_for_component">
+<span class="sig-name descname"><span class="pre">get_symmetries_for_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">linear_symmetries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_symmetries_for_component" title="Link to this definition">¶</a></dt>
+<dd><p>Private helper: Computes the quadratic symmetries for THIS collection,
+assuming THIS collection is a single connected component (C_k)
+and is provided with a pre-computed list of linear symmetries (L_j).
+This method performs the inner loop of the full calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>linear_symmetries</strong> – Collection of linear symmetries.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of linear combinations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.index" title="Link to this definition">¶</a></dt>
+<dd><p>Get the index of a given Pauli string inside the collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – Pauli string for searching in collection.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Index of a given Pauli string inside the collection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.insert" title="Link to this definition">¶</a></dt>
+<dd><p>Insert a specified Pauli string to the collection at a specified position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> – Position to insert</p></li>
+<li><p><strong>p</strong> – Pauli string arbitrary length for inserting in position.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.is_algebra">
+<span class="sig-name descname"><span class="pre">is_algebra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algebra</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.is_algebra" title="Link to this definition">¶</a></dt>
+<dd><p>Checks whether the classified algebra complies with a given algebra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>algebra</strong> – Name of the algebra.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the collection forms the specified algebra.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.is_eq">
+<span class="sig-name descname"><span class="pre">is_eq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.is_eq" title="Link to this definition">¶</a></dt>
+<dd><p>Testing for equivalence of two algebras.
+All Pauli strings of one algebra are dependent on another.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>generators</strong> – Generator collection for checking.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True when two collections of generators are equivalent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.is_in">
+<span class="sig-name descname"><span class="pre">is_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.is_in" title="Link to this definition">¶</a></dt>
+<dd><p>Testing generators in algebra. All Pauli strings of one algebra are dependent on another.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong></p></li>
+<li><p><strong>checking.</strong> (<em>Generator collection for</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True when all generators can be obtained from DLA self.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.list_connections">
+<span class="sig-name descname"><span class="pre">list_connections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.list_connections" title="Link to this definition">¶</a></dt>
+<dd><p>Get list of connections.
+:returns: List of pairs of connected vertices in an anti-commutative graph.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.mul">
+<span class="sig-name descname"><span class="pre">mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.mul" title="Link to this definition">¶</a></dt>
+<dd><p>Multiplication on collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – First Pauli string collection to multiplication.</p></li>
+<li><p><strong>b</strong> – Second Pauli string collection to multiplication.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result of multiplication a * b.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.remove" title="Link to this definition">¶</a></dt>
+<dd><p>Remove a specified Pauli string from the collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – Pauli string for removing from collection.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.replace">
+<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pauli_string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_pauli_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.replace" title="Link to this definition">¶</a></dt>
+<dd><p>Replacing one Pauli string with another.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pauli_string</strong> – Pauli string that will be replaced.</p></li>
+<li><p><strong>new_pauli_string</strong> – New Pauli string on place the old Pauli string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.select_dependents">
+<span class="sig-name descname"><span class="pre">select_dependents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.select_dependents" title="Link to this definition">¶</a></dt>
+<dd><p>Select dependents from self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>generators</strong> – Generator collection for selecting.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Collection of dependent Pauli strings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.set_record">
+<span class="sig-name descname"><span class="pre">set_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.set_record" title="Link to this definition">¶</a></dt>
+<dd><p>In order to animate the transformations that lead to the canonical graph
+and thus to the classification, set record of type RecordGraph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>record</strong> – Record of type RecordGraph, recording the construction of canonical graphics.</p>
+</dd>
+</dl>
+<p>Returns: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.sort">
+<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.sort" title="Link to this definition">¶</a></dt>
+<dd><p>Sort the collection Pauli strings according to
+their bit value given by the bitarray representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollectionException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_collection.</span></span><span class="sig-name descname"><span class="pre">PauliStringCollectionException</span></span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollectionException" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception for the Pauli string collection class.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_factory.Used">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_factory.</span></span><span class="sig-name descname"><span class="pre">Used</span></span><a class="headerlink" href="#paulie.common.pauli_string_factory.Used" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Helper class for monitoring previously created Pauli strings</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_factory.Used.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_factory.Used.append" title="Link to this definition">¶</a></dt>
+<dd><p>Append to set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – Pauli string to append in the set.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_factory.Used.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_factory.Used.clear" title="Link to this definition">¶</a></dt>
+<dd><p>Clear set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_factory.Used.is_used">
+<span class="sig-name descname"><span class="pre">is_used</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_factory.Used.is_used" title="Link to this definition">¶</a></dt>
+<dd><p>Checking a Pauli string in a set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – Pauli string for checking in the used.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if Pauli string in a set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_factory.gen_k_local">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_factory.</span></span><span class="sig-name descname"><span class="pre">gen_k_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">used</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_factory.gen_k_local" title="Link to this definition">¶</a></dt>
+<dd><p>Generates k-local Pauli strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – Length of Paulistring.</p></li>
+<li><p><strong>p</strong> – Local Pauli string.</p></li>
+<li><p><strong>used</strong> – Repository of already generated strings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>k-local string generator.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – n &lt; len(p)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_factory.gen_k_local_generators">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_factory.</span></span><span class="sig-name descname"><span class="pre">gen_k_local_generators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">used</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_factory.gen_k_local_generators" title="Link to this definition">¶</a></dt>
+<dd><p>Generates k-local operators for a set of generators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – Length of Pauli string.</p></li>
+<li><p><strong>generators</strong> – Collection of Pauli strings.</p></li>
+<li><p><strong>used</strong> – Repository of already generated strings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>k-local string generator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_factory.get_identity">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_factory.</span></span><span class="sig-name descname"><span class="pre">get_identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_factory.get_identity" title="Link to this definition">¶</a></dt>
+<dd><p>Get an identity of a given length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – Length of Pauli string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Identity.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_factory.get_last">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_factory.</span></span><span class="sig-name descname"><span class="pre">get_last</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_factory.get_last" title="Link to this definition">¶</a></dt>
+<dd><p>Get an all Y of a given length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – Length of Pauli string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>All Y.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_factory.get_pauli_string">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_factory.</span></span><span class="sig-name descname"><span class="pre">get_pauli_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_factory.get_pauli_string" title="Link to this definition">¶</a></dt>
+<dd><p>Get Pauli strings in their current representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>o</strong> – a Pauli string or a collection of Pauli strings.</p></li>
+<li><p><strong>n</strong> – length of Pauli strings</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If o is a Pauli string, then its current instantiation value n is created
+otherwise PauliStringCollection is created - a collection of Pauli strings.
+Given n, the collection is expanded as k-local.
+Where k is the maximum length of a Pauli string in a given collection</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_factory.get_single">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_factory.</span></span><span class="sig-name descname"><span class="pre">get_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_factory.get_single" title="Link to this definition">¶</a></dt>
+<dd><p>Get a Pauli string with a single value at position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – Length of Pauli string.</p></li>
+<li><p><strong>i</strong> – Position in Pauli string.</p></li>
+<li><p><strong>label</strong> – PauliString in single position.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>PauliString with set label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_linear.</span></span><span class="sig-name descname"><span class="pre">PauliStringLinear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">combinations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><code class="xref py py-class docutils literal notranslate"><span class="pre">PauliString</span></code></a></p>
+<p>Representation of a linear combination of Pauli string.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.adjoint_map">
+<span class="sig-name descname"><span class="pre">adjoint_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.adjoint_map" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the adjoint map ad_A(B) = [A,B].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – Linear combinations for the adjoint map.</p>
+</dd>
+</dl>
+<p>Returns:
+:returns: None if the commutator is zero (i.e., if A and B commute).</p>
+<blockquote>
+<div><p>Otherwise, returns a PauliString proportional to the commutator.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="paulie.common.pauli_string_linear.PauliStringLinearException"><strong>PauliStringLinearException</strong></a> – Not implemented</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.commutes_with">
+<span class="sig-name descname"><span class="pre">commutes_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.commutes_with" title="Link to this definition">¶</a></dt>
+<dd><p>Check if this Pauli string commutes with another.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – Linear combinations for checking commutes.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if they commute, False if they anticommute.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Copy Linear combination of Pauli strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Copy of self.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.expand" title="Link to this definition">¶</a></dt>
+<dd><p>Increasing the size of the Pauli string by taking the tensor product
+with identities in the end.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – New Pauli string length.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pauli string of extend length.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="paulie.common.pauli_string_linear.PauliStringLinearException"><strong>PauliStringLinearException</strong></a> – Not implemented</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.exponential">
+<span class="sig-name descname"><span class="pre">exponential</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.exponential" title="Link to this definition">¶</a></dt>
+<dd><p>Get the exponential of a linear combination of Paulistrings  .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Exponential of a linear combination of Paulistrings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.gen_all_pauli_strings">
+<span class="sig-name descname"><span class="pre">gen_all_pauli_strings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.gen_all_pauli_strings" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a list of Pauli strings that commute with this string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Yields<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Commutant of the Pauli string</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="paulie.common.pauli_string_linear.PauliStringLinearException"><strong>PauliStringLinearException</strong></a> – Not implemented</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.get_anti_commutants">
+<span class="sig-name descname"><span class="pre">get_anti_commutants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_anti_commutants" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of Pauli strings that no-commute with this string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Collection of Pauli strings on which commutant is searched.</p></li>
+<li><p><strong>specified</strong> (<em>If not</em>)</p></li>
+<li><p><strong>size.</strong> (<em>then the search area is all Pauli strings</em><em> of </em><em>the same</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of Pauli strings that no-commute with this string.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="paulie.common.pauli_string_linear.PauliStringLinearException"><strong>PauliStringLinearException</strong></a> – Not implemented</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.get_commutants">
+<span class="sig-name descname"><span class="pre">get_commutants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_commutants" title="Link to this definition">¶</a></dt>
+<dd><p>Get a list of linear combinations that commute with this string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Collection of Pauli strings on which commutant is searched.</p></li>
+<li><p><strong>specified</strong> (<em>If not</em>)</p></li>
+<li><p><strong>size.</strong> (<em>then the search area is all Pauli strings</em><em> of </em><em>the same</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of linear combinations that commute with this string.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="paulie.common.pauli_string_linear.PauliStringLinearException"><strong>PauliStringLinearException</strong></a> – Not implemented</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.get_matrix">
+<span class="sig-name descname"><span class="pre">get_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Get matrix representation for Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Matrix representation for the Pauli string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.get_nested">
+<span class="sig-name descname"><span class="pre">get_nested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_nested" title="Link to this definition">¶</a></dt>
+<dd><p>Get nested of Pauli string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generators</strong> – Collection of Pauli strings on which nested is searched.</p></li>
+<li><p><strong>specified</strong> (<em>If not</em>)</p></li>
+<li><p><strong>size.</strong> (<em>then the search area is all Pauli strings</em><em> of </em><em>the same</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nested of Pauli string.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="paulie.common.pauli_string_linear.PauliStringLinearException"><strong>PauliStringLinearException</strong></a> – Not implemented</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.get_size">
+<span class="sig-name descname"><span class="pre">get_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_size" title="Link to this definition">¶</a></dt>
+<dd><p>Get the length of the Pauli Strings in this linear combination.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Length of the Pauli Strings in this linear combination.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.get_substring">
+<span class="sig-name descname"><span class="pre">get_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_substring" title="Link to this definition">¶</a></dt>
+<dd><p>Get a substring of Paulis inside the Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> – Index to begin extracting the string.</p></li>
+<li><p><strong>length</strong> – Length of each substring.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>substring of the Pauli string.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="paulie.common.pauli_string_linear.PauliStringLinearException"><strong>PauliStringLinearException</strong></a> – Not implemented</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.h">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">h</span></span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.h" title="Link to this definition">¶</a></dt>
+<dd><p>Get the Hermitian conjugate of this linear combination.
+This is found by taking the complex conjugate of all coefficients,
+as the Pauli matrices themselves are Hermitian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Hermitian conjugate of this linear combination.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.inc">
+<span class="sig-name descname"><span class="pre">inc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.inc" title="Link to this definition">¶</a></dt>
+<dd><p>Pauli string increment operator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pauli string whose bit representation is greater than 1.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="paulie.common.pauli_string_linear.PauliStringLinearException"><strong>PauliStringLinearException</strong></a> – Not implemented</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.is_identity">
+<span class="sig-name descname"><span class="pre">is_identity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.is_identity" title="Link to this definition">¶</a></dt>
+<dd><p>Check if this Pauli string is the identity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if self is the identity.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="paulie.common.pauli_string_linear.PauliStringLinearException"><strong>PauliStringLinearException</strong></a> – Not implemented</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.is_zero">
+<span class="sig-name descname"><span class="pre">is_zero</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.is_zero" title="Link to this definition">¶</a></dt>
+<dd><p>Check if the linear combination is effectively zero.
+This can be done by checking if all coefficients are close to zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the linear combination is zero, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.kron">
+<span class="sig-name descname"><span class="pre">kron</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.kron" title="Link to this definition">¶</a></dt>
+<dd><p>Kroniker multiplication pauli string on linear combination
+of Pauli strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – Linear combinations for Kroniker multiplication.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Linera combination of PauliString.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.multiply">
+<span class="sig-name descname"><span class="pre">multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.multiply" title="Link to this definition">¶</a></dt>
+<dd><p>Multiplication operator of two linear combination
+of Pauli strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – Linear combinations for multiplication.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>PauliString proportional to the multiplication.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.norm">
+<span class="sig-name descname"><span class="pre">norm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.norm" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the Frobenius norm of the coefficient vector.
+The norm is <span class="math notranslate nohighlight">\(sqrt(∑ |cᵢ|²)\)</span>, where cᵢ are the coefficients of the
+Pauli strings in the linear combination.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Frobenius norm of the coefficient vector.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.quadratic">
+<span class="sig-name descname"><span class="pre">quadratic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.quadratic" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the quadratic form Q_j = ∑_{S ∈ self} S ⊗ (L_j*S)
+where <cite>self</cite> represents the component C_k = ∑S, and <cite>basis</cite> is the
+linear symmetry L_j.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>basis</strong> – Linear symmetry L_j.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Linear combination of PauliString.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.rkron">
+<span class="sig-name descname"><span class="pre">rkron</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.rkron" title="Link to this definition">¶</a></dt>
+<dd><p>Right Kroniker multiplication pauli string on linear combination
+of Pauli strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – Linear combinations for right Kroniker multiplication.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Linera comination of PauliString.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.set_substring">
+<span class="sig-name descname"><span class="pre">set_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.set_substring" title="Link to this definition">¶</a></dt>
+<dd><p>Set substring starting at position <cite>start</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> – Index to begin the string.</p></li>
+<li><p><strong>pauli_string</strong> – Substring of PauliString.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="paulie.common.pauli_string_linear.PauliStringLinearException"><strong>PauliStringLinearException</strong></a> – Not implemented</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.simplify">
+<span class="sig-name descname"><span class="pre">simplify</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.simplify" title="Link to this definition">¶</a></dt>
+<dd><p>Combines terms with the same Pauli string by summing their coefficients.
+Removes terms with coefficients close to zero.
+This version assumes the PauliStringLinear object is directly iterable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Linear combination.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.tensor">
+<span class="sig-name descname"><span class="pre">tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.tensor" title="Link to this definition">¶</a></dt>
+<dd><p>Tensor product of this linear combination with another.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – Linear combinations to tensor product.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result of the tensor product self on others.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="paulie.common.pauli_string_linear.PauliStringLinearException"><strong>PauliStringLinearException</strong></a> – Not implemented</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinear.trace">
+<span class="sig-name descname"><span class="pre">trace</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinear.trace" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the trace of the operator represented by this linear combination.</p>
+<p>The trace is non-zero only if the Identity operator is present in the sum.
+Tr(self) = (coefficient of Identity) * 2^n.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Complex value of the trace.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_linear.PauliStringLinearException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_linear.</span></span><span class="sig-name descname"><span class="pre">PauliStringLinearException</span></span><a class="headerlink" href="#paulie.common.pauli_string_linear.PauliStringLinearException" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception for the linear combination of Pauli strings class.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_parser.pauli_string_parser">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_parser.</span></span><span class="sig-name descname"><span class="pre">pauli_string_parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pauli_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_parser.pauli_string_parser" title="Link to this definition">¶</a></dt>
+<dd><p>Parse a Pauli string representation and return the expanded form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pauli_string</strong> (<em>str</em>) – String representation like “X_4s10”, “ZYX_4s10”, etc.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Expanded Pauli string with I’s in unspecified positions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the input string format is invalid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.random_pauli_strings.get_random">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.random_pauli_strings.</span></span><span class="sig-name descname"><span class="pre">get_random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.random_pauli_strings.get_random" title="Link to this definition">¶</a></dt>
+<dd><p>Get random Pauli String length n.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – Length of Pauli string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Random Pauli string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.random_pauli_strings.get_random_k_local">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.random_pauli_strings.</span></span><span class="sig-name descname"><span class="pre">get_random_k_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.random_pauli_strings.get_random_k_local" title="Link to this definition">¶</a></dt>
+<dd><p>Get random k local Pauli String length n.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – Length of locality.</p></li>
+<li><p><strong>n</strong> – Length of Pauli string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Random k local Pauli String length n.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError if k &gt; n.</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.random_pauli_strings.get_random_list">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.random_pauli_strings.</span></span><span class="sig-name descname"><span class="pre">get_random_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.random_pauli_strings.get_random_list" title="Link to this definition">¶</a></dt>
+<dd><p>Get random list of Pauli String length n.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – Length of Pauli string.</p></li>
+<li><p><strong>size</strong> – Size of array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Random list of Pauli String length n.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.two_local_generators.get_lie_algebra">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.two_local_generators.</span></span><span class="sig-name descname"><span class="pre">get_lie_algebra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.two_local_generators.get_lie_algebra" title="Link to this definition">¶</a></dt>
+<dd><p>Get generators of Lie algebra by name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name of Lie algebra</p>
+</dd>
+</dl>
+<p>Returns: generators of Lie algebra by name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.two_local_generators.get_lie_algebras">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.two_local_generators.</span></span><span class="sig-name descname"><span class="pre">get_lie_algebras</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.two_local_generators.get_lie_algebras" title="Link to this definition">¶</a></dt>
+<dd><p>Get the dictionary of generators of Lie algebras.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the dictionary of generators of Lie algebras.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paulie.common.two_local_generators.two_local_algebras">
+<span class="sig-prename descclassname"><span class="pre">paulie.common.two_local_generators.</span></span><span class="sig-name descname"><span class="pre">two_local_algebras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.two_local_generators.two_local_algebras" title="Link to this definition">¶</a></dt>
+<dd><p>Get a dictionary of the DLAs n&gt;=3</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – a length of Pauli string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a dictionary of the DLAs n&gt;=3</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">paulie</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification.html">Classification of Pauli DLAs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commutator_graph.html">Commutator graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../average_graph_complexity.html">Average graph complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../matrix_decomposition.html">Matrix decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimal_universal_generators.html">Optimal universal generator sets</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="paulie.application.html">Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Common</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.get_graph.get_graph"><code class="docutils literal notranslate"><span class="pre">get_graph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString"><code class="docutils literal notranslate"><span class="pre">PauliString</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.adjoint_map"><code class="docutils literal notranslate"><span class="pre">PauliString.adjoint_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.commutes_with"><code class="docutils literal notranslate"><span class="pre">PauliString.commutes_with()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.complex_conj"><code class="docutils literal notranslate"><span class="pre">PauliString.complex_conj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.copy"><code class="docutils literal notranslate"><span class="pre">PauliString.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.create_instance"><code class="docutils literal notranslate"><span class="pre">PauliString.create_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.expand"><code class="docutils literal notranslate"><span class="pre">PauliString.expand()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.gen_all_pauli_strings"><code class="docutils literal notranslate"><span class="pre">PauliString.gen_all_pauli_strings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.get_anti_commutants"><code class="docutils literal notranslate"><span class="pre">PauliString.get_anti_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.get_commutants"><code class="docutils literal notranslate"><span class="pre">PauliString.get_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.get_count_non_trivially"><code class="docutils literal notranslate"><span class="pre">PauliString.get_count_non_trivially()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.get_diagonal_index"><code class="docutils literal notranslate"><span class="pre">PauliString.get_diagonal_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.get_index"><code class="docutils literal notranslate"><span class="pre">PauliString.get_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.get_matrix"><code class="docutils literal notranslate"><span class="pre">PauliString.get_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.get_nested"><code class="docutils literal notranslate"><span class="pre">PauliString.get_nested()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.get_substring"><code class="docutils literal notranslate"><span class="pre">PauliString.get_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.get_weight_in_matrix"><code class="docutils literal notranslate"><span class="pre">PauliString.get_weight_in_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.inc"><code class="docutils literal notranslate"><span class="pre">PauliString.inc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.is_identity"><code class="docutils literal notranslate"><span class="pre">PauliString.is_identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.multiply"><code class="docutils literal notranslate"><span class="pre">PauliString.multiply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.set_substring"><code class="docutils literal notranslate"><span class="pre">PauliString.set_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.sign"><code class="docutils literal notranslate"><span class="pre">PauliString.sign()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString.tensor"><code class="docutils literal notranslate"><span class="pre">PauliString.tensor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.append"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.classify"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.classify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.contract"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.contract()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.copy"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.create_instance"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.create_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.expand"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.expand()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.find"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.find()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.find_generators_with_connection"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.find_generators_with_connection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.gen_generators"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.gen_generators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_algebra"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_algebra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_anti_commutants"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_anti_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_anti_commutates"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_anti_commutates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_anticommutation_fraction"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_anticommutation_fraction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_anticommutation_pair"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_anticommutation_pair()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_canonic_graph"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_canonic_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_canonic_vertices"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_canonic_vertices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_class"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_commutants"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_commutates"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_commutates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_commutator_graph"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_commutator_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_dependents"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_dependents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_dla_dim"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_dla_dim()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_frame_potential"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_frame_potential()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_full_quadratic_basis"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_full_quadratic_basis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_graph"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_graph_components"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_graph_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_independents"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_independents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_len"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_len()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_pair"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_pair()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_record"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_record()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_size"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_space"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_space()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_subgraphs"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_subgraphs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.get_symmetries_for_component"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.get_symmetries_for_component()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.index"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.insert"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.insert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.is_algebra"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.is_algebra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.is_eq"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.is_eq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.is_in"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.is_in()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.list_connections"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.list_connections()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.mul"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.mul()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.remove"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.replace"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.replace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.select_dependents"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.select_dependents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.set_record"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.set_record()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.sort"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.sort()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollectionException"><code class="docutils literal notranslate"><span class="pre">PauliStringCollectionException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_factory.Used"><code class="docutils literal notranslate"><span class="pre">Used</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_factory.Used.append"><code class="docutils literal notranslate"><span class="pre">Used.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_factory.Used.clear"><code class="docutils literal notranslate"><span class="pre">Used.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_factory.Used.is_used"><code class="docutils literal notranslate"><span class="pre">Used.is_used()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_factory.gen_k_local"><code class="docutils literal notranslate"><span class="pre">gen_k_local()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_factory.gen_k_local_generators"><code class="docutils literal notranslate"><span class="pre">gen_k_local_generators()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_factory.get_identity"><code class="docutils literal notranslate"><span class="pre">get_identity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_factory.get_last"><code class="docutils literal notranslate"><span class="pre">get_last()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_factory.get_pauli_string"><code class="docutils literal notranslate"><span class="pre">get_pauli_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_factory.get_single"><code class="docutils literal notranslate"><span class="pre">get_single()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.adjoint_map"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.adjoint_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.commutes_with"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.commutes_with()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.copy"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.expand"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.expand()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.exponential"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.exponential()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.gen_all_pauli_strings"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.gen_all_pauli_strings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_anti_commutants"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_anti_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_commutants"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_commutants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_matrix"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_nested"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_nested()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_size"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.get_substring"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.get_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.h"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.h</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.inc"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.inc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.is_identity"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.is_identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.is_zero"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.is_zero()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.kron"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.kron()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.multiply"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.multiply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.norm"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.norm()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.quadratic"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.quadratic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.rkron"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.rkron()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.set_substring"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.set_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.simplify"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.simplify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.tensor"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.tensor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinear.trace"><code class="docutils literal notranslate"><span class="pre">PauliStringLinear.trace()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_linear.PauliStringLinearException"><code class="docutils literal notranslate"><span class="pre">PauliStringLinearException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.pauli_string_parser.pauli_string_parser"><code class="docutils literal notranslate"><span class="pre">pauli_string_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.random_pauli_strings.get_random"><code class="docutils literal notranslate"><span class="pre">get_random()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.random_pauli_strings.get_random_k_local"><code class="docutils literal notranslate"><span class="pre">get_random_k_local()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.random_pauli_strings.get_random_list"><code class="docutils literal notranslate"><span class="pre">get_random_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.two_local_generators.get_lie_algebra"><code class="docutils literal notranslate"><span class="pre">get_lie_algebra()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.two_local_generators.get_lie_algebras"><code class="docutils literal notranslate"><span class="pre">get_lie_algebras()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paulie.common.two_local_generators.two_local_algebras"><code class="docutils literal notranslate"><span class="pre">two_local_algebras()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.html">Classifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.helpers.html">Helpers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to PauLie</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AmanieOxana/PauLie">Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/unitary-fund-764231928676089909">Discord</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">API Reference</a><ul>
+      <li>Previous: <a href="paulie.application.html" title="previous chapter">Application</a></li>
+      <li>Next: <a href="paulie.classifier.html" title="next chapter">Classifier</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, PauLie contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/api/paulie.common.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
