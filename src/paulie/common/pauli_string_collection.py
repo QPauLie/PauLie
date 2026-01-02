@@ -759,7 +759,7 @@ class PauliStringCollection:
         Returns: Vertices, edges, and labels of edges.
         """
         if graph_type == 'anticommutator':
-            nodes, edges, edge_labels = self.get_graph(self)  # The anti-commutation graph
+            nodes, edges, _edge_labels = self.get_graph(self)  # The anti-commutation graph
         elif graph_type == 'commutator':
             nodes, edges = self.get_commutator_graph()  # The commutator graph
         else:
