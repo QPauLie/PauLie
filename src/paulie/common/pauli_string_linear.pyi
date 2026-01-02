@@ -5,7 +5,7 @@ from typing import Generator, Self
 
 class PauliStringLinearException(Exception): ...
 
-class PauliStringLinear(PauliString):
+class PauliStringLinear(PauliString): # type: ignore[misc]
     nextpos: int
     combinations: Incomplete
     def __init__(self, combinations: list[tuple[complex, str | PauliString]]) -> None: ...
