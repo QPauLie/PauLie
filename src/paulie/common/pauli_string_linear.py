@@ -502,7 +502,7 @@ class PauliStringLinear(PauliString):
                 new_combinations.append((c[0]*o[0]*c[1].sign(o[1]), c[1]@o[1]))
         return PauliStringLinear(new_combinations)
 
-    def commutes_with(self, other:object) -> bool:
+    def commutes_with(self, other:PauliString) -> bool:
         """
         Check if this Pauli string commutes with another.
 
@@ -752,7 +752,9 @@ class PauliStringLinear(PauliString):
         """
 
         return reduce(lambda matrix, c: matrix + c[0] * c[1].get_matrix()
-                      if matrix is not None else c[0] * c[1].get_matrix(), self, None)
+                      if matrix is not None else c[0] * c[1].get_matrix(),
+                      self,
+                      np.zeros_like(self[0][1].get_matrix()))
 
     def exponential(self) -> np.ndarray:
         """
@@ -762,7 +764,7 @@ class PauliStringLinear(PauliString):
             Exponential of a linear combination of Paulistrings.
         """
         matrix = self.get_matrix()
-        return np.exp(matrix)
+        return np.asarray(np.exp(matrix))
 
     def simplify(self) -> PauliString|PauliStringLinear:
         """

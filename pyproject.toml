@@ -75,17 +75,14 @@ warn_unused_ignores = true
 warn_redundant_casts = true
 check_untyped_defs = false
 disallow_incomplete_defs = false
+ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = ["paulie.common.*"]
 check_untyped_defs = true
 disallow_incomplete_defs = true
-warn_redundant_casts = true
-warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
 module = ["paulie.classifier.classification"]
 check_untyped_defs = true
 disallow_incomplete_defs = true
-warn_redundant_casts = true
-warn_unused_ignores = true
