@@ -15,9 +15,9 @@ Once you have `poetry` installed, run:
     poetry install
     poetry shell
 
-----------
+-----------
 Development
-----------
+-----------
 ### Typing
 
 Check types and catch errors with mypy:
