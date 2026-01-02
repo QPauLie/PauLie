@@ -14,3 +14,14 @@ Once you have `poetry` installed, run:
 
     poetry install
     poetry shell
+
+-----------
+Development
+-----------
+### Typing
+
+Check types and catch errors with mypy:
+
+.. code-block:: bash
+
+    poetry run mypy src/paulie/common src/paulie/classifier/classification.py

@@ -43,4 +43,11 @@ In order to run the test suite, run:
 poetry run python -m pytest
 ```
 
+### Type Checking
+
+Check for type errors, improve readability, and assist IDEs, run:
+
+```sh
+poetry run mypy src/paulie/common src/paulie/classifier/classification.py
+```
 
