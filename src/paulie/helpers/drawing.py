@@ -14,12 +14,12 @@ def plot_graph(vertices:list[str],
                edges:list[tuple[str,str]],
                edge_labels:dict[tuple[str,str],str] = None) -> None:
     """
-    Plot graph.
+    Plot an arbitrary graph.
 
     Args:
         vertices: List of vertices.
         edges: List of edges.
-        edge_labels: List of labels.
+        edge_labels: List of edge labels.
     Returns:
         None
     """
@@ -32,23 +32,6 @@ def plot_graph(vertices:list[str],
     nx.draw_networkx(graph, pos=pos)
     plt.show()
 
-
-def plot_graph_by_nodes(nodes:PauliStringCollection,
-                        commutators:PauliStringCollection|list[PauliString]=None
-) -> None:
-    """
-    Plot graph by nodes.
-
-    Args:
-        nodes: Collection of Pauli strings.
-        commutators: Collection of commutators (Pauli strings).
-    Returns:
-        None
-    """
-    if not commutators:
-        commutators = []
-    vertices, edges, edge_labels = nodes.get_graph(nodes, commutators)
-    return plot_graph(vertices, edges, edge_labels)
 
 def animation_graph(record: RecordGraph, interval:int=1000,
                     repeat:bool=False, storage:dict[str,str]=None

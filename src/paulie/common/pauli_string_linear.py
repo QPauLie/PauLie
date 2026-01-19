@@ -1,4 +1,6 @@
-"""Representation of a Pauli string as a bitarray."""
+"""
+Representation of a Pauli string as a bitarray.
+"""
 from __future__ import annotations
 from collections import defaultdict
 from typing import Self, Generator, Dict

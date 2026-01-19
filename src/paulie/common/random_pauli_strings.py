@@ -2,7 +2,6 @@
 A string representation of all Pauli strings of a given size. Needed to search for commutators.
 A bitarray is used for this as a simple way to sequentially increase Pauli strings.
 """
-
 from random import randint, choice
 
 
