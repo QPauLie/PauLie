@@ -5,7 +5,7 @@ Classifier
    :members:
    :show-inheritance:
 
-.. autoclass:: paulie.classifier.classification.ClassificatonException
+.. autoclass:: paulie.classifier.classification.ClassificationException
    :members:
    :show-inheritance:
 

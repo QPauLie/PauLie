@@ -1,6 +1,7 @@
 """
 Recording of building graph
 """
+
 import numpy as np
 from paulie.common.get_graph import get_graph
 from paulie.common.pauli_string_bitarray import PauliString

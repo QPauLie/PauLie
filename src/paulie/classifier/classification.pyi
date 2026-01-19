@@ -3,7 +3,7 @@ from _typeshed import Incomplete
 from paulie.common.pauli_string_bitarray import PauliString as PauliString
 from typing import Generator
 
-class ClassificatonException(Exception): ...
+class ClassificationException(Exception): ...
 
 class TypeGraph(enum.Enum):
     A = 0
