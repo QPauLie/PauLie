@@ -9,6 +9,7 @@ import numpy as np
 from paulie.helpers.recording import RecordGraph
 from paulie.common.pauli_string_collection import PauliStringCollection
 from paulie.common.pauli_string_bitarray import PauliString
+from paulie.common.get_graph import get_graph
 
 def plot_graph(vertices:list[str],
                edges:list[tuple[str,str]],
@@ -47,7 +48,7 @@ def plot_graph_by_nodes(nodes:PauliStringCollection,
     """
     if not commutators:
         commutators = []
-    vertices, edges, edge_labels = nodes.get_graph(nodes, commutators)
+    vertices, edges, edge_labels = get_graph(nodes, commutators)
     return plot_graph(vertices, edges, edge_labels)
 
 def animation_graph(record: RecordGraph, interval:int=1000,
