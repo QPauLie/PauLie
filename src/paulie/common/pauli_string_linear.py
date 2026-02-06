@@ -610,7 +610,8 @@ class PauliStringLinear(PauliString):
 
     def quadratic(self, basis: Self) -> Self:
         """
-        Computes the quadratic form :math:`Q_{j} = \\sum_{S \\in \\mathrm{self}} S \\otimes (L_{j} * S)`
+        Computes the quadratic form :math:`Q_{j} = \\sum_{S \\in
+        \\mathrm{self}} S \\otimes (L_{j} * S)`
         where `self` represents the component :math:`C_{k} = \\sum S`, and `basis` is the
         linear symmetry :math:`L_{j}`.
 
