@@ -10,7 +10,11 @@ from paulie.common.pauli_string_bitarray import PauliString
 def quantum_fourier_entropy(o: np.ndarray) -> float:
     """
     Calculates the quantum Fourier entropy of an operator O.
-    H(O) = -sum_P c_P**2 * log(c_P**2)
+
+    .. math::
+
+        H(O) = -\\sum_{P} c_{P}^{2} * \\log c_{P}^{2}
+
     """
     # Get the coefficients c_P from the Pauli decomposition
     c_p = matrix_decomposition(o)
@@ -24,9 +28,13 @@ def quantum_fourier_entropy(o: np.ndarray) -> float:
 
 
 def avg_pauli_weights(o: np.ndarray) -> np.ndarray:
-    r"""
+    """
     Calculate the average Pauli weights of an operator O.
-    I(O) = sum_P \|P\| * c_P**2
+
+    .. math::
+
+        I(O) = \\sum_{P} |P| * c_{P}^{2}
+
     """
     # Get the coefficients c_P from the Pauli decomposition
     c_ps = matrix_decomposition(o)
@@ -46,10 +54,14 @@ def avg_pauli_weights(o: np.ndarray) -> np.ndarray:
 
 
 def avg_pauli_weights_from_strings(o: np.ndarray, pauli_strings: list) -> np.ndarray:
-    r"""
+    """
     Calculate the average Pauli weights of an operator O, given a list of Pauli strings.:
     This is useful to reduce the calculation, when testing.
-    I(O) = sum_P \|P\| * c_P**2
+
+    .. math::
+
+        I(O) = \\sum_{P} |P| * c_{P}^{2}
+
     """
     # Get the coefficients c_P from the Pauli decomposition
     c_ps = matrix_decomposition(o)
@@ -69,8 +81,8 @@ def avg_pauli_weights_from_strings(o: np.ndarray, pauli_strings: list) -> np.nda
 
 
 def get_pauli_weights(num_qubits: int, identity_pos: int=0) -> np.ndarray:
-    r"""
-    Generates the weight \|P\| for each of the 4**num_qubits Pauli operators.
+    """
+    Generates the weight :math:`|P|` for each of the :math:`4^{\\text{number qubits}}` Pauli operators.
     The weight is the number of non-identity terms in the Pauli string.
     The ordering corresponds to the output of matrix_decomposition, default is 'I' at position 0.
     """
@@ -88,9 +100,13 @@ def get_pauli_weights(num_qubits: int, identity_pos: int=0) -> np.ndarray:
     return weights
 
 def average_pauli_weight(o: np.ndarray, weights: np.ndarray) -> float:
-    r"""
+    """
     Calculates the average Pauli weight (influence) for an operator O.
-    I(O) = sum_P \|P\| * c_P**2
+
+    .. math::
+
+        I(O) = \\sum_{P} |P| * c_{P}^{2}
+
     """
     # Get the coefficients c_P from the Pauli decomposition
     coeffs = matrix_decomposition(o)
