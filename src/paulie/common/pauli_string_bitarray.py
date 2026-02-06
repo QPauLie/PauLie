@@ -28,7 +28,6 @@ class PauliString:
                  bits: bitarray | None = None) -> None:
         """Initialize a Pauli string.
 
-
         Args:
             n: Length of the Pauli string.
             pauli_str: String representation of a Pauli string.
@@ -53,6 +52,7 @@ class PauliString:
     def get_index(self) -> int:
         """
         Get index in matrix decomposition vector.
+
         Returns:
             Index in matrix decomposition vector.
         """
@@ -264,6 +264,7 @@ class PauliString:
     def __copy__(self) -> PauliString:
         """
         Pauli string copy operator.
+
         Returns:
             Copy of self.
         """
@@ -465,7 +466,7 @@ class PauliString:
 
     def adjoint_map(self, other:object) -> PauliString|None:
         """
-        Compute the adjoint map ad_A(B) = [A,B].
+        Compute the adjoint map :math:`\\mathrm{ad}_{A}(B) = [A, B]`.
 
         Args:
             other: Pauli string to adjoint map with self.
