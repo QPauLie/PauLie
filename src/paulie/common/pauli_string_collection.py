@@ -390,7 +390,7 @@ class PauliStringCollection:
         """
         Get the set of Pauli strings that commute
         with ALL generators in this collection.
-        This finds the linear symmetries L_j of the system.
+        This finds the linear symmetries ::math:`L_{j}` of the system.
 
         Returns:
             PauliStringCollection of the set of Pauli strings
@@ -796,8 +796,8 @@ class PauliStringCollection:
     ) -> list[PauliStringLinear]:
         """
         Private helper: Computes the quadratic symmetries for THIS collection,
-        assuming THIS collection is a single connected component (C_k)
-        and is provided with a pre-computed list of linear symmetries (L_j).
+        assuming THIS collection is a single connected component :math:`(C_{k})`
+        and is provided with a pre-computed list of linear symmetries :math:`(L_{j})`.
         This method performs the inner loop of the full calculation.
 
         Args:
@@ -823,9 +823,9 @@ class PauliStringCollection:
         Public Method: Calculates the full basis of quadratic symmetries for this system.
 
         This method performs the complete, high-level operation:
-            1. Finds the linear symmetries (L_j) for this system.
-            2. Finds the connected components (C_k) of this system's commutator graph.
-            3. Loops through each component and calls the internal helper to get the Q_kj.
+            1. Finds the linear symmetries :math:`(L_{j})` for this system.
+            2. Finds the connected components :math:`(C_{k})` of this system's commutator graph.
+            3. Loops through each component and calls the internal helper to get the :math:`Q_{kj}`.
 
         Args:
             normalized (bool): If True, returns an ORTHONORMAL basis.

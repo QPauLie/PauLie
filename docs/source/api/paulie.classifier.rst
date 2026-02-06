@@ -29,10 +29,6 @@ Classifier
    :members:
    :show-inheritance:
 
-.. autoclass:: paulie.classifier.morph_factory.DebugException
-   :members:
-   :show-inheritance:
-
 .. autoclass:: paulie.classifier.morph_factory.DependentException
    :members:
    :show-inheritance:
@@ -54,10 +50,6 @@ Classifier
    :show-inheritance:
 
 .. autoclass:: paulie.classifier.recording_morph_factory.AppendedException
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.classifier.recording_morph_factory.DebugException
    :members:
    :show-inheritance:
 
