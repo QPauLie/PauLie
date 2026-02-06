@@ -82,7 +82,8 @@ def avg_pauli_weights_from_strings(o: np.ndarray, pauli_strings: list) -> np.nda
 
 def get_pauli_weights(num_qubits: int, identity_pos: int=0) -> np.ndarray:
     """
-    Generates the weight :math:`|P|` for each of the :math:`4^{\\text{number qubits}}` Pauli operators.
+    Generates the weight :math:`|P|` for each of the
+    :math:`4^{\\text{number qubits}}` Pauli operators.
     The weight is the number of non-identity terms in the Pauli string.
     The ordering corresponds to the output of matrix_decomposition, default is 'I' at position 0.
     """
