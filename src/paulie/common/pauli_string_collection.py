@@ -90,14 +90,23 @@ class PauliStringCollection:
         """
         return self.record
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         """
-        Convert PauliStringCollection to readable string (e.g., "XYZI, YYYS").
+        Convert PauliStringCollection to readable string (e.g., PauliStringCollection([XYZI, YYYS])).
 
         Returns:
-            Readable string (e.g., "XYZI, YYYS").
+            String representation.
         """
-        return ",".join([str(g) for g in self.generators])
+        return f"PauliString([{", ".join([str(g) for g in self.generators])}])"
+
+    def __str__(self) -> str:
+        """
+        Convert PauliStringCollection to readable string (e.g., [XYZI, YYYS]).
+
+        Returns:
+            String representation.
+        """
+        return f"[{", ".join([str(g) for g in self.generators])}]"
 
     def __len__(self) -> int:
         """ 
