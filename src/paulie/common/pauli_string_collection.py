@@ -92,7 +92,8 @@ class PauliStringCollection:
 
     def __repr__(self) -> str:
         """
-        Convert PauliStringCollection to readable string (e.g., PauliStringCollection([XYZI, YYYS])).
+        Convert PauliStringCollection to readable string
+        (e.g., PauliStringCollection([XYZI, YYYS])).
 
         Returns:
             String representation.
@@ -101,7 +102,8 @@ class PauliStringCollection:
 
     def __str__(self) -> str:
         """
-        Convert PauliStringCollection to readable string (e.g., [XYZI, YYYS]).
+        Convert PauliStringCollection to readable string
+        (e.g., [XYZI, YYYS]).
 
         Returns:
             String representation.

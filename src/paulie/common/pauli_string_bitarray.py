@@ -106,7 +106,9 @@ class PauliString:
 
     def __repr__(self) -> str:
         """
-        Convert PauliString to readable string (e.g., PauliString(XYZI)).
+        Convert PauliString to readable string
+        (e.g., PauliString(XYZI)).
+
         Returns:
             String representation.
         """
@@ -115,7 +117,9 @@ class PauliString:
 
     def __str__(self) -> str:
         """
-        Convert PauliString to readable string (e.g., XYZI).
+        Convert PauliString to readable string
+        (e.g., XYZI).
+
         Returns:
             String representation.
         """
