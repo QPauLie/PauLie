@@ -47,8 +47,8 @@ def test_PauliString_str_repr(input_arg, expected_str, expected_repr) -> None:
     assert repr(pauli_string) == expected_repr
 
 @pytest.mark.parametrize(
-    "input_arg1, expected_str1, expected_repr1,"
-    "input_arg2, expected_str2, expected_repr2",
+    "input_arg1, expected_str1, _expected_repr1,"
+    "input_arg2, expected_str2, _expected_repr2",
     test_case_collection
 )
 def test_PauliStringCollection_str_repr(
@@ -74,3 +74,4 @@ def test_PauliStringCollection_str_repr(
 
     assert str(pauli_string_collection) == expected_str
     assert repr(pauli_string_collection) == expected_repr
+
