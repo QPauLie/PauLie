@@ -74,4 +74,3 @@ def test_PauliStringCollection_str_repr(
 
     assert str(pauli_string_collection) == expected_str
     assert repr(pauli_string_collection) == expected_repr
-
