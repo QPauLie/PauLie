@@ -1,8 +1,8 @@
 """
 Test common
 """
-import pytest
 import itertools
+import pytest
 from bitarray import bitarray
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
@@ -17,8 +17,8 @@ test_cases = [
 ]
 
 test_case_collection = [
-    (input_arg1, expected_str1, expected_repr1, input_arg2, expected_str2, expected_repr2)
-    for (input_arg1, expected_str1, expected_repr1), (input_arg2, expected_str2, expected_repr2)
+    (input_arg1, expected_str1, _expected_repr1, input_arg2, expected_str2, _expected_repr2)
+    for (input_arg1, expected_str1, _expected_repr1), (input_arg2, expected_str2, _expected_repr2)
     in itertools.combinations(test_cases, 2)
 ]
 
