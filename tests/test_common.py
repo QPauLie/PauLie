@@ -17,8 +17,8 @@ test_cases = [
 ]
 
 test_case_collection = [
-    (input_arg1, expected_str1, _expected_repr1, input_arg2, expected_str2, _expected_repr2)
-    for (input_arg1, expected_str1, _expected_repr1), (input_arg2, expected_str2, _expected_repr2)
+    (input_arg1, expected_str1, expected_repr1, input_arg2, expected_str2, expected_repr2)
+    for (input_arg1, expected_str1, expected_repr1), (input_arg2, expected_str2, expected_repr2)
     in itertools.combinations(test_cases, 2)
 ]
 
@@ -52,8 +52,8 @@ def test_PauliString_str_repr(input_arg, expected_str, expected_repr) -> None:
     test_case_collection
 )
 def test_PauliStringCollection_str_repr(
-    input_arg1, expected_str1, expected_repr1,
-    input_arg2, expected_str2, expected_repr2
+    input_arg1, expected_str1, _expected_repr1,
+    input_arg2, expected_str2, _expected_repr2
     ) -> None:
     """
     Test PauliStringCollection for consistent __repr__ and __str__
