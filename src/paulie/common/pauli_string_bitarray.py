@@ -104,18 +104,9 @@ class PauliString:
         """
         return PauliString(n=n, pauli_str=pauli_str)
 
-    def __repr__(self) -> str:
-        """
-        Convert PauliString to readable string (e.g., PauliString(XYZI)).
-        Returns:
-            String representation.
-        """
-
-        return f"PauliString({"".join(self.bits.decode(CODEC))})"
-
     def __str__(self) -> str:
         """
-        Convert PauliString to readable string (e.g., XYZI).
+        Convert PauliString to readable string (e.g., "XYZI").
         Returns:
             String representation.
         """

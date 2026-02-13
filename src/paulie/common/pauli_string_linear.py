@@ -646,6 +646,7 @@ class PauliStringLinear(PauliString):
         Args:
             other: Linear combinations for the adjoint map.
         Returns:
+        Returns:
             None if the commutator is zero (i.e., if A and B commute).
             Otherwise, returns a PauliString proportional to the commutator.
         Raises:
