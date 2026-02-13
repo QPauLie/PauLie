@@ -98,7 +98,7 @@ class PauliStringCollection:
         Returns:
             String representation.
         """
-        return f"PauliStringCollection([{", ".join([str(g) for g in self.generators])}])"
+        return f"PauliString([{", ".join([str(g) for g in self.generators])}])"
 
     def __str__(self) -> str:
         """
