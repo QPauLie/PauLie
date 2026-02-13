@@ -112,6 +112,15 @@ class PauliStringLinear(PauliString):
                     terms.append(f" + {term_str}")
         return "".join(terms)
 
+    def __repr__(self) -> str:
+        """
+        Converts PauliStringLinear to a readable, sorted string.
+
+        Returns:
+            String representation of a linear combination.
+        """
+
+        return f"PauliStringLinear({str(self)})"
 
     def __eq__(self, other:object)->bool:
         """
