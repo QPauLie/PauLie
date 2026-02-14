@@ -6,6 +6,7 @@ import pytest
 from bitarray import bitarray
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
+from paulie.common.pauli_string_linear import PauliStringLinear
 
 test_cases = [
     ({"n": 0}, "", "PauliString()"),
@@ -74,3 +75,39 @@ def test_PauliStringCollection_str_repr(
 
     assert str(pauli_string_collection) == expected_str
     assert repr(pauli_string_collection) == expected_repr
+
+@pytest.mark.parametrize(
+    "input_arg1, expected_str1, expected_repr1,"
+    "input_arg2, expected_str2, expected_repr2",
+    test_case_collection
+)
+def test_PauliStringLinear_str_repr(
+    coeff1, input_arg1, expected_str1, expected_repr1,
+    coeff2, input_arg2, expected_str2, expected_repr2
+    ) -> None:
+    """
+    Test PauliStringLinear for consistent __repr__ and __str__
+    """
+
+    pauli_string1 = PauliString(**input_arg1)
+    pauli_string2 = PauliString(**input_arg2)
+
+    pauli_string_linear = PauliStringLinear([(coeff1, pauli_string1), (coeff2, pauli_string2)])
+
+    if pauli_string1 == pauli_string2:
+
+        coeff = coeff1 + coeff2
+
+        if coeff == 0:
+            expected_str = f"0*{"".ljust(len(pauli_string1), "I")}"
+        elif coeff != 0:
+            expected_str = f"{f"{coeff}*" if coeff.img != 0 else coeff}{str(pauli_string1)}"
+
+    elif pauli_string1 != pauli_string2:
+        expected_str = f"{coeff1}*{str(pauli_string1)}"
+
+
+    expected_repr = f"PauliStringCollection({expected_str})"
+
+    assert str(pauli_string_linear) == expected_str
+    assert repr(pauli_string_linear) == expected_repr
