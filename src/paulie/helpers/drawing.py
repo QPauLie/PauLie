@@ -7,8 +7,6 @@ import matplotlib.pyplot as plt
 import matplotlib.animation
 import numpy as np
 from paulie.helpers.recording import RecordGraph
-from paulie.common.pauli_string_collection import PauliStringCollection
-from paulie.common.pauli_string_bitarray import PauliString
 
 def plot_graph(vertices:list[str],
                edges:list[tuple[str,str]],

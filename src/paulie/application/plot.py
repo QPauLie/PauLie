@@ -1,5 +1,5 @@
 """
-Plot anti-commutation graph after transforming graph to a canonical type
+Plot anti-commutation graph after transforming graph to a canonical type.
 """
 from paulie.helpers.drawing import plot_graph
 from paulie.common.pauli_string_collection import PauliStringCollection
@@ -7,7 +7,7 @@ from paulie.common.pauli_string_collection import PauliStringCollection
 
 def plot_anti_commutation_graph(generators:PauliStringCollection) -> None:
     """
-    Plot canonical anti-commutation graph.
+    Plot a canonical anti-commutation graph of the passed generators.
 
     Args:
         generators: Collection of Pauli strings.
