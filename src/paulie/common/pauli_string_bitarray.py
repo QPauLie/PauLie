@@ -28,7 +28,6 @@ class PauliString:
                  bits: bitarray | None = None) -> None:
         """Initialize a Pauli string.
 
-
         Args:
             n: Length of the Pauli string.
             pauli_str: String representation of a Pauli string.
@@ -53,6 +52,7 @@ class PauliString:
     def get_index(self) -> int:
         """
         Get index in matrix decomposition vector.
+
         Returns:
             Index in matrix decomposition vector.
         """
@@ -104,9 +104,22 @@ class PauliString:
         """
         return PauliString(n=n, pauli_str=pauli_str)
 
+    def __repr__(self) -> str:
+        """
+        Convert PauliString to readable string
+        (e.g., PauliString(XYZI)).
+
+        Returns:
+            String representation.
+        """
+
+        return f"PauliString({"".join(self.bits.decode(CODEC))})"
+
     def __str__(self) -> str:
         """
-        Convert PauliString to readable string (e.g., "XYZI").
+        Convert PauliString to readable string
+        (e.g., XYZI).
+
         Returns:
             String representation.
         """
@@ -264,6 +277,7 @@ class PauliString:
     def __copy__(self) -> PauliString:
         """
         Pauli string copy operator.
+
         Returns:
             Copy of self.
         """
@@ -465,7 +479,7 @@ class PauliString:
 
     def adjoint_map(self, other:object) -> PauliString|None:
         """
-        Compute the adjoint map ad_A(B) = [A,B].
+        Compute the adjoint map :math:`\\mathrm{ad}_{A}(B) = [A, B]`.
 
         Args:
             other: Pauli string to adjoint map with self.

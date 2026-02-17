@@ -114,6 +114,15 @@ class PauliStringLinear(PauliString):
                     terms.append(f" + {term_str}")
         return "".join(terms)
 
+    def __repr__(self) -> str:
+        """
+        Converts PauliStringLinear to a readable, sorted string.
+
+        Returns:
+            String representation of a linear combination.
+        """
+
+        return f"PauliStringLinear({str(self)})"
 
     def __eq__(self, other:object)->bool:
         """
@@ -612,12 +621,13 @@ class PauliStringLinear(PauliString):
 
     def quadratic(self, basis: Self) -> Self:
         """
-        Computes the quadratic form Q_j = ∑_{S ∈ self} S ⊗ (L_j*S)
-        where `self` represents the component C_k = ∑S, and `basis` is the
-        linear symmetry L_j.
+        Computes the quadratic form :math:`Q_{j} = \\sum_{S \\in
+        \\mathrm{self}} S \\otimes (L_{j} * S)`
+        where `self` represents the component :math:`C_{k} = \\sum S`, and `basis` is the
+        linear symmetry :math:`L_{j}`.
 
         Args:
-            basis: Linear symmetry L_j.
+            basis: Linear symmetry :math:`L_{j}`.
         Returns:
             Linear combination of PauliString.
         """
@@ -642,11 +652,10 @@ class PauliStringLinear(PauliString):
 
     def adjoint_map(self, other:object) -> Self:
         """
-        Compute the adjoint map ad_A(B) = [A,B].
+        Compute the adjoint map :math:`ad_{A}(B) = [A,B]`.
 
         Args:
             other: Linear combinations for the adjoint map.
-        Returns:
         Returns:
             None if the commutator is zero (i.e., if A and B commute).
             Otherwise, returns a PauliString proportional to the commutator.
@@ -801,7 +810,7 @@ class PauliStringLinear(PauliString):
         Computes the trace of the operator represented by this linear combination.
 
         The trace is non-zero only if the Identity operator is present in the sum.
-        Tr(self) = (coefficient of Identity) * 2^n.
+        :math:`Tr(self) = (\\textit{coefficient of Identity}) * 2^{n}`.
 
         Returns:
             Complex value of the trace.

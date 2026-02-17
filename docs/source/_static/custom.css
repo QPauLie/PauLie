@@ -3,14 +3,35 @@
     --font: "Roboto", "Helvetica", sans-serif;
 }
 
+@font-face {
+    font-family: "QurovaDemo";
+    src: url("fonts/QurovaDEMO-Regular.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "QurovaDemo";
+    src: url("fonts/QurovaDEMO-Bold.otf") format("opentype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+.navbar-brand.logo .logo__title {
+    font-size: 70px;
+    font-weight: bold;
+    font-family: 'QurovaDemo';
+    color: rgba(26, 115, 232, 1);
+}
+
 /* Toctree */
 div.sphinxsidebar {
     font-family: var(--font);
 }
 
-}
+/* Sidebar headers */
 div.sphinxsidebarwrapper h1 {
-    font-size: px;
+    font-size: 36px;
 }
 
 div.sphinxsidebar h3 {
@@ -18,10 +39,12 @@ div.sphinxsidebar h3 {
     font-weight: bold;
 }
 
+/* Nested lists without bullets */
 div.sphinxsidebar ul ul {
     list-style: none;
 }
 
+/* Code links */
 a code {
     font-family: var(--font);
     word-break: break-word;

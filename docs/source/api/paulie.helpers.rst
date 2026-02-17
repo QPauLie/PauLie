@@ -7,16 +7,6 @@ Helpers
 
 .. autofunction:: paulie.helpers.drawing.plot_graph_by_nodes
 
-.. autoclass:: paulie.helpers.printing.Debug
-   :members:
-   :show-inheritance:
-
-.. autofunction:: paulie.helpers.printing.print_lit_vertices
-
-.. autofunction:: paulie.helpers.printing.print_vertices
-
-.. autofunction:: paulie.helpers.printing.print_vertix
-
 .. autoclass:: paulie.helpers.recording.FrameGraph
    :members:
    :show-inheritance:
