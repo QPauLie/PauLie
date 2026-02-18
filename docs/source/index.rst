@@ -11,7 +11,7 @@ This first release focuses on the classification of the circuit's dynamical Lie 
 Paulistrings.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    getting_started
    user/index
