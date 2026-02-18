@@ -1,55 +1,42 @@
-Common
-======
+.. module:: paulie.common
 
-.. autofunction:: paulie.common.get_graph.get_graph
+Common (:mod:`paulie.common`)
+=============================
 
-.. autoclass:: paulie.common.pauli_string_bitarray.PauliString
-   :members:
-   :show-inheritance:
 
-.. autoclass:: paulie.common.pauli_string_collection.PauliStringCollection
-   :members:
-   :show-inheritance:
+Graph drawing
+-------------
+Graph visualization utilities.
 
-.. autoclass:: paulie.common.pauli_string_collection.PauliStringCollectionException
-   :members:
-   :show-inheritance:
+.. autosummary::
+   :toctree: generated/
+   
+   get_graph.get_graph
 
-.. autoclass:: paulie.common.pauli_string_factory.Used
-   :members:
-   :show-inheritance:
+Pauli string expressions
+------------------------
+Utilities for generating and manipulating Pauli string expressions.
 
-.. autofunction:: paulie.common.pauli_string_factory.gen_k_local
+.. autosummary::
+   :toctree: generated/
 
-.. autofunction:: paulie.common.pauli_string_factory.gen_k_local_generators
-
-.. autofunction:: paulie.common.pauli_string_factory.get_identity
-
-.. autofunction:: paulie.common.pauli_string_factory.get_last
-
-.. autofunction:: paulie.common.pauli_string_factory.get_pauli_string
-
-.. autofunction:: paulie.common.pauli_string_factory.get_single
-
-.. autoclass:: paulie.common.pauli_string_linear.PauliStringLinear
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.common.pauli_string_linear.PauliStringLinearException
-   :members:
-   :show-inheritance:
-
-.. autofunction:: paulie.common.pauli_string_parser.pauli_string_parser
-
-.. autofunction:: paulie.common.random_pauli_strings.get_random
-
-.. autofunction:: paulie.common.random_pauli_strings.get_random_k_local
-
-.. autofunction:: paulie.common.random_pauli_strings.get_random_list
-
-.. autofunction:: paulie.common.two_local_generators.get_lie_algebra
-
-.. autofunction:: paulie.common.two_local_generators.get_lie_algebras
-
-.. autofunction:: paulie.common.two_local_generators.two_local_algebras
+   pauli_string_bitarray.PauliString
+   pauli_string_collection.PauliStringCollection
+   pauli_string_collection.PauliStringCollectionException
+   pauli_string_factory.Used
+   pauli_string_factory.gen_k_local
+   pauli_string_factory.gen_k_local_generators
+   pauli_string_factory.get_identity
+   pauli_string_factory.get_last
+   pauli_string_factory.get_pauli_string
+   pauli_string_factory.get_single
+   pauli_string_linear.PauliStringLinear
+   pauli_string_linear.PauliStringLinearException
+   pauli_string_parser.pauli_string_parser
+   random_pauli_strings.get_random
+   random_pauli_strings.get_random_k_local
+   random_pauli_strings.get_random_list
+   two_local_generators.get_lie_algebra
+   two_local_generators.get_lie_algebras
+   two_local_generators.two_local_algebras
 

@@ -1,67 +1,95 @@
-Application
-===========
+.. module:: paulie.application
 
-.. autofunction:: paulie.application.animation.animation_anti_commutation_graph
+Application (:mod:`paulie.application`)
+=======================================
 
-.. autofunction:: paulie.application.average_pauli_weight.average_pauli_weight
+Visualization
+-------------
+Utilities for visualizing the anti-commutation graph.
 
-.. autofunction:: paulie.application.average_pauli_weight.avg_pauli_weights
+.. autosummary::
+   :toctree: generated/
 
-.. autofunction:: paulie.application.average_pauli_weight.avg_pauli_weights_from_strings
+   animation.animation_anti_commutation_graph
+   plot.plot_anti_commutation_graph
 
-.. autofunction:: paulie.application.average_pauli_weight.get_pauli_weights
+Average Pauli weight
+--------------------
+Utilities related to average Pauli weights.
 
-.. autofunction:: paulie.application.average_pauli_weight.quantum_fourier_entropy
+.. autosummary::
+   :toctree: generated/
 
-.. autofunction:: paulie.application.charges.non_commuting_charges
+   average_pauli_weight.average_pauli_weight
+   average_pauli_weight.avg_pauli_weights
+   average_pauli_weight.avg_pauli_weights_from_strings
+   average_pauli_weight.get_pauli_weights
+   average_pauli_weight.quantum_fourier_entropy
 
-.. autofunction:: paulie.application.fourpoint.fourpoint
+Charges
+-------
+Utilities for finding charges.
 
-.. autofunction:: paulie.application.get_optimal_su2_n.get_optimal_connections_su_2_n
+.. autosummary::
+   :toctree: generated/
 
-.. autofunction:: paulie.application.get_optimal_su2_n.get_optimal_su_2_n_generators
+   charges.non_commuting_charges
 
-.. autofunction:: paulie.application.graph_complexity.average_graph_complexity
+Four-point correlation functions
+--------------------------------
+Utilities for finding four-point correlation functions.
 
-.. autofunction:: paulie.application.matrix_decomposition.matrix_decomposition
+.. autosummary::
+   :toctree: generated/
 
-.. autofunction:: paulie.application.matrix_decomposition.matrix_decomposition_diagonal
+   fourpoint.fourpoint
 
-.. autofunction:: paulie.application.otoc.average_otoc
+Optimal :math:`\mathfrak{su}(2^n)` generators
+---------------------------------------------
+Utilities related to :math:`\mathfrak{su}(2^n)` generators.
 
-.. autoclass:: paulie.application.pauli_compiler.OptimalPauliCompiler
-   :members:
-   :show-inheritance:
+.. autosummary::
+   :toctree: generated/
 
-.. autoclass:: paulie.application.pauli_compiler.PauliCompilerConfig
-   :members:
-   :show-inheritance:
+   get_optimal_su2_n.get_optimal_connections_su_2_n
+   get_optimal_su2_n.get_optimal_su_2_n_generators
 
-.. autoclass:: paulie.application.pauli_compiler.SubsystemCompiler
-   :members:
-   :show-inheritance:
+DLA metrics
+-----------
+Utilities related to different DLA properties.
 
-.. autoclass:: paulie.application.pauli_compiler.SubsystemCompilerConfig
-   :members:
-   :show-inheritance:
+.. autosummary::
+   :toctree: generated/
 
-.. autofunction:: paulie.application.pauli_compiler.choose_u_for_b
+   graph_complexity.average_graph_complexity
+   otoc.average_otoc
+   second_moment.second_moment
 
-.. autofunction:: paulie.application.pauli_compiler.compile_target
+Matrix decomposition
+--------------------
+Utilities related to matrix decompositions.
 
-.. autofunction:: paulie.application.pauli_compiler.construct_universal_set
+.. autosummary::
+   :toctree: generated/
 
-.. autofunction:: paulie.application.pauli_compiler.left_a_minimal
+   matrix_decomposition.matrix_decomposition
+   matrix_decomposition.matrix_decomposition_diagonal
 
-.. autofunction:: paulie.application.pauli_compiler.left_map_over_a
+Pauli compiler
+--------------
+Utilities related to Pauli compilation.
 
-.. autofunction:: paulie.application.plot.plot_anti_commutation_graph
-
-.. autofunction:: paulie.application.reach.is_in_so
-
-.. autofunction:: paulie.application.reach.is_in_sp
-
-.. autofunction:: paulie.application.reach.reachable
-
-.. autofunction:: paulie.application.second_moment.second_moment
+.. autosummary::
+   :toctree: generated/
+   
+   pauli_compiler.OptimalPauliCompiler
+   pauli_compiler.PauliCompilerConfig
+   pauli_compiler.SubsystemCompiler
+   pauli_compiler.SubsystemCompilerConfig
+   pauli_compiler.choose_u_for_b
+   pauli_compiler.compile_target
+   pauli_compiler.construct_universal_set
+   pauli_compiler.left_a_minimal
+   pauli_compiler.left_map_over_a
+   
 

@@ -49,6 +49,10 @@ xcuserdata/
 *.out
 *.cmd
 
+# Doc-build generated files
+docs/_build/
+docs/source/**/generated/
+
 #Python modules
 MANIFEST
 dist/
