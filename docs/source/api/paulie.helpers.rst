@@ -1,7 +1,7 @@
 .. module:: paulie.helpers
 
-Helpers
-=======
+Helpers (:mod:`paulie.helpers`)
+===============================
 
 .. autosummary::
    :toctree: generated/

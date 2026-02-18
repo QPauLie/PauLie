@@ -1,7 +1,7 @@
 .. module:: paulie.classifier
 
-Classifier
-==========
+Classifier (:mod:`paulie.classifier`)
+=====================================
 
 Algebra classification
 ----------------------

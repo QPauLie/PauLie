@@ -1,7 +1,7 @@
 .. module:: paulie.common
 
-Common
-======
+Common (:mod:`paulie.common`)
+=============================
 
 
 Graph drawing
