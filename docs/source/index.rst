@@ -11,16 +11,12 @@ This first release focuses on the classification of the circuit's dynamical Lie 
 Paulistrings.
 
 .. toctree::
+   :maxdepth: 1
 
-    getting_started
-    classification
-    commutator_graph
-    average_graph_complexity
-    second_moment
-    matrix_decomposition
-    optimal_universal_generators
-    api/index
-    contributing
+   getting_started
+   user/index
+   api/index
+   contributing
 
 .. toctree::
    :hidden:
