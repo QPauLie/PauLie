@@ -1,71 +1,37 @@
-Classifier
-==========
+.. module:: paulie.classifier
 
-.. autoclass:: paulie.classifier.classification.Classification
-   :members:
-   :show-inheritance:
+Classifier (:mod:`paulie.classifier`)
+=====================================
 
-.. autoclass:: paulie.classifier.classification.ClassificatonException
-   :members:
-   :show-inheritance:
+Algebra classification
+----------------------
+Utilities for classifying the DLA of a set of Pauli strings.
 
-.. autoclass:: paulie.classifier.classification.Morph
-   :members:
-   :show-inheritance:
+.. autosummary::
+   :toctree: generated/
 
-.. autoclass:: paulie.classifier.classification.TypeAlgebra
-   :members:
-   :show-inheritance:
+   classification.Classification
+   classification.Morph
+   classification.TypeAlgebra
+   classification.TypeGraph
+   morph_factory.MorphFactory
+   recording_morph_factory.RecordingMorphFactory
 
-.. autoclass:: paulie.classifier.classification.TypeGraph
-   :members:
-   :show-inheritance:
+Exceptions
+----------
+Exceptions thrown by the above methods.
 
-.. autoclass:: paulie.classifier.morph_factory.AppendedException
-   :members:
-   :show-inheritance:
+.. autosummary::
+   :toctree: generated/
 
-.. autoclass:: paulie.classifier.morph_factory.CheckAppendedException
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.classifier.morph_factory.DependentException
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.classifier.morph_factory.MorphFactory
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.classifier.morph_factory.MorphFactoryException
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.classifier.morph_factory.NotConnectedException
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.classifier.morph_factory.RaiseException
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.classifier.recording_morph_factory.AppendedException
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.classifier.recording_morph_factory.DependentException
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.classifier.recording_morph_factory.MorphFactoryException
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.classifier.recording_morph_factory.NotConnectedException
-   :members:
-   :show-inheritance:
-
-.. autoclass:: paulie.classifier.recording_morph_factory.RecordingMorphFactory
-   :members:
-   :show-inheritance:
-
+   classification.ClassificatonException
+   morph_factory.MorphFactoryException
+   morph_factory.NotConnectedException
+   morph_factory.RaiseException
+   recording_morph_factory.AppendedException
+   recording_morph_factory.DependentException
+   recording_morph_factory.MorphFactoryException
+   recording_morph_factory.NotConnectedException
+   morph_factory.AppendedException
+   morph_factory.CheckAppendedException
+   morph_factory.DependentException

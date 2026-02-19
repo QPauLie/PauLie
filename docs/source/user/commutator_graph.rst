@@ -18,7 +18,7 @@ We can plot the commutator graph
     plot_graph(vertices, edges)
 
 
-.. image:: media/commutator_graph.png
+.. image:: ../media/commutator_graph.png
 
 With the help of the commutator graph we can analyse the short-term dynamics of the quantum system.
 In particular, we can determine how chaotic the system behaves. A quantifier of quantum chaos is the
