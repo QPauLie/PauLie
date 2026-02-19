@@ -77,13 +77,13 @@ def test_PauliStringCollection_str_repr(
     assert repr(pauli_string_collection) == expected_repr
 
 @pytest.mark.parametrize(
-    "coeff1, input_arg1, expected_str1, _expected_repr1,"
-    "coeff2, input_arg2, expected_str2, _expected_repr2",
+    "coeff1, input_arg1, _expected_str1, _expected_repr1,"
+    "coeff2, input_arg2, _expected_str2, _expected_repr2",
     test_case_linear
 )
 def test_PauliStringLinear_str_repr(
-    coeff1, input_arg1, expected_str1, _expected_repr1,
-    coeff2, input_arg2, expected_str2, _expected_repr2
+    coeff1, input_arg1, _expected_str1, _expected_repr1,
+    coeff2, input_arg2, _expected_str2, _expected_repr2
     ) -> None:
     """
     Test PauliStringLinear for consistent __repr__ and __str__
@@ -141,7 +141,7 @@ def test_PauliStringLinear_str_repr(
         else:
             expected_str = _pauli_str_sign(coeff, pauli_string1)
 
-    elif pauli_string1 != pauli_string2:
+    else:
 
         if coeff1 == 0 and coeff2 == 0:
             expected_str = f"0*{"".ljust(len(pauli_string1), "I")}"
@@ -149,7 +149,7 @@ def test_PauliStringLinear_str_repr(
             expected_str = _pauli_str_sign(coeff1, pauli_string1)
         elif coeff1 == 0 and coeff2 != 0:
             expected_str = _pauli_str_sign(coeff2, pauli_string2)
-        elif coeff1 != 0 and coeff2 != 0:
+        else:
             str1 = _pauli_str_sign(coeff1, pauli_string1)
             str2 = _pauli_str_sign(coeff2, pauli_string2)
 
