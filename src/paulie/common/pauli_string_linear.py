@@ -74,7 +74,7 @@ class PauliStringLinear(PauliString):
             String representation of a linear combination.
         """
         if self.is_zero():
-            return f"0.0*I{self.get_size()}"
+            return f"0*{"I"*self.get_size()}"
 
         simplified_self = self.simplify()
         # Sort by the Pauli string part for a canonical, consistent output
@@ -89,13 +89,18 @@ class PauliStringLinear(PauliString):
                 elif np.isclose(coeff.imag, -1):
                     val_str = "-i"
                 else:
-                    val_str = f"{coeff.imag:.8g}*i"
+                    val_str = f"{coeff.imag:.8g}i"
             else:
-                val_str = f"({coeff.real:.8g}{coeff.imag:+.8g}j)"
+                if np.isclose(coeff.imag, 1):
+                    val_str = f"({coeff.real:.8g}+i)"
+                elif np.isclose(coeff.imag, -1):
+                    val_str = f"({coeff.real:.8g}-i)"
+                else:
+                    val_str = f"({coeff.real:.8g}{coeff.imag:+.8g}i)"
 
-            if val_str == "1" and pauli_str != "I"*len(pauli_str):
+            if val_str == "1":
                 return pauli_str
-            if val_str == "-1" and pauli_str != "I"*len(pauli_str):
+            if val_str == "-1":
                 return f"-{pauli_str}"
             return f"{val_str}*{pauli_str}"
 
