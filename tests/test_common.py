@@ -77,13 +77,13 @@ def test_PauliStringCollection_str_repr(
     assert repr(pauli_string_collection) == expected_repr
 
 @pytest.mark.parametrize(
-    "coeff1, input_arg1, expected_str1, expected_repr1,"
-    "coeff2, input_arg2, expected_str2, expected_repr2",
+    "coeff1, input_arg1, expected_str1, _expected_repr1,"
+    "coeff2, input_arg2, expected_str2, _expected_repr2",
     test_case_linear
 )
 def test_PauliStringLinear_str_repr(
-    coeff1, input_arg1, expected_str1, expected_repr1,
-    coeff2, input_arg2, expected_str2, expected_repr2
+    coeff1, input_arg1, expected_str1, _expected_repr1,
+    coeff2, input_arg2, expected_str2, _expected_repr2
     ) -> None:
     """
     Test PauliStringLinear for consistent __repr__ and __str__
