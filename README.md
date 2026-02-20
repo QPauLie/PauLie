@@ -14,10 +14,10 @@ first release focuses on the classification of the circuit's dynamical Lie algeb
 Make sure to have Python >= 3.12 installed.
 
 ### Installation
-Clone the repository. Once you have [`poetry` installed](https://python-poetry.org/docs/#installation), run:
+Clone the repository. Once you have [`uv` installed](https://docs.astral.sh/uv/getting-started/installation/#pypi), run:
 
 ```sh
-poetry install
+uv sync --all-extras --dev
 ```
 
 ### Getting started 
@@ -40,7 +40,7 @@ Feel free to contribute and check out our open issues. We are also happy to chat
 In order to run the test suite, run:
 
 ```sh
-poetry run python -m pytest
+uv run python -m pytest
 ```
 
 ### Type Checking
@@ -48,6 +48,12 @@ poetry run python -m pytest
 Check for type errors, improve readability, and assist IDEs, run:
 
 ```sh
-poetry run mypy src/paulie/common src/paulie/classifier/classification.py
+uv run mypy src/paulie/common src/paulie/classifier/classification.py
 ```
 
+### Migration from Poetry
+
+This project previously used [Poetry](https://python-poetry.org/) for dependency management.  
+As of this release, we have migrated to [`uv`](https://docs.astral.sh/uv/getting-started/installation/#pypi).  
+
+**Old Poetry commands** (for reference during migration):

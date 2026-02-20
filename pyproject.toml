@@ -1,45 +1,49 @@
-[tool.poetry]
+[project]
 name = "paulie"
 version = "0.0.1"
 description = "Classification of Lie algebras"
 authors = [
-    "Oxana Shaya <shayaoxana@gmail.com>",
-    "Konstantin Golovkin",
+    {name = "Oxana Shaya", email = "shayaoxana@gmail.com"},
+    {name = "Konstantin Golovkin"}
 ]
+
 readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = [
+    "numpy>=2.2.2",
+    "networkx>=3.3",
+    "bitarray>=3.0.0",
+    "memory-profiler>=0.61.0",
+    "matplotlib>=3.10.0",
+    "six>=1.17.0",
+    "tqdm>=4.67.1",
+    "scipy>=1.17.0",
+    "pauliarray @ git+https://github.com/algolab-quantique/pauliarray.git"
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.9.5",
+    "pytest>=8.3.5",
+    "sphinx>=9.1.0",
+    "mypy>=1.19.0",
+    "types-six>=1.17.0.20251009",
+    "types-networkx>=3.6.1.20251212",
+    "sphinx-rtd-theme>=1.1.1",
+    "pydata-sphinx-theme>=0.16.1"
+]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
-
-[tool.poetry.dependencies]
-python = "^3.12"
-numpy = "^2.2.2"
-networkx = "^3.3"
-bitarray = "^3.0.0"
-memory-profiler = "^0.61.0"
-matplotlib = "^3.10.0"
-ruff = "^0.9.5"
-six="^1.17.0"
-pauliarray = { git = "https://github.com/algolab-quantique/pauliarray.git" }
-pytest = "^8.3.5"
-tqdm = "^4.67.1"
-scipy = "^1.17.0"
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.9.4"
-sphinx = "^9.1.0"
-mypy = "^1.19.0"
-types-six = "^1.17.0.20251009"
-types-networkx = "^3.6.1.20251212"
-pydata-sphinx-theme = "^0.16.1"
 
 [tool.ruff]
 exclude = ["submodules"]
 line-length = 120
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
 
 [tool.pylint.'MESSAGES CONTROL']
 disable=[
