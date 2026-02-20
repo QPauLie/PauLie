@@ -4,7 +4,7 @@ Contribute to PauLie
 We welcome contributions from everyone! By participating in PauLie, you agree to follow our guidelines.
 
 1. As stated in `Getting started <getting_started.html>`_, ensure you have Python 3.12 or higher installed on your machine or in a virtual environment.
-2. You requires to `install poetry <https://python-poetry.org/docs/#installing-with-pipx>`_ to manage the dependencies of PauLie.
+2. You requires to `install uv <https://docs.astral.sh/uv/getting-started/installation/#pypi>`_ to manage the dependencies of PauLie.
 3. Make sure you have a `GitHub account <https://github.com/signup/free>`_.
 4. `Fork <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo>`_ the repository on GitHub.
 5. `Clone <https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository>`_ your fork locally:
@@ -19,13 +19,13 @@ We welcome contributions from everyone! By participating in PauLie, you agree to
 
        cd PauLie
 
-7. Install dependencies with Poetry:
+7. Install dependencies with uv:
 
 .. code-block:: bash
 
-       poetry install
+       uv sync --all-extras --dev
 
-Poetry will create a virtual environment and install all dependencies there. You are now ready to run, test, and develop the project.
+uv will create a virtual environment and install all dependencies there. You are now ready to run, test, and develop the project.
 
 Making changes
 ==============
@@ -84,7 +84,7 @@ To verify that your code is working correctly, run the following commands in the
 
 .. code-block:: bash
 
-    poetry run pytest -q
+    uv run pytest -q
 
 The pytest module is used for running tests, and pytest-cov can generate local code coverage reports.
 Code coverage can be checked using the :code:`--cov-report=term-missing` option in :code:`pytest-cov`.
@@ -102,13 +102,13 @@ To detect errors and style issues such as unused imports, undefined variables, s
 
 .. code-block:: bash
 
-    poetry run ruff check
+    uv run ruff check
 
 To verify that your code is formatted according to Ruff’s formatter rules, run:
 
 .. code-block:: bash
 
-    poetry run ruff format --check
+    uv run ruff format --check
 
 Note: without the :code:`--check` option, :code:`ruff format` will modify your code automatically.
 
@@ -121,5 +121,5 @@ The sphinx is used in PauLie to build the HTML documentation, use:
 
 .. code-block:: bash
 
-    poetry run sphinx-build -b html -W docs/source docs/_build/html
+    uv run sphinx-build -b html -W docs/source docs/_build/html
 
