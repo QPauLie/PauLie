@@ -14,8 +14,8 @@ docs/build/
 docs/build/*
 env/
 env/*
-src/PauLie.egg-info/
-src/PauLie.egg-info/*
+src/paulie.egg-info/
+src/paulie.egg-info/*
 .venv/
 .venv/*
 examples/data
@@ -66,5 +66,6 @@ iOS/**/build/
 # ajcore
 ajcore.*
 
-
+# lockfiles
 poetry.lock
+uv.lock
