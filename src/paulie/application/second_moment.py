@@ -14,10 +14,10 @@ def second_moment(
     subspace of quadratic symmetries.
 
     Args:
-        operator_m: collection of Pauli strings
-        system_generators: collection of Pauli strings
+        operator_m (PauliStringLinear): collection of Pauli strings
+        system_generators (PauliStringCollection): collection of Pauli strings
     Returns:
-        the second-order twirl of an operator M by projecting it onto the
+        PauliStringLinear: the second-order twirl of an operator M by projecting it onto the
         subspace of quadratic symmetries
     """
     # Get the unnormalized basis directly from the collection object

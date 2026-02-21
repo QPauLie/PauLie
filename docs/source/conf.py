@@ -13,6 +13,8 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../'))
 
+# from intersphinx_registry import get_intersphinx_mapping
+
 project = 'paulie'
 copyright = '2024, PauLie contributors'
 author = 'PauLie contributors'
@@ -38,7 +40,12 @@ napoleon_numpy_docstring = True
 templates_path = ['_templates']
 exclude_patterns = []
 
-
+# -----------------------------------------------------------------------------
+# Intersphinx configuration
+# -----------------------------------------------------------------------------
+# intersphinx_mapping = get_intersphinx_mapping(
+#     packages={"python", "numpy"}
+# )
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
