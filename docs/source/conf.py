@@ -48,5 +48,4 @@ html_title = "PauLie"
 
 html_static_path = ['_static']
 html_css_files = ['custom.css']
-mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 html_extra_path=['media']
