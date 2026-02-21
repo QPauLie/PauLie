@@ -8,12 +8,12 @@ Installing
 ----------
 Make sure to have `python >= 3.12` installed.
 
-Once you have `poetry` installed, run:
+Once you have `uv` installed, run:
 
 .. code-block:: bash
 
-    poetry install
-    poetry shell
+    uv sync --all-extras --dev
+    uv shell
 
 -----------
 Development
@@ -24,4 +24,4 @@ Check types and catch errors with mypy:
 
 .. code-block:: bash
 
-    poetry run mypy src/paulie/common src/paulie/classifier/classification.py
+    uv run mypy src/paulie/common src/paulie/classifier/classification.py
