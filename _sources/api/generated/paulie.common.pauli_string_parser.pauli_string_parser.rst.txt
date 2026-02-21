@@ -1,0 +1,4 @@
+﻿paulie.common.pauli_string_parser.pauli_string_parser
+=====================================================
+
+.. autofunction:: paulie.common.pauli_string_parser.pauli_string_parser

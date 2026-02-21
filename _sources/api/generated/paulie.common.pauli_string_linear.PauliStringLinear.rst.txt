@@ -1,0 +1,6 @@
+﻿paulie.common.pauli_string_linear.PauliStringLinear
+===================================================
+
+.. autoclass:: paulie.common.pauli_string_linear.PauliStringLinear
+    :members:
+    :show-inheritance:

@@ -1,0 +1,6 @@
+﻿paulie.common.pauli_string_factory.Used
+=======================================
+
+.. autoclass:: paulie.common.pauli_string_factory.Used
+    :members:
+    :show-inheritance:

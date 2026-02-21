@@ -1,0 +1,4 @@
+﻿paulie.application.otoc.average_otoc
+====================================
+
+.. autofunction:: paulie.application.otoc.average_otoc

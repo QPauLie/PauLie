@@ -1,0 +1,6 @@
+﻿paulie.common.pauli\_string\_linear.PauliStringLinearException
+==============================================================
+
+.. currentmodule:: paulie.common.pauli_string_linear
+
+.. autoexception:: PauliStringLinearException

@@ -1,0 +1,4 @@
+﻿paulie.application.pauli_compiler.construct_universal_set
+=========================================================
+
+.. autofunction:: paulie.application.pauli_compiler.construct_universal_set

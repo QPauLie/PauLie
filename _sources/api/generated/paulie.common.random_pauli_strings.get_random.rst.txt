@@ -1,0 +1,4 @@
+﻿paulie.common.random_pauli_strings.get_random
+=============================================
+
+.. autofunction:: paulie.common.random_pauli_strings.get_random

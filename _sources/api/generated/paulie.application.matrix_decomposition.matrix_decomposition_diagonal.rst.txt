@@ -1,0 +1,4 @@
+﻿paulie.application.matrix_decomposition.matrix_decomposition_diagonal
+=====================================================================
+
+.. autofunction:: paulie.application.matrix_decomposition.matrix_decomposition_diagonal

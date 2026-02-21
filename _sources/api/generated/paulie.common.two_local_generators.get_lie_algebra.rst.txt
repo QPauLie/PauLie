@@ -1,0 +1,4 @@
+﻿paulie.common.two_local_generators.get_lie_algebra
+==================================================
+
+.. autofunction:: paulie.common.two_local_generators.get_lie_algebra

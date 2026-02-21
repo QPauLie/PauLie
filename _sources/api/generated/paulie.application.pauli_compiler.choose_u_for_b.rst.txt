@@ -1,0 +1,4 @@
+﻿paulie.application.pauli_compiler.choose_u_for_b
+================================================
+
+.. autofunction:: paulie.application.pauli_compiler.choose_u_for_b

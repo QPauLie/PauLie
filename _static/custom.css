@@ -1,0 +1,84 @@
+/* Global */
+:root {
+    --font: "Roboto", "Helvetica", sans-serif;
+}
+
+@font-face {
+    font-family: "QurovaDemo";
+    src: url("fonts/QurovaDEMO-Regular.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "QurovaDemo";
+    src: url("fonts/QurovaDEMO-Bold.otf") format("opentype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+.navbar-brand.logo .logo__title {
+    font-size: 70px;
+    font-weight: bold;
+    font-family: 'QurovaDemo';
+    color: rgba(26, 115, 232, 1);
+}
+
+/* Toctree */
+div.sphinxsidebar {
+    font-family: var(--font);
+}
+
+/* Sidebar headers */
+div.sphinxsidebarwrapper h1 {
+    font-size: 36px;
+}
+
+div.sphinxsidebar h3 {
+    font-family: var(--font);
+    font-weight: bold;
+}
+
+/* Nested lists without bullets */
+div.sphinxsidebar ul ul {
+    list-style: none;
+}
+
+/* Code links */
+a code {
+    font-family: var(--font);
+    word-break: break-word;
+    font-weight: normal;
+    font-size: 100%;
+}
+
+/* Body */
+div.bodywrapper {
+    font-family: var(--font);
+}
+
+div.body h1 {
+    font-family: var(--font);
+    font-weight: bold;
+    font-size: 2em;
+    line-height: 1.3;
+}
+
+p.caption, div.body h2, div.body h3 {
+    font-family: var(--font);
+    font-weight: bold;
+    font-size: 1.5em;
+    line-height: 1.3;
+}
+
+.sig, .sig-name {
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 1.3;
+}
+
+ul, ol {
+    list-style-type: none;
+    padding-left: 0;
+}
+

@@ -1,0 +1,4 @@
+﻿paulie.common.pauli_string_factory.gen_k_local
+==============================================
+
+.. autofunction:: paulie.common.pauli_string_factory.gen_k_local

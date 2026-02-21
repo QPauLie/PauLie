@@ -1,0 +1,6 @@
+﻿paulie.common.pauli\_string\_collection.PauliStringCollectionException
+======================================================================
+
+.. currentmodule:: paulie.common.pauli_string_collection
+
+.. autoexception:: PauliStringCollectionException

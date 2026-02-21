@@ -1,0 +1,6 @@
+﻿paulie.classifier.classification.TypeAlgebra
+============================================
+
+.. autoclass:: paulie.classifier.classification.TypeAlgebra
+    :members:
+    :show-inheritance:

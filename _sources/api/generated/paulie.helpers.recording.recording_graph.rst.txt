@@ -1,0 +1,4 @@
+﻿paulie.helpers.recording.recording_graph
+========================================
+
+.. autofunction:: paulie.helpers.recording.recording_graph

@@ -1,0 +1,4 @@
+﻿paulie.application.average_pauli_weight.avg_pauli_weights
+=========================================================
+
+.. autofunction:: paulie.application.average_pauli_weight.avg_pauli_weights

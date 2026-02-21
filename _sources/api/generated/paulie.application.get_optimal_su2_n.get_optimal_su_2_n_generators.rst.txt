@@ -1,0 +1,4 @@
+﻿paulie.application.get_optimal_su2_n.get_optimal_su_2_n_generators
+==================================================================
+
+.. autofunction:: paulie.application.get_optimal_su2_n.get_optimal_su_2_n_generators

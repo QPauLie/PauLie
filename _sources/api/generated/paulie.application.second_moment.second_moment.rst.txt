@@ -1,0 +1,4 @@
+﻿paulie.application.second_moment.second_moment
+==============================================
+
+.. autofunction:: paulie.application.second_moment.second_moment
