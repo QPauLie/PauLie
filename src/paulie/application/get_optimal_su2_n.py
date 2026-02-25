@@ -1,11 +1,19 @@
-"""Get generator set with optimal generation rate for su(2**n)"""
+"""
+    Module to get the generator set with optimal generation rate for su(2**n)
+"""
 import math
 from paulie.common.pauli_string_collection import PauliStringCollection
 
 
 def get_optimal_connections_su_2_n(generators:PauliStringCollection) -> tuple[int, int]:
-    """ Get optimal number of connections in anticommutation graph for
-    :math:`\\mathfrak{su}(2^{n})`."""
+    r"""
+    Get optimal number of connections in anticommutation graph for :math:`\mathfrak{su}(2^{n})`.
+
+    Args:
+        generators (PauliStringCollection): Generators of :math:`\mathfrak{su}(2^{n})`.
+    Returns:
+        tuple[int, int]: 
+    """
     fraction = 0.706
     ng = len(generators)
     total_pair = ng*(ng-1)/2

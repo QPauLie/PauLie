@@ -8,13 +8,21 @@ from paulie.application.matrix_decomposition import matrix_decomposition
 from paulie.common.pauli_string_bitarray import PauliString
 
 def quantum_fourier_entropy(o: np.ndarray) -> float:
-    """
-    Calculates the quantum Fourier entropy of an operator O.
+    r"""
+    Finds the quantum Fourier entropy of an operator :math:`O`.
+
+    The quantum Fourier entropy :math:`H` is given by
 
     .. math::
 
-        H(O) = -\\sum_{P} c_{P}^{2} * \\log c_{P}^{2}
+        O &= \sum_{P \in \text{all Pauli strings}} c_p P \\
+        H(O) &= -\sum_{p} c_{p}^{2}\log_2 \left(c_{p}^{2}\right)
 
+    Args:
+        o (numpy.ndarray): The operator :math:`O` in matrix form.
+
+    Returns:
+        float: The quantum Fourier entropy of the operator.
     """
     # Get the coefficients c_P from the Pauli decomposition
     c_p = matrix_decomposition(o)
@@ -28,12 +36,13 @@ def quantum_fourier_entropy(o: np.ndarray) -> float:
 
 
 def avg_pauli_weights(o: np.ndarray) -> np.ndarray:
-    """
-    Calculate the average Pauli weights of an operator O.
+    r"""
+    Finds the average Pauli weight of an operator :math:`O`.
 
     .. math::
 
-        I(O) = \\sum_{P} |P| * c_{P}^{2}
+        O &= \sum_{P \in \text{all Pauli strings}} c_p P \\
+        I(O) &= \sum_{p} c_{p}^{2}|P|
 
     """
     # Get the coefficients c_P from the Pauli decomposition

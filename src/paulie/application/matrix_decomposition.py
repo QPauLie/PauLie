@@ -63,10 +63,10 @@ def matrix_decomposition(matrix: np.ndarray) -> np.ndarray:
     Returns the weight vector corresponding to the Pauli basis decomposition of a matrix.
 
     Args:
-        matrix (np.ndarray): Matrix to be decomposed.
+        matrix (numpy.ndarray): Matrix to be decomposed.
 
     Returns:
-        np.ndarray: Weight vector corresponding to the Pauli basis decomposition of a matrix.
+        numpy.ndarray: Weight vector corresponding to the Pauli basis decomposition of a matrix.
     """
     if matrix.ndim != 2:
         raise ValueError("matrix must be a 2D ndarray")
@@ -95,9 +95,9 @@ def matrix_decomposition_diagonal(diag: np.ndarray) -> np.ndarray:
     Returns the weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.
 
     Args:
-        diag (np.ndarray): Main diagonal of the diagonal matrix to be decomposed.
+        diag (numpy.ndarray): Main diagonal of the diagonal matrix to be decomposed.
     Returns:
-        np.ndarray: Weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.
+        numpy.ndarray: Weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.
     """
     if diag.ndim != 1:
         raise ValueError("matrix must be a 1D ndarray")
