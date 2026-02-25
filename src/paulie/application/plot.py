@@ -10,7 +10,7 @@ def plot_anti_commutation_graph(generators:PauliStringCollection) -> None:
     Plot a canonical anti-commutation graph of a set of generators.
 
     Args:
-        generators (PauliStringCollection): Collection of Pauli strings.
+        generators (PauliStringCollection): Generating set of the Pauli string DLA.
     Returns:
         None
     """

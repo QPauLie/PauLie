@@ -10,16 +10,18 @@ def second_moment(
     operator_m: PauliStringLinear, system_generators: PauliStringCollection
 ) -> PauliStringLinear:
     """
-    Computes the second-order twirl of an operator M by projecting it onto the
-    subspace of quadratic symmetries.
+    Computes the second-order twirl of an operator :math:`M` by projecting it onto the
+    subspace of quadratic symmetries of a DLA.
 
     Args:
-        operator_m (PauliStringLinear): collection of Pauli strings
-        system_generators (PauliStringCollection): collection of Pauli strings
+        operator_m (PauliStringLinear): An operator :math:`M` expressed as a linear combination of Pauli strings.
+        system_generators (PauliStringCollection): Generating set of the Pauli string DLA.
     Returns:
-        PauliStringLinear: the second-order twirl of an operator M by projecting it onto the
-        subspace of quadratic symmetries
+        PauliStringLinear: The second-order twirl of an operator :math:`M` by projecting it onto the
+        subspace of quadratic symmetries.
     """
+    # TODO: Add twirl formula to the docstring
+
     # Get the unnormalized basis directly from the collection object
     orthonormal_basis = system_generators.get_full_quadratic_basis(normalized=True)
 

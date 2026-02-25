@@ -13,7 +13,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../'))
 
-# from intersphinx_registry import get_intersphinx_mapping
+from intersphinx_registry import get_intersphinx_mapping
 
 project = 'paulie'
 copyright = '2024, PauLie contributors'
@@ -43,9 +43,9 @@ exclude_patterns = []
 # -----------------------------------------------------------------------------
 # Intersphinx configuration
 # -----------------------------------------------------------------------------
-# intersphinx_mapping = get_intersphinx_mapping(
-#     packages={"python", "numpy"}
-# )
+intersphinx_mapping = get_intersphinx_mapping(
+    packages={"numpy"}
+)
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
