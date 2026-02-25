@@ -44,7 +44,7 @@ exclude_patterns = []
 # Intersphinx configuration
 # -----------------------------------------------------------------------------
 intersphinx_mapping = get_intersphinx_mapping(
-    packages={"numpy"}
+    packages={"python", "numpy"}
 )
 
 # -- Options for HTML output -------------------------------------------------
