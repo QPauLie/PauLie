@@ -5,10 +5,12 @@ import concurrent.futures
 import numpy as np
 from tqdm import tqdm
 from matplotlib import pyplot as plt
-from paulie.application.average_pauli_weight import (quantum_fourier_entropy,
-                                                    avg_pauli_weights_from_strings,
-                                                    average_pauli_weight, get_pauli_weights)
-
+from paulie import (
+    quantum_fourier_entropy,
+    avg_pauli_weights_from_strings,
+    average_pauli_weight,
+    get_pauli_weights
+)
 
 # --- Testing the Conjecture ---
 
