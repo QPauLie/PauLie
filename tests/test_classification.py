@@ -39,5 +39,5 @@ def test_explicit_algebras() -> None:
     # but Theorem 2 does not possibly lead to this result
     for n in [6,10]:
         algs = two_local_algebras(n)
-        for name in algs.keys():
-            assert p(G_LIE[name], n = n).is_algebra(algs[name])
+        for name, alg in algs.items():
+            assert p(G_LIE[name], n = n).is_algebra(alg)
