@@ -1,5 +1,5 @@
 """
-reachable
+reachablity check - module under development
 """
 import numpy as np
 from scipy.linalg import block_diag

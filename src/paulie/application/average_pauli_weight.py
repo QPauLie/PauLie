@@ -2,10 +2,8 @@
     Module to compute the average Pauli weight (influence) 
     and quantum Fourier entropy of an operator O.
 """
-from itertools import product
 import numpy as np
 from paulie.application.matrix_decomposition import matrix_decomposition
-from paulie.common.pauli_string_bitarray import PauliString
 
 def quantum_fourier_entropy(o: np.ndarray) -> float:
     r"""
@@ -33,61 +31,6 @@ def quantum_fourier_entropy(o: np.ndarray) -> float:
     # Calculate the Shannon entropy using base 2 for the logarithm
     entropy = -np.sum(non_zero_probs * np.log2(non_zero_probs))
     return entropy
-
-
-def avg_pauli_weights(o: np.ndarray) -> np.ndarray:
-    r"""
-    Finds the average Pauli weight of an operator :math:`O`.
-
-    .. math::
-
-        O &= \sum_{P \in \text{all Pauli strings}} c_p P \\
-        I(O) &= \sum_{p} c_{p}^{2}|P|
-
-    """
-    # Get the coefficients c_P from the Pauli decomposition
-    c_ps = matrix_decomposition(o)
-    # Get the number of qubits from the matrix decomposition
-    # 4 Pauli matrices yield 4**n_qubits options
-    dim = c_ps.shape[0]
-    n_qubits = int(np.emath.logn(4, dim))
-    # get all options of Pauli Strings for n_qubits
-    pauli_strings = product('IXYZ', repeat=n_qubits)
-    i = 0
-    for pauli_str in pauli_strings:
-        pl = PauliString(pauli_str=pauli_str)
-        c_p = pl.get_weight_in_matrix(c_ps)
-        abs_p = pl.get_count_non_trivially()
-        i += abs(c_p) ** 2 * abs_p
-    return i
-
-
-def avg_pauli_weights_from_strings(o: np.ndarray, pauli_strings: list) -> np.ndarray:
-    """
-    Calculate the average Pauli weights of an operator O, given a list of Pauli strings.:
-    This is useful to reduce the calculation, when testing.
-
-    .. math::
-
-        I(O) = \\sum_{P} |P| * c_{P}^{2}
-
-    """
-    # Get the coefficients c_P from the Pauli decomposition
-    c_ps = matrix_decomposition(o)
-    # get all options of Pauli Strings for n_qubits
-    i = 0
-    for pauli_str in pauli_strings:
-        pauli_str = ''.join(pauli_str)
-        pl = PauliString(pauli_str=pauli_str)
-        c_p = pl.get_weight_in_matrix(c_ps)
-        abs_p = pl.get_count_non_trivially()
-        i += abs(c_p) ** 2 * abs_p
-    return i
-
-
-
-##### Alternate Implementation #####
-
 
 def get_pauli_weights(num_qubits: int, identity_pos: int=0) -> np.ndarray:
     """

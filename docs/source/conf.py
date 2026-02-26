@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 from intersphinx_registry import get_intersphinx_mapping
 
 project = 'paulie'
-copyright = '2024, PauLie contributors'
+copyright = '2026, PauLie contributors'
 author = 'PauLie contributors'
 release = '0.0.1'
 
@@ -35,7 +35,7 @@ autosummary_generate = True
 autosummary_generate_overwrite = True
 autodoc_typehints = "none"
 napoleon_google_docstring = True
-napoleon_numpy_docstring = True
+
 
 templates_path = ['_templates']
 exclude_patterns = []

@@ -112,6 +112,14 @@ To verify that your code is formatted according to Ruff’s formatter rules, run
 
 Note: without the :code:`--check` option, :code:`ruff format` will modify your code automatically.
 
+For deeper static analysis and design-level checks, we use :code:`pylint`.
+
+To lint the source code, test scripts, and examples without installing :code:`pylint`, run:
+
+.. code-block:: bash
+
+    uvx pylint "src/**/*.py" "tests/**/*.py" "examples/**/*.py"
+
 .. _doc-building:
 
 Document Building
