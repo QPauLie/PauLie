@@ -1,6 +1,6 @@
 """
-    Module to compute the average Pauli weight (influence) 
-    and quantum Fourier entropy of an operator O.
+    Module to compute the average Pauli weight (influence) and quantum Fourier entropy of an
+    operator O.
 """
 import numpy as np
 from paulie.application.matrix_decomposition import matrix_decomposition
@@ -13,8 +13,8 @@ def quantum_fourier_entropy(o: np.ndarray) -> float:
 
     .. math::
 
-        O &= \sum_{P \in \text{all Pauli strings}} c_p P \\
-        H(O) &= -\sum_{p} c_{p}^{2}\log_2 \left(c_{p}^{2}\right)
+        O &= \sum_{P \in \text{all Pauli strings}} c_P P \\
+        H(O) &= -\sum_{P} c_{P}^{2}\log_2 \left(c_{P}^{2}\right)
 
     Args:
         o (numpy.ndarray): The operator :math:`O` in matrix form.
@@ -33,11 +33,22 @@ def quantum_fourier_entropy(o: np.ndarray) -> float:
     return entropy
 
 def get_pauli_weights(num_qubits: int, identity_pos: int=0) -> np.ndarray:
-    """
-    Generates the weight :math:`|P|` for each of the
-    :math:`4^{\\text{number qubits}}` Pauli operators.
-    The weight is the number of non-identity terms in the Pauli string.
-    The ordering corresponds to the output of matrix_decomposition, default is 'I' at position 0.
+    r"""
+    Generates the weight :math:`|P|` for each of the :math:`4^{\text{number qubits}}` Pauli
+    operators.
+
+    .. currentmodule::
+        paulie.application.matrix_decomposition
+
+    The weight is the number of non-identity terms in the Pauli string. The ordering corresponds to
+    the output of :func:`matrix_decomposition`, default is 'I' at position 0.
+
+    Args:
+        num_qubits (int): The number of qubits.
+        identity_pos (int, optional): The position of the identity operator. Defaults to 0.
+
+    Returns:
+        numpy.ndarray: The weights for each of the :math:`4^{\text{number qubits}}` Pauli operators.
     """
     num_paulis = 4**num_qubits
     weights = np.zeros(num_paulis, dtype=int)
@@ -53,13 +64,28 @@ def get_pauli_weights(num_qubits: int, identity_pos: int=0) -> np.ndarray:
     return weights
 
 def average_pauli_weight(o: np.ndarray, weights: np.ndarray) -> float:
-    """
-    Calculates the average Pauli weight (influence) for an operator O.
+    r"""
+    Calculates the average Pauli weight (influence) for an operator :math:`O`.
+
+    The influence :math:`I` is calculated as
 
     .. math::
 
-        I(O) = \\sum_{P} |P| * c_{P}^{2}
+        O &= \sum_{P \in \text{all Pauli strings}} c_P P \\
+        I(O) &= \sum_{P} |P| * c_{P}^{2}
+    
+    where :math:`|P|` is the weight of the Pauli operator :math:`P`.
 
+    .. currentmodule::
+        paulie.application.matrix_decomposition
+
+    Args:
+        o (numpy.ndarray): The operator :math:`O` in matrix form.
+        weights (numpy.ndarray): The weights of each Pauli operator in the ordering corresponding to
+            the output of :func:`matrix_decomposition`.
+
+    Returns:
+        float: The average Pauli weight (influence) of the operator.
     """
     # Get the coefficients c_P from the Pauli decomposition
     coeffs = matrix_decomposition(o)

@@ -1,5 +1,5 @@
 """
-    Fast Pauli basis matrix decomposition algorithm.
+    Module implementing the fast Pauli basis matrix decomposition algorithm.
 """
 import numpy as np
 
@@ -97,7 +97,8 @@ def matrix_decomposition_diagonal(diag: np.ndarray) -> np.ndarray:
     Args:
         diag (numpy.ndarray): Main diagonal of the diagonal matrix to be decomposed.
     Returns:
-        numpy.ndarray: Weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.
+        numpy.ndarray: Weight vector corresponding to the Pauli basis decomposition of a diagonal
+        matrix.
     """
     if diag.ndim != 1:
         raise ValueError("matrix must be a 1D ndarray")

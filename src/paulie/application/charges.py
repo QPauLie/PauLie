@@ -8,8 +8,8 @@ def non_commuting_charges(generators: PauliStringCollection)->PauliStringCollect
     """
     Finds the non-commuting charges of a DLA.
 
-    Non-commuting charges describe non-Abelian symmetries — that is, elements of the
-    stabilizer of the DLA that do not commute with each other.
+    Non-commuting charges describe non-Abelian symmetries — that is, elements of the stabilizer of
+    the DLA that do not commute with each other.
 
     Args:
         generators (PauliStringCollection): Generating set of the DLA.

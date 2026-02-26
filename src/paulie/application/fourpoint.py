@@ -12,11 +12,11 @@ def fourpoint(generators: PauliStringCollection,
             r: PauliString,
             s: PauliString) -> float:
     r"""
-    Computes the four-point correlator of Pauli strings :math:`P`, :math:`Q`, 
-    :math:`R`, and :math:`S`.
+    Computes the four-point correlator of Pauli strings :math:`P`, :math:`Q`,  :math:`R`, and
+    :math:`S`.
     
-    For :math:`PR,QS \propto L` where :math:`L` is a linear symmetry, this
-    reduces to the average OTOC of :math:`P` and :math:`Q`.
+    For :math:`PR,QS \propto L` where :math:`L` is a linear symmetry, this reduces to the average
+    OTOC of :math:`P` and :math:`Q`.
 
     (arXiV: 2502.16404)
 
