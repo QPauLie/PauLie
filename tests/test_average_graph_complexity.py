@@ -4,10 +4,12 @@
 from math import comb
 from itertools import combinations
 import pytest
-from paulie.common.pauli_string_factory import get_pauli_string as p
-from paulie.common.pauli_string_factory import get_identity
-from paulie.application.graph_complexity import average_graph_complexity
-from paulie.common.pauli_string_collection import PauliString
+from paulie import (
+    PauliString,
+    get_identity,
+    average_graph_complexity,
+    get_pauli_string as p
+)
 
 def matchgate_generators(n: int) -> list[str]:
     """

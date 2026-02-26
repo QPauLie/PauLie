@@ -4,15 +4,14 @@ Validates that the returned sequence G satisfies
     nested_adjoint(G[:-1], G[-1]) == target
 for a selection of small k, N, and target strings.
 """
-from paulie.common.pauli_string_bitarray import PauliString
-from paulie.common.pauli_string_factory import get_pauli_string
-from paulie.application.pauli_compiler import (
+from paulie import (
+    PauliString,
+    get_pauli_string,
     compile_target,
     OptimalPauliCompiler,
     PauliCompilerConfig,
     construct_universal_set,
 )
-
 
 def nested_adjoint(operators: list[PauliString], target: PauliString) -> PauliString:
     """

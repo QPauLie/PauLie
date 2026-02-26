@@ -8,6 +8,13 @@ from .application.otoc import average_otoc
 from .application.fourpoint import fourpoint
 from .application.charges import non_commuting_charges
 from .application.second_moment import second_moment
+from .application.graph_complexity import average_graph_complexity
+from .application.animation import animation_anti_commutation_graph
+from .application.average_pauli_weight import (
+    quantum_fourier_entropy,
+    average_pauli_weight,
+    get_pauli_weights
+)
 from .application.matrix_decomposition import (
     matrix_decomposition,
     matrix_decomposition_diagonal
@@ -54,6 +61,11 @@ __all__ = [
     "fourpoint",
     "non_commuting_charges",
     "second_moment",
+    "average_graph_complexity",
+    "animation_anti_commutation_graph",
+    "quantum_fourier_entropy",
+    "average_pauli_weight",
+    "get_pauli_weights",
     "matrix_decomposition",
     "matrix_decomposition_diagonal",
     "compile_target",

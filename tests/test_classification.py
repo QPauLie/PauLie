@@ -4,8 +4,11 @@ Test classification
 from operator import itemgetter
 from typing import Any
 import pytest
-from paulie.common.pauli_string_factory import get_pauli_string as p
-from paulie.common.two_local_generators import G_LIE, two_local_algebras
+from paulie import (
+    G_LIE,
+    two_local_algebras,
+    get_pauli_string as p
+)
 
 
 @pytest.mark.parametrize("generators_to_compare", [

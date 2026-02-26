@@ -2,9 +2,7 @@
 Unit tests for the second_moment application and related functions.
 """
 import pytest
-
-from paulie.common.pauli_string_factory import get_pauli_string as p
-from paulie.application.second_moment import second_moment
+from paulie import second_moment, get_pauli_string as p
 
 # We group the tests into a class for organization, but use pytest-style asserts.
 class TestSecondMoment:

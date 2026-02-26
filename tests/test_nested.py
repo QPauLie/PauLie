@@ -2,8 +2,7 @@
 Test nested
 """
 import pytest
-from paulie.common.pauli_string_factory import get_pauli_string as p
-from paulie.common.pauli_string_collection import PauliStringCollection
+from paulie import PauliStringCollection, get_pauli_string as p
 
 # Define expected nested Pauli string pairs for each node
 NESTED_PAIRS = {

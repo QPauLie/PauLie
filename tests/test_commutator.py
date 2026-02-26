@@ -2,8 +2,7 @@
 Test commutator
 """
 import pytest
-from paulie.common.pauli_string_factory import get_pauli_string as p
-from paulie.common.pauli_string_bitarray import PauliString
+from paulie import PauliString, get_pauli_string as p
 
 @pytest.fixture(scope="module")
 def pauli_setup() -> dict[str,PauliString]:

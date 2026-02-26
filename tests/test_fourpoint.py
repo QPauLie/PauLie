@@ -2,9 +2,11 @@
     Tests for four point.
 """
 
-from paulie.common.pauli_string_factory import get_pauli_string as ps
-from paulie.application.otoc import average_otoc
-from paulie.application.fourpoint import fourpoint
+from paulie import (
+    average_otoc,
+    fourpoint,
+    get_pauli_string as ps
+)
 
 # These are the generators of n=3 "matchgate" dynamics
 generators = ps(["ZII", "IZI", "IIZ", "XXI", "IXX"])
