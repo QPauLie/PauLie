@@ -2,10 +2,8 @@
     Module to compute the average Pauli weight (influence) 
     and quantum Fourier entropy of an operator O.
 """
-from itertools import product
 import numpy as np
 from paulie.application.matrix_decomposition import matrix_decomposition
-from paulie.common.pauli_string_bitarray import PauliString
 
 def quantum_fourier_entropy(o: np.ndarray) -> float:
     """
