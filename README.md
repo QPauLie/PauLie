@@ -14,7 +14,7 @@ first release focuses on the classification of the circuit's dynamical Lie algeb
 Make sure to have Python >= 3.12 installed.
 
 ### Installation
-Clone the repository. Once you have [`uv` installed](https://docs.astral.sh/uv/getting-started/installation/#pypi), run:
+Clone the repository. Once you have [`uv` installed](https://docs.astral.sh/uv/getting-started/installation/#pypi), run the following command to install all dependencies:
 
 ```sh
 uv sync --all-extras --dev
@@ -54,6 +54,18 @@ uv run mypy src/paulie/common src/paulie/classifier/classification.py
 ### Migration from Poetry
 
 This project previously used [Poetry](https://python-poetry.org/) for dependency management.  
-As of this release, we have migrated to [`uv`](https://docs.astral.sh/uv/getting-started/installation/#pypi).  
+As of this release, we have migrated to [uv](https://docs.astral.sh/uv/getting-started/installation/#pypi).  
 
-**Old Poetry commands** (for reference during migration):
+If your development environment is already set up using Poetry, you can start by installing `uv` as described in the [Installation](#installation) section, then activate the `uv` environment.  
+
+The command `poetry run <command>` is replaced with `uv run <command>`. For example:
+
+```sh
+uv run ruff check
+```
+
+`uv` also allows you to run commands **without installing dependencies** by using ``uvx <command>``. For example::
+
+```sh
+    uvx ruff check
+```
