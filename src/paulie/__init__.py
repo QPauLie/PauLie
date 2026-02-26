@@ -8,6 +8,7 @@ from .application.otoc import average_otoc
 from .application.fourpoint import fourpoint
 from .application.charges import non_commuting_charges
 from .application.second_moment import second_moment
+from .application.graph_complexity import average_graph_complexity
 from .application.matrix_decomposition import (
     matrix_decomposition,
     matrix_decomposition_diagonal
@@ -54,6 +55,7 @@ __all__ = [
     "fourpoint",
     "non_commuting_charges",
     "second_moment",
+    "average_graph_complexity",
     "matrix_decomposition",
     "matrix_decomposition_diagonal",
     "compile_target",

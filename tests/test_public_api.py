@@ -33,6 +33,7 @@ public_symbols = [
     "fourpoint",
     "non_commuting_charges",
     "second_moment",
+    "average_graph_complexity",
     "matrix_decomposition",
     "matrix_decomposition_diagonal",
     "compile_target",

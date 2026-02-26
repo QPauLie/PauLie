@@ -4,12 +4,12 @@
 import pytest
 import numpy as np
 import networkx as nx
-from paulie.common.pauli_string_collection import PauliStringCollection
-from paulie.common.pauli_string_bitarray import PauliString
-from paulie.application.otoc import average_otoc
-from paulie.common.pauli_string_factory import (
-    get_pauli_string as p,
-    get_identity
+from paulie import (
+    PauliString,
+    PauliStringCollection,
+    average_otoc,
+    get_identity,
+    get_pauli_string as p
 )
 
 generators_list = [
