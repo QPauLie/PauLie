@@ -67,5 +67,5 @@ uv run ruff check
 `uv` also allows you to run commands **without installing dependencies** by using ``uvx <command>``. For example::
 
 ```sh
-    uvx ruff check
+uvx ruff check
 ```
