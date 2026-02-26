@@ -55,5 +55,4 @@ uv run mypy src/paulie/common src/paulie/classifier/classification.py
 
 This project previously used [Poetry](https://python-poetry.org/) for dependency management.  
 As of this release, we have migrated to [`uv`](https://docs.astral.sh/uv/getting-started/installation/#pypi).  
-
-**Old Poetry commands** (for reference during migration):
+You can start using uv right away without having to modify anything in the existing poetry setup.
