@@ -63,11 +63,17 @@ public_symbols = [
 ]
 
 def test_public_api_exports():
+    """
+    Test public API
+    """
     exported = set(dir(paulie))
     expected = set(public_symbols) | allowed_dunders | allowed_internals | subpackages
     assert exported == expected
 
 def test_deprecated_symbols():
+    """
+    Test depreciation symbols
+    """
     deprecated_symbols = ["g_lie"]
     for old_name in deprecated_symbols:
         with warnings.catch_warnings(record=True) as w:
