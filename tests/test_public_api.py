@@ -19,7 +19,8 @@ allowed_dunders = {
 }
 allowed_internals = {
     "deprecated_symbols",
-    "warnings"
+    "warnings",
+    "exceptions"
 }
 subpackages = {
     "application",
@@ -28,6 +29,13 @@ subpackages = {
     "classifier"
 }
 public_symbols = [
+    # Exceptions
+    "PaulieError",
+    "ParsingError",
+    "ValidationError",
+    "PauliStringLinearException",
+    "PauliStringCollectionException",
+
     # Application
     "average_otoc",
     "fourpoint",

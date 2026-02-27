@@ -3,6 +3,15 @@ Public API
 """
 import warnings
 
+# Exceptions
+from .exceptions import (
+    PaulieError,
+    ParsingError,
+    ValidationError,
+    PauliStringLinearException,
+    PauliStringCollectionException
+)
+
 # Application
 from .application.otoc import average_otoc
 from .application.fourpoint import fourpoint
@@ -57,6 +66,13 @@ from .helpers.drawing import (
 )
 
 __all__ = [
+    # Exceptions
+    "PaulieError",
+    "ParsingError",
+    "ValidationError",
+    "PauliStringLinearException",
+    "PauliStringCollectionException",
+
     # Application
     "average_otoc",
     "fourpoint",
