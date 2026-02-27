@@ -76,6 +76,10 @@ public_symbols = [
     "plot_graph_by_nodes"
 ]
 
+deprecated_symbols = [
+    "g_lie"
+]
+
 def test_public_api_exports():
     """
     Test public API
@@ -88,7 +92,6 @@ def test_deprecated_symbols():
     """
     Test depreciation symbols
     """
-    deprecated_symbols = ["g_lie"]
     for old_name in deprecated_symbols:
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
