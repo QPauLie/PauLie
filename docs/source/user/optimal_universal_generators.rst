@@ -8,9 +8,7 @@ fraction nearest to :math:`0.706`.
 
 .. code-block:: python
 
-    from paulie.application.get_optimal_su2_n import get_optimal_su_2_n_generators
-    from paulie.common.two_local_generators import G_LIE
-    from paulie.common.pauli_string_factory import get_pauli_string as p
+    from paulie import get_optimal_su_2_n_generators, G_LIE, get_pauli_string as p
 
     n = 4  # dimension of the system
     initial_generators = p(G_LIE["a12"], n=n)

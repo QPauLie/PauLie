@@ -33,6 +33,7 @@ public_symbols = [
     "fourpoint",
     "non_commuting_charges",
     "second_moment",
+    "get_optimal_su_2_n_generators",
     "average_graph_complexity",
     "animation_anti_commutation_graph",
     "quantum_fourier_entropy",
