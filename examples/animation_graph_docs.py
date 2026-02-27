@@ -1,8 +1,7 @@
 """
 Bulding animation
 """
-from paulie.application.animation import animation_anti_commutation_graph
-from paulie.common.pauli_string_factory import get_pauli_string as p
+from paulie import animation_anti_commutation_graph, get_pauli_string as p
 
 
 if __name__ == "__main__":

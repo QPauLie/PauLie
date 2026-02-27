@@ -21,11 +21,10 @@ We can reproduce Example I.5 in `"Classification of dynamical Lie algebras of 2-
 
 .. code-block:: python
 
-    from paulie.application.classify import get_algebra
-    from paulie.common.pauli_string_factory import get_pauli_string as p
+    from paulie import get_pauli_string as p
 
     generators = p(["XY"])
-    algebra = get_algebra(generators)
+    algebra = generators.get_algebra()
     print(f"algebra = {algebra}")
 
 outputs

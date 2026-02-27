@@ -6,13 +6,7 @@ from typing import Self, Generator, Dict
 from six.moves import reduce
 import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
-
-
-class PauliStringLinearException(Exception):
-    """
-    Exception for the linear combination of Pauli strings class.
-    """
-
+from paulie.exceptions import PauliStringLinearException
 
 class PauliStringLinear(PauliString):
     """Representation of a linear combination of Pauli string."""

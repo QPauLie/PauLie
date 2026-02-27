@@ -14,12 +14,7 @@ from paulie.classifier.classification import Classification
 from paulie.classifier.morph_factory import MorphFactory
 from paulie.classifier.recording_morph_factory import RecordingMorphFactory
 from paulie.helpers.recording import RecordGraph
-
-class PauliStringCollectionException(Exception):
-    """
-    Exception for the Pauli string collection class.
-    """
-
+from paulie.exceptions import PauliStringCollectionException
 
 # class PauliStringCollection(object):
 #    """

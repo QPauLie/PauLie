@@ -19,7 +19,8 @@ dependencies = [
     "six>=1.17.0",
     "tqdm>=4.67.1",
     "scipy>=1.17.0",
-    "pauliarray @ git+https://github.com/algolab-quantique/pauliarray.git"
+    "pauliarray @ git+https://github.com/algolab-quantique/pauliarray.git",
+    "intersphinx-registry>=0.2602.2",
 ]
 
 [project.optional-dependencies]

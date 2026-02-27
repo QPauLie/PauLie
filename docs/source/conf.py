@@ -13,6 +13,8 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../'))
 
+from intersphinx_registry import get_intersphinx_mapping
+
 project = 'paulie'
 copyright = '2026, PauLie contributors'
 author = 'PauLie contributors'
@@ -38,7 +40,12 @@ napoleon_google_docstring = True
 templates_path = ['_templates']
 exclude_patterns = []
 
-
+# -----------------------------------------------------------------------------
+# Intersphinx configuration
+# -----------------------------------------------------------------------------
+intersphinx_mapping = get_intersphinx_mapping(
+    packages={"python", "numpy"}
+)
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -48,5 +55,5 @@ html_title = "PauLie"
 
 html_static_path = ['_static']
 html_css_files = ['custom.css']
-mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js'
 html_extra_path=['media']
