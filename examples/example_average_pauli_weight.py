@@ -7,7 +7,6 @@ from tqdm import tqdm
 from matplotlib import pyplot as plt
 from paulie import (
     quantum_fourier_entropy,
-    avg_pauli_weights_from_strings,
     average_pauli_weight,
     get_pauli_weights
 )
@@ -42,18 +41,6 @@ def compute_c_for_weights(args):
         return None  # Mark as zero
     return h / i
 
-def compute_c_for_operator(args):
-    """
-    compute c = H(O) / I(O) for a list of pauli strings
-    """
-    n_qubits, pauli_strings = args
-    o = generate_hermitian_operator(n_qubits)
-    i = avg_pauli_weights_from_strings(o, pauli_strings=pauli_strings)
-    h = quantum_fourier_entropy(o)
-    if i < 1e-12:
-        return None  # Mark as zero
-    return h / i
-
 TRIAL_COUNT = 10000
 c_list_nqbits = {}
 max_ratio_nqbits = {}
@@ -74,7 +61,6 @@ def test():
         max_ratio = 0
         min_ratio = float('inf')
         with concurrent.futures.ProcessPoolExecutor() as executor:
-            #results = list(tqdm(executor.map(compute_c_for_operator, args), total=TRIAL_COUNT))
             results = list(tqdm(executor.map(compute_c_for_weights, args), total=TRIAL_COUNT))
         for c in results:
             if c is None:
