@@ -21,8 +21,6 @@ Utilities related to average Pauli weights.
    :toctree: generated/
 
    average_pauli_weight.average_pauli_weight
-   average_pauli_weight.avg_pauli_weights
-   average_pauli_weight.avg_pauli_weights_from_strings
    average_pauli_weight.get_pauli_weights
    average_pauli_weight.quantum_fourier_entropy
 
@@ -51,7 +49,7 @@ Utilities related to :math:`\mathfrak{su}(2^n)` generators.
 .. autosummary::
    :toctree: generated/
 
-   get_optimal_su2_n.get_optimal_connections_su_2_n
+   get_optimal_su2_n.get_optimal_edges_su_2_n
    get_optimal_su2_n.get_optimal_su_2_n_generators
 
 DLA metrics
