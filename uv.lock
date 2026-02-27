@@ -333,6 +333,15 @@ wheels = [
 ]
 
 [[package]]
+name = "intersphinx-registry"
+version = "0.2602.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e0/a3/0fc57bb05624f1c2dcb26bf2fa2a7b3bcf14be7d404b49b6dd66f7a2df1f/intersphinx_registry-0.2602.2.tar.gz", hash = "sha256:5c02659a3025082049031635b3b1759f90bd538e4528fd5d22e4a426b1685e5a", size = 19586, upload-time = "2026-02-02T14:21:19.949Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b8/c9/11ccfaacd8bbc0398a113d9f7ca3592b18ec15a37e77fe7f9496a6d9f5f0/intersphinx_registry-0.2602.2-py2.py3-none-any.whl", hash = "sha256:562738145bea82704af05c59f47fd9ab9fd3c5e8ea9529abad2eb79c2ac9ed7f", size = 21858, upload-time = "2026-02-02T14:21:18.327Z" },
+]
+
+[[package]]
 name = "jinja2"
 version = "3.1.6"
 source = { registry = "https://pypi.org/simple" }
@@ -749,6 +758,7 @@ version = "0.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "bitarray" },
+    { name = "intersphinx-registry" },
     { name = "matplotlib" },
     { name = "memory-profiler" },
     { name = "networkx" },
@@ -774,6 +784,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "bitarray", specifier = ">=3.0.0" },
+    { name = "intersphinx-registry", specifier = ">=0.2602.2" },
     { name = "matplotlib", specifier = ">=3.10.0" },
     { name = "memory-profiler", specifier = ">=0.61.0" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.19.0" },
