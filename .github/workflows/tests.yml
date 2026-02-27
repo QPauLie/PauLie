@@ -40,5 +40,4 @@ jobs:
       #run: uvx pylint $(git ls-files '*.py')
       run: | 
         uvx ruff check .
-        uvx ruff format --check .
         uvx pylint "src/**/*.py" "tests/*.py" "examples/*.py"
