@@ -1,5 +1,5 @@
 """
-Animation building transformation anti-commutation graph
+    Module for animating the transformation of the anti-commutation graph into a canonical form.
 """
 from paulie.helpers.recording import RecordGraph
 from paulie.helpers.drawing import animation_graph
@@ -9,22 +9,20 @@ from paulie.common.pauli_string_collection import PauliStringCollection
 def animation_anti_commutation_graph(generators: PauliStringCollection,
                                      storage=None, interval:int =1000) -> None:
     """
-    Animation building transformation anti-commutation graph
-    generators - list of generators.
+    Generates an animation showing the transformation of the anti-commutation graph into canonical
+    form.
 
     Args:
-        generators: Collection of Pauli strings.
-        storage: Storage in file.
-            dictionary:
-            filename: path to file.
-            writer: Specifies the software used to write the animation.
-            Common options include:
-            'ffmpeg' (for MP4, AVI, etc., requires FFmpeg to be installed
-            and accessible in your system's PATH,
-            or its path specified via matplotlib.rcParams['animation.ffmpeg_path']).
-            'pillow' (for GIF, requires the Pillow library).
-            'imagemagick' (for GIF, requires ImageMagick).
-        interval: Interval between recording frames.
+        generators (PauliStringCollection): Collection of Pauli strings.
+        storage (dict): Storage in file.
+
+            - filename (string): Path to the output file.
+            - writer (string): Specifies the software used to write the animation. Common options
+              include `ffmpeg` for MP4, AVI, etc. output, and `pillow` and `imagemagick` for GIF
+              output. Note that the necessary libraries must be available and usable by
+              `matplotlib`.
+        interval (int): Interval between recording frames.
+
     Returns:
         None
     """

@@ -7,9 +7,9 @@ from typing import Generator
 from paulie.common.pauli_string_bitarray import PauliString
 
 
-class ClassificatonException(Exception):
+class ClassificationException(Exception):
     """
-    Classification exclusion.
+    Exception raised when graph is of non-canonical type.
     """
 
 class TypeGraph(enum.Enum):
@@ -30,7 +30,6 @@ class TypeAlgebra(enum.Enum):
     SU = 1
     SP = 2
     SO = 3
-
 
 class Morph:
     """
@@ -119,7 +118,7 @@ class Morph:
                 two_legs += 1
             if len(leg) > 2:
                 if long_vertices > 0:
-                    raise ClassificatonException("Graph of non-canonical type")
+                    raise ClassificationException("Graph of non-canonical type")
                 long_vertices += len(leg)
 
         if long_vertices == 0 and two_legs == 1:
@@ -146,7 +145,7 @@ class Morph:
 
         """
         if self.is_empty():
-            raise ClassificatonException("Graph of non-canonical type")
+            raise ClassificationException("Graph of non-canonical type")
         if self.is_empty_legs():
             return  TypeGraph.NONE, 0, 0, 0
         one_legs, two_legs, long_vertices = self.counts()
@@ -158,7 +157,7 @@ class Morph:
             return  TypeGraph.B3, one_legs, two_legs, long_vertices
         if long_vertices == 4:
             return  TypeGraph.B2, one_legs, two_legs, long_vertices
-        raise ClassificatonException("Graph of non-canonical type")
+        raise ClassificationException("Graph of non-canonical type")
 
     def get_type(self) -> TypeGraph:
         """

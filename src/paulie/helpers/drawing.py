@@ -15,12 +15,12 @@ def plot_graph(vertices:list[str],
                edges:list[tuple[str,str]],
                edge_labels:dict[tuple[str,str],str] = None) -> None:
     """
-    Plot graph.
+    Plot an arbitrary graph.
 
     Args:
         vertices: List of vertices.
         edges: List of edges.
-        edge_labels: List of labels.
+        edge_labels: List of edge labels.
     Returns:
         None
     """

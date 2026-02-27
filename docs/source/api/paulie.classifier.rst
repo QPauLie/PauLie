@@ -24,7 +24,7 @@ Exceptions thrown by the above methods.
 .. autosummary::
    :toctree: generated/
 
-   classification.ClassificatonException
+   classification.ClassificationException
    morph_factory.MorphFactoryException
    morph_factory.NotConnectedException
    morph_factory.RaiseException
