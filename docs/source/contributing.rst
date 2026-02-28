@@ -72,6 +72,54 @@ The new feature should follow these guidelines:
 
 Before submitting a pull request, please make sure your changes pass all tests.
 
+.. _public-api-contributions:
+
+Public API Contributions
+========================
+
+The PauLie public API defines the **symbols users should import directly** from
+``paulie`` or curated subpackages. This ensures stability, discoverability, and
+consistent documentation.
+
+Policy
+------
+
+1.  **Only curated symbols are public**:
+
+    - Expose classes, functions, and constants intended for common use.
+    - Internal helpers remain private.
+
+2.  **Explicit exports**:
+
+    - All public API is defined and curated in modules ``paulie/__init__.py`` using ``__all__``.
+
+3.  **Deprecation**:
+
+    - Deprecated symbols are handled via ``__getattr__`` and ``warnings.warn(DeprecationWarning)``
+
+Adding a New Symbol
+-------------------
+
+1.  Check that the new feature is **commonly used or essential** for end users.
+
+2.  Add it to the curated API in src/paulie/__init__.py:
+
+   .. code-block:: python
+
+       from .common import new_function
+
+       __all__ = ["new_function", ...]
+
+3.  Add symbol in src/tests/test_pulic_api.py:
+
+   .. code-block:: python
+
+       import paulie
+
+       public_symbols = ["new_function", ...]
+
+4.  If replacing a symbol, include a **deprecated_symbols**.
+
 .. _functional-testing:
 
 Functional Testing
