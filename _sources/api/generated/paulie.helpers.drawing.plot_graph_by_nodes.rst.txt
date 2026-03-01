@@ -1,0 +1,4 @@
+﻿paulie.helpers.drawing.plot_graph_by_nodes
+==========================================
+
+.. autofunction:: paulie.helpers.drawing.plot_graph_by_nodes

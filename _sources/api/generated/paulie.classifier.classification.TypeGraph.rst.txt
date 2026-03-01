@@ -1,0 +1,6 @@
+﻿paulie.classifier.classification.TypeGraph
+==========================================
+
+.. autoclass:: paulie.classifier.classification.TypeGraph
+    :members:
+    :show-inheritance:

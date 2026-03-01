@@ -1,0 +1,6 @@
+﻿paulie.classifier.classification.Classification
+===============================================
+
+.. autoclass:: paulie.classifier.classification.Classification
+    :members:
+    :show-inheritance:

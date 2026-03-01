@@ -1,0 +1,6 @@
+﻿paulie.classifier.recording\_morph\_factory.NotConnectedException
+=================================================================
+
+.. currentmodule:: paulie.classifier.recording_morph_factory
+
+.. autoexception:: NotConnectedException

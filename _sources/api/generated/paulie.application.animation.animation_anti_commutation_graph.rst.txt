@@ -1,0 +1,4 @@
+﻿paulie.application.animation.animation_anti_commutation_graph
+=============================================================
+
+.. autofunction:: paulie.application.animation.animation_anti_commutation_graph

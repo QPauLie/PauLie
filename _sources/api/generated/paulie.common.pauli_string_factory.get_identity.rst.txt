@@ -1,0 +1,4 @@
+﻿paulie.common.pauli_string_factory.get_identity
+===============================================
+
+.. autofunction:: paulie.common.pauli_string_factory.get_identity

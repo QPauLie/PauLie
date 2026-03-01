@@ -1,0 +1,4 @@
+﻿paulie.common.get_graph.get_graph
+=================================
+
+.. autofunction:: paulie.common.get_graph.get_graph

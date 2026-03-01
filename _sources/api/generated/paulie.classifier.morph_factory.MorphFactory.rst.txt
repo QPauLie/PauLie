@@ -1,0 +1,6 @@
+﻿paulie.classifier.morph_factory.MorphFactory
+============================================
+
+.. autoclass:: paulie.classifier.morph_factory.MorphFactory
+    :members:
+    :show-inheritance:

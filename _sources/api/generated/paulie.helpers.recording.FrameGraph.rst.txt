@@ -1,0 +1,6 @@
+﻿paulie.helpers.recording.FrameGraph
+===================================
+
+.. autoclass:: paulie.helpers.recording.FrameGraph
+    :members:
+    :show-inheritance:

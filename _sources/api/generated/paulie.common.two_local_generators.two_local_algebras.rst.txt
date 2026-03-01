@@ -1,0 +1,4 @@
+﻿paulie.common.two_local_generators.two_local_algebras
+=====================================================
+
+.. autofunction:: paulie.common.two_local_generators.two_local_algebras

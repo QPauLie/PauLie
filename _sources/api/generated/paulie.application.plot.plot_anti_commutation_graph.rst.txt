@@ -1,0 +1,4 @@
+﻿paulie.application.plot.plot_anti_commutation_graph
+===================================================
+
+.. autofunction:: paulie.application.plot.plot_anti_commutation_graph

@@ -1,0 +1,6 @@
+﻿paulie.common.pauli_string_bitarray.PauliString
+===============================================
+
+.. autoclass:: paulie.common.pauli_string_bitarray.PauliString
+    :members:
+    :show-inheritance:

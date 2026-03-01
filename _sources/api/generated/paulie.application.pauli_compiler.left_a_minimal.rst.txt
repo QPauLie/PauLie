@@ -1,0 +1,4 @@
+﻿paulie.application.pauli_compiler.left_a_minimal
+================================================
+
+.. autofunction:: paulie.application.pauli_compiler.left_a_minimal

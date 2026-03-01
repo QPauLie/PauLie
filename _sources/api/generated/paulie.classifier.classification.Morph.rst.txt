@@ -1,0 +1,6 @@
+﻿paulie.classifier.classification.Morph
+======================================
+
+.. autoclass:: paulie.classifier.classification.Morph
+    :members:
+    :show-inheritance:

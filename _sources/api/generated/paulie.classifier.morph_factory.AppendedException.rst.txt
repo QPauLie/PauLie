@@ -1,0 +1,6 @@
+﻿paulie.classifier.morph\_factory.AppendedException
+==================================================
+
+.. currentmodule:: paulie.classifier.morph_factory
+
+.. autoexception:: AppendedException

@@ -1,0 +1,4 @@
+﻿paulie.helpers.drawing.plot_graph
+=================================
+
+.. autofunction:: paulie.helpers.drawing.plot_graph

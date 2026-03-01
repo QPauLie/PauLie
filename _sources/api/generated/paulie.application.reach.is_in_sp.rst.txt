@@ -1,0 +1,4 @@
+﻿paulie.application.reach.is_in_sp
+=================================
+
+.. autofunction:: paulie.application.reach.is_in_sp
