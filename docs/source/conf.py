@@ -56,4 +56,4 @@ html_title = "PauLie"
 html_static_path = ['_static']
 html_css_files = ['custom.css']
 mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js'
-html_extra_path=['media']
+html_extra_path=['source/media']
