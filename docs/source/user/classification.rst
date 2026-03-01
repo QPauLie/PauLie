@@ -56,12 +56,7 @@ We can illustrate this for the generating set :code:`["XYI", "IXY", "XZY"]` via 
 As the third Paulistring is proportional to the commutator of the first two Paulistrings it can be contracted.
 
 .. raw:: html
-
-   <iframe
-     src="../media/example_a.html"
-     style="width: 100%; height: 520px; border: 0;"
-     loading="lazy">
-   </iframe>
+    :file: ../media/example_a.html
 
 For any generator set consisting of Paulistrings, the anticommutation graph can be transformed to four canonical types (Theorem 1, [1]).
 In the example the resulting graph is a line graph with two vertices and no single vertices. Therefore it is of type A and the
@@ -87,12 +82,7 @@ outputs
 We can also animate the transformation to a star graph:
 
 .. raw:: html
-
-   <iframe
-     src="../media/example_b.html"
-     style="width: 100%; height: 520px; border: 0;"
-     loading="lazy">
-   </iframe>
+    :file: ../media/example_b.html
 
 The Lie algebra plays a pivotal role in quantum control theory to understand the reachability of states.
 Also measures of operator spread complexity rely on this concept.
