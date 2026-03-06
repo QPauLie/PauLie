@@ -12,7 +12,8 @@ and is represented as a string indicating the Pauli matrices successively.
 Given a set of Paulistrings, the closure under the commutator defines a Lie algebra.
 
 In `"Full classification of Pauli Lie algebras" <https://arxiv.org/abs/2408.00081>`_ [1].
-an efficient algorithm for classifying which Lie algebra is generated is given.
+an efficient algorithm for classifying which Lie algebra is generated is given. PauLie implements
+a :doc:`modified version of this algorithm <classification_algorithm>`.
 The function :code:`get_algebra` returns exactly which algebra is generated when
 given the generator set which can be extended with identities to arbitrary qubit numbers
 specified.
