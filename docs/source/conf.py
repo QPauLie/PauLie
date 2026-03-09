@@ -29,8 +29,11 @@ extensions = [
 'sphinx.ext.napoleon',
 'sphinx.ext.mathjax',
 'sphinx.ext.intersphinx',
+'sphinxcontrib.bibtex',
 ]
 
+bibtex_bibfiles = ["references.bib"]
+bibtex_reference_style = "author_year"
 autosummary_generate = True
 autosummary_generate_overwrite = True
 autodoc_typehints = "none"
