@@ -13,7 +13,7 @@ The second-order twirl of a quantum channel or operator :math:`M` over a group :
 is given by its projection onto the commutant of the twofold tensor product representation
 of the group, :math:`U^{\otimes 2}`.
 
-Supplemental Theorem 1 of `arXiv:2310.11505 <https://arxiv.org/abs/2310.11505>`_
+Supplemental Theorem 1 in :cite:t:`Diaz_2023`
 provides a powerful way to compute this by constructing an orthogonal basis for this space,
 called the **quadratic symmetries**, :math:`Q_{kj}`.
 

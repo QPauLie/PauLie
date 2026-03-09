@@ -17,6 +17,7 @@ Paulistrings.
    user/index
    api/index
    contributing
+   references
 
 .. toctree::
    :hidden:
