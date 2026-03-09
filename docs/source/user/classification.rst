@@ -11,13 +11,12 @@ A Paulistring is a tensor product of Pauli matrices
 and is represented as a string indicating the Pauli matrices successively.
 Given a set of Paulistrings, the closure under the commutator defines a Lie algebra.
 
-In `"Full classification of Pauli Lie algebras" <https://arxiv.org/abs/2408.00081>`_ [1].
-an efficient algorithm for classifying which Lie algebra is generated is given. PauLie implements
+In :cite:t:`Aguilar_2024`, an efficient algorithm for classifying which Lie algebra is generated is given. PauLie implements
 a modified version of this algorithm.
 The function :code:`get_algebra` returns exactly which algebra is generated when
 given the generator set which can be extended with identities to arbitrary qubit numbers
 specified.
-We can reproduce Example I.5 in `"Classification of dynamical Lie algebras of 2-local spin systems on linear, circular and fully connected topologies" <https://www.nature.com/articles/s41534-024-00900-2>`_ [2]:
+We can reproduce Example I.5 in :cite:t:`Wiersema_2024`:
 
 .. code-block:: python
 
@@ -52,7 +51,7 @@ The algorithm is based on the concept of an anticommutation graph. Given a set o
 :math:`\mathcal{G} = \{P_1,\dots ,P_{n_G}\}`, the anticommutation graph has as a vertex set :math:`\mathcal{G}`
 and edges between all vertices that do not commute. Starting with an empty generator set, we incrementally add Pauli strings to our set. At each step, we must keep the anticommutation graph in a *canonical form* (explained later). The fundamental operation we use is a *contraction* between two Pauli strings :math:`P_i` and :math:`P_j` which maps :math:`P_i \mapsto \pm \frac{1}{2} i [P_i,P_j] = P_i^\star`. Crucially, it can be shown that this operation leaves the Lie algebra invariant. Now if :math:`P_i^\star` is already in :math:`\mathcal{G}`, the size of the generator set has been reduced. Otherwise, the operation results the complementation of the edge set between :math:`P_i^\star` and vertices in the neighbourhood of :math:`P_j`. Simply put, we can use such contractions to manipulates the edges of the anticommutation graph so as to bring it to a canonical form.
 
-For any generator set consisting of Pauli strings, the anticommutation graph can be transformed to four canonical types (Theorem 1, [1]). Each canonical type corresponds to a particular algebra. There is an exception if :math:`\mathcal{P}` only has one Pauli string. A single Pauli string generates the algebra :math:`\mathfrak{u}(1)`.
+For any generator set consisting of Paulistrings, the anticommutation graph can be transformed to four canonical types (Theorem 1 in :cite:t:`Aguilar_2024`). Each canonical type corresponds to a particular algebra. There is an exception if :math:`\mathcal{P}` only has one Pauli string. A single Pauli string generates the algebra :math:`\mathfrak{u}(1)`.
 
 .. table:: Canonical types and associated Lie algebras for a starlike graph with :math:`n_1 + 1` :math:`\left(n_1 \geq 0\right)` legs of length :math:`1` and :math:`n_2` :math:`\left(n_2 \geq 1\right)` legs of length :math:`2`. Note that some graphs may belong to multiple canonical types, which reflects the existence of certain *exceptional isomorphisms* between Lie algebras.
 
