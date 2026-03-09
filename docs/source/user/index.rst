@@ -5,7 +5,6 @@ User Guide
    :maxdepth: 1
 
    classification
-   classification_algorithm
    commutator_graph
    average_graph_complexity
    second_moment
