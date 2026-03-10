@@ -483,29 +483,31 @@
 <dt class="sig sig-object py" id="paulie.application.pauli_compiler.SubsystemCompiler">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">paulie.application.pauli_compiler.</span></span><span class="sig-name descname"><span class="pre">SubsystemCompiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.SubsystemCompiler" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>subsystem compiler</p>
+<p>Compiler for the right subsystem contribution.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.application.pauli_compiler.SubsystemCompiler.extend_left">
 <span class="sig-name descname"><span class="pre">extend_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_left</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.SubsystemCompiler.extend_left" title="Link to this definition">#</a></dt>
-<dd><p>Extend left</p>
+<dd><p>Extend a left Pauli string by identities on the right.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.application.pauli_compiler.SubsystemCompiler.extend_pair">
 <span class="sig-name descname"><span class="pre">extend_pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_right</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.SubsystemCompiler.extend_pair" title="Link to this definition">#</a></dt>
-<dd><p>Extend pair</p>
+<dd><p>Combine left and right parts into a full-length Pauli string.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.application.pauli_compiler.SubsystemCompiler.factor_w_orders">
 <span class="sig-name descname"><span class="pre">factor_w_orders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_right</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.SubsystemCompiler.factor_w_orders" title="Link to this definition">#</a></dt>
-<dd><p>factor w orders</p>
+<dd><p>Factor <code class="docutils literal notranslate"><span class="pre">w_right</span></code> into ordered right-local pieces.</p>
+<p>Each element of the output is a list <code class="docutils literal notranslate"><span class="pre">[(U_i,</span> <span class="pre">B_i)]</span></code> describing one valid
+order of factors. Only the Y case has two possible local orderings.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.application.pauli_compiler.SubsystemCompiler.subsystem_compiler">
 <span class="sig-name descname"><span class="pre">subsystem_compiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_right</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.SubsystemCompiler.subsystem_compiler" title="Link to this definition">#</a></dt>
-<dd><p>Subsystem compiler</p>
+<dd><p>Compile a target supported only on the right subsystem.</p>
 </dd></dl>
 
 </dd></dl>

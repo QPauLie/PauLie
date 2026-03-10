@@ -588,31 +588,31 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/paulie.application.pauli_compiler.OptimalPauliCompiler.html#paulie.application.pauli_compiler.OptimalPauliCompiler" title="paulie.application.pauli_compiler.OptimalPauliCompiler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pauli_compiler.OptimalPauliCompiler</span></code></a>(cfg)</p></td>
-<td><p>Optimal PauliCompiler</p></td>
+<td><p>Compiler implementing the construction from the paper.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/paulie.application.pauli_compiler.PauliCompilerConfig.html#paulie.application.pauli_compiler.PauliCompilerConfig" title="paulie.application.pauli_compiler.PauliCompilerConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pauli_compiler.PauliCompilerConfig</span></code></a>(k_left, ...)</p></td>
-<td><p>Config of PauliCompiler</p></td>
+<td><p>Configuration of the optimal compiler.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/paulie.application.pauli_compiler.SubsystemCompiler.html#paulie.application.pauli_compiler.SubsystemCompiler" title="paulie.application.pauli_compiler.SubsystemCompiler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pauli_compiler.SubsystemCompiler</span></code></a>(cfg)</p></td>
-<td><p>subsystem compiler</p></td>
+<td><p>Compiler for the right subsystem contribution.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/paulie.application.pauli_compiler.SubsystemCompilerConfig.html#paulie.application.pauli_compiler.SubsystemCompilerConfig" title="paulie.application.pauli_compiler.SubsystemCompilerConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pauli_compiler.SubsystemCompilerConfig</span></code></a>(...)</p></td>
-<td><p>Config of subsystem compiler</p></td>
+<td><p>Configuration of the subsystem compiler.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/paulie.application.pauli_compiler.choose_u_for_b.html#paulie.application.pauli_compiler.choose_u_for_b" title="paulie.application.pauli_compiler.choose_u_for_b"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pauli_compiler.choose_u_for_b</span></code></a>(k)</p></td>
-<td><p>Choose the left tag operator used for coupling to right-side B's.</p></td>
+<td><p>Choose the fixed left tag used when coupling to right-side generators.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/paulie.application.pauli_compiler.compile_target.html#paulie.application.pauli_compiler.compile_target" title="paulie.application.pauli_compiler.compile_target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pauli_compiler.compile_target</span></code></a>(target, k_left)</p></td>
-<td><p>Compile target</p></td>
+<td><p>Compile a full target Pauli string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/paulie.application.pauli_compiler.construct_universal_set.html#paulie.application.pauli_compiler.construct_universal_set" title="paulie.application.pauli_compiler.construct_universal_set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pauli_compiler.construct_universal_set</span></code></a>(...)</p></td>
-<td><p>Construct universal set</p></td>
+<td><p>Construct the universal generator set used by the compiler.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/paulie.application.pauli_compiler.left_a_minimal.html#paulie.application.pauli_compiler.left_a_minimal" title="paulie.application.pauli_compiler.left_a_minimal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pauli_compiler.left_a_minimal</span></code></a>(k)</p></td>
-<td><p>Return minimal adjoint-universal set on the left: {Xi, Zi} plus Z...Z.</p></td>
+<td><p>Return the minimal left universal set <code class="docutils literal notranslate"><span class="pre">{X_i,</span> <span class="pre">Z_i}_i</span> <span class="pre">\cup</span> <span class="pre">{Z^{\otimes</span> <span class="pre">k}}</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/paulie.application.pauli_compiler.left_map_over_a.html#paulie.application.pauli_compiler.left_map_over_a" title="paulie.application.pauli_compiler.left_map_over_a"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pauli_compiler.left_map_over_a</span></code></a>(V_from, V_to, A)</p></td>
-<td><p>left map over a</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/paulie.application.pauli_compiler.left_map_over_a.html#paulie.application.pauli_compiler.left_map_over_a" title="paulie.application.pauli_compiler.left_map_over_a"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pauli_compiler.left_map_over_a</span></code></a>(v_from, v_to, ...)</p></td>
+<td><p>Find a left-only adjoint path from <code class="docutils literal notranslate"><span class="pre">v_from</span></code> to <code class="docutils literal notranslate"><span class="pre">v_to</span></code> using BFS.</p></td>
 </tr>
 </tbody>
 </table>
