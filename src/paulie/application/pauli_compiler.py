@@ -210,7 +210,11 @@ class SubsystemCompiler:
         return []
 
 
-def left_map_over_a(v_from: PauliString, v_to: PauliString, generators: list[PauliString]) -> list[PauliString]:
+def left_map_over_a(
+    v_from: PauliString,
+    v_to: PauliString,
+    generators: list[PauliString],
+) -> list[PauliString]:
     """Find a left-only adjoint path from ``v_from`` to ``v_to`` using BFS."""
     if v_from == v_to:
         return []
@@ -277,7 +281,9 @@ class OptimalPauliCompiler:
             return get_single(self.k, 0, "X")
         return result.get_substring(0, self.k)
 
-    def _candidate_decompositions(self, w_right: PauliString) -> list[tuple[PauliString, PauliString]]:
+    def _candidate_decompositions(
+            self, w_right: PauliString
+    ) -> list[tuple[PauliString, PauliString]]:
         """Return candidate decompositions ``W = W1 @ W2`` with ``W1`` anti-commuting with ``W2``."""
         candidates: list[tuple[PauliString, PauliString]] = []
         n_right = len(w_right)
@@ -460,7 +466,9 @@ class OptimalPauliCompiler:
                                 and result.get_substring(self.k, self.n_right) == w_right
                             ):
                                 return sequence
-                        for sequence in self._all_interleavings_preserving4(g1_block, g2_block, a1, a2):
+                        for sequence in self._all_interleavings_preserving4(
+                                g1_block, g2_block, a1, a2
+                        ):
                             result = _evaluate_sequence(sequence)
                             if (
                                 result is not None
@@ -470,7 +478,9 @@ class OptimalPauliCompiler:
                                 return sequence
         return None
 
-    def _bfs_case3(self, w_right: PauliString, depth_cap: int, node_cap: int) -> list[PauliString] | None:
+    def _bfs_case3(
+        self, w_right: PauliString, depth_cap: int, node_cap: int
+    ) -> list[PauliString] | None:
         """Fallback bounded BFS for the case ``V = I`` and ``W != I``."""
         universal_set = construct_universal_set(self.n_total, self.k)
         target_left = get_identity(self.k)
@@ -540,7 +550,9 @@ class OptimalPauliCompiler:
                     and result.get_substring(self.k, self.n_right) == w_right
                 ):
                     return _sequence_to_paulie_orientation(sequence)
-            return _sequence_to_paulie_orientation(list(g_right) + [self.extend_left(a) for a in seq])
+            return _sequence_to_paulie_orientation(
+                list(g_right) + [self.extend_left(a) for a in seq]
+            )
 
         for w1, w2 in self._candidate_decompositions(w_right):
             g1 = self.sub.subsystem_compiler(w1)
