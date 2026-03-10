@@ -4,83 +4,59 @@ Validates that the returned sequence G satisfies
     nested_adjoint(G[:-1], G[-1]) == target
 for a selection of small k, N, and target strings.
 """
-from paulie import (
-    PauliString,
-    get_pauli_string,
-    compile_target,
-    OptimalPauliCompiler,
+from paulie.application.pauli_compiler import (
     PauliCompilerConfig,
+    OptimalPauliCompiler,
+    _evaluate_paulie_orientation,
+    compile_target,
     construct_universal_set,
 )
-
-def nested_adjoint(operators: list[PauliString], target: PauliString) -> PauliString:
-    """
-    Compute nested adjoint maps: ad_{A_1}...ad_{A_{n-1}}(A_n)
-    Returns None if any commutator is zero
-
-    Args:
-        operators: List of PauliString operators [A_1, A_2, ..., A_n]
-        target: Target PauliString A_n
-    """
-    if not operators:
-        return target
-    current = target
-    for op in reversed(operators):
-        result = op ^ current
-        if result is None:
-            return None
-        current = result
-    return current
+from paulie.common.pauli_string_factory import get_pauli_string
 
 
-def _assert_compiles(target_str: str, k: int) -> None:
-    """Assert compiles"""
+def _assert_compiles(target_str: str, k_left: int) -> None:
     target = get_pauli_string(target_str)
-    seq = compile_target(target, k_left=k)
-    assert seq, f"Empty sequence for target={target_str}, k={k}"
-    res = nested_adjoint(seq[:-1], seq[-1])
-    assert res is not None and res == target, (
-        f"Compilation failed: target={target_str}, k={k}, got={res}"
-    )
+    sequence = compile_target(target, k_left=k_left)
+
+    assert sequence, f"Empty sequence for target={target_str}, k_left={k_left}"
+
+    result = _evaluate_paulie_orientation(sequence)
+    assert result is not None
+    assert result == target, f"Compilation failed for target={target_str}, got={result}"
 
 
 def test_compile_target_smoke_cases() -> None:
-    """Test compile target smoke cases"""
-
-    # (k, N, target)
     cases = [
-        (2, 3, "XII"),    # V=X1, W=I
-        (2, 3, "IIY"),    # V=I,  W=Y
-        (2, 3, "YII"),    # V=Y1, W=I
-        (2, 4, "IZXI"),   # V=Z2, W=XI
-        (2, 4, "IIYZ"),   # V=I,  W=YZ
-        (3, 5, "IIZXI"),  # V=Z3, W=XI
-        (3, 5, "IIIYZ"),  # V=I,  W=YZ
+        (2, 3, "XII"),
+        (2, 3, "IIY"),
+        (2, 3, "YII"),
+        (2, 4, "IZXI"),
+        (2, 4, "IIYZ"),
+        (3, 5, "IIZXI"),
+        (3, 5, "IIIYZ"),
     ]
-    for (k, N, t) in cases:
-        assert len(t) == N
-        _assert_compiles(t, k)
+
+    for k_left, n_total, target_str in cases:
+        assert len(target_str) == n_total
+        _assert_compiles(target_str, k_left)
 
 
 def test_class_compile_api() -> None:
-    """
-    Test class compile api
-    One class-based call to ensure V/W API works
-    """
-    k, N = 2, 4
-    cfg = PauliCompilerConfig(k_left=k, n_total=N)
-    opc = OptimalPauliCompiler(cfg)
-    # Target: V=Z2, W=XI => target "IZXI"
-    V = get_pauli_string("IZ").get_substring(0, k)
-    W = get_pauli_string("XI").get_substring(0, N - k)
-    seq = opc.compile(V, W)
+    k_left, n_total = 2, 4
+    compiler = OptimalPauliCompiler(PauliCompilerConfig(k_left=k_left, n_total=n_total))
+
+    v_left = get_pauli_string("IZ")
+    w_right = get_pauli_string("XI")
+    sequence = compiler.compile(v_left, w_right)
+
     target = get_pauli_string("IZXI")
-    res = nested_adjoint(seq[:-1], seq[-1])
-    assert res is not None and res == target
+    result = _evaluate_paulie_orientation(sequence)
+
+    assert result is not None
+    assert result == target
 
 
 def test_universal_set_size_minimal() -> None:
-    """Test universal set size minimal"""
-    for (k, N) in [(2, 3), (2, 4), (3, 5)]:
-        U = construct_universal_set(N, k)
-        assert len(U) == 2 * N + 1
+    for k_left, n_total in [(2, 3), (2, 4), (3, 5)]:
+        universal_set = construct_universal_set(n_total, k_left)
+        assert len(universal_set) == 2 * n_total + 1
