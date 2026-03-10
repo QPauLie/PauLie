@@ -1002,6 +1002,7 @@ class PauliStringCollection:
         return generators
 
     def nested_adjoint(self, target: PauliString | None) -> PauliString | None:
+        """Return the iterated commutator"""
         current = target
         for op in reversed(self.generators):
             if current is None:
@@ -1010,6 +1011,7 @@ class PauliStringCollection:
         return current
 
     def evaluate_commutator_sequence(self) -> PauliString | None:
+        """Evaluate a commutator sequence"""
         if len(self.generators) == 0:
             return None
         return PauliStringCollection(self.generators[1:]).nested_adjoint(self.generators[0])

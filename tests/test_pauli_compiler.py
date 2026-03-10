@@ -4,6 +4,7 @@ Validates that the returned sequence G satisfies
     nested_adjoint(G[:-1], G[-1]) == target
 for a selection of small k, N, and target strings.
 """
+
 from paulie.application.pauli_compiler import (
     PauliCompilerConfig,
     OptimalPauliCompiler,
@@ -15,6 +16,7 @@ from paulie.common.pauli_string_factory import get_pauli_string
 
 
 def _assert_compiles(target_str: str, k_left: int) -> None:
+    "test compiler"
     target = get_pauli_string(target_str)
     sequence = compile_target(target, k_left=k_left)
 
@@ -26,6 +28,7 @@ def _assert_compiles(target_str: str, k_left: int) -> None:
 
 
 def test_compile_target_smoke_cases() -> None:
+    "test single strings"
     cases = [
         (2, 3, "XII"),
         (2, 3, "IIY"),
@@ -42,6 +45,7 @@ def test_compile_target_smoke_cases() -> None:
 
 
 def test_class_compile_api() -> None:
+    "test full"
     k_left, n_total = 2, 4
     compiler = OptimalPauliCompiler(PauliCompilerConfig(k_left=k_left, n_total=n_total))
 
@@ -57,6 +61,7 @@ def test_class_compile_api() -> None:
 
 
 def test_universal_set_size_minimal() -> None:
+    "test universal set"
     for k_left, n_total in [(2, 3), (2, 4), (3, 5)]:
         universal_set = construct_universal_set(n_total, k_left)
         assert len(universal_set) == 2 * n_total + 1

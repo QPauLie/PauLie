@@ -1,4 +1,4 @@
-﻿"""Pauli compiler based on arXiv:2408.03294.
+"""Pauli compiler based on arXiv:2408.03294.
 ``compiler`` takes a generator set and a target Pauli string and outputs a
 :math:`\\mathcal{O}(N)` length sequence of Pauli strings that generates the target
 Pauli string via nested commutators.
@@ -115,7 +115,7 @@ class SubsystemCompiler:
                 acc.extend(segment)
                 rec(index + 1, acc)
                 if segment:
-                    del acc[-len(segment):]
+                    del acc[-len(segment) :]
 
         rec(0, [])
         return [[(self.u_tag, b) for b in flat] for flat in sequences]
@@ -289,7 +289,7 @@ class OptimalPauliCompiler:
             for local_label in labels:
                 w1 = get_single(n_right, site, local_label)
                 w2 = w1 @ w_right
-                if not (w1 | w2):
+                if not w1 | w2:
                     candidates.append((w1, w2))
 
         unique: list[tuple[PauliString, PauliString]] = []
@@ -404,7 +404,11 @@ class OptimalPauliCompiler:
         target_left = get_identity(self.k)
         for sequence in candidates:
             result = _evaluate_sequence(sequence)
-            if result is not None and result.get_substring(0, self.k) == target_left and result.get_substring(self.k, self.n_right) == w_right:
+            if (
+                result is not None
+                and result.get_substring(0, self.k) == target_left
+                and result.get_substring(self.k, self.n_right) == w_right
+            ):
                 return sequence
 
         blocks = [g1, g2, a_ext]
@@ -419,7 +423,11 @@ class OptimalPauliCompiler:
                             + (list(reversed(b2)) if r2 else list(b2))
                         )
                         result = _evaluate_sequence(sequence)
-                        if result is not None and result.get_substring(0, self.k) == target_left and result.get_substring(self.k, self.n_right) == w_right:
+                        if (
+                            result is not None
+                            and result.get_substring(0, self.k) == target_left
+                            and result.get_substring(self.k, self.n_right) == w_right
+                        ):
                             return sequence
 
         for g1_block in (g1, list(reversed(g1))):
@@ -427,7 +435,11 @@ class OptimalPauliCompiler:
                 for a_block in (a_ext, list(reversed(a_ext))):
                     for sequence in self._all_interleavings_preserving(g1_block, g2_block, a_block):
                         result = _evaluate_sequence(sequence)
-                        if result is not None and result.get_substring(0, self.k) == target_left and result.get_substring(self.k, self.n_right) == w_right:
+                        if (
+                            result is not None
+                            and result.get_substring(0, self.k) == target_left
+                            and result.get_substring(self.k, self.n_right) == w_right
+                        ):
                             return sequence
 
         a_options = (a_ext, list(reversed(a_ext)))
@@ -442,11 +454,19 @@ class OptimalPauliCompiler:
                             list(a1) + list(g2_block) + list(a2) + list(g1_block),
                         ):
                             result = _evaluate_sequence(sequence)
-                            if result is not None and result.get_substring(0, self.k) == target_left and result.get_substring(self.k, self.n_right) == w_right:
+                            if (
+                                result is not None
+                                and result.get_substring(0, self.k) == target_left
+                                and result.get_substring(self.k, self.n_right) == w_right
+                            ):
                                 return sequence
                         for sequence in self._all_interleavings_preserving4(g1_block, g2_block, a1, a2):
                             result = _evaluate_sequence(sequence)
-                            if result is not None and result.get_substring(0, self.k) == target_left and result.get_substring(self.k, self.n_right) == w_right:
+                            if (
+                                result is not None
+                                and result.get_substring(0, self.k) == target_left
+                                and result.get_substring(self.k, self.n_right) == w_right
+                            ):
                                 return sequence
         return None
 
@@ -474,7 +494,10 @@ class OptimalPauliCompiler:
                     visited.add(state_key)
                     new_sequence = seq_idx + [op_index]
                     if depth >= 2:
-                        if new_result.get_substring(0, self.k) == target_left and new_result.get_substring(self.k, self.n_right) == w_right:
+                        if (
+                            new_result.get_substring(0, self.k) == target_left
+                            and new_result.get_substring(self.k, self.n_right) == w_right
+                        ):
                             return [universal_set[idx] for idx in new_sequence]
                     new_frontier.append((new_result, new_sequence))
             frontier = new_frontier
@@ -492,7 +515,11 @@ class OptimalPauliCompiler:
                     continue
                 sequence = [self.extend_left(seed)] + [self.extend_left(a) for a in seq_a]
                 result = _evaluate_sequence(sequence)
-                if result is not None and result.get_substring(0, self.k) == v_left and result.get_substring(self.k, self.n_right) == w_right:
+                if (
+                    result is not None
+                    and result.get_substring(0, self.k) == v_left
+                    and result.get_substring(self.k, self.n_right) == w_right
+                ):
                     return _sequence_to_paulie_orientation(sequence)
             raise RuntimeError("Left-only mapping failed.")
 
@@ -507,7 +534,11 @@ class OptimalPauliCompiler:
             ]
             for sequence in candidates:
                 result = _evaluate_sequence(sequence)
-                if result is not None and result.get_substring(0, self.k) == v_left and result.get_substring(self.k, self.n_right) == w_right:
+                if (
+                    result is not None
+                    and result.get_substring(0, self.k) == v_left
+                    and result.get_substring(self.k, self.n_right) == w_right
+                ):
                     return _sequence_to_paulie_orientation(sequence)
             return _sequence_to_paulie_orientation(list(g_right) + [self.extend_left(a) for a in seq])
 
