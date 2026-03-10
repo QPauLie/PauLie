@@ -144,7 +144,7 @@ outputs
 We can also animate the transformation to a star graph:
 
 .. raw:: html
-    :file: ../media/example_b.html
+    :file: ../media/example_d.html
 
 This is what happens:
 
@@ -157,10 +157,11 @@ This is what happens:
 5. :math:`XZII` is added. It is connected to :math:`IXYY` and :math:`IXYI`. We are now in Step 2. We can contract with :math:`IXYY` and :math:`IIIX`
    in that order to get :math:`[IIIX,[IXYY,XZII]]\propto XYYZ`. Now it is connected to :math:`IIIX`, :math:`IIXZ`, and :math:`IXYI`. Now we are in
    Step 4 of the algorithm. We can contract with :math:`IXYI` to get :math:`[IXYI,XYYZ]\propto XZIZ`. Now it is no longer connected to :math:`IIXZ`.
-   But the configuration of attached vertices is such that we must remove :math:`IXYI` so that it is valid for us to attach :math:`XZIZ` to :math:`IIIX`.
-6. Now we must add :math:`IXYI` again. It is connected to :math:`XZIZ` and :math:`IIXZ`. We are now in Step 2. We pick :math:`P=IIXZ` and :math:`Q=IXYY`
-   and we get :math:`XZIZ\mapsto XYZY`. Then we can attach :math:`IXYI` to :math:`IIXZ`.
-7. :math:`XYII` is added. It is connected to :math:`IXYY` and :math:`IXYI`. We are now in Step 2. We pick :math:`P=IXYY` and :math:`Q=XYZY`
+   Next we contract with :math:`IIIX` to get :math:`[IIIX,XZIZ]\propto XZIY`. Now :math:`XZIY` is connected to all vertices. Then we contract with
+   :math:`IXYY` to get :math:`[IXYY,XZIY]\propto XYYI`. Now it is connected to all except :math:`IIIX`. Then we contract with :math:`IIXZ` to get
+   :math:`[IIXZ,XYYI]\propto XYZZ`. Now it is connected to all except :math:`IXYI`. Finally, we contract with :math:`IIIX` to get :math:`[IIIX,XYZZ]\propto XYZY`.
+   Now it is attached to only :math:`IIIX`. We can consider :math:`IIIX` as the center.
+6. :math:`XYII` is added. It is connected to :math:`IXYY` and :math:`IXYI`. We are now in Step 2. We pick :math:`P=IXYY` and :math:`Q=XYZY`
    and we get :math:`IXYI\mapsto XYZI`. Then we can attach :math:`XYII` to :math:`IXYY`.
 
 According to the table, the resultant graph corresponds to :math:`\mathfrak{sp}(4)`.
