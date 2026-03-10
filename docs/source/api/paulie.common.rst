@@ -23,7 +23,6 @@ Utilities for generating and manipulating Pauli string expressions.
    pauli_string_bitarray.PauliString
    pauli_string_collection.PauliStringCollection
    pauli_string_collection.PauliStringCollectionException
-   pauli_string_factory.Used
    pauli_string_factory.gen_k_local
    pauli_string_factory.gen_k_local_generators
    pauli_string_factory.get_identity

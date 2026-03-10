@@ -1,604 +1,612 @@
-﻿"""The algorithm is based on `"Optimally generating su(2^N) using Pauli strings"
-<https://arxiv.org/abs/2408.03294>`_ [1].
+"""Pauli compiler based on arXiv:2408.03294.
 ``compiler`` takes a generator set and a target Pauli string and outputs a
 :math:`\\mathcal{O}(N)` length sequence of Pauli strings that generates the target
 Pauli string via nested commutators.
 """
+
+from collections import deque
 from dataclasses import dataclass
 from itertools import permutations
-from collections import deque
 from typing import Iterable
 
 from paulie.common.pauli_string_bitarray import PauliString
+from paulie.common.pauli_string_collection import PauliStringCollection
 from paulie.common.pauli_string_factory import get_identity, get_pauli_string, get_single
 
 
-def _tensor(left: PauliString, right: PauliString) -> PauliString:
-    """
-    Get tensor
-    """
-    return left.tensor(right)
+def _evaluate_sequence(sequence: list[PauliString]) -> PauliString | None:
+    """Evaluate a sequence stored as ``[base, A1, ..., Am]``."""
+    return PauliStringCollection(sequence).evaluate_commutator_sequence()
 
-def _multiply(a: PauliString, b: PauliString) -> PauliString:
-    """
-    Multiply two PauliStrings
-    """
-    return a @ b
 
-def _commutes(a: PauliString, b: PauliString) -> bool:
-    """
-    Check on commutes two PauliStrings
-    """
-    return a | b
-
-def _left_part(p: PauliString, k: int) -> PauliString:
-    """
-    Get left substring of PauliString
-    """
-    return p.get_substring(0, k)
-
-def _right_part(p: PauliString, k: int) -> PauliString:
-    """
-    Get right substring of PauliString
-    """
-    return p.get_substring(k, len(p) - k)
-
-def _ad_apply(A: PauliString, B: PauliString | None) -> PauliString | None:
-    """
-    Compute the adjoint map ad_A(B) = [A,B]
-    Returns None if the commutator is zero (i.e., if A and B commute)
-    Otherwise returns a PauliString proportional to the commutator
-    """
-    if B is None:
+def _evaluate_paulie_orientation(sequence: list[PauliString]) -> PauliString | None:
+    """Evaluate a sequence stored as ``[Am, ..., A1, base]``."""
+    if not sequence:
         return None
-    return None if _commutes(A, B) else _multiply(A, B)
+    return PauliStringCollection(sequence[:-1]).nested_adjoint(sequence[-1])
 
-def _nested_commutator_result(G: list[PauliString]) -> PauliString | None:
-    """
-    Get nested commutator
-    """
-    if not G:
-        return None
-    cur: PauliString | None = G[0]
-    for A in G[1:]:
-        cur = _ad_apply(A, cur)
-        if cur is None:
-            return None
-    return cur
 
-def _sequence_to_paulie_orientation(G: list[PauliString]) -> list[PauliString]:
-    """
-    PauLie nested_adjoint iterates operators in reversed order.
-    Our G is [base, A1, A2, ..., Am] where main.py applies A1 then A2 ... then Am.
-    To make nested_adjoint(seq[:-1], seq[-1]) apply in the same order, we must
-    return operators reversed: [Am, ..., A2, A1, base].
-    """
-    if not G:
+def _sequence_to_paulie_orientation(sequence: list[PauliString]) -> list[PauliString]:
+    """Convert ``[base, A1, ..., Am]`` to PauLie's ``nested_adjoint`` orientation."""
+    if not sequence:
         return []
-    base = G[0]
-    ops = G[1:]
-    ops_rev = list(reversed(ops))
-    return ops_rev + [base]
+    return list(reversed(sequence[1:])) + [sequence[0]]
 
 
 def left_a_minimal(k: int) -> list[PauliString]:
-    """Return minimal adjoint-universal set on the left: {Xi, Zi} plus Z...Z."""
+    r"""Return the minimal left universal set ``{X_i, Z_i}_i \cup {Z^{\otimes k}}``."""
     a_ops: list[PauliString] = []
-    for i in range(k):
-        a_ops.append(get_single(k, i, "X"))
-        a_ops.append(get_single(k, i, "Z"))
-    zall = get_pauli_string("Z" * k)
-    a_ops.append(zall)
+    for index in range(k):
+        a_ops.append(get_single(k, index, "X"))
+        a_ops.append(get_single(k, index, "Z"))
+    a_ops.append(get_pauli_string("Z" * k))
     return a_ops
 
+
 def choose_u_for_b(k: int) -> PauliString:
-    """Choose the left tag operator used for coupling to right-side B's."""
+    """Choose the fixed left tag used when coupling to right-side generators."""
     return get_single(k, 0, "X")
 
+
 def _all_left_paulis(k: int) -> list[PauliString]:
-    """ Enumerate all non-identity Pauli strings of length k"""
-    out: list[PauliString] = []
-    labels = ["I", "X", "Y", "Z"]
-    def rec(i: int, cur: list[str]):
-        if i == k:
-            s = "".join(cur)
-            if set(s) != {"I"}:
-                out.append(get_pauli_string(s))
-            return
-        for L in labels:
-            cur.append(L)
-            rec(i + 1, cur)
-            cur.pop()
-    rec(0, [])
-    return out
+    """Enumerate all non-identity Pauli strings on ``k`` qubits."""
+    return [p for p in get_identity(k).gen_all_pauli_strings() if not p.is_identity()]
 
 
 @dataclass
 class SubsystemCompilerConfig:
-    """Config of subsystem compiler"""
+    """Configuration of the subsystem compiler."""
+
     k_left: int
     n_total: int
 
+
 class SubsystemCompiler:
-    """
-    subsystem compiler
-    """
+    """Compiler for the right subsystem contribution."""
+
     def __init__(self, cfg: SubsystemCompilerConfig):
-        """
-        constructor
-        """
         if cfg.k_left < 2:
             raise ValueError("k_left must be >= 2 for the Pauli Compiler algorithm")
         self.k = cfg.k_left
         self.n_total = cfg.n_total
         self.n_right = self.n_total - self.k
-        self.U_tag = choose_u_for_b(self.k)
+        self.u_tag = choose_u_for_b(self.k)
         self.left_pool = _all_left_paulis(self.k)
 
     def extend_left(self, a_left: PauliString) -> PauliString:
-        """Extend left"""
-        return _tensor(a_left, get_identity(self.n_right))
+        """Extend a left Pauli string by identities on the right."""
+        return a_left + get_identity(self.n_right)
 
     def extend_pair(self, u_left: PauliString, b_right: PauliString) -> PauliString:
-        """Extend pair"""
-        return _tensor(u_left, b_right)
+        """Combine left and right parts into a full-length Pauli string."""
+        return u_left + b_right
 
     def factor_w_orders(self, w_right: PauliString) -> list[list[tuple[PauliString, PauliString]]]:
-        """factor w orders"""
+        """Factor ``w_right`` into ordered right-local pieces.
+
+        Each element of the output is a list ``[(U_i, B_i)]`` describing one valid
+        order of factors. Only the Y case has two possible local orderings.
+        """
         assert len(w_right) == self.n_right
-        per_site_opts: list[list[list[PauliString]]] = []
-        wstr = str(w_right)
-        for j, ch in enumerate(wstr):
-            if ch == "Y":
-                opt1 = [get_single(self.n_right, j, "X"), get_single(self.n_right, j, "Z")]
-                opt2 = [get_single(self.n_right, j, "Z"), get_single(self.n_right, j, "X")]
-                per_site_opts.append([opt1, opt2])
-            elif ch == "X":
-                per_site_opts.append([[ get_single(self.n_right, j, "X") ]])
-            elif ch == "Z":
-                per_site_opts.append([[ get_single(self.n_right, j, "Z") ]])
+        per_site_options: list[list[list[PauliString]]] = []
+
+        for site, label in enumerate(str(w_right)):
+            if label == "Y":
+                per_site_options.append(
+                    [
+                        [get_single(self.n_right, site, "X"), get_single(self.n_right, site, "Z")],
+                        [get_single(self.n_right, site, "Z"), get_single(self.n_right, site, "X")],
+                    ]
+                )
+            elif label == "X":
+                per_site_options.append([[get_single(self.n_right, site, "X")]])
+            elif label == "Z":
+                per_site_options.append([[get_single(self.n_right, site, "Z")]])
             else:
-                per_site_opts.append([[]])
+                per_site_options.append([[]])
+
         sequences: list[list[PauliString]] = []
-        def rec(i: int, acc: list[PauliString]):
-            if i == len(per_site_opts):
+
+        def rec(index: int, acc: list[PauliString]) -> None:
+            if index == len(per_site_options):
                 sequences.append(list(acc))
                 return
-            for seg in per_site_opts[i]:
-                acc.extend(seg)
-                rec(i + 1, acc)
-                del acc[-len(seg):]
+            for segment in per_site_options[index]:
+                acc.extend(segment)
+                rec(index + 1, acc)
+                if segment:
+                    del acc[-len(segment) :]
+
         rec(0, [])
-        Ui = self.U_tag
-        return [[(Ui, b) for b in flat] for flat in sequences]
+        return [[(self.u_tag, b) for b in flat] for flat in sequences]
 
     def _choose_a1_a2(self, u_op: PauliString) -> tuple[PauliString, PauliString]:
-        """choose a1  or a2"""
-        for a1 in self.left_pool:
-            if _commutes(a1, u_op):
-                continue
-            for a2 in self.left_pool:
-                if a2 is a1:
+        """Choose helpers ``A_1, A_2`` with the required commutation pattern."""
+        anti_with_u = u_op.get_anti_commutants(self.left_pool)
+        for a1 in anti_with_u:
+            for a2 in anti_with_u:
+                if a2 == a1:
                     continue
-                if _commutes(a2, u_op):
-                    continue
-                if _commutes(a1, a2):
+                if a1 | a2:
                     return a1, a2
         raise RuntimeError("Failed to find A1,A2 in iP_k^*.")
 
     def _choose_aprime(self, u_i: PauliString, p_left: PauliString) -> PauliString:
-        """choose aprime"""
-        for a in self.left_pool:
-            if not _commutes(a, u_i) and _commutes(a, p_left):
-                return a
+        """Choose a helper ``A'`` that anticommutes with ``u_i`` and commutes with ``p_left``."""
+        for helper in u_i.get_anti_commutants(self.left_pool):
+            if helper | p_left:
+                return helper
         raise RuntimeError("Failed to find A' in iP_k^*.")
 
     def _rest_full_after(
         self,
         ui_bi: list[tuple[PauliString, PauliString]],
-        i: int,
+        index: int,
         helpers: list[PauliString],
     ) -> tuple[PauliString, PauliString]:
-        """rest full after"""
+        """Return the accumulated left and right factors after ``index``."""
         p_left = get_identity(self.k)
-        for j in range(i + 1, len(ui_bi)):
-            p_left = _multiply(p_left, ui_bi[j][0])
-        for a_op in helpers:
-            p_left = _multiply(p_left, a_op)
+        for j in range(index + 1, len(ui_bi)):
+            p_left = p_left @ ui_bi[j][0]
+        for helper in helpers:
+            p_left = p_left @ helper
+
         p_right = get_identity(self.n_right)
-        for j in range(i + 1, len(ui_bi)):
-            p_right = _multiply(p_right, ui_bi[j][1])
+        for j in range(index + 1, len(ui_bi)):
+            p_right = p_right @ ui_bi[j][1]
         return p_left, p_right
 
     def subsystem_compiler(self, w_right: PauliString) -> list[PauliString]:
-        """Subsystem compiler"""
+        """Compile a target supported only on the right subsystem."""
         assert len(w_right) == self.n_right
+
         for ui_bi in self.factor_w_orders(w_right):
             if not ui_bi:
                 return []
-            r = len(ui_bi)
-            i = r - 1
-            G: list[PauliString] = [self.extend_pair(ui_bi[-1][0], ui_bi[-1][1])]
-            H: list[PauliString] = []
-            helper_used_for_i: dict[int, int] = {}
-            while i >= 1:
-                Ui, Bi = ui_bi[i]
-                P_left, P_right = self._rest_full_after(ui_bi, i, H)
-                if _multiply(P_left, Ui).is_identity():
-                    cnt = helper_used_for_i.get(i, 0)
-                    if cnt >= 1:
-                        G.append(self.extend_pair(Ui, Bi))
-                        i -= 1
+
+            index = len(ui_bi) - 1
+            sequence: list[PauliString] = [self.extend_pair(ui_bi[-1][0], ui_bi[-1][1])]
+            helpers: list[PauliString] = []
+            helper_uses: dict[int, int] = {}
+
+            while index >= 1:
+                u_i, b_i = ui_bi[index]
+                p_left, p_right = self._rest_full_after(ui_bi, index, helpers)
+
+                if (p_left @ u_i).is_identity():
+                    count = helper_uses.get(index, 0)
+                    if count >= 1:
+                        sequence.append(self.extend_pair(u_i, b_i))
+                        index -= 1
                         continue
-                    A1, A2 = self._choose_a1_a2(Ui)
-                    H = [A1, A2]
-                    helper_used_for_i[i] = cnt + 1
-                    G.append(self.extend_left(A1))
-                    G.append(self.extend_left(A2))
+
+                    a1, a2 = self._choose_a1_a2(u_i)
+                    helpers = [a1, a2]
+                    helper_uses[index] = count + 1
+                    sequence.append(self.extend_left(a1))
+                    sequence.append(self.extend_left(a2))
                     continue
-                current = self.extend_pair(Ui, Bi)
-                rest_full = _tensor(P_left, P_right)
-                if _commutes(current, rest_full):
-                    cnt = helper_used_for_i.get(i, 0)
-                    if cnt >= 1:
-                        G.append(self.extend_pair(Ui, Bi))
-                        i -= 1
+
+                current = self.extend_pair(u_i, b_i)
+                rest_full = p_left + p_right
+                if current | rest_full:
+                    count = helper_uses.get(index, 0)
+                    if count >= 1:
+                        sequence.append(current)
+                        index -= 1
                         continue
-                    A_prime = self._choose_aprime(Ui, P_left)
-                    H = [A_prime]
-                    helper_used_for_i[i] = cnt + 1
-                    G.append(self.extend_left(A_prime))
+
+                    a_prime = self._choose_aprime(u_i, p_left)
+                    helpers = [a_prime]
+                    helper_uses[index] = count + 1
+                    sequence.append(self.extend_left(a_prime))
                     continue
-                G.append(current)
-                i -= 1
-            return G
+
+                sequence.append(current)
+                index -= 1
+
+            return sequence
+
         return []
 
 
-def _key(p: PauliString) -> str:
-    """Convert PauliString to string"""
-    return str(p)
-
-def left_map_over_a(V_from: PauliString, V_to: PauliString, A: list[PauliString]
+def left_map_over_a(
+    v_from: PauliString,
+    v_to: PauliString,
+    generators: list[PauliString],
 ) -> list[PauliString]:
-    """left map over a"""
-    if _key(V_from) == _key(V_to):
+    """Find a left-only adjoint path from ``v_from`` to ``v_to`` using BFS."""
+    if v_from == v_to:
         return []
-    start_k = _key(V_from)
-    goal_k = _key(V_to)
-    q: deque[PauliString] = deque([V_from])
-    parent: dict[str, tuple[str, str, PauliString]] = {}
-    seen = {start_k}
-    while q:
-        cur = q.popleft()
-        cur_k = _key(cur)
-        if cur_k == goal_k:
-            seq: list[PauliString] = []
-            while cur_k != start_k:
-                prev_k, _, a_used = parent[cur_k]
-                seq.append(a_used)
-                cur_k = prev_k
-            seq.reverse()
-            return seq
-        for a in A:
-            if _commutes(a, cur):
+
+    queue: deque[PauliString] = deque([v_from])
+    parent: dict[PauliString, tuple[PauliString, PauliString]] = {}
+    seen: set[PauliString] = {v_from}
+
+    while queue:
+        current = queue.popleft()
+        if current == v_to:
+            sequence: list[PauliString] = []
+            cursor = current
+            while cursor != v_from:
+                previous, used = parent[cursor]
+                sequence.append(used)
+                cursor = previous
+            sequence.reverse()
+            return sequence
+
+        for helper in current.get_anti_commutants(generators):
+            nxt = helper @ current
+            if nxt in seen:
                 continue
-            nxt = _multiply(a, cur)
-            nk = _key(nxt)
-            if nk in seen:
-                continue
-            seen.add(nk)
-            parent[nk] = (cur_k, nk, a)
-            q.append(nxt)
+            seen.add(nxt)
+            parent[nxt] = (current, helper)
+            queue.append(nxt)
+
     raise RuntimeError("Left map BFS failed.")
 
 
 @dataclass
 class PauliCompilerConfig:
-    """Config of PauliCompiler"""
+    """Configuration of the optimal compiler."""
+
     k_left: int
     n_total: int
     fallback_depth: int = 8
     fallback_nodes: int = 200000
 
+
 class OptimalPauliCompiler:
-    """Optimal PauliCompiler"""
+    """Compiler implementing the construction from the paper."""
+
     def __init__(self, cfg: PauliCompilerConfig):
-        """Constructor"""
         if cfg.k_left < 2:
             raise ValueError("k_left must be >= 2 for the Pauli Compiler algorithm")
         self.k = cfg.k_left
         self.n_total = cfg.n_total
         self.n_right = self.n_total - self.k
-        self.A_left = left_a_minimal(self.k)
-        self.U_tag = choose_u_for_b(self.k)
+        self.a_left = left_a_minimal(self.k)
         self.sub = SubsystemCompiler(SubsystemCompilerConfig(k_left=self.k, n_total=self.n_total))
         self.fallback_depth = cfg.fallback_depth
         self.fallback_nodes = cfg.fallback_nodes
 
     def extend_left(self, a_left: PauliString) -> PauliString:
-        """Extend left"""
-        return _tensor(a_left, get_identity(self.n_right))
+        """Extend a left Pauli string to the full system."""
+        return a_left + get_identity(self.n_right)
 
     def _left_factor_from_sequence(self, ops: list[PauliString]) -> PauliString:
-        """Left factor from sequence"""
-        res = _nested_commutator_result(ops)
-        if res is None:
+        """Extract the left factor of a compiled right-subsystem sequence."""
+        result = _evaluate_sequence(ops)
+        if result is None:
             return get_single(self.k, 0, "X")
-        return _left_part(res, self.k)
+        return result.get_substring(0, self.k)
 
-    def _candidate_decompositions(self, W: PauliString) -> list[tuple[PauliString, PauliString]]:
-        """candidate to decompositions"""
-        cand: list[tuple[PauliString, PauliString]] = []
-        wstr = str(W)
-        n_right = len(wstr)
-        for j, ch in enumerate(wstr):
-            if ch == "I":
+    def _candidate_decompositions(
+            self, w_right: PauliString
+    ) -> list[tuple[PauliString, PauliString]]:
+        """Return candidate decompositions ``W = W1 @ W2``
+        with ``W1`` anti-commuting with ``W2``."""
+        candidates: list[tuple[PauliString, PauliString]] = []
+        n_right = len(w_right)
+
+        for site, label in enumerate(str(w_right)):
+            if label == "I":
                 continue
-            labels = ["X", "Z"] if ch == "Y" else (["Z"] if ch == "X" else ["X"])
-            for lab in labels:
-                W1 = get_single(n_right, j, lab)
-                W2 = _multiply(W1, W)
-                if not _commutes(W1, W2):
-                    cand.append((W1, W2))
-        uniq: list[tuple[PauliString, PauliString]] = []
-        seen = set()
-        for a, b in cand:
-            key = (str(a), str(b))
-            if key not in seen:
-                seen.add(key)
-                uniq.append((a, b))
-        return uniq
+            labels = ["X", "Z"] if label == "Y" else (["Z"] if label == "X" else ["X"])
+            for local_label in labels:
+                w1 = get_single(n_right, site, local_label)
+                w2 = w1 @ w_right
+                if not w1 | w2:
+                    candidates.append((w1, w2))
 
-    def _all_interleavings_preserving(self, A: list[PauliString], B: list[PauliString],
-    C: list[PauliString], cap: int = 60000) -> Iterable[list[PauliString]]:
-        """All interleavings preserving"""
+        unique: list[tuple[PauliString, PauliString]] = []
+        seen: set[tuple[PauliString, PauliString]] = set()
+        for pair in candidates:
+            if pair in seen:
+                continue
+            seen.add(pair)
+            unique.append(pair)
+        return unique
+
+    def _all_interleavings_preserving(
+        self,
+        a_block: list[PauliString],
+        b_block: list[PauliString],
+        c_block: list[PauliString],
+        cap: int = 60000,
+    ) -> Iterable[list[PauliString]]:
+        """Yield capped interleavings preserving the order inside each block."""
         count = 0
-        NA, NB, NC = len(A), len(B), len(C)
+        len_a, len_b, len_c = len(a_block), len(b_block), len(c_block)
+
         def rec(i: int, j: int, k: int, prefix: list[PauliString]):
             nonlocal count
             if count >= cap:
                 return
-            if i == NA and j == NB and k == NC:
+            if i == len_a and j == len_b and k == len_c:
                 count += 1
                 yield list(prefix)
                 return
-            if i < NA:
-                prefix.append(A[i])
+            if i < len_a:
+                prefix.append(a_block[i])
                 yield from rec(i + 1, j, k, prefix)
                 prefix.pop()
                 if count >= cap:
                     return
-            if j < NB:
-                prefix.append(B[j])
+            if j < len_b:
+                prefix.append(b_block[j])
                 yield from rec(i, j + 1, k, prefix)
                 prefix.pop()
                 if count >= cap:
                     return
-            if k < NC:
-                prefix.append(C[k])
+            if k < len_c:
+                prefix.append(c_block[k])
                 yield from rec(i, j, k + 1, prefix)
                 prefix.pop()
+
         return rec(0, 0, 0, [])
 
-    def _all_interleavings_preserving4(self, A: list[PauliString], B: list[PauliString],
-    C: list[PauliString], D: list[PauliString], cap: int = 120_000) -> Iterable[list[PauliString]]:
-        """All interleavings preserving 4"""
+    def _all_interleavings_preserving4(
+        self,
+        a_block: list[PauliString],
+        b_block: list[PauliString],
+        c_block: list[PauliString],
+        d_block: list[PauliString],
+        cap: int = 120_000,
+    ) -> Iterable[list[PauliString]]:
+        """Yield capped interleavings preserving the order inside four blocks."""
         count = 0
-        NA, NB, NC, ND = len(A), len(B), len(C), len(D)
+        len_a, len_b, len_c, len_d = len(a_block), len(b_block), len(c_block), len(d_block)
+
         def rec(i: int, j: int, k: int, l_idx: int, prefix: list[PauliString]):
             nonlocal count
             if count >= cap:
                 return
-            if i == NA and j == NB and k == NC and l_idx == ND:
+            if i == len_a and j == len_b and k == len_c and l_idx == len_d:
                 count += 1
                 yield list(prefix)
                 return
-            if i < NA:
-                prefix.append(A[i])
+            if i < len_a:
+                prefix.append(a_block[i])
                 yield from rec(i + 1, j, k, l_idx, prefix)
                 prefix.pop()
                 if count >= cap:
                     return
-            if j < NB:
-                prefix.append(B[j])
+            if j < len_b:
+                prefix.append(b_block[j])
                 yield from rec(i, j + 1, k, l_idx, prefix)
                 prefix.pop()
                 if count >= cap:
                     return
-            if k < NC:
-                prefix.append(C[k])
+            if k < len_c:
+                prefix.append(c_block[k])
                 yield from rec(i, j, k + 1, l_idx, prefix)
                 prefix.pop()
                 if count >= cap:
                     return
-            if l_idx < ND:
-                prefix.append(D[l_idx])
+            if l_idx < len_d:
+                prefix.append(d_block[l_idx])
                 yield from rec(i, j, k, l_idx + 1, prefix)
                 prefix.pop()
+
         return rec(0, 0, 0, 0, [])
 
-    def _case3_best_reordering(self, G1: list[PauliString], G2: list[PauliString],
-    Aext: list[PauliString], W: PauliString) -> list[PauliString] | None:
-        """case3 best reordering"""
-        k = self.k
-        R = list
-        G1r, G2r = list(reversed(G1)), list(reversed(G2))
+    def _case3_best_reordering(
+        self,
+        g1: list[PauliString],
+        g2: list[PauliString],
+        a_ext: list[PauliString],
+        w_right: PauliString,
+    ) -> list[PauliString] | None:
+        """Search for a valid reordering in the ``V = I`` and ``W != I`` case."""
+        g1_rev, g2_rev = list(reversed(g1)), list(reversed(g2))
         candidates = [
-            R(G1) + R(Aext) + R(G2r) + R(Aext),
-            R(G1r) + R(Aext) + R(G2)  + R(Aext),
-            R(Aext) + R(G1) + R(Aext) + R(G2r),
-            R(Aext) + R(G1r) + R(Aext) + R(G2),
-            R(G2)  + R(Aext) + R(G1r) + R(Aext),
-            R(G2r) + R(Aext) + R(G1)  + R(Aext),
+            list(g1) + list(a_ext) + list(g2_rev) + list(a_ext),
+            list(g1_rev) + list(a_ext) + list(g2) + list(a_ext),
+            list(a_ext) + list(g1) + list(a_ext) + list(g2_rev),
+            list(a_ext) + list(g1_rev) + list(a_ext) + list(g2),
+            list(g2) + list(a_ext) + list(g1_rev) + list(a_ext),
+            list(g2_rev) + list(a_ext) + list(g1) + list(a_ext),
         ]
-        for seq in candidates:
-            res = _nested_commutator_result(seq)
-            if (res is not None and str(_left_part(res, k)) == "I"*k
-            and str(_right_part(res, k)) == str(W)):
-                return seq
-        blocks = [G1, G2, Aext]
+        target_left = get_identity(self.k)
+        for sequence in candidates:
+            result = _evaluate_sequence(sequence)
+            if (
+                result is not None
+                and result.get_substring(0, self.k) == target_left
+                and result.get_substring(self.k, self.n_right) == w_right
+            ):
+                return sequence
+
+        blocks = [g1, g2, a_ext]
         for perm in permutations(range(3)):
-            B0, B1, B2 = [blocks[i] for i in perm]
+            b0, b1, b2 = [blocks[i] for i in perm]
             for r0 in (False, True):
                 for r1 in (False, True):
                     for r2 in (False, True):
-                        seq = (list(reversed(B0)) if r0 else list(B0)) \
-                            + (list(reversed(B1)) if r1 else list(B1)) \
-                            + (list(reversed(B2)) if r2 else list(B2))
-                        res = _nested_commutator_result(seq)
-                        if (res is not None and str(_left_part(res, k)) == "I"*k
-                        and str(_right_part(res, k)) == str(W)):
-                            return seq
-        for g1 in (G1, list(reversed(G1))):
-            for g2 in (G2, list(reversed(G2))):
-                for a in (Aext, list(reversed(Aext))):
-                    for seq in self._all_interleavings_preserving(g1, g2, a):
-                        res = _nested_commutator_result(seq)
-                        if (res is not None and str(_left_part(res, k)) == "I"*k
-                        and str(_right_part(res, k)) == str(W)):
-                            return seq
-        Aopts = (Aext, list(reversed(Aext)))
-        for g1 in (G1, G1r):
-            for g2 in (G2, G2r):
-                for a1 in Aopts:
-                    for a2 in Aopts:
-                        for seq in (
-                            list(g1)+list(a1)+list(g2)+list(a2),
-                            list(g2)+list(a1)+list(g1)+list(a2),
-                            list(a1)+list(g1)+list(a2)+list(g2),
-                            list(a1)+list(g2)+list(a2)+list(g1),
+                        sequence = (
+                            (list(reversed(b0)) if r0 else list(b0))
+                            + (list(reversed(b1)) if r1 else list(b1))
+                            + (list(reversed(b2)) if r2 else list(b2))
+                        )
+                        result = _evaluate_sequence(sequence)
+                        if (
+                            result is not None
+                            and result.get_substring(0, self.k) == target_left
+                            and result.get_substring(self.k, self.n_right) == w_right
                         ):
-                            res = _nested_commutator_result(seq)
-                            if (res is not None
-                            and str(_left_part(res, k)) == "I"*k
-                            and str(_right_part(res, k)) == str(W)):
-                                return seq
-                        for seq in self._all_interleavings_preserving4(g1, g2, a1, a2):
-                            res = _nested_commutator_result(seq)
-                            if (res is not None
-                            and str(_left_part(res, k)) == "I"*k
-                            and str(_right_part(res, k)) == str(W)):
-                                return seq
+                            return sequence
+
+        for g1_block in (g1, list(reversed(g1))):
+            for g2_block in (g2, list(reversed(g2))):
+                for a_block in (a_ext, list(reversed(a_ext))):
+                    for sequence in self._all_interleavings_preserving(g1_block, g2_block, a_block):
+                        result = _evaluate_sequence(sequence)
+                        if (
+                            result is not None
+                            and result.get_substring(0, self.k) == target_left
+                            and result.get_substring(self.k, self.n_right) == w_right
+                        ):
+                            return sequence
+
+        a_options = (a_ext, list(reversed(a_ext)))
+        for g1_block in (g1, g1_rev):
+            for g2_block in (g2, g2_rev):
+                for a1 in a_options:
+                    for a2 in a_options:
+                        for sequence in (
+                            list(g1_block) + list(a1) + list(g2_block) + list(a2),
+                            list(g2_block) + list(a1) + list(g1_block) + list(a2),
+                            list(a1) + list(g1_block) + list(a2) + list(g2_block),
+                            list(a1) + list(g2_block) + list(a2) + list(g1_block),
+                        ):
+                            result = _evaluate_sequence(sequence)
+                            if (
+                                result is not None
+                                and result.get_substring(0, self.k) == target_left
+                                and result.get_substring(self.k, self.n_right) == w_right
+                            ):
+                                return sequence
+                        for sequence in self._all_interleavings_preserving4(
+                                g1_block, g2_block, a1, a2
+                        ):
+                            result = _evaluate_sequence(sequence)
+                            if (
+                                result is not None
+                                and result.get_substring(0, self.k) == target_left
+                                and result.get_substring(self.k, self.n_right) == w_right
+                            ):
+                                return sequence
         return None
 
-    def _bfs_case3(self, W: PauliString, depth_cap: int, node_cap: int) -> list[PauliString] | None:
-        """bfs case3"""
-        S = construct_universal_set(self.n_total, self.k)
+    def _bfs_case3(
+        self, w_right: PauliString, depth_cap: int, node_cap: int
+    ) -> list[PauliString] | None:
+        """Fallback bounded BFS for the case ``V = I`` and ``W != I``."""
+        universal_set = construct_universal_set(self.n_total, self.k)
         target_left = get_identity(self.k)
-        target_right = W
-        def key_of(p: PauliString | None) -> str | None:
-            return None if p is None else str(p)
-        frontier: list[tuple[PauliString | None, list[int]]] = [(None, [])]
-        visited: dict[tuple[int, str], bool] = {}
         nodes = 0
-        for depth in range(1, depth_cap+1):
-            new_front: list[tuple[PauliString | None, list[int]]] = []
-            for res, seq_idx in frontier:
-                for j, op in enumerate(S):
+        frontier: list[tuple[PauliString | None, list[int]]] = [(None, [])]
+        visited: set[tuple[int, PauliString]] = set()
+
+        for depth in range(1, depth_cap + 1):
+            new_frontier: list[tuple[PauliString | None, list[int]]] = []
+            for result, seq_idx in frontier:
+                for op_index, operator in enumerate(universal_set):
                     nodes += 1
                     if nodes > node_cap:
                         return None
-                    new_res = op if res is None else _ad_apply(op, res)
-                    kres = key_of(new_res)
-                    if new_res is None:
+                    new_result = operator if result is None else (operator ^ result)
+                    if new_result is None:
                         continue
-                    if visited.get((depth, kres), False):
+                    state_key = (depth, new_result)
+                    if state_key in visited:
                         continue
-                    visited[(depth, kres)] = True
-                    new_seq = seq_idx + [j]
+                    visited.add(state_key)
+                    new_sequence = seq_idx + [op_index]
                     if depth >= 2:
-                        L = _left_part(new_res, self.k)
-                        R = _right_part(new_res, self.k)
-                        if str(L) == str(target_left) and str(R) == str(target_right):
-                            return [S[idx] for idx in new_seq]
-                    new_front.append((new_res, new_seq))
-            frontier = new_front
+                        if (
+                            new_result.get_substring(0, self.k) == target_left
+                            and new_result.get_substring(self.k, self.n_right) == w_right
+                        ):
+                            return [universal_set[idx] for idx in new_sequence]
+                    new_frontier.append((new_result, new_sequence))
+            frontier = new_frontier
         return None
 
-    def compile(self, V_left: PauliString, W_right: PauliString) -> list[PauliString]:
-        """Compile"""
-        assert len(V_left) == self.k and len(W_right) == self.n_right
-        V, W = V_left, W_right
-        if W.is_identity():
-            Aset = left_a_minimal(self.k)
-            for As in Aset:
+    def compile(self, v_left: PauliString, w_right: PauliString) -> list[PauliString]:
+        """Compile a target specified by its left and right factors."""
+        assert len(v_left) == self.k and len(w_right) == self.n_right
+
+        if w_right.is_identity():
+            for seed in self.a_left:
                 try:
-                    seqA = left_map_over_a(As, V, Aset)
+                    seq_a = left_map_over_a(seed, v_left, self.a_left)
                 except RuntimeError:
                     continue
-                G = [self.extend_left(As)] + [self.extend_left(a) for a in seqA]
-                res = _nested_commutator_result(G)
-                if (res is not None
-                and str(_left_part(res, self.k)) == str(V)
-                and str(_right_part(res, self.k)) == str(W)):
-                    return _sequence_to_paulie_orientation(G)
+                sequence = [self.extend_left(seed)] + [self.extend_left(a) for a in seq_a]
+                result = _evaluate_sequence(sequence)
+                if (
+                    result is not None
+                    and result.get_substring(0, self.k) == v_left
+                    and result.get_substring(self.k, self.n_right) == w_right
+                ):
+                    return _sequence_to_paulie_orientation(sequence)
             raise RuntimeError("Left-only mapping failed.")
-        if not V.is_identity():
-            Gp = self.sub.subsystem_compiler(W)
-            Vp = self._left_factor_from_sequence(Gp)
-            Aset = left_a_minimal(self.k)
-            seq = left_map_over_a(Vp, V, Aset)
+
+        if not v_left.is_identity():
+            g_right = self.sub.subsystem_compiler(w_right)
+            v_prime = self._left_factor_from_sequence(g_right)
+            seq = left_map_over_a(v_prime, v_left, self.a_left)
             candidates = [
-                list(Gp) + [self.extend_left(a) for a in seq],
-                [self.extend_left(a) for a in seq] + list(Gp),
-                list(reversed(Gp)) + [self.extend_left(a) for a in seq],
+                list(g_right) + [self.extend_left(a) for a in seq],
+                [self.extend_left(a) for a in seq] + list(g_right),
+                list(reversed(g_right)) + [self.extend_left(a) for a in seq],
             ]
-            for G in candidates:
-                res = _nested_commutator_result(G)
-                if (res is not None
-                and str(_left_part(res, self.k)) == str(V)
-                and str(_right_part(res, self.k)) == str(W)):
-                    return _sequence_to_paulie_orientation(G)
-            return _sequence_to_paulie_orientation(list(Gp) + [self.extend_left(a) for a in seq])
-        Aset = left_a_minimal(self.k)
-        for W1, W2 in self._candidate_decompositions(W):
-            G1 = self.sub.subsystem_compiler(W1)
-            G2 = self.sub.subsystem_compiler(W2)
-            V1p = self._left_factor_from_sequence(G1)
-            V2p = self._left_factor_from_sequence(G2)
-            Aseq = left_map_over_a(V2p, V1p, Aset)
-            Aext = [self.extend_left(a) for a in Aseq]
-            seq = self._case3_best_reordering(G1, G2, Aext, W)
-            if seq is not None:
-                return _sequence_to_paulie_orientation(seq)
-        seq_fb = self._bfs_case3(W, self.fallback_depth, self.fallback_nodes)
+            for sequence in candidates:
+                result = _evaluate_sequence(sequence)
+                if (
+                    result is not None
+                    and result.get_substring(0, self.k) == v_left
+                    and result.get_substring(self.k, self.n_right) == w_right
+                ):
+                    return _sequence_to_paulie_orientation(sequence)
+            return _sequence_to_paulie_orientation(
+                list(g_right) + [self.extend_left(a) for a in seq]
+            )
+
+        for w1, w2 in self._candidate_decompositions(w_right):
+            g1 = self.sub.subsystem_compiler(w1)
+            g2 = self.sub.subsystem_compiler(w2)
+            v1_prime = self._left_factor_from_sequence(g1)
+            v2_prime = self._left_factor_from_sequence(g2)
+            a_seq = left_map_over_a(v2_prime, v1_prime, self.a_left)
+            a_ext = [self.extend_left(a) for a in a_seq]
+            sequence = self._case3_best_reordering(g1, g2, a_ext, w_right)
+            if sequence is not None:
+                return _sequence_to_paulie_orientation(sequence)
+
+        seq_fb = self._bfs_case3(w_right, self.fallback_depth, self.fallback_nodes)
         if seq_fb is not None:
             return _sequence_to_paulie_orientation(seq_fb)
-        wstr = str(W)
-        j = next(i for i, ch in enumerate(wstr) if ch != "I")
-        lab = "X" if wstr[j] == "Z" else ("Z" if wstr[j] == "X" else "X")
-        W1 = get_single(self.n_right, j, lab)
-        W2 = _multiply(W1, W)
-        G1 = self.sub.subsystem_compiler(W1)
-        G2 = self.sub.subsystem_compiler(W2)
-        V1p = self._left_factor_from_sequence(G1)
-        V2p = self._left_factor_from_sequence(G2)
-        Aseq = left_map_over_a(V2p, V1p, left_a_minimal(self.k))
-        Aext = [self.extend_left(a) for a in Aseq]
-        return _sequence_to_paulie_orientation(list(reversed(G1)) + Aext + list(reversed(G2)))
+
+        w_str = str(w_right)
+        site = next(index for index, label in enumerate(w_str) if label != "I")
+        label = "X" if w_str[site] == "Z" else ("Z" if w_str[site] == "X" else "X")
+        w1 = get_single(self.n_right, site, label)
+        w2 = w1 @ w_right
+        g1 = self.sub.subsystem_compiler(w1)
+        g2 = self.sub.subsystem_compiler(w2)
+        v1_prime = self._left_factor_from_sequence(g1)
+        v2_prime = self._left_factor_from_sequence(g2)
+        a_seq = left_map_over_a(v2_prime, v1_prime, self.a_left)
+        a_ext = [self.extend_left(a) for a in a_seq]
+        return _sequence_to_paulie_orientation(list(reversed(g1)) + a_ext + list(reversed(g2)))
 
 
 def construct_universal_set(n_total: int, k: int) -> list[PauliString]:
-    """Construct universal set"""
+    """Construct the universal generator set used by the compiler."""
     if not 1 <= k < n_total:
         raise ValueError("Require 1 <= k < N")
-    A_k = left_a_minimal(k)
+
+    a_k = left_a_minimal(k)
     n_right = n_total - k
-    U = choose_u_for_b(k)
-    right_B = ([get_single(n_right, j, "X") for j in range(n_right)]
-    + [get_single(n_right, j, "Z") for j in range(n_right)])
-    A_prime = [_tensor(A, get_identity(n_right)) for A in A_k]
-    B_prime = [_tensor(U, b) for b in right_B]
-    return A_prime + B_prime
+    u_tag = choose_u_for_b(k)
+    right_b = [get_single(n_right, index, "X") for index in range(n_right)] + [
+        get_single(n_right, index, "Z") for index in range(n_right)
+    ]
+    a_prime = [a + get_identity(n_right) for a in a_k]
+    b_prime = [u_tag + b for b in right_b]
+    return a_prime + b_prime
 
 
 def compile_target(target: PauliString, k_left: int) -> list[PauliString]:
-    """Compile target"""
-    n = len(target)
-    if not 1 <= k_left < n:
+    """Compile a full target Pauli string."""
+    n_total = len(target)
+    if not 1 <= k_left < n_total:
         raise ValueError("Require 1 <= k_left < len(target)")
-    V = target.get_substring(0, k_left)
-    W = target.get_substring(k_left, n - k_left)
-    opc = OptimalPauliCompiler(PauliCompilerConfig(k_left=k_left, n_total=n))
-    return opc.compile(V, W)
+
+    v_left = target.get_substring(0, k_left)
+    w_right = target.get_substring(k_left, n_total - k_left)
+    compiler = OptimalPauliCompiler(PauliCompilerConfig(k_left=k_left, n_total=n_total))
+    return compiler.compile(v_left, w_right)

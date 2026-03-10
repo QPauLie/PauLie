@@ -2,9 +2,11 @@
 Test of charges
 """
 import pytest
-from paulie.common.two_local_generators import get_lie_algebra
-from paulie.application.charges import non_commuting_charges
-from paulie.common.pauli_string_factory import get_pauli_string as p
+from paulie import (
+    get_lie_algebra,
+    non_commuting_charges,
+    get_pauli_string as p
+)
 
 @pytest.mark.parametrize("algebra_name, should_have_charges", [
     ("a8", True),

@@ -1,5 +1,5 @@
 """Test subgraph"""
-from paulie.common.pauli_string_factory import get_pauli_string as p
+from paulie import get_pauli_string as p
 
 def test_subgraphs() -> None:
     """Test subgraph"""

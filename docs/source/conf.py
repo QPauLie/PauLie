@@ -29,8 +29,11 @@ extensions = [
 'sphinx.ext.napoleon',
 'sphinx.ext.mathjax',
 'sphinx.ext.intersphinx',
+'sphinxcontrib.bibtex',
 ]
 
+bibtex_bibfiles = ["references.bib"]
+bibtex_reference_style = "author_year"
 autosummary_generate = True
 autosummary_generate_overwrite = True
 autodoc_typehints = "none"
@@ -55,4 +58,5 @@ html_title = "PauLie"
 
 html_static_path = ['_static']
 html_css_files = ['custom.css']
+mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js'
 html_extra_path=['media']

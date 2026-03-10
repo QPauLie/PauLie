@@ -17,8 +17,7 @@ We can use :code:`paulie` to compute the long time average of the graph complexi
 
 .. code-block:: python
 
-    from paulie.application.graph_complexity import average_graph_complexity
-    from paulie.common.pauli_string_factory import get_identity, get_pauli_string
+    from paulie import average_graph_complexity, get_identity, get_pauli_string
     generators = get_pauli_string(["ZI", "IZ", "XX"])
     i = get_identity(2)
     for p in i.gen_all_pauli_strings():

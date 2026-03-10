@@ -14,12 +14,7 @@ from paulie.classifier.classification import Classification
 from paulie.classifier.morph_factory import MorphFactory
 from paulie.classifier.recording_morph_factory import RecordingMorphFactory
 from paulie.helpers.recording import RecordGraph
-
-class PauliStringCollectionException(Exception):
-    """
-    Exception for the Pauli string collection class.
-    """
-
+from paulie.exceptions import PauliStringCollectionException
 
 # class PauliStringCollection(object):
 #    """
@@ -1005,3 +1000,18 @@ class PauliStringCollection:
 
             i += 1
         return generators
+
+    def nested_adjoint(self, target: PauliString | None) -> PauliString | None:
+        """Return the iterated commutator"""
+        current = target
+        for op in reversed(self.generators):
+            if current is None:
+                return None
+            current = op ^ current
+        return current
+
+    def evaluate_commutator_sequence(self) -> PauliString | None:
+        """Evaluate a commutator sequence"""
+        if len(self.generators) == 0:
+            return None
+        return PauliStringCollection(self.generators[1:]).nested_adjoint(self.generators[0])

@@ -12,7 +12,7 @@ We can plot the commutator graph
 
 .. code-block:: python
 
-    from paulie.common.pauli_string_factory import get_pauli_string as p
+    from paulie import get_pauli_string as p
     generators = p(["XI", "ZI", "IX", "IZ", "ZZ"], n=2)
     vertices, edges = generators.get_commutator_graph()
     plot_graph(vertices, edges)
@@ -38,8 +38,7 @@ Given a Pauli string dynamical Lie algebra (DLA), we can compute the average OTO
 .. code-block:: python
 
     import numpy as np
-    from paulie.common.pauli_string_factory import get_pauli_string as p
-    from paulie.application.otoc import average_otoc
+    from paulie import average_otoc, get_pauli_string as p
 
     # These are the generators of n=3 "matchgate" dynamics
     generators = p(["ZII", "IZI", "IIZ", "XXI", "IXX"])

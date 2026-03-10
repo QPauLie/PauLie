@@ -4,9 +4,11 @@ Test common
 import itertools
 import pytest
 from bitarray import bitarray
-from paulie.common.pauli_string_bitarray import PauliString
-from paulie.common.pauli_string_collection import PauliStringCollection
-from paulie.common.pauli_string_linear import PauliStringLinear
+from paulie import (
+    PauliString,
+    PauliStringCollection,
+    PauliStringLinear
+)
 
 test_cases = [
     ({"n": 0}, "", "PauliString()"),

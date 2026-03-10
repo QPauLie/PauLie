@@ -4,8 +4,11 @@ Test classification
 from operator import itemgetter
 from typing import Any
 import pytest
-from paulie.common.pauli_string_factory import get_pauli_string as p
-from paulie.common.two_local_generators import G_LIE, two_local_algebras
+from paulie import (
+    G_LIE,
+    two_local_algebras,
+    get_pauli_string as p
+)
 
 
 @pytest.mark.parametrize("generators_to_compare", [
@@ -39,5 +42,5 @@ def test_explicit_algebras() -> None:
     # but Theorem 2 does not possibly lead to this result
     for n in [6,10]:
         algs = two_local_algebras(n)
-        for name in algs.keys():
-            assert p(G_LIE[name], n = n).is_algebra(algs[name])
+        for name, alg in algs.items():
+            assert p(G_LIE[name], n = n).is_algebra(alg)

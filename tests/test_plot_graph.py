@@ -1,7 +1,6 @@
 """Test plot_graph_by_nodes"""
 import matplotlib.pyplot as plt
-from paulie.common.pauli_string_factory import get_pauli_string as p
-from paulie.helpers.drawing import plot_graph_by_nodes
+from paulie import plot_graph_by_nodes, get_pauli_string as p
 
 
 def test_plot_graph() -> None:

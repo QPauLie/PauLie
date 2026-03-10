@@ -12,7 +12,7 @@ forms a basis of the vector space of complex matrices of dimensions :math:`2^n \
 .. code-block:: python
 
     import numpy as np
-    from paulie.application.matrix_decomposition import matrix_decomposition
+    from paulie import matrix_decomposition
 
     A = np.array([[0. +0.j, -2.9-0.9j, 0.5+0.j, 0. +0.j]
                   [3.1+1.5j, 0. +0.j, 0. +0.j, -0.5+0.j]

@@ -3,7 +3,7 @@
 """
 import pytest
 import numpy as np
-from paulie.application.matrix_decomposition import (
+from paulie import (
     matrix_decomposition,
     matrix_decomposition_diagonal
 )
