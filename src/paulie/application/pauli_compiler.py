@@ -284,7 +284,8 @@ class OptimalPauliCompiler:
     def _candidate_decompositions(
             self, w_right: PauliString
     ) -> list[tuple[PauliString, PauliString]]:
-        """Return candidate decompositions ``W = W1 @ W2`` with ``W1`` anti-commuting with ``W2``."""
+        """Return candidate decompositions ``W = W1 @ W2``
+        with ``W1`` anti-commuting with ``W2``."""
         candidates: list[tuple[PauliString, PauliString]] = []
         n_right = len(w_right)
 
