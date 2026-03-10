@@ -561,6 +561,12 @@ pauli_string will be replaced on pauli_string &#64; contracted_pauli_string.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.evaluate_commutator_sequence">
+<span class="sig-name descname"><span class="pre">evaluate_commutator_sequence</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.evaluate_commutator_sequence" title="Link to this definition">#</a></dt>
+<dd><p>Evaluate a commutator sequence</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.expand">
 <span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.expand" title="Link to this definition">#</a></dt>
 <dd><p>Expands each string in the collection to specified length n
@@ -1057,6 +1063,12 @@ All Pauli strings of one algebra are dependent on another.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.nested_adjoint">
+<span class="sig-name descname"><span class="pre">nested_adjoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.nested_adjoint" title="Link to this definition">#</a></dt>
+<dd><p>Return the iterated commutator</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.remove">
 <span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.remove" title="Link to this definition">#</a></dt>
 <dd><p>Remove a specified Pauli string from the collection.</p>
@@ -1183,6 +1195,7 @@ their bit value given by the bitarray representation.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.contract"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.contract()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.copy"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.copy()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.create_instance"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.create_instance()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.evaluate_commutator_sequence"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.evaluate_commutator_sequence()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.expand"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.expand()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.find"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.find()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.find_generators_with_connection"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.find_generators_with_connection()</span></code></a></li>
@@ -1220,6 +1233,7 @@ their bit value given by the bitarray representation.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.is_in"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.is_in()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.list_connections"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.list_connections()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.mul"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.mul()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.nested_adjoint"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.nested_adjoint()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.remove"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.remove()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.replace"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.replace()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.select_dependents"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.select_dependents()</span></code></a></li>
