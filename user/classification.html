@@ -402,13 +402,14 @@
   <section id="classification-of-pauli-dlas">
 <h1>Classification of Pauli DLAs<a class="headerlink" href="#classification-of-pauli-dlas" title="Link to this heading">#</a></h1>
 <p>This tutorial will illustrate how to use <code class="code docutils literal notranslate"><span class="pre">paulie</span></code> to classify the dynamical Lie algebra of a circuit given
-the generators consisting of Paulistrings.
-A Paulistring is a tensor product of Pauli matrices</p>
+the generators consisting of Pauli strings.
+A Pauli string is a tensor product of Pauli matrices</p>
 <div class="math notranslate nohighlight">
 \[P = \bigotimes_i  \sigma_i , \, \sigma_i \in \{I,X,Y,Z\}\]</div>
 <p>and is represented as a string indicating the Pauli matrices successively.
-Given a set of Paulistrings, the closure under the commutator defines a Lie algebra.</p>
-<p>In <span id="id1">Aguilar <em>et al.</em> [<a class="reference internal" href="../references.html#id2" title="Gerard Aguilar, Simon Cichy, Jens Eisert, and Lennart Bittel. Full classification of pauli lie algebras. 2024. URL: https://arxiv.org/abs/2408.00081, arXiv:2408.00081.">2024</a>]</span>, an efficient algorithm for classifying which Lie algebra is generated is given.
+Given a set of Pauli strings, the closure under the commutator defines a Lie algebra.</p>
+<p>In <span id="id1">Aguilar <em>et al.</em> [<a class="reference internal" href="../references.html#id2" title="Gerard Aguilar, Simon Cichy, Jens Eisert, and Lennart Bittel. Full classification of pauli lie algebras. 2024. URL: https://arxiv.org/abs/2408.00081, arXiv:2408.00081.">2024</a>]</span>, an efficient algorithm for classifying which Lie algebra is generated is given. PauLie implements
+a modified version of this algorithm.
 The function <code class="code docutils literal notranslate"><span class="pre">get_algebra</span></code> returns exactly which algebra is generated when
 given the generator set which can be extended with identities to arbitrary qubit numbers
 specified.
@@ -435,13 +436,69 @@ We can reproduce Example I.5 in <span id="id2">Wiersema <em>et al.</em> [<a clas
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">algebra</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>so<span class="o">(</span><span class="m">3</span><span class="o">)</span>
 </pre></div>
 </div>
-<p>The algorithms is based on the concept of an anticommutation graph. Given a set of n-qubit Paulistrings
+<p>The algorithm is based on the concept of an anticommutation graph. Given a set of n-qubit Pauli strings
 <span class="math notranslate nohighlight">\(\mathcal{G} = \{P_1,\dots ,P_{n_G}\}\)</span>, the anticommutation graph has as a vertex set <span class="math notranslate nohighlight">\(\mathcal{G}\)</span>
-and edges between all vertices that do not commute. Now the edge between <span class="math notranslate nohighlight">\(P_i\)</span> and <span class="math notranslate nohighlight">\(P_j\)</span> can be contracted
-by mapping <span class="math notranslate nohighlight">\(P_i \mapsto \pm \frac{1}{2} i [P_i,P_j] = P_i^\star\)</span>. Now if <span class="math notranslate nohighlight">\(P_i^\star\)</span> is already in <span class="math notranslate nohighlight">\(\mathcal{G}\)</span>,
-the size of the generator set has been reduced while leaving the Lie algebra invariant.
-We can illustrate this for the generating set <code class="code docutils literal notranslate"><span class="pre">[&quot;XYI&quot;,</span> <span class="pre">&quot;IXY&quot;,</span> <span class="pre">&quot;XZY&quot;]</span></code> via the function <code class="code docutils literal notranslate"><span class="pre">animation_anti_commutation_graph(generators)</span></code>.
-As the third Paulistring is proportional to the commutator of the first two Paulistrings it can be contracted.</p>
+and edges between all vertices that do not commute. Starting with an empty generator set, we incrementally add Pauli strings to our set. At each step, we must keep the anticommutation graph in a <em>canonical form</em> (explained later). The fundamental operation we use is a <em>contraction</em> between two Pauli strings <span class="math notranslate nohighlight">\(P_i\)</span> and <span class="math notranslate nohighlight">\(P_j\)</span> which maps <span class="math notranslate nohighlight">\(P_i \mapsto \pm \frac{1}{2} i [P_i,P_j] = P_i^\star\)</span>. Crucially, it can be shown that this operation leaves the Lie algebra invariant. Now if <span class="math notranslate nohighlight">\(P_i^\star\)</span> is already in <span class="math notranslate nohighlight">\(\mathcal{G}\)</span>, the size of the generator set has been reduced. Otherwise, the operation results the complementation of the edge set between <span class="math notranslate nohighlight">\(P_i^\star\)</span> and vertices in the neighbourhood of <span class="math notranslate nohighlight">\(P_j\)</span>. Simply put, we can use such contractions to manipulates the edges of the anticommutation graph so as to bring it to a canonical form.</p>
+<p>For any generator set consisting of Pauli strings, the anticommutation graph can be transformed to four canonical types (Theorem 1 in <span id="id3">Aguilar <em>et al.</em> [<a class="reference internal" href="../references.html#id2" title="Gerard Aguilar, Simon Cichy, Jens Eisert, and Lennart Bittel. Full classification of pauli lie algebras. 2024. URL: https://arxiv.org/abs/2408.00081, arXiv:2408.00081.">2024</a>]</span>). Each canonical type corresponds to a particular algebra. There is an exception if <span class="math notranslate nohighlight">\(\mathcal{P}\)</span> only has one Pauli string. A single Pauli string generates the algebra <span class="math notranslate nohighlight">\(\mathfrak{u}(1)\)</span>.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id5">
+<caption><span class="caption-text">Canonical types and associated Lie algebras for a starlike graph with <span class="math notranslate nohighlight">\(n_1 + 1\)</span> <span class="math notranslate nohighlight">\(\left(n_1 \geq 0\right)\)</span> legs of length <span class="math notranslate nohighlight">\(1\)</span> and <span class="math notranslate nohighlight">\(n_2\)</span> <span class="math notranslate nohighlight">\(\left(n_2 \geq 1\right)\)</span> legs of length <span class="math notranslate nohighlight">\(2\)</span>. Note that some graphs may belong to multiple canonical types, which reflects the existence of certain <em>exceptional isomorphisms</em> between Lie algebras.</span><a class="headerlink" href="#id5" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Canonical type</p></th>
+<th class="head"><p>Structure</p></th>
+<th class="head"><p>Lie algebra</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p><span class="math notranslate nohighlight">\(\left|N\right| = n_1\)</span>,
+<span class="math notranslate nohighlight">\(\left|T\right| = 0\)</span>,
+<span class="math notranslate nohighlight">\(\left|L^{\mathcal{B}}\right| = n\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\bigoplus_{i=1}^{2^{n_1}}\mathfrak{so}(n + 3)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>B1</p></td>
+<td><p><span class="math notranslate nohighlight">\(\left|N\right|=n_1\)</span>,
+<span class="math notranslate nohighlight">\(\left|T\right| = n_2\)</span>,
+<span class="math notranslate nohighlight">\(\left|L^{\mathcal{B}}\right|=0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\bigoplus_{i=1}^{2^{n_1}}\mathfrak{sp}(2^{n_2})\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>B2</p></td>
+<td><p><span class="math notranslate nohighlight">\(\left|N\right|=n_1\)</span>,
+<span class="math notranslate nohighlight">\(\left|T\right| = n_2\)</span>,
+<span class="math notranslate nohighlight">\(\left|L^{\mathcal{B}}\right|=4\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\bigoplus_{i=1}^{2^{n_1}}\mathfrak{so}(2^{n_2 + 3})\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>B3</p></td>
+<td><p><span class="math notranslate nohighlight">\(\left|N\right|=n_1\)</span>,
+<span class="math notranslate nohighlight">\(\left|T\right| = n_2\)</span>,
+<span class="math notranslate nohighlight">\(\left|L^{\mathcal{B}}\right|=3\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\bigoplus_{i=1}^{2^{n_1}}\mathfrak{su}(2^{n_2 + 2})\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>All four canonical types are starlike graphs. The algorithm essentially proceeds by first creating a “core” of vertices (the central vertex of the star and at most two other vertices), and then appending vertices to legs or splitting legs and connecting them to the center, as required. There are essentially four key steps:</p>
+<ul class="simple">
+<li><p>Step 1: Build the core.</p></li>
+<li><p>Step 2: If the vertex to be added is only connected to a subset of the isolated (only connected to center excluding the vertex to be added) vertices,
+use contractions until it is only connected to one isolated vertex and exit. Otherwise use contractions to disconnect the isolated vertices from the
+vertex to be added and go to Step 3.</p></li>
+<li><p>Step 3: Use contractions until the vertex is only connected to vertices on the longest leg of the graph.</p></li>
+<li><p>Step 4: Use contractions until we can attach the vertex to the end of the longest leg or to the center. This step cannot always be achieved
+using just contractions: we may have to remove a vertex to complete this step. But it is fine since we can add it again afterwards without affecting the algebra.</p></li>
+</ul>
+<section id="classification-of-a-type-canonical-graph">
+<h2>Classification of A-type canonical graph<a class="headerlink" href="#classification-of-a-type-canonical-graph" title="Link to this heading">#</a></h2>
+<p>Let’s try to classify a generator set that corresponds to an A-type canonical graph. This algebra is generated by <span class="math notranslate nohighlight">\(\mathcal{P}=\{IYZI,IIXX,IIYZ,IXXI,XXII,YZII\}\)</span>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">generators</span> <span class="o">=</span> <span class="n">p</span><span class="p">([</span><span class="s2">&quot;IYZI&quot;</span><span class="p">,</span> <span class="s2">&quot;IIXX&quot;</span><span class="p">,</span> <span class="s2">&quot;IIYZ&quot;</span><span class="p">,</span> <span class="s2">&quot;IXXI&quot;</span><span class="p">,</span> <span class="s2">&quot;XXII&quot;</span><span class="p">,</span> <span class="s2">&quot;YZII&quot;</span><span class="p">])</span>
+<span class="n">algebra</span> <span class="o">=</span> <span class="n">generators</span><span class="o">.</span><span class="n">get_algebra</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;algebra = </span><span class="si">{</span><span class="n">algebra</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>outputs</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">algebra</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span>*so<span class="o">(</span><span class="m">5</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>We can also animate the transformation to a canonical graph:</p>
 
 <link rel="stylesheet"
 href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -627,42 +684,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_imga40a7de81c5646249c707542316c1b61">
+  <img id="_anim_imgcb3a7e9d056f45ee91d251147a7faa6b">
   <div class="anim-controls">
-    <input id="_anim_slidera40a7de81c5646249c707542316c1b61" type="range" class="anim-slider"
+    <input id="_anim_slidercb3a7e9d056f45ee91d251147a7faa6b" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="anima40a7de81c5646249c707542316c1b61.set_frame(parseInt(this.value));">
+           oninput="animcb3a7e9d056f45ee91d251147a7faa6b.set_frame(parseInt(this.value));">
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="anima40a7de81c5646249c707542316c1b61.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="animcb3a7e9d056f45ee91d251147a7faa6b.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="anima40a7de81c5646249c707542316c1b61.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="animcb3a7e9d056f45ee91d251147a7faa6b.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="anima40a7de81c5646249c707542316c1b61.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="animcb3a7e9d056f45ee91d251147a7faa6b.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="anima40a7de81c5646249c707542316c1b61.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="animcb3a7e9d056f45ee91d251147a7faa6b.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="anima40a7de81c5646249c707542316c1b61.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="animcb3a7e9d056f45ee91d251147a7faa6b.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="anima40a7de81c5646249c707542316c1b61.play_animation()">
+      <button title="Play" aria-label="Play" onclick="animcb3a7e9d056f45ee91d251147a7faa6b.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="anima40a7de81c5646249c707542316c1b61.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="animcb3a7e9d056f45ee91d251147a7faa6b.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="anima40a7de81c5646249c707542316c1b61.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="animcb3a7e9d056f45ee91d251147a7faa6b.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="anima40a7de81c5646249c707542316c1b61.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="animcb3a7e9d056f45ee91d251147a7faa6b.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selecta40a7de81c5646249c707542316c1b61"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectcb3a7e9d056f45ee91d251147a7faa6b"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_a40a7de81c5646249c707542316c1b61"
+      <input type="radio" name="state" value="once" id="_anim_radio1_cb3a7e9d056f45ee91d251147a7faa6b"
              >
-      <label for="_anim_radio1_a40a7de81c5646249c707542316c1b61">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_a40a7de81c5646249c707542316c1b61"
+      <label for="_anim_radio1_cb3a7e9d056f45ee91d251147a7faa6b">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_cb3a7e9d056f45ee91d251147a7faa6b"
              checked>
-      <label for="_anim_radio2_a40a7de81c5646249c707542316c1b61">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_a40a7de81c5646249c707542316c1b61"
+      <label for="_anim_radio2_cb3a7e9d056f45ee91d251147a7faa6b">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_cb3a7e9d056f45ee91d251147a7faa6b"
              >
-      <label for="_anim_radio3_a40a7de81c5646249c707542316c1b61">Reflect</label>
+      <label for="_anim_radio3_cb3a7e9d056f45ee91d251147a7faa6b">Reflect</label>
     </form>
   </div>
 </div>
@@ -672,13 +729,13 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_imga40a7de81c5646249c707542316c1b61";
-    var slider_id = "_anim_slidera40a7de81c5646249c707542316c1b61";
-    var loop_select_id = "_anim_loop_selecta40a7de81c5646249c707542316c1b61";
-    var frames = new Array(12);
+    var img_id = "_anim_imgcb3a7e9d056f45ee91d251147a7faa6b";
+    var slider_id = "_anim_slidercb3a7e9d056f45ee91d251147a7faa6b";
+    var loop_select_id = "_anim_loop_selectcb3a7e9d056f45ee91d251147a7faa6b";
+    var frames = new Array(41);
     
-  for (var i=0; i<12; i++){
-    frames[i] = "../example_a_frames/frame" + ("0000000" + i).slice(-7) +
+  for (var i=0; i<41; i++){
+    frames[i] = "../example_c_frames/frame" + ("0000000" + i).slice(-7) +
                 ".png";
   }
 
@@ -686,17 +743,32 @@ input[type=range].anim-slider {
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anima40a7de81c5646249c707542316c1b61 = new Animation(frames, img_id, slider_id, 1000.0,
+        animcb3a7e9d056f45ee91d251147a7faa6b = new Animation(frames, img_id, slider_id, 1000.0,
                                  loop_select_id);
     }, 0);
   })()
 </script>
-<p>For any generator set consisting of Paulistrings, the anticommutation graph can be transformed to four canonical types (Theorem 1 in <span id="id3">Aguilar <em>et al.</em> [<a class="reference internal" href="../references.html#id2" title="Gerard Aguilar, Simon Cichy, Jens Eisert, and Lennart Bittel. Full classification of pauli lie algebras. 2024. URL: https://arxiv.org/abs/2408.00081, arXiv:2408.00081.">2024</a>]</span> ).
-In the example the resulting graph is a line graph with two vertices and no single vertices. Therefore it is of type A and the
-according to Theorem 2 in <span id="id4">Aguilar <em>et al.</em> [<a class="reference internal" href="../references.html#id2" title="Gerard Aguilar, Simon Cichy, Jens Eisert, and Lennart Bittel. Full classification of pauli lie algebras. 2024. URL: https://arxiv.org/abs/2408.00081, arXiv:2408.00081.">2024</a>]</span> , it corresponds to <span class="math notranslate nohighlight">\(\mathfrak{so}(3)\)</span>.</p>
-<p>We can try it also for classifying a generator set that does correspond to a B-type canonical graph, that is a
-anticommutation graph that is star graph. We demonstrate it by the algebra <span class="math notranslate nohighlight">\(\mathfrak{a}_9\)</span> [1], generated by
-<span class="math notranslate nohighlight">\(XY\)</span> and <span class="math notranslate nohighlight">\(XZ\)</span>.</p>
+<p>This is what happens:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(IYZI\)</span> is added.</p></li>
+<li><p><span class="math notranslate nohighlight">\(IIXX\)</span> is added as one leg.</p></li>
+<li><p><span class="math notranslate nohighlight">\(IIYZ\)</span> is added as the second leg. Now the core is complete.</p></li>
+<li><p><span class="math notranslate nohighlight">\(IXXI\)</span> is added. It is connected to <span class="math notranslate nohighlight">\(IIYZ\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(XXII\)</span> is added. It is connected to <span class="math notranslate nohighlight">\(IYZI\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(YZII\)</span> is added. It is connected to <span class="math notranslate nohighlight">\(IYZI\)</span> and <span class="math notranslate nohighlight">\(IXXI\)</span>. We are now in Step 4. But the configuration of attached vertices is
+such that we must remove <span class="math notranslate nohighlight">\(IXXI\)</span> so that it is valid for us to attach <span class="math notranslate nohighlight">\(YZII\)</span> to <span class="math notranslate nohighlight">\(IYZI\)</span>.</p></li>
+<li><p>Now we must add <span class="math notranslate nohighlight">\(IXXI\)</span> again. It is connected to <span class="math notranslate nohighlight">\(YZII\)</span> and <span class="math notranslate nohighlight">\(IIYZ\)</span>. We are now in Step 2. In this case, we pick
+two isolated vertices <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> such that <span class="math notranslate nohighlight">\(P\)</span> is connected to the vertex to be added and <span class="math notranslate nohighlight">\(Q\)</span> is not.
+Then for every remaining vertex <span class="math notranslate nohighlight">\(W\)</span> which is connected to the vertex to be added, we perform <span class="math notranslate nohighlight">\(W\mapsto PQW\)</span> and now <span class="math notranslate nohighlight">\(PQW\)</span>
+commutes with the vertex to be added, so it is no longer connected. It is guaranteed that such a transformation is always possible by
+Theorem 4 of <span id="id4">Aguilar <em>et al.</em> [<a class="reference internal" href="../references.html#id2" title="Gerard Aguilar, Simon Cichy, Jens Eisert, and Lennart Bittel. Full classification of pauli lie algebras. 2024. URL: https://arxiv.org/abs/2408.00081, arXiv:2408.00081.">2024</a>]</span>. In our case, we can pick <span class="math notranslate nohighlight">\(P=YZII\)</span> and <span class="math notranslate nohighlight">\(Q=XXII\)</span>, which means we have <span class="math notranslate nohighlight">\(IIYZ\mapsto ZYYZ\)</span>
+and then we can connect <span class="math notranslate nohighlight">\(IXXI\)</span> to <span class="math notranslate nohighlight">\(YZII\)</span>.</p></li>
+</ol>
+<p>According to the table, the resultant graph corresponds to <span class="math notranslate nohighlight">\(\mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)\)</span>. But it is worth nothing that it also corresponds to <span class="math notranslate nohighlight">\(\mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\)</span>. This shows that there is an exceptional isomorphism between <span class="math notranslate nohighlight">\(\mathfrak{so}(5)\)</span> and <span class="math notranslate nohighlight">\(\mathfrak{sp}(2)\)</span>.</p>
+</section>
+<section id="classification-of-b-type-canonical-graph">
+<h2>Classification of B-type canonical graph<a class="headerlink" href="#classification-of-b-type-canonical-graph" title="Link to this heading">#</a></h2>
+<p>Let’s try to classify a generator set that corresponds to a B-type canonical graph, that is a anticommutation graph that is a star graph. We demonstrate it by the algebra <span class="math notranslate nohighlight">\(\mathfrak{a}_9\)</span> [1], generated by <span class="math notranslate nohighlight">\(XY\)</span> and <span class="math notranslate nohighlight">\(XZ\)</span>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_qubits</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">generators</span> <span class="o">=</span> <span class="n">p</span><span class="p">([</span><span class="s2">&quot;XY&quot;</span><span class="p">,</span> <span class="s2">&quot;XZ&quot;</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="n">n_qubits</span><span class="p">)</span>
 <span class="n">algebra</span> <span class="o">=</span> <span class="n">get_algebra</span><span class="p">(</span><span class="n">generators</span><span class="p">)</span>
@@ -893,42 +965,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_img0a67162c62314f4fac86598c473010b5">
+  <img id="_anim_img57433faca9f6417fb6f6edca50836669">
   <div class="anim-controls">
-    <input id="_anim_slider0a67162c62314f4fac86598c473010b5" type="range" class="anim-slider"
+    <input id="_anim_slider57433faca9f6417fb6f6edca50836669" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="anim0a67162c62314f4fac86598c473010b5.set_frame(parseInt(this.value));">
+           oninput="anim57433faca9f6417fb6f6edca50836669.set_frame(parseInt(this.value));">
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim0a67162c62314f4fac86598c473010b5.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim57433faca9f6417fb6f6edca50836669.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="anim0a67162c62314f4fac86598c473010b5.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="anim57433faca9f6417fb6f6edca50836669.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="anim0a67162c62314f4fac86598c473010b5.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="anim57433faca9f6417fb6f6edca50836669.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="anim0a67162c62314f4fac86598c473010b5.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="anim57433faca9f6417fb6f6edca50836669.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="anim0a67162c62314f4fac86598c473010b5.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="anim57433faca9f6417fb6f6edca50836669.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="anim0a67162c62314f4fac86598c473010b5.play_animation()">
+      <button title="Play" aria-label="Play" onclick="anim57433faca9f6417fb6f6edca50836669.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="anim0a67162c62314f4fac86598c473010b5.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="anim57433faca9f6417fb6f6edca50836669.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="anim0a67162c62314f4fac86598c473010b5.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="anim57433faca9f6417fb6f6edca50836669.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="anim0a67162c62314f4fac86598c473010b5.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="anim57433faca9f6417fb6f6edca50836669.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select0a67162c62314f4fac86598c473010b5"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select57433faca9f6417fb6f6edca50836669"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_0a67162c62314f4fac86598c473010b5"
+      <input type="radio" name="state" value="once" id="_anim_radio1_57433faca9f6417fb6f6edca50836669"
              >
-      <label for="_anim_radio1_0a67162c62314f4fac86598c473010b5">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_0a67162c62314f4fac86598c473010b5"
+      <label for="_anim_radio1_57433faca9f6417fb6f6edca50836669">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_57433faca9f6417fb6f6edca50836669"
              checked>
-      <label for="_anim_radio2_0a67162c62314f4fac86598c473010b5">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_0a67162c62314f4fac86598c473010b5"
+      <label for="_anim_radio2_57433faca9f6417fb6f6edca50836669">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_57433faca9f6417fb6f6edca50836669"
              >
-      <label for="_anim_radio3_0a67162c62314f4fac86598c473010b5">Reflect</label>
+      <label for="_anim_radio3_57433faca9f6417fb6f6edca50836669">Reflect</label>
     </form>
   </div>
 </div>
@@ -938,13 +1010,13 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_img0a67162c62314f4fac86598c473010b5";
-    var slider_id = "_anim_slider0a67162c62314f4fac86598c473010b5";
-    var loop_select_id = "_anim_loop_select0a67162c62314f4fac86598c473010b5";
-    var frames = new Array(54);
+    var img_id = "_anim_img57433faca9f6417fb6f6edca50836669";
+    var slider_id = "_anim_slider57433faca9f6417fb6f6edca50836669";
+    var loop_select_id = "_anim_loop_select57433faca9f6417fb6f6edca50836669";
+    var frames = new Array(44);
     
-  for (var i=0; i<54; i++){
-    frames[i] = "../example_b_frames/frame" + ("0000000" + i).slice(-7) +
+  for (var i=0; i<44; i++){
+    frames[i] = "../example_d_frames/frame" + ("0000000" + i).slice(-7) +
                 ".png";
   }
 
@@ -952,15 +1024,35 @@ input[type=range].anim-slider {
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anim0a67162c62314f4fac86598c473010b5 = new Animation(frames, img_id, slider_id, 1000.0,
+        anim57433faca9f6417fb6f6edca50836669 = new Animation(frames, img_id, slider_id, 1000.0,
                                  loop_select_id);
     }, 0);
   })()
 </script>
+<p>This is what happens:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(IXZI\)</span> is added.</p></li>
+<li><p><span class="math notranslate nohighlight">\(IIXZ\)</span> is added as one leg.</p></li>
+<li><p><span class="math notranslate nohighlight">\(IIXY\)</span> is added. It is connected to <span class="math notranslate nohighlight">\(IXZI\)</span> and <span class="math notranslate nohighlight">\(IIXZ\)</span>, so we contract with <span class="math notranslate nohighlight">\(IXZI\)</span> to get <span class="math notranslate nohighlight">\([IXZI, IIXY]\propto IXYY\)</span>.
+We add it as the second leg. Now the core is complete.</p></li>
+<li><p><span class="math notranslate nohighlight">\(IXYI\)</span> is added. It is connected to <span class="math notranslate nohighlight">\(IXZI\)</span> and <span class="math notranslate nohighlight">\(IIXZ\)</span>. We are now in Step 2. We pick <span class="math notranslate nohighlight">\(P=IIXZ\)</span> and <span class="math notranslate nohighlight">\(Q=IXYY\)</span> and we get
+<span class="math notranslate nohighlight">\(IXZI\mapsto IIIX\)</span>. Then we can attach <span class="math notranslate nohighlight">\(IXYI\)</span> to <span class="math notranslate nohighlight">\(IIXZ\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(XZII\)</span> is added. It is connected to <span class="math notranslate nohighlight">\(IXYY\)</span> and <span class="math notranslate nohighlight">\(IXYI\)</span>. We are now in Step 2. We can contract with <span class="math notranslate nohighlight">\(IXYY\)</span> and <span class="math notranslate nohighlight">\(IIIX\)</span>
+in that order to get <span class="math notranslate nohighlight">\([IIIX,[IXYY,XZII]]\propto XYYZ\)</span>. Now it is connected to <span class="math notranslate nohighlight">\(IIIX\)</span>, <span class="math notranslate nohighlight">\(IIXZ\)</span>, and <span class="math notranslate nohighlight">\(IXYI\)</span>. Now we are in
+Step 4 of the algorithm. We can contract with <span class="math notranslate nohighlight">\(IXYI\)</span> to get <span class="math notranslate nohighlight">\([IXYI,XYYZ]\propto XZIZ\)</span>. Now it is no longer connected to <span class="math notranslate nohighlight">\(IIXZ\)</span>.
+Next we contract with <span class="math notranslate nohighlight">\(IIIX\)</span> to get <span class="math notranslate nohighlight">\([IIIX,XZIZ]\propto XZIY\)</span>. Now <span class="math notranslate nohighlight">\(XZIY\)</span> is connected to all vertices. Then we contract with
+<span class="math notranslate nohighlight">\(IXYY\)</span> to get <span class="math notranslate nohighlight">\([IXYY,XZIY]\propto XYYI\)</span>. Now it is connected to all except <span class="math notranslate nohighlight">\(IIIX\)</span>. Then we contract with <span class="math notranslate nohighlight">\(IIXZ\)</span> to get
+<span class="math notranslate nohighlight">\([IIXZ,XYYI]\propto XYZZ\)</span>. Now it is connected to all except <span class="math notranslate nohighlight">\(IXYI\)</span>. Finally, we contract with <span class="math notranslate nohighlight">\(IIIX\)</span> to get <span class="math notranslate nohighlight">\([IIIX,XYZZ]\propto XYZY\)</span>.
+Now it is attached to only <span class="math notranslate nohighlight">\(IIIX\)</span>. We can consider <span class="math notranslate nohighlight">\(IIIX\)</span> as the center.</p></li>
+<li><p><span class="math notranslate nohighlight">\(XYII\)</span> is added. It is connected to <span class="math notranslate nohighlight">\(IXYY\)</span> and <span class="math notranslate nohighlight">\(IXYI\)</span>. We are now in Step 2. We pick <span class="math notranslate nohighlight">\(P=IXYY\)</span> and <span class="math notranslate nohighlight">\(Q=XYZY\)</span>
+and we get <span class="math notranslate nohighlight">\(IXYI\mapsto XYZI\)</span>. Then we can attach <span class="math notranslate nohighlight">\(XYII\)</span> to <span class="math notranslate nohighlight">\(IXYY\)</span>.</p></li>
+</ol>
+<p>According to the table, the resultant graph corresponds to <span class="math notranslate nohighlight">\(\mathfrak{sp}(4)\)</span>.</p>
 <p>The Lie algebra plays a pivotal role in quantum control theory to understand the reachability of states.
 Also measures of operator spread complexity rely on this concept.
 Furthermore, determining moments of circuits can be significantly simplified when the Lie algebra is known.
 All these applications are functionalities of <code class="code docutils literal notranslate"><span class="pre">paulie</span></code>.</p>
+</section>
 </section>
 
 
@@ -1001,6 +1093,19 @@ All these applications are functionalities of <code class="code docutils literal
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-of-a-type-canonical-graph">Classification of A-type canonical graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-of-b-type-canonical-graph">Classification of B-type canonical graph</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">
