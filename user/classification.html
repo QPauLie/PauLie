@@ -169,8 +169,8 @@
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
 <li class=" ">
-  <a class="nav-link dropdown-item nav-external" href="https://github.com/AmanieOxana/PauLie">
-    Github
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/QPauLie/PauLie">
+    GitHub
   </a>
 </li>
 
@@ -293,8 +293,8 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-external" href="https://github.com/AmanieOxana/PauLie">
-    Github
+  <a class="nav-link nav-external" href="https://github.com/QPauLie/PauLie">
+    GitHub
   </a>
 </li>
 
@@ -339,6 +339,7 @@
 <li class="toctree-l1"><a class="reference internal" href="second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="matrix_decomposition.html">Matrix decomposition</a></li>
 <li class="toctree-l1"><a class="reference internal" href="optimal_universal_generators.html">Optimal universal generator sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pauli_compiler.html">Pauli compiler</a></li>
 </ul>
 </div>
 </nav></div>
@@ -413,7 +414,7 @@ a modified version of this algorithm.
 The function <code class="code docutils literal notranslate"><span class="pre">get_algebra</span></code> returns exactly which algebra is generated when
 given the generator set which can be extended with identities to arbitrary qubit numbers
 specified.
-We can reproduce Example I.5 in <span id="id2">Wiersema <em>et al.</em> [<a class="reference internal" href="../references.html#id5" title="Roeland Wiersema, Efekan Kökcü, Alexander F. Kemper, and Bojko N. Bakalov. Classification of dynamical lie algebras of 2-local spin systems on linear, circular and fully connected topologies. npj Quantum Information, November 2024. URL: http://dx.doi.org/10.1038/s41534-024-00900-2, doi:10.1038/s41534-024-00900-2.">2024</a>]</span>:</p>
+We can reproduce Example I.5 in <span id="id2">Wiersema <em>et al.</em> [<a class="reference internal" href="../references.html#id6" title="Roeland Wiersema, Efekan Kökcü, Alexander F. Kemper, and Bojko N. Bakalov. Classification of dynamical lie algebras of 2-local spin systems on linear, circular and fully connected topologies. npj Quantum Information, November 2024. URL: http://dx.doi.org/10.1038/s41534-024-00900-2, doi:10.1038/s41534-024-00900-2.">2024</a>]</span>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">paulie</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_pauli_string</span> <span class="k">as</span> <span class="n">p</span>
 
 <span class="n">generators</span> <span class="o">=</span> <span class="n">p</span><span class="p">([</span><span class="s2">&quot;XY&quot;</span><span class="p">])</span>
@@ -428,7 +429,7 @@ We can reproduce Example I.5 in <span id="id2">Wiersema <em>et al.</em> [<a clas
 <p>whereas changing to a three qubit system, results in another algebra:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">size</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">generators</span> <span class="o">=</span> <span class="n">p</span><span class="p">([</span><span class="s2">&quot;XY&quot;</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
-<span class="n">algebra</span> <span class="o">=</span> <span class="n">get_algebra</span><span class="p">(</span><span class="n">generators</span><span class="p">)</span>
+<span class="n">algebra</span> <span class="o">=</span> <span class="n">generators</span><span class="o">.</span><span class="n">get_algebra</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;algebra = </span><span class="si">{</span><span class="n">algebra</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -764,14 +765,14 @@ commutes with the vertex to be added, so it is no longer connected. It is guaran
 Theorem 4 of <span id="id4">Aguilar <em>et al.</em> [<a class="reference internal" href="../references.html#id2" title="Gerard Aguilar, Simon Cichy, Jens Eisert, and Lennart Bittel. Full classification of pauli lie algebras. 2024. URL: https://arxiv.org/abs/2408.00081, arXiv:2408.00081.">2024</a>]</span>. In our case, we can pick <span class="math notranslate nohighlight">\(P=YZII\)</span> and <span class="math notranslate nohighlight">\(Q=XXII\)</span>, which means we have <span class="math notranslate nohighlight">\(IIYZ\mapsto ZYYZ\)</span>
 and then we can connect <span class="math notranslate nohighlight">\(IXXI\)</span> to <span class="math notranslate nohighlight">\(YZII\)</span>.</p></li>
 </ol>
-<p>According to the table, the resultant graph corresponds to <span class="math notranslate nohighlight">\(\mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)\)</span>. But it is worth nothing that it also corresponds to <span class="math notranslate nohighlight">\(\mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\)</span>. This shows that there is an exceptional isomorphism between <span class="math notranslate nohighlight">\(\mathfrak{so}(5)\)</span> and <span class="math notranslate nohighlight">\(\mathfrak{sp}(2)\)</span>.</p>
+<p>According to the table, the resultant graph corresponds to <span class="math notranslate nohighlight">\(\mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)\)</span>. But it is worth noting that it also corresponds to <span class="math notranslate nohighlight">\(\mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\)</span>. This shows that there is an exceptional isomorphism between <span class="math notranslate nohighlight">\(\mathfrak{so}(5)\)</span> and <span class="math notranslate nohighlight">\(\mathfrak{sp}(2)\)</span>.</p>
 </section>
 <section id="classification-of-b-type-canonical-graph">
 <h2>Classification of B-type canonical graph<a class="headerlink" href="#classification-of-b-type-canonical-graph" title="Link to this heading">#</a></h2>
 <p>Let’s try to classify a generator set that corresponds to a B-type canonical graph, that is a anticommutation graph that is a star graph. We demonstrate it by the algebra <span class="math notranslate nohighlight">\(\mathfrak{a}_9\)</span> [1], generated by <span class="math notranslate nohighlight">\(XY\)</span> and <span class="math notranslate nohighlight">\(XZ\)</span>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_qubits</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">generators</span> <span class="o">=</span> <span class="n">p</span><span class="p">([</span><span class="s2">&quot;XY&quot;</span><span class="p">,</span> <span class="s2">&quot;XZ&quot;</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="n">n_qubits</span><span class="p">)</span>
-<span class="n">algebra</span> <span class="o">=</span> <span class="n">get_algebra</span><span class="p">(</span><span class="n">generators</span><span class="p">)</span>
+<span class="n">algebra</span> <span class="o">=</span> <span class="n">generators</span><span class="o">.</span><span class="n">get_algebra</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;algebra = </span><span class="si">{</span><span class="n">algebra</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>

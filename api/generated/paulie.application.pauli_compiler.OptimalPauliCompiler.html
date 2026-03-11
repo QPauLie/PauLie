@@ -168,8 +168,8 @@
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
 <li class=" ">
-  <a class="nav-link dropdown-item nav-external" href="https://github.com/AmanieOxana/PauLie">
-    Github
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/QPauLie/PauLie">
+    GitHub
   </a>
 </li>
 
@@ -292,8 +292,8 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-external" href="https://github.com/AmanieOxana/PauLie">
-    Github
+  <a class="nav-link nav-external" href="https://github.com/QPauLie/PauLie">
+    GitHub
   </a>
 </li>
 
@@ -478,11 +478,40 @@
 <dt class="sig sig-object py" id="paulie.application.pauli_compiler.OptimalPauliCompiler">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">paulie.application.pauli_compiler.</span></span><span class="sig-name descname"><span class="pre">OptimalPauliCompiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.OptimalPauliCompiler" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Compiler implementing the construction from the paper.</p>
+<p>Compiler implementing the construction from arXiv:2408.03294.</p>
+<p>Compiles a target Pauli string into an O(N) length sequence of generators
+that produces the target via nested commutators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cfg</strong> – Compiler configuration specifying the left-right partition
+and fallback search limits.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.application.pauli_compiler.OptimalPauliCompiler.compile">
 <span class="sig-name descname"><span class="pre">compile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_right</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.pauli_compiler.OptimalPauliCompiler.compile" title="Link to this definition">#</a></dt>
 <dd><p>Compile a target specified by its left and right factors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v_left</strong> – Left factor of the target (length <code class="docutils literal notranslate"><span class="pre">k_left</span></code>).</p></li>
+<li><p><strong>w_right</strong> – Right factor of the target (length <code class="docutils literal notranslate"><span class="pre">n_total</span> <span class="pre">-</span> <span class="pre">k_left</span></code>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">[Am,</span> <span class="pre">...,</span> <span class="pre">A1,</span> <span class="pre">base]</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sequence in PauLie’s <code class="docutils literal notranslate"><span class="pre">nested_adjoint</span></code> orientation</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the lengths of <code class="docutils literal notranslate"><span class="pre">v_left</span></code> and <code class="docutils literal notranslate"><span class="pre">w_right</span></code>
+    do not match the configured partition.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If no valid sequence is found.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

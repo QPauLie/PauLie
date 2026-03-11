@@ -10,3 +10,4 @@ User Guide
    second_moment
    matrix_decomposition
    optimal_universal_generators
+   pauli_compiler

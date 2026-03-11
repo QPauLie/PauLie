@@ -1,0 +1,629 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Pauli compiler &#8212; PauLie</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=583b3f71" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user/pauli_compiler';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../api/index.html" />
+    <link rel="prev" title="Optimal universal generator sets" href="optimal_universal_generators.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">PauLie</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../contributing.html">
+    Contribute to PauLie
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../references.html">
+    References
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/QPauLie/PauLie">
+    GitHub
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://discord.gg/unitary-fund-764231928676089909">
+    Discord
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../contributing.html">
+    Contribute to PauLie
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../references.html">
+    References
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/QPauLie/PauLie">
+    GitHub
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://discord.gg/unitary-fund-764231928676089909">
+    Discord
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="classification.html">Classification of Pauli DLAs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commutator_graph.html">Commutator graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="average_graph_complexity.html">Average graph complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="second_moment.html">Second-Order Twirl &amp; Quadratic Symmetries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrix_decomposition.html">Matrix decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimal_universal_generators.html">Optimal universal generator sets</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Pauli compiler</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Pauli compiler</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pauli-compiler">
+<h1>Pauli compiler<a class="headerlink" href="#pauli-compiler" title="Link to this heading">#</a></h1>
+<p>The Pauli compiler implements the algorithm from <span id="id1">Bittel <em>et al.</em> [<a class="reference internal" href="../references.html#id5" title="Lennart Bittel, Jens Eisert, Lorenzo Leone, Lorenza Viola, and Kevin C. Wang. Optimal compilation of parametrised quantum circuits. 2024. URL: https://arxiv.org/abs/2408.03294, arXiv:2408.03294.">2024</a>]</span> to compile a target
+Pauli string into a sequence of generators that produces the target via nested commutators.
+The resulting sequence has length <span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span> for <span class="math notranslate nohighlight">\(N\)</span> qubits.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>Given a set of universal generators and a target Pauli string <span class="math notranslate nohighlight">\(P\)</span>, the compiler finds a
+sequence <span class="math notranslate nohighlight">\((A_1, A_2, \dots, A_m)\)</span> of generators such that</p>
+<div class="math notranslate nohighlight">
+\[[A_1, [A_2, [\dots, [A_{m-1}, A_m] \dots ]]] \propto P\]</div>
+<p>This is useful for constructing circuits that realize arbitrary Pauli strings using only
+a fixed generator set through nested commutators (adjoint maps).</p>
+</section>
+<section id="quick-start">
+<h2>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
+<p>The simplest way to use the compiler is through the <a class="reference internal" href="../api/generated/paulie.application.pauli_compiler.compile_target.html#paulie.application.pauli_compiler.compile_target" title="paulie.application.pauli_compiler.compile_target"><code class="xref py py-func docutils literal notranslate"><span class="pre">compile_target()</span></code></a>
+function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">paulie</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_target</span><span class="p">,</span> <span class="n">get_pauli_string</span> <span class="k">as</span> <span class="n">p</span>
+
+<span class="n">target</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="s2">&quot;IZXI&quot;</span><span class="p">)</span>
+<span class="n">sequence</span> <span class="o">=</span> <span class="n">compile_target</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">k_left</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sequence length: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">k_left</span></code> parameter specifies the left-right partition of the qubit system. The target
+is split into a left part on <code class="docutils literal notranslate"><span class="pre">k_left</span></code> qubits and a right part on the remaining qubits.
+The parameter must satisfy <code class="docutils literal notranslate"><span class="pre">k_left</span> <span class="pre">&gt;=</span> <span class="pre">2</span></code>.</p>
+<p>To verify the result:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">paulie</span><span class="w"> </span><span class="kn">import</span> <span class="n">PauliStringCollection</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">PauliStringCollection</span><span class="p">(</span><span class="n">sequence</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">nested_adjoint</span><span class="p">(</span><span class="n">sequence</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target:  </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Result:  </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">target</span>
+</pre></div>
+</div>
+</section>
+<section id="universal-generator-set">
+<h2>Universal generator set<a class="headerlink" href="#universal-generator-set" title="Link to this heading">#</a></h2>
+<p>The compiler works with a universal generator set consisting of:</p>
+<ul class="simple">
+<li><p><strong>Left generators:</strong> <span class="math notranslate nohighlight">\(\{X_i, Z_i\}_{i=1}^{k} \cup \{Z^{\otimes k}\}\)</span>, extended
+with identities on the right subsystem.</p></li>
+<li><p><strong>Right generators:</strong> Single-qubit <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(Z_i\)</span> on the right subsystem,
+tagged with a fixed left Pauli string.</p></li>
+</ul>
+<p>You can construct this set explicitly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">paulie</span><span class="w"> </span><span class="kn">import</span> <span class="n">construct_universal_set</span>
+
+<span class="n">n_total</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">k_left</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">universal_set</span> <span class="o">=</span> <span class="n">construct_universal_set</span><span class="p">(</span><span class="n">n_total</span><span class="p">,</span> <span class="n">k_left</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Universal set size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">universal_set</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Output: Universal set size: 11  (= 2 * n_total + 1)</span>
+</pre></div>
+</div>
+</section>
+<section id="using-the-class-based-api">
+<h2>Using the class-based API<a class="headerlink" href="#using-the-class-based-api" title="Link to this heading">#</a></h2>
+<p>For more control, use the <a class="reference internal" href="../api/generated/paulie.application.pauli_compiler.OptimalPauliCompiler.html#paulie.application.pauli_compiler.OptimalPauliCompiler" title="paulie.application.pauli_compiler.OptimalPauliCompiler"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptimalPauliCompiler</span></code></a>
+class directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">paulie</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">OptimalPauliCompiler</span><span class="p">,</span>
+    <span class="n">PauliCompilerConfig</span><span class="p">,</span>
+    <span class="n">get_pauli_string</span> <span class="k">as</span> <span class="n">p</span><span class="p">,</span>
+    <span class="n">PauliStringCollection</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">PauliCompilerConfig</span><span class="p">(</span><span class="n">k_left</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_total</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">compiler</span> <span class="o">=</span> <span class="n">OptimalPauliCompiler</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="n">v_left</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="s2">&quot;IZ&quot;</span><span class="p">)</span>
+<span class="n">w_right</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="s2">&quot;XI&quot;</span><span class="p">)</span>
+<span class="n">sequence</span> <span class="o">=</span> <span class="n">compiler</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">v_left</span><span class="p">,</span> <span class="n">w_right</span><span class="p">)</span>
+
+<span class="n">target</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="s2">&quot;IZXI&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">PauliStringCollection</span><span class="p">(</span><span class="n">sequence</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">nested_adjoint</span><span class="p">(</span><span class="n">sequence</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">target</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../api/generated/paulie.application.pauli_compiler.PauliCompilerConfig.html#paulie.application.pauli_compiler.PauliCompilerConfig" title="paulie.application.pauli_compiler.PauliCompilerConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">PauliCompilerConfig</span></code></a> accepts additional
+parameters for the fallback search:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fallback_depth</span></code> (default 8): Maximum BFS depth for the fallback search.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fallback_nodes</span></code> (default 200000): Maximum number of nodes explored in the fallback BFS.</p></li>
+</ul>
+</section>
+<section id="algorithm">
+<h2>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h2>
+<p>The compiler handles three cases depending on the structure of the target:</p>
+<ol class="arabic simple">
+<li><p><strong>Left-only</strong> (<span class="math notranslate nohighlight">\(W = I\)</span>): The target is supported only on the left subsystem.
+A BFS over adjoint maps finds a path from a seed generator to the target.</p></li>
+<li><p><strong>Both sides</strong> (<span class="math notranslate nohighlight">\(V \neq I, W \neq I\)</span>): The right part is compiled using a
+subsystem compiler, and the left factor is corrected via adjoint mapping.</p></li>
+<li><p><strong>Right-only</strong> (<span class="math notranslate nohighlight">\(V = I, W \neq I\)</span>): The target is decomposed as <span class="math notranslate nohighlight">\(W = W_1 W_2\)</span>
+with <span class="math notranslate nohighlight">\([W_1, W_2] \neq 0\)</span>. Each factor is compiled separately and the sequences
+are interleaved to cancel the left residue. If deterministic methods fail, a bounded
+BFS is used as fallback.</p></li>
+</ol>
+<p>In all cases, the resulting sequence has <span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span> length.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="optimal_universal_generators.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Optimal universal generator sets</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../api/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API Reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#universal-generator-set">Universal generator set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-class-based-api">Using the class-based API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user/pauli_compiler.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, PauLie contributors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
