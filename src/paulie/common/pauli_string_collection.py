@@ -460,7 +460,7 @@ class PauliStringCollection:
     def get_commutator_graph(self
                              ) -> tuple[list[str], list[tuple[str, str]]]:
         """
-        Get the commutator graph whose vertices are all Paulistrings
+        Get the commutator graph whose vertices are all Pauli strings
         of a given dimension and an edge between two vertices exist
         if there is an element in the generator to which
         the one vertex anticommutes with to the other vertex.

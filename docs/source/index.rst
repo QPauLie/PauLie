@@ -8,7 +8,7 @@ PauLie documentation
 
 The :code:`paulie` package is an open-source library for studying various algebraic properties of quantum circuits.
 This first release focuses on the classification of the circuit's dynamical Lie algebra given the generators as
-Paulistrings.
+Pauli strings.
 
 .. toctree::
    :maxdepth: 1
@@ -23,6 +23,6 @@ Paulistrings.
    :hidden:
    :caption: Project Links
 
-   Github <https://github.com/AmanieOxana/PauLie>
+   Github <https://github.com/QPauLie/PauLie>
    Discord <https://discord.gg/unitary-fund-764231928676089909>
 

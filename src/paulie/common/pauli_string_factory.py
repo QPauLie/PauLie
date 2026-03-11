@@ -123,7 +123,7 @@ def gen_k_local(n: int, p: PauliString, used:Used|None=None
     Generates k-local Pauli strings.
 
     Args:
-        n: Length of Paulistring.
+        n: Length of Pauli string.
         p: Local Pauli string.
         used: Repository of already generated strings.
     Returns:
