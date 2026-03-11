@@ -1,8 +1,8 @@
 """
 Animation building transformation anti-commutation graph
 """
-from paulie.helpers.recording import RecordGraph
-from paulie.helpers.drawing import animation_graph
+from paulie.helpers._recording import RecordGraph
+from paulie.helpers.drawing import _animation_graph
 from paulie.common.pauli_string_collection import PauliStringCollection
 
 
@@ -31,4 +31,4 @@ def animation_anti_commutation_graph(generators: PauliStringCollection,
     record = RecordGraph()
     generators.set_record(record)
     generators.get_class()
-    animation_graph(record, interval=interval, storage=storage)
+    _animation_graph(record, interval=interval, storage=storage)

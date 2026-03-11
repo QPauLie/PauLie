@@ -6,7 +6,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.animation
 import numpy as np
-from paulie.helpers.recording import RecordGraph
+from paulie.helpers._recording import RecordGraph
 from paulie.common.pauli_string_collection import PauliStringCollection
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.get_graph import get_graph
@@ -51,7 +51,7 @@ def plot_graph_by_nodes(nodes:PauliStringCollection,
     vertices, edges, edge_labels = get_graph(nodes, commutators)
     return plot_graph(vertices, edges, edge_labels)
 
-def animation_graph(record: RecordGraph, interval:int=1000,
+def _animation_graph(record: RecordGraph, interval:int=1000,
                     repeat:bool=False, storage:dict[str,str]=None
 ) -> None:
     """

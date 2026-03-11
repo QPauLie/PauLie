@@ -1,7 +1,7 @@
 from _typeshed import Incomplete
 from paulie.classifier.classification import Morph
 from paulie.common.pauli_string_bitarray import PauliString as PauliString
-from paulie.helpers.recording import RecordGraph as RecordGraph
+from paulie.helpers._recording import RecordGraph as RecordGraph
 from typing import Self
 
 class AppendedException(Exception): ...
