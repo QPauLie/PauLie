@@ -23,6 +23,6 @@ Pauli strings.
    :hidden:
    :caption: Project Links
 
-   Github <https://github.com/QPauLie/PauLie>
+   GitHub <https://github.com/QPauLie/PauLie>
    Discord <https://discord.gg/unitary-fund-764231928676089909>
 
