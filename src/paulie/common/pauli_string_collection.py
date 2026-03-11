@@ -16,11 +16,6 @@ from paulie.classifier.recording_morph_factory import RecordingMorphFactory
 from paulie.helpers._recording import RecordGraph
 from paulie.exceptions import PauliStringCollectionException
 
-# class PauliStringCollection(object):
-#    """
-#     Dummy PauliStringCollection
-#    """
-
 class PauliStringCollection:
     """
     Class for a collection of Pauli strings with various features.
@@ -137,7 +132,7 @@ class PauliStringCollection:
         if self.nextpos >= len(self):
             # we are done
             raise StopIteration
-        value = self.generators[self.nextpos] #.copy()
+        value = self.generators[self.nextpos]
         self.nextpos += 1
         return value
 
@@ -238,10 +233,7 @@ class PauliStringCollection:
             None
         """
         self.classification = None
-        new_generators: list[PauliString] = []
-        for g in self.generators:
-            g = g.expand(n)
-        self.generators = new_generators
+        self.generators = [g.expand(n) for g in self.generators]
 
     def _processing(self, p: PauliString) -> PauliString:
         """

@@ -6,6 +6,7 @@ from paulie.common.pauli_string_collection import PauliStringCollection
 def get_optimal_edges_su_2_n(ng:int) -> int:
     """ Get optimal number of connections in anticommutation graph for
     :math:`\\mathfrak{su}(2^{n})`."""
+    # Optimal anticommutation fraction for su(2^n), see arXiv:2408.00081
     fraction = 0.706
     total_pair = ng*(ng-1)/2
     if total_pair < 1:
