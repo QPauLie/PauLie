@@ -1,5 +1,5 @@
 """
-Drawing graph
+    Module with graph drawing utilities.
 """
 import math
 import networkx as nx
@@ -18,9 +18,9 @@ def plot_graph(vertices:list[str],
     Plot an arbitrary graph.
 
     Args:
-        vertices: List of vertices.
-        edges: List of edges.
-        edge_labels: List of edge labels.
+        vertices (list[str]): List of vertices.
+        edges (list[tuple[str, str]]): List of edges.
+        edge_labels (dict[tuple[str,str],str]): List of edge labels.
     Returns:
         None
     """
@@ -38,11 +38,12 @@ def plot_graph_by_nodes(nodes:PauliStringCollection,
                         commutators:PauliStringCollection|list[PauliString]=None
 ) -> None:
     """
-    Plot graph by nodes.
+    Plot anticommutator graph with edges labeled by commutator of endpoints.
 
     Args:
-        nodes: Collection of Pauli strings.
-        commutators: Collection of commutators (Pauli strings).
+        nodes (PauliStringCollection): Generating set for anticommutator graph.
+        commutators (PauliStringCollection|list[PauliString], optional): Only show those edges which
+            have labels belonging to this set.
     Returns:
         None
     """
