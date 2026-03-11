@@ -190,6 +190,12 @@ def test_compile_target_k_left_zero() -> None:
         compile_target(get_pauli_string("XYZ"), k_left=0)
 
 
+def test_compile_target_k_left_one() -> None:
+    """k_left=1 should raise ValueError (minimum is 2)."""
+    with pytest.raises(ValueError):
+        compile_target(get_pauli_string("XYZ"), k_left=1)
+
+
 def test_compile_target_k_left_equals_n() -> None:
     """k_left equal to target length should raise ValueError."""
     with pytest.raises(ValueError):

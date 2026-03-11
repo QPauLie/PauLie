@@ -533,7 +533,8 @@ class OptimalPauliCompiler:
             Sequence in PauLie's ``nested_adjoint`` orientation: ``[Am, ..., A1, base]``.
 
         Raises:
-            ValueError: If the lengths of ``v_left`` and ``w_right`` do not match the configured partition.
+            ValueError: If the lengths of ``v_left`` and ``w_right``
+                do not match the configured partition.
             RuntimeError: If no valid sequence is found.
         """
         if len(v_left) != self.k or len(w_right) != self.n_right:
