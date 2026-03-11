@@ -1,6 +1,8 @@
 """Representation of a Pauli string as a bitarray."""
 from __future__ import annotations
-from typing import Self, Generator
+
+from collections.abc import Generator
+from typing import Self
 from six.moves import reduce
 import numpy as np
 from bitarray import bitarray

@@ -2,9 +2,11 @@
 Class for a set/collection of Pauli strings with various features
 """
 from __future__ import annotations
+
 from random import randint
 from itertools import combinations
-from typing import Union, Self, Generator
+from collections.abc import Generator
+from typing import Self
 import numpy as np
 import networkx as nx
 from paulie.common.pauli_string_bitarray import PauliString
@@ -16,17 +18,12 @@ from paulie.classifier.recording_morph_factory import RecordingMorphFactory
 from paulie.helpers._recording import RecordGraph
 from paulie.exceptions import PauliStringCollectionException
 
-# class PauliStringCollection(object):
-#    """
-#     Dummy PauliStringCollection
-#    """
-
 class PauliStringCollection:
     """
     Class for a collection of Pauli strings with various features.
     """
 
-    def __init__(self, generators: Union[list[PauliString] | Self | None] = None) -> None:
+    def __init__(self, generators: list[PauliString] | Self | None = None) -> None:
         """
         Initializing a collection of Pauli strings.
 
@@ -137,7 +134,7 @@ class PauliStringCollection:
         if self.nextpos >= len(self):
             # we are done
             raise StopIteration
-        value = self.generators[self.nextpos] #.copy()
+        value = self.generators[self.nextpos]
         self.nextpos += 1
         return value
 
@@ -238,10 +235,7 @@ class PauliStringCollection:
             None
         """
         self.classification = None
-        new_generators: list[PauliString] = []
-        for g in self.generators:
-            g = g.expand(n)
-        self.generators = new_generators
+        self.generators = [g.expand(n) for g in self.generators]
 
     def _processing(self, p: PauliString) -> PauliString:
         """
@@ -388,8 +382,6 @@ class PauliStringCollection:
         for x, y in combinations(self.generators, r=2):
             if not x | y:
                 anti_commute_count += 1
-        # n = len(self.generators)
-        # n_com = n*(n-1)/2
         return anti_commute_count
 
     def get_commutants(self) -> PauliStringCollection:
@@ -444,7 +436,7 @@ class PauliStringCollection:
         return generators
 
     def get_graph(
-        self, generators: Union[list[PauliString] | PauliStringCollection | None] = None
+        self, generators: list[PauliString] | PauliStringCollection | None = None
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]:
         """
         Get the anticommutation graph whose vertices are the generators
@@ -460,7 +452,7 @@ class PauliStringCollection:
     def get_commutator_graph(self
                              ) -> tuple[list[str], list[tuple[str, str]]]:
         """
-        Get the commutator graph whose vertices are all Paulistrings
+        Get the commutator graph whose vertices are all Pauli strings
         of a given dimension and an edge between two vertices exist
         if there is an element in the generator to which
         the one vertex anticommutes with to the other vertex.
@@ -627,7 +619,6 @@ class PauliStringCollection:
                 legs = morph.get_legs()
                 morph_factory = MorphFactory()
                 morph_dependents = morph_factory.select_dependents(legs, subgraph.get())
-                # print(f"morph = {PauliStringCollection(morph_dependents)}")
                 dependents += morph_dependents
 
         return PauliStringCollection(dependents)

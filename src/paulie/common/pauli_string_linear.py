@@ -2,8 +2,10 @@
 Representation of a Pauli string as a bitarray.
 """
 from __future__ import annotations
+
 from collections import defaultdict
-from typing import Self, Generator, Dict
+from collections.abc import Generator
+from typing import Self
 
 from six.moves import reduce
 import numpy as np
@@ -279,7 +281,7 @@ class PauliStringLinear(PauliString):
 
         Args:
             position: Position in linear combination.
-            combination: Pair of weight and Paulistring to set in the position.
+            combination: Pair of weight and Pauli string to set in the position.
         Returns:
             None
         """
@@ -768,10 +770,10 @@ class PauliStringLinear(PauliString):
 
     def exponential(self) -> np.ndarray:
         """
-        Get the exponential of a linear combination of Paulistrings  .
+        Get the exponential of a linear combination of Pauli strings.
 
         Returns:
-            Exponential of a linear combination of Paulistrings.
+            Exponential of a linear combination of Pauli strings.
         """
         matrix = self.get_matrix()
         return np.asarray(np.exp(matrix))
@@ -790,7 +792,7 @@ class PauliStringLinear(PauliString):
         if not self.combinations:
             return self
 
-        summed_coeffs:Dict[str, complex] = defaultdict(complex)
+        summed_coeffs: dict[str, complex] = defaultdict(complex)
         for coeff, pauli in self.combinations:
             summed_coeffs[str(pauli)] += coeff
 

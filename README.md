@@ -1,6 +1,6 @@
 # PauLie
 The `PauLie` package is an open-source library for studying various algebraic properties of quantum circuits.  This
-first release focuses on the classification of the circuit's dynamical Lie algebra given the generators as Paulistrings.
+first release focuses on the classification of the circuit's dynamical Lie algebra given the generators as Pauli strings.
 
 <p align="center">
   <a href="https://qpaulie.github.io/PauLie/">
@@ -51,21 +51,3 @@ Check for type errors, improve readability, and assist IDEs, run:
 uv run mypy src/paulie/common src/paulie/classifier/classification.py
 ```
 
-### Migration from Poetry
-
-This project previously used [Poetry](https://python-poetry.org/) for dependency management.  
-As of this release, we have migrated to [uv](https://docs.astral.sh/uv/getting-started/installation/#pypi).  
-
-If your development environment is already set up using Poetry, you can start by installing `uv` as described in the [Installation](#installation) section, then activate the `uv` environment.  
-
-The command `poetry run <command>` is replaced with `uv run <command>`. For example:
-
-```sh
-uv run ruff check
-```
-
-`uv` also allows you to run commands **without installing dependencies** by using ``uvx <command>``. For example::
-
-```sh
-uvx ruff check
-```

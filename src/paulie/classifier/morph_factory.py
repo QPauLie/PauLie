@@ -1,7 +1,8 @@
 """
 Factory for constructing a canonical graph
 """
-from typing import Generator, Self
+from collections.abc import Generator
+from typing import Self
 from paulie.classifier.classification import Morph
 from paulie.common.pauli_string_bitarray import PauliString
 
@@ -94,7 +95,6 @@ class MorphFactory:
             New lighting.
         """
         lighting = lighting@vertex
-        #lighting = lighting^vertex
         if self.is_included(lighting):
             raise DependentException()
         return lighting
@@ -1111,7 +1111,6 @@ class MorphFactory:
                 vertices = self.restore_delayed(vertices)
             except NotConnectedException:
                 vertices = self.restore_delayed(vertices)
-                #exc_type, exc_obj, exc_tb = sys.exc_info()
                 if lighting not in unappended:
                     unappended.append(lighting)
                     vertices.append(lighting)

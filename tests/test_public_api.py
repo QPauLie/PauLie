@@ -88,7 +88,7 @@ def test_public_api_exports():
 
 def test_deprecated_symbols():
     """
-    Test depreciation symbols
+    Test deprecation symbols
     """
     for old_name in deprecated_symbols:
         with warnings.catch_warnings(record=True) as w:

@@ -2,7 +2,7 @@
     Canonical graph classification
 """
 import enum
-from typing import Generator
+from collections.abc import Generator
 
 from paulie.common.pauli_string_bitarray import PauliString
 
@@ -570,7 +570,6 @@ class Classification:
             for k in range(0, ms+1):
                 morph_generators[k] = morphs[k].gen_generators()
 
-            #morph_generators[ms] = morphs[ms].gen_generators()
             current_morph_generators[ms] = next(morph_generators[ms])
             return self._inc_morph_generator(ms + 1, morphs,
                    morph_generators, current_morph_generators)

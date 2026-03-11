@@ -110,7 +110,7 @@ __all__ = [
 ]
 
 deprecated_symbols = {
-    "g_lie": "G_LIE" # assume g_lie is old name for depreciation test
+    "g_lie": "G_LIE" # assume g_lie is old name for deprecation test
     # "old_name": "new_name"
 }
 
