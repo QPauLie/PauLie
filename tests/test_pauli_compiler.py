@@ -168,11 +168,13 @@ def test_universal_set_no_duplicates() -> None:
 
 
 def test_universal_set_invalid_k() -> None:
+    """Invalid k should raise ValueError."""
     with pytest.raises(ValueError, match="Require 1 <= k < N"):
         construct_universal_set(3, 0)
 
 
 def test_universal_set_k_equals_n() -> None:
+    """k equal to n should raise ValueError."""
     with pytest.raises(ValueError, match="Require 1 <= k < N"):
         construct_universal_set(3, 3)
 
@@ -183,16 +185,19 @@ def test_universal_set_k_equals_n() -> None:
 
 
 def test_compile_target_k_left_zero() -> None:
+    """k_left=0 should raise ValueError."""
     with pytest.raises(ValueError):
         compile_target(get_pauli_string("XYZ"), k_left=0)
 
 
 def test_compile_target_k_left_equals_n() -> None:
+    """k_left equal to target length should raise ValueError."""
     with pytest.raises(ValueError):
         compile_target(get_pauli_string("XYZ"), k_left=3)
 
 
 def test_compile_target_k_left_exceeds_n() -> None:
+    """k_left exceeding target length should raise ValueError."""
     with pytest.raises(ValueError):
         compile_target(get_pauli_string("XY"), k_left=5)
 
@@ -230,6 +235,7 @@ def test_left_a_minimal_contains_z_tensor() -> None:
 
 @pytest.mark.parametrize("k", [2, 3, 4])
 def test_choose_u_for_b(k: int) -> None:
+    """Should return X on the first qubit."""
     u = choose_u_for_b(k)
     assert len(u) == k
     assert u == get_single(k, 0, "X")
@@ -239,7 +245,7 @@ def test_left_map_identity_path() -> None:
     """Same source and target should return empty path."""
     v = get_pauli_string("XZ")
     path = left_map_over_a(v, v, left_a_minimal(2))
-    assert path == []
+    assert not path
 
 
 def test_left_map_finds_path() -> None:
@@ -257,10 +263,12 @@ def test_left_map_finds_path() -> None:
 
 
 def test_sequence_orientation_empty() -> None:
-    assert _sequence_to_paulie_orientation([]) == []
+    """Empty input should return empty output."""
+    assert not _sequence_to_paulie_orientation([])
 
 
 def test_sequence_orientation_single() -> None:
+    """Single element should be preserved."""
     ps = get_pauli_string("XY")
     result = _sequence_to_paulie_orientation([ps])
     assert result == [ps]
@@ -287,6 +295,7 @@ def test_evaluate_orientations_agree() -> None:
 
 
 def test_evaluate_paulie_orientation_empty() -> None:
+    """Empty sequence should return None."""
     assert _evaluate_paulie_orientation([]) is None
 
 
@@ -296,11 +305,13 @@ def test_evaluate_paulie_orientation_empty() -> None:
 
 
 def test_subsystem_compiler_k_left_too_small() -> None:
+    """k_left < 2 should raise ValueError."""
     with pytest.raises(ValueError, match="k_left must be >= 2"):
         SubsystemCompiler(SubsystemCompilerConfig(k_left=1, n_total=3))
 
 
 def test_subsystem_compiler_extend_left() -> None:
+    """Extending a left Pauli string should pad with identities."""
     sub = SubsystemCompiler(SubsystemCompilerConfig(k_left=2, n_total=4))
     a = get_pauli_string("XZ")
     extended = sub.extend_left(a)
@@ -309,6 +320,7 @@ def test_subsystem_compiler_extend_left() -> None:
 
 
 def test_subsystem_compiler_extend_pair() -> None:
+    """Combining left and right parts should concatenate them."""
     sub = SubsystemCompiler(SubsystemCompilerConfig(k_left=2, n_total=4))
     u = get_pauli_string("XI")
     b = get_pauli_string("ZY")
@@ -354,4 +366,4 @@ def test_subsystem_compiler_identity() -> None:
     sub = SubsystemCompiler(SubsystemCompilerConfig(k_left=2, n_total=3))
     w = get_pauli_string("I")
     result = sub.subsystem_compiler(w)
-    assert result == []
+    assert not result
