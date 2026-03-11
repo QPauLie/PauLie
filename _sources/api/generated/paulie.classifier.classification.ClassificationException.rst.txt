@@ -1,0 +1,6 @@
+﻿paulie.classifier.classification.ClassificationException
+========================================================
+
+.. currentmodule:: paulie.classifier.classification
+
+.. autoexception:: ClassificationException

@@ -391,7 +391,7 @@
 <li class="toctree-l2"><a class="reference internal" href="paulie.classifier.classification.TypeGraph.html">paulie.classifier.classification.TypeGraph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paulie.classifier.morph_factory.MorphFactory.html">paulie.classifier.morph_factory.MorphFactory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paulie.classifier.recording_morph_factory.RecordingMorphFactory.html">paulie.classifier.recording_morph_factory.RecordingMorphFactory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.classification.ClassificatonException.html">paulie.classifier.classification.ClassificatonException</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.classification.ClassificationException.html">paulie.classifier.classification.ClassificationException</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paulie.classifier.morph_factory.MorphFactoryException.html">paulie.classifier.morph_factory.MorphFactoryException</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paulie.classifier.morph_factory.NotConnectedException.html">paulie.classifier.morph_factory.NotConnectedException</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paulie.classifier.morph_factory.RaiseException.html">paulie.classifier.morph_factory.RaiseException</a></li>
@@ -477,16 +477,19 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="paulie.application.reach.reachable">
 <span class="sig-prename descclassname"><span class="pre">paulie.application.reach.</span></span><span class="sig-name descname"><span class="pre">reachable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.reach.reachable" title="Link to this definition">#</a></dt>
-<dd><p>Whether it is reachable.</p>
+<dd><p>Whether a unitary is reachable from the given generators.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> – U as a numpy array.</p></li>
+<li><p><strong>u</strong> – Unitary as a numpy array.</p></li>
 <li><p><strong>generators</strong> – Collection of Pauli strings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Whether it is reachable.</p>
+<dd class="field-even"><p>True if reachable, None if the case is not yet handled.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the unitary dimension exceeds the generator dimension.</p>
 </dd>
 </dl>
 </dd></dl>
