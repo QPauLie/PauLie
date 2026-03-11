@@ -1,7 +1,9 @@
 """Representation of a Pauli string as a bitarray."""
 from __future__ import annotations
+
 from collections import defaultdict
-from typing import Self, Generator, Dict
+from collections.abc import Generator
+from typing import Self
 
 from six.moves import reduce
 import numpy as np
@@ -788,7 +790,7 @@ class PauliStringLinear(PauliString):
         if not self.combinations:
             return self
 
-        summed_coeffs:Dict[str, complex] = defaultdict(complex)
+        summed_coeffs: dict[str, complex] = defaultdict(complex)
         for coeff, pauli in self.combinations:
             summed_coeffs[str(pauli)] += coeff
 

@@ -2,9 +2,11 @@
 Class for a set/collection of Pauli strings with various features
 """
 from __future__ import annotations
+
 from random import randint
 from itertools import combinations
-from typing import Union, Self, Generator
+from collections.abc import Generator
+from typing import Self
 import numpy as np
 import networkx as nx
 from paulie.common.pauli_string_bitarray import PauliString
@@ -21,7 +23,7 @@ class PauliStringCollection:
     Class for a collection of Pauli strings with various features.
     """
 
-    def __init__(self, generators: Union[list[PauliString] | Self | None] = None) -> None:
+    def __init__(self, generators: list[PauliString] | Self | None = None) -> None:
         """
         Initializing a collection of Pauli strings.
 
@@ -380,8 +382,6 @@ class PauliStringCollection:
         for x, y in combinations(self.generators, r=2):
             if not x | y:
                 anti_commute_count += 1
-        # n = len(self.generators)
-        # n_com = n*(n-1)/2
         return anti_commute_count
 
     def get_commutants(self) -> PauliStringCollection:
@@ -436,7 +436,7 @@ class PauliStringCollection:
         return generators
 
     def get_graph(
-        self, generators: Union[list[PauliString] | PauliStringCollection | None] = None
+        self, generators: list[PauliString] | PauliStringCollection | None = None
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]:
         """
         Get the anticommutation graph whose vertices are the generators
@@ -619,7 +619,6 @@ class PauliStringCollection:
                 legs = morph.get_legs()
                 morph_factory = MorphFactory()
                 morph_dependents = morph_factory.select_dependents(legs, subgraph.get())
-                # print(f"morph = {PauliStringCollection(morph_dependents)}")
                 dependents += morph_dependents
 
         return PauliStringCollection(dependents)

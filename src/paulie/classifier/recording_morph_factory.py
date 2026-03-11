@@ -1,7 +1,8 @@
 """
 Recording factory for constructing a canonical graph
 """
-from typing import Generator, Self
+from collections.abc import Generator
+from typing import Self
 from paulie.helpers._recording import recording_graph, RecordGraph
 from paulie.classifier.classification import Morph, Classification
 from paulie.common.pauli_string_bitarray import PauliString
@@ -1286,7 +1287,6 @@ class RecordingMorphFactory:
             return self
         vertices = self._get_queue(generators)
         recording_graph(self.record, collection=vertices, title="Original graph", init=True)
-        #self.recording(vertices=vertices)
         unappended = []
         self.dependents = []
         while len(vertices) > 0:
