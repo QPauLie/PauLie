@@ -1,5 +1,5 @@
 """
-Canonical graph classification
+    Canonical graph classification
 """
 import enum
 from typing import Generator
@@ -33,15 +33,15 @@ class TypeAlgebra(enum.Enum):
 
 class Morph:
     """
-    Class of canonical form of a graph.
+    Stores the structural data of a canonical graph.
     """
     def __init__(self, legs:list[list[PauliString]], dependents:list[PauliString]) -> None:
         """
-        Constructor.
+        Initialize the structural data of the graph.
 
         Args:
-           legs: List of legs.
-           dependents: List of dependents.
+           legs (list[list[PauliString]]): The center of the graph followed by the list of legs.
+           dependents (list[PauliString]): List of dependent vertices.
         Returns: 
             None
         """
@@ -50,47 +50,45 @@ class Morph:
 
     def is_empty(self) -> bool:
         """
-        Checking for emptiness of a graph.
+        Check if the graph is empty.
 
-        Returns:
-            True if length of legs is zero.
+        Returns: bool
+            True if graph is empty.
         """
         return len(self.legs) == 0
 
     def is_empty_legs(self) -> bool:
         """
-        Checking for missing legs in a graph.
+        Check if the graph has a center but no legs.
 
-        Returns:
-            True if only center.
-
+        Returns: bool
+            True if the graph only has a center.
         """
         return len(self.legs) == 1
 
     def get_vertices(self) -> list[PauliString]:
         """
-        Get a list of graph vertices.
+        Get a list of vertices in the graph.
 
-        Returns: 
-            a list of Pauli strings.
-
+        Returns: list[PauliString]
+            List of vertices in the graph.
         """
-        return [v for leg in self.legs for v in leg ]
+        return [v for leg in self.legs for v in leg]
 
     def get_dependents(self) -> list[PauliString]:
         """
         Get a list of dependent Pauli strings.
 
-        Returns: 
+        Returns: list[PauliString]
             List of dependent Pauli strings.
         """
         return self.dependents
 
     def get_legs(self) -> list[list[PauliString]]:
         """
-        Get legs.
+        Get list of legs.
 
-        Returns: 
+        Returns: list[list[PauliString]]
             List of legs.
         """
         return self.legs
@@ -98,13 +96,13 @@ class Morph:
 
     def counts(self) -> tuple[int,int,int]:
         """
-        Get number of leg types.
+        Get counts of length 1 legs, length 2 legs, and number of vertices on the longest leg.
 
-        Returns:
-            Tuple of number legs length 1, 2, and long vertices.
+        Returns: tuple[int,int,int]
+            Counts of length 1 legs, length 2 legs, and number of vertices on the longest leg.
+
         Raises:
-            ClassificationException:
-                If graph of non-canonical type.
+            ClassificationException: If the graph is of non-canonical type.
         """
         one_legs = 0
         two_legs = 0
@@ -135,14 +133,14 @@ class Morph:
 
     def get_properties(self) -> tuple[TypeGraph,int,int,int]:
         """
-        Get graph properties.
+        Get the properties of the graph including its type.
 
-        Returns:
-            Tuple of type of graph, number legs length 1, 2, and long vertices.
+        Returns: tuple[TypeGraph,int,int,int]
+            Type of the graph and counts of length 1 legs, length 2 legs, and number of vertices on
+            the longest leg.
+
         Raises:
-            ClassificationException:
-                If graph of non-canonical type.
-
+            ClassificationException: If the graph is of non-canonical type.
         """
         if self.is_empty():
             raise ClassificationException("Graph of non-canonical type")
@@ -161,21 +159,28 @@ class Morph:
 
     def get_type(self) -> TypeGraph:
         """
-        Get graph type.
+        Get the type of the graph.
 
-        Returns:
+        Returns: TypeGraph
             Type of graph.
         """
         type_graph = self.get_properties()[0]
         return type_graph
 
     def get_algebra_properties(self) -> tuple[TypeAlgebra,int,int]:
-        """
-        Get properties of algebra.
+        r"""
+        Get the properties of the algebra.
 
-        Returns:
-            Tuple of type of algebra, number one legs, exponent params.
+        If the algebra is
 
+        .. math::
+
+            \bigoplus_{i=1}^{n}\mathfrak{a}(m)
+
+        Then the tuple :math:`\{\mathfrak{a},n,m\}` is returned.
+
+        Returns: tuple[TypeAlgebra,int,int]
+            Tuple of type of algebra, number of copies of the algebra, and the size of the algebra.
         """
         type_graph, one_legs, two_legs, long_vertices = self.get_properties()
         if type_graph == TypeGraph.NONE:
@@ -193,14 +198,14 @@ class Morph:
     def check_algebra_properties(self, type_algebra:TypeAlgebra|None = None,
                                  nc:int|None = None, size:int|None = None) -> bool:
         """
-        Check properties of algebra.
+        Check if the passed algebra is the same as the algebra of the graph.
 
         Args:
-            type_algebra: Type of algebra.
-            nc: Number control vertices.
-            size: Size of algebra
+            type_algebra: Type of the algebra.
+            nc: Number of copies of the algebra.
+            size: Size of the algebra.
         Returns:
-            True if the same algebra.
+            True if the algebra is the same as the algebra of the graph.
         """
         _type_algebra, _nc, _size = self.get_algebra_properties()
         if type_algebra is None and nc is None and size is None:
@@ -219,7 +224,7 @@ class Morph:
     def gen_independent_pair(self
         )-> Generator[list[list[PauliString]], None, None]:
         """
-        Generate independent pairs.
+        Generate all independent pairs of Pauli .
 
         Yields:
             All independent pairs of Pauli string in canonic graph.
