@@ -58,9 +58,7 @@ from .common.two_local_generators import (
 )
 
 # Helpers
-from .helpers.recording import RecordGraph
 from .helpers.drawing import (
-    animation_graph,
     plot_graph,
     plot_graph_by_nodes
 )
@@ -107,8 +105,6 @@ __all__ = [
     "two_local_algebras",
 
     # Helpers
-    "RecordGraph",
-    "animation_graph",
     "plot_graph",
     "plot_graph_by_nodes"
 ]

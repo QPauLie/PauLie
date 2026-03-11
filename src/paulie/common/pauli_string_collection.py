@@ -13,7 +13,7 @@ from paulie.common.get_graph import get_graph
 from paulie.classifier.classification import Classification
 from paulie.classifier.morph_factory import MorphFactory
 from paulie.classifier.recording_morph_factory import RecordingMorphFactory
-from paulie.helpers.recording import RecordGraph
+from paulie.helpers._recording import RecordGraph
 from paulie.exceptions import PauliStringCollectionException
 
 # class PauliStringCollection(object):

@@ -1,7 +1,7 @@
 from paulie.classifier.classification import Classification
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_linear import PauliStringLinear
-from paulie.helpers.recording import RecordGraph as RecordGraph
+from paulie.helpers._recording import RecordGraph as RecordGraph
 from typing import Generator, Self
 
 class PauliStringCollectionException(Exception): ...

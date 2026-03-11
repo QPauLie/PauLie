@@ -2,7 +2,7 @@
 Recrding factory for constructing a canonical graph
 """
 from typing import Generator, Self
-from paulie.helpers.recording import recording_graph, RecordGraph
+from paulie.helpers._recording import recording_graph, RecordGraph
 from paulie.classifier.classification import Morph, Classification
 from paulie.common.pauli_string_bitarray import PauliString
 

@@ -70,8 +70,6 @@ public_symbols = [
     "two_local_algebras",
 
     # Helpers
-    "RecordGraph",
-    "animation_graph",
     "plot_graph",
     "plot_graph_by_nodes"
 ]
