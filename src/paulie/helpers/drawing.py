@@ -20,7 +20,8 @@ def plot_graph(vertices:list[str],
     Args:
         vertices (list[str]): List of vertices.
         edges (list[tuple[str, str]]): List of edges.
-        edge_labels (dict[tuple[str,str],str]): List of edge labels.
+        edge_labels (dict[tuple[str,str],str], optional): List of edge labels. Defaults to None, in
+            which case no edge labels are drawn.
     Returns:
         None
     """
@@ -43,7 +44,7 @@ def plot_graph_by_nodes(nodes:PauliStringCollection,
     Args:
         nodes (PauliStringCollection): Generating set for anticommutator graph.
         commutators (PauliStringCollection|list[PauliString], optional): Only show those edges which
-            have labels belonging to this set.
+            have labels belonging to this set. Defaults to None, in which case all edges are shown.
     Returns:
         None
     """
@@ -63,8 +64,8 @@ def _animation_graph(record: RecordGraph, interval:int=1000,
         interval (int, optional): Interval between recording frames in milliseconds. Defaults to
             1000 milliseconds.
         repeat (bool, optional): Whether to loop the animation. Defaults to `False`.
-        storage (dict, optional): Location and format to save the animation to. Defaults to `None`,
-            in which case the animation is not saved.
+        storage (dict[str,str], optional): Location and format to save the animation to. Defaults to
+            `None`, in which case the animation is not saved.
 
             - filename (string): Path to the output file.
             - writer (string): Specifies the software used to write the animation. Common options
@@ -79,7 +80,7 @@ def _animation_graph(record: RecordGraph, interval:int=1000,
     fig, ax = plt.subplots(figsize=(6,4))
     def clear() -> None:
         """
-        Clear frame.
+        Clear the frame.
 
         Returns:
             None
@@ -91,12 +92,12 @@ def _animation_graph(record: RecordGraph, interval:int=1000,
     def build_positions(edges:list[tuple[str,str]],
                         center:str) -> tuple[dict[str,np.array], int]:
         """
-        Build position of vertices in canonical graph.
+        Build the position of vertices in the canonical graph.
 
         Args:
-            edges: List of edges.
-            center: Vertex of center.
-        Returns:
+            edges (list[tuple[str,str]]): List of edges.
+            center (str): Vertex of center.
+        Returns: tuple[dict[str,numpy.array],int]
             Positions of vertices and position of lighting.
         """
         legs = []

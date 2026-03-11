@@ -14,8 +14,8 @@ def animation_anti_commutation_graph(generators: PauliStringCollection,
 
     Args:
         generators (PauliStringCollection): Collection of Pauli strings.
-        storage (dict, optional): Location and format to save the animation to. Defaults to `None`,
-            in which case the animation is not saved.
+        storage (dict[str,str], optional): Location and format to save the animation to. Defaults to
+            `None`, in which case the animation is not saved.
 
             - filename (string): Path to the output file.
             - writer (string): Specifies the software used to write the animation. Common options
