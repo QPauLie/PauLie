@@ -14,14 +14,16 @@ def animation_anti_commutation_graph(generators: PauliStringCollection,
 
     Args:
         generators (PauliStringCollection): Collection of Pauli strings.
-        storage (dict): Storage in file.
+        storage (dict, optional): Location and format to save the animation to. Defaults to `None`,
+            in which case the animation is not saved.
 
             - filename (string): Path to the output file.
             - writer (string): Specifies the software used to write the animation. Common options
               include `ffmpeg` for MP4, AVI, etc. output, and `pillow` and `imagemagick` for GIF
               output. Note that the necessary libraries must be available and usable by
               `matplotlib`.
-        interval (int): Interval between recording frames.
+        interval (int, optional): Interval between recording frames in milliseconds. Defaults to
+            1000 milliseconds.
 
     Returns:
         None
