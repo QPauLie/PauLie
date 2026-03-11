@@ -1,6 +1,0 @@
-﻿paulie.helpers.recording.FrameRecord
-====================================
-
-.. autoclass:: paulie.helpers.recording.FrameRecord
-    :members:
-    :show-inheritance:

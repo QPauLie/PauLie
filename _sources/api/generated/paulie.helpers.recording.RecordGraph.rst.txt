@@ -1,6 +1,0 @@
-﻿paulie.helpers.recording.RecordGraph
-====================================
-
-.. autoclass:: paulie.helpers.recording.RecordGraph
-    :members:
-    :show-inheritance:

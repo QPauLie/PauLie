@@ -1,4 +1,0 @@
-﻿paulie.helpers.drawing.animation_graph
-======================================
-
-.. autofunction:: paulie.helpers.drawing.animation_graph
