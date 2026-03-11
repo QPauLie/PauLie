@@ -648,8 +648,8 @@ def compile_target(target: PauliString, k_left: int) -> list[PauliString]:
         ValueError: If ``k_left`` is out of range.
     """
     n_total = len(target)
-    if not 1 <= k_left < n_total:
-        raise ValueError("Require 1 <= k_left < len(target)")
+    if not 2 <= k_left < n_total:
+        raise ValueError("Require 2 <= k_left < len(target)")
 
     v_left = target.get_substring(0, k_left)
     w_right = target.get_substring(k_left, n_total - k_left)
