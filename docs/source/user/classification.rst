@@ -38,7 +38,7 @@ whereas changing to a three qubit system, results in another algebra:
 
     size = 3
     generators = p(["XY"], n=size)
-    algebra = get_algebra(generators)
+    algebra = generators.get_algebra()
     print(f"algebra = {algebra}")
 
 outputs
@@ -122,7 +122,7 @@ This is what happens:
    Theorem 4 of :cite:t:`Aguilar_2024`. In our case, we can pick :math:`P=YZII` and :math:`Q=XXII`, which means we have :math:`IIYZ\mapsto ZYYZ`
    and then we can connect :math:`IXXI` to :math:`YZII`.
 
-According to the table, the resultant graph corresponds to :math:`\mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)`. But it is worth nothing that it also corresponds to :math:`\mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)`. This shows that there is an exceptional isomorphism between :math:`\mathfrak{so}(5)` and :math:`\mathfrak{sp}(2)`.
+According to the table, the resultant graph corresponds to :math:`\mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)`. But it is worth noting that it also corresponds to :math:`\mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)`. This shows that there is an exceptional isomorphism between :math:`\mathfrak{so}(5)` and :math:`\mathfrak{sp}(2)`.
 
 Classification of B-type canonical graph
 ----------------------------------------
@@ -132,7 +132,7 @@ Let's try to classify a generator set that corresponds to a B-type canonical gra
 
     n_qubits = 4
     generators = p(["XY", "XZ"], n=n_qubits)
-    algebra = get_algebra(generators)
+    algebra = generators.get_algebra()
     print(f"algebra = {algebra}")
 
 outputs

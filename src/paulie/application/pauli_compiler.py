@@ -257,7 +257,15 @@ class PauliCompilerConfig:
 
 
 class OptimalPauliCompiler:
-    """Compiler implementing the construction from the paper."""
+    """Compiler implementing the construction from arXiv:2408.03294.
+
+    Compiles a target Pauli string into an O(N) length sequence of generators
+    that produces the target via nested commutators.
+
+    Args:
+        cfg: Compiler configuration specifying the left-right partition
+            and fallback search limits.
+    """
 
     def __init__(self, cfg: PauliCompilerConfig):
         if cfg.k_left < 2:
@@ -515,9 +523,25 @@ class OptimalPauliCompiler:
         return None
 
     def compile(self, v_left: PauliString, w_right: PauliString) -> list[PauliString]:
-        """Compile a target specified by its left and right factors."""
-        assert len(v_left) == self.k and len(w_right) == self.n_right
+        """Compile a target specified by its left and right factors.
 
+        Args:
+            v_left: Left factor of the target (length ``k_left``).
+            w_right: Right factor of the target (length ``n_total - k_left``).
+
+        Returns:
+            Sequence in PauLie's ``nested_adjoint`` orientation: ``[Am, ..., A1, base]``.
+
+        Raises:
+            ValueError: If the lengths of ``v_left`` and ``w_right``
+                do not match the configured partition.
+            RuntimeError: If no valid sequence is found.
+        """
+        if len(v_left) != self.k or len(w_right) != self.n_right:
+            raise ValueError(
+                f"Expected v_left of length {self.k} and w_right of length {self.n_right}, "
+                f"got {len(v_left)} and {len(w_right)}."
+            )
         if w_right.is_identity():
             for seed in self.a_left:
                 try:
@@ -585,7 +609,21 @@ class OptimalPauliCompiler:
 
 
 def construct_universal_set(n_total: int, k: int) -> list[PauliString]:
-    """Construct the universal generator set used by the compiler."""
+    """Construct the universal generator set used by the compiler.
+
+    The set consists of left-local generators extended with identities
+    and right-local generators tagged with a fixed left Pauli string.
+
+    Args:
+        n_total: Total number of qubits.
+        k: Number of qubits in the left partition.
+
+    Returns:
+        List of ``2 * n_total + 1`` Pauli strings forming the universal set.
+
+    Raises:
+        ValueError: If ``k`` is out of range.
+    """
     if not 1 <= k < n_total:
         raise ValueError("Require 1 <= k < N")
 
@@ -601,10 +639,22 @@ def construct_universal_set(n_total: int, k: int) -> list[PauliString]:
 
 
 def compile_target(target: PauliString, k_left: int) -> list[PauliString]:
-    """Compile a full target Pauli string."""
+    """Compile a full target Pauli string into a generator sequence.
+
+    Args:
+        target: The target Pauli string to compile.
+        k_left: Number of qubits in the left partition (must be >= 2).
+
+    Returns:
+        Sequence in PauLie's ``nested_adjoint`` orientation such that
+        ``PauliStringCollection(seq[:-1]).nested_adjoint(seq[-1]) == target``.
+
+    Raises:
+        ValueError: If ``k_left`` is out of range.
+    """
     n_total = len(target)
-    if not 1 <= k_left < n_total:
-        raise ValueError("Require 1 <= k_left < len(target)")
+    if not 2 <= k_left < n_total:
+        raise ValueError("Require 2 <= k_left < len(target)")
 
     v_left = target.get_substring(0, k_left)
     w_right = target.get_substring(k_left, n_total - k_left)
