@@ -1,5 +1,5 @@
 """
-Recrding factory for constructing a canonical graph
+Recording factory for constructing a canonical graph
 """
 from typing import Generator, Self
 from paulie.helpers._recording import recording_graph, RecordGraph
