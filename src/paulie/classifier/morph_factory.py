@@ -2,7 +2,7 @@
 Factory for constructing a canonical graph
 """
 from collections.abc import Generator
-from typing import Self
+from typing import Self, Callable
 from paulie.classifier.classification import Morph
 from paulie.common.pauli_string_bitarray import PauliString
 
@@ -1083,22 +1083,22 @@ class MorphFactory:
             self._append_to_queue(queue_pauli_strings, new_generators)
         return queue_pauli_strings
 
-    def build(self, generators:list[PauliString]) -> Self:
+    def _build(self, vertices:list[PauliString], call_lighting: Callable[[PauliString], None] = None) -> Self:
         """
         Transform a connected graph to a canonic type.
 
         Args:
-            generators: List of Pauli strings.
+            vertices: List of Pauli strings.
+            call_lighting: callback function when adding a new lighting
         Returns:
             Self
         """
-        if len(generators) == 0:
-            return self
-        vertices = self._get_queue(generators)
         unappended = []
         self.dependents = []
         while len(vertices) > 0:
             lighting = vertices[0]
+            if call_lighting:
+                call_lighting(lighting)
             vertices.remove(lighting)
             try:
                 self._pipeline(lighting)
@@ -1121,6 +1121,20 @@ class MorphFactory:
                 vertices = self.restore_delayed(vertices)
                 unappended.append(lighting)
         return self
+
+    def build(self, generators:list[PauliString]) -> Self:
+        """
+        Transform a connected graph to a canonic type.
+
+        Args:
+            generators: List of Pauli strings.
+        Returns:
+            Self
+        """
+        if len(generators) == 0:
+            return self
+        vertices = self._get_queue(generators)
+        return self._build(vertices)
 
     def is_eq(self, legs:list[list[PauliString]], generators:list[PauliString]) -> bool:
         """
