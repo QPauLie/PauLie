@@ -28,10 +28,6 @@ Exceptions thrown by the above methods.
    morph_factory.MorphFactoryException
    morph_factory.NotConnectedException
    morph_factory.RaiseException
-   recording_morph_factory.AppendedException
-   recording_morph_factory.DependentException
-   recording_morph_factory.MorphFactoryException
-   recording_morph_factory.NotConnectedException
    morph_factory.AppendedException
    morph_factory.CheckAppendedException
    morph_factory.DependentException
