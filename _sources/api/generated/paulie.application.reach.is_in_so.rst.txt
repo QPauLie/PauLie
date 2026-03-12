@@ -1,4 +1,0 @@
-﻿paulie.application.reach.is_in_so
-=================================
-
-.. autofunction:: paulie.application.reach.is_in_so
