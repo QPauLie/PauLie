@@ -1,12 +1,15 @@
 """
 Recording factory for constructing a canonical graph
 """
-from collections.abc import Generator
 from typing import Self
 from paulie.helpers._recording import recording_graph, RecordGraph
-from paulie.classifier.classification import Morph, Classification
-from paulie.classifier.morph_factory import MorphFactory, AppendedException,DependentException,
-     NotConnectedException, MorphFactoryException
+from paulie.classifier.classification import Classification
+from paulie.classifier.morph_factory import (
+    MorphFactory,
+    AppendedException,
+    DependentException,
+    NotConnectedException
+)
 from paulie.common.pauli_string_bitarray import PauliString
 
 
@@ -69,6 +72,31 @@ class RecordingMorphFactory(MorphFactory):
                     dependent=n_v, title=f"Dependent: {lighting}")
                     raise DependentException()
 
+    def get_pq(self, lighting:PauliString
+    ) -> tuple[PauliString|None,PauliString|None,PauliString|None]:
+        """
+        Get pq.
+
+        Args:
+            lighting: Canonical graph join candidate.
+        Returns:
+            tuple:
+                pq: p@q where p and q are vertices
+                in one leg, and p is lited, q is unlited.
+                p: Lited vertex.
+        """
+        one_verices = self.get_one_vertices()
+        lits = self.get_lits(lighting, one_verices)
+        p = None
+        q = None
+        for v in one_verices:
+            if v in lits:
+                p = v
+            else:
+                q = v
+            if p is not None and q is not None:
+                return p@q, p, q
+        return None, None, None
 
     def append_to_two_center(self, lighting:PauliString) -> None:
         """
@@ -426,7 +454,7 @@ class RecordingMorphFactory(MorphFactory):
             if len(lits) == 0:
                 self.append_to_center(lighting)
                 recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
-                appending=center, title=f"Step IV: {lighting}")
+                appending=self.get_center(), title=f"Step IV: {lighting}")
                 raise AppendedException()
 
             if len(lits) == 2:

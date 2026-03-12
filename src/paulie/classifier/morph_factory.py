@@ -1083,7 +1083,8 @@ class MorphFactory:
             self._append_to_queue(queue_pauli_strings, new_generators)
         return queue_pauli_strings
 
-    def _build(self, vertices:list[PauliString], call_lighting: Callable[[PauliString], None] = None) -> Self:
+    def _build(self, vertices:list[PauliString],
+        call_lighting: Callable[[PauliString], None] = None) -> Self:
         """
         Transform a connected graph to a canonic type.
 
