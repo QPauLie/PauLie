@@ -195,32 +195,6 @@ class Morph:
             return TypeAlgebra.SU, one_legs, 2**(two_legs + 2)
         return None, None, None
 
-    def check_algebra_properties(self, type_algebra:TypeAlgebra|None = None,
-                                 nc:int|None = None, size:int|None = None) -> bool:
-        """
-        Check if the passed algebra is the same as the algebra of the graph.
-
-        Args:
-            type_algebra: Type of the algebra.
-            nc: Number of copies of the algebra.
-            size: Size of the algebra.
-        Returns:
-            True if the algebra is the same as the algebra of the graph.
-        """
-        _type_algebra, _nc, _size = self.get_algebra_properties()
-        if type_algebra is None and nc is None and size is None:
-            return True
-        if type_algebra is not None:
-            if type_algebra != _type_algebra:
-                return False
-        if nc is not None and size is not None:
-            return size == _size and nc == _nc
-        if size is not None:
-            return size == _size
-        if nc is not None:
-            return nc == _nc
-        return False
-
     def gen_independent_pair(self
         )-> Generator[list[list[PauliString]], None, None]:
         """
