@@ -52,8 +52,8 @@ class Morph:
         """
         Check if the graph is empty.
 
-        Returns: bool
-            True if graph is empty.
+        Returns:
+            bool: True if graph is empty.
         """
         return len(self.legs) == 0
 
@@ -61,8 +61,8 @@ class Morph:
         """
         Check if the graph has a center but no legs.
 
-        Returns: bool
-            True if the graph only has a center.
+        Returns:
+            bool: True if the graph only has a center.
         """
         return len(self.legs) == 1
 
@@ -70,8 +70,8 @@ class Morph:
         """
         Get a list of vertices in the graph.
 
-        Returns: list[PauliString]
-            List of vertices in the graph.
+        Returns:
+            list[PauliString]: List of vertices in the graph.
         """
         return [v for leg in self.legs for v in leg]
 
@@ -79,8 +79,8 @@ class Morph:
         """
         Get a list of dependent Pauli strings.
 
-        Returns: list[PauliString]
-            List of dependent Pauli strings.
+        Returns:
+            list[PauliString]: List of dependent Pauli strings.
         """
         return self.dependents
 
@@ -88,8 +88,8 @@ class Morph:
         """
         Get list of legs.
 
-        Returns: list[list[PauliString]]
-            List of legs.
+        Returns:
+            list[list[PauliString]]: List of legs.
         """
         return self.legs
 
@@ -98,7 +98,8 @@ class Morph:
         """
         Get counts of length 1 legs, length 2 legs, and number of vertices on the longest leg.
 
-        Returns: tuple[int,int,int]
+        Returns:
+            tuple[int,int,int]:
             Counts of length 1 legs, length 2 legs, and number of vertices on the longest leg.
 
         Raises:
@@ -135,7 +136,8 @@ class Morph:
         """
         Get the properties of the graph including its type.
 
-        Returns: tuple[TypeGraph,int,int,int]
+        Returns:
+            tuple[TypeGraph,int,int,int]:
             Type of the graph and counts of length 1 legs, length 2 legs, and number of vertices on
             the longest leg.
 
@@ -161,8 +163,8 @@ class Morph:
         """
         Get the type of the graph.
 
-        Returns: TypeGraph
-            Type of graph.
+        Returns:
+            TypeGraph: Type of the graph.
         """
         type_graph = self.get_properties()[0]
         return type_graph
@@ -179,7 +181,8 @@ class Morph:
 
         Then the tuple :math:`\{\mathfrak{a},n,m\}` is returned.
 
-        Returns: tuple[TypeAlgebra,int,int]
+        Returns:
+            tuple[TypeAlgebra,int,int]:
             Tuple of type of algebra, number of copies of the algebra, and the size of the algebra.
         """
         type_graph, one_legs, two_legs, long_vertices = self.get_properties()
@@ -257,9 +260,10 @@ class Morph:
              init_vertices (list[PauliString]): Initial list of vertices.
              vertex_generators (list[PauliString]): List of vertex pair dictionaries.
              vertices (list[PauliString]): Resulting list of vertices.
-        Returns: 
-            True if all possible options have been tried.
-            Otherwise, False if went through all indexes.
+        Returns:
+            bool:
+            True if all possible options have been tried. Otherwise, False if went through all
+            indexes.
         """
         if i == len(vertex_generators):
             return False
@@ -308,7 +312,8 @@ class Classification:
         """
         Constructor.
 
-        Returns: None
+        Returns:
+            None
         """
         self.morphs: set[Morph] = set()
 
@@ -327,8 +332,8 @@ class Classification:
         """
         Get the canonical subgraphs of the full algebra.
 
-        Returns: set[Morph]
-            Set of canonical subgraphs of the full algebra.
+        Returns:
+            set[Morph]: Set of canonical subgraphs of the full algebra.
         """
         return self.morphs
 
@@ -336,8 +341,8 @@ class Classification:
         """
         Get the full algebra as a direct sum over the algebras of each canonical subgraph.
 
-        Returns: str
-            The full algebra.
+        Returns:
+            str: The full algebra.
         """
         algebras:dict[str, int] = {}
         for morph in self.morphs:
@@ -363,8 +368,8 @@ class Classification:
 
         Args:
             algebra (str): Name of algebra.
-        Returns: bool
-            True if algebra has a corresponding canonical subgraph within this algebra.
+        Returns:
+            bool: True if algebra has a corresponding canonical subgraph within this algebra.
         """
         _algebra = self.get_algebra()
         algebra.replace(" ", "")
@@ -376,8 +381,8 @@ class Classification:
 
         Args:
             algebra (str): Name of algebra.
-        Returns: list[str]
-            Reformatted algebra.
+        Returns:
+            list[str]: Reformatted algebra.
         """
         algebra = algebra.replace(" ", "")
         algebras = algebra.split("+")
@@ -403,7 +408,7 @@ class Classification:
         Args:
             algebra (str): Name of algebra.
         Returns:
-            True if the algebra matches this algebra.
+            bool: True if the algebra matches this algebra.
         """
         _algebra = self.get_algebra()
         algebras = self._parse_algebra(algebra)
@@ -424,8 +429,8 @@ class Classification:
         Args:
             algebra (str, optional): Name of algebra. Defaults to None, in which case the
                 subalgebras of this algebra are returned.
-        Returns: list[str]
-            List of subalgebras.
+        Returns:
+            list[str]: List of subalgebras.
         """
         if algebra is None:
             algebra = self.get_algebra()
@@ -437,8 +442,8 @@ class Classification:
         """
         Get the list of Pauli strings in this algebra.
 
-        Returns: list[PauliString]
-            List of Pauli strings in this algebra.
+        Returns:
+            list[PauliString]: List of Pauli strings in this algebra.
         """
         return [v for morph in self.morphs for v in morph.get_vertices()]
 
@@ -447,7 +452,7 @@ class Classification:
         Get a list of dependent strings of Pauli algebra.
 
         Returns:
-            List of dependent strings of Pauli algebra.
+            list[PauliString]: List of dependent strings of Pauli algebra.
         """
         return [v for morph in self.morphs for v in morph.get_dependents()]
 
@@ -455,8 +460,8 @@ class Classification:
         """
         Get dictionary of special isomorphisms between Lie algebras.
 
-        Returns: dict[str,str]
-            Dictionary of special isomorphisms between Lie algebras.
+        Returns:
+            dict[str,str]: Dictionary of special isomorphisms between Lie algebras.
         """
         return {"2*so(2)":"2*su(2)",
                 "so(3)":"su(2)",
@@ -469,8 +474,8 @@ class Classification:
 
         Args:
             algebra (str): Name of algebra.
-        Returns: str
-            Isomorphic algebra.
+        Returns:
+            str: Isomorphic algebra.
         """
         n = 1
         core_algebra = ""
@@ -497,8 +502,8 @@ class Classification:
         """
         Get the dimension of the classified dynamical Lie algebra.
 
-        Returns: int
-            Dimension of the classified dynamical Lie algebra.
+        Returns:
+            int: Dimension of the classified dynamical Lie algebra.
         """
 
         def dim_su(n:int) -> int:
@@ -533,8 +538,8 @@ class Classification:
             morphs (list[Morph]): A canonical graph.
             morph_generators (list[PauliString]): List of generators of the canonical graph.
             current_morph_generators (list[PauliString]): New list of generators.
-        Returns: bool
-            False if ms out of range.
+        Returns:
+            bool: False if ms out of range.
         """
         if ms == len(morph_generators):
             return False

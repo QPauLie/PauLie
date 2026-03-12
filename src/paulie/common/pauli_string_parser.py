@@ -15,8 +15,8 @@ def _is_token(char: str) -> bool:
 
     Args:
         char (str): Char for checking in tokens.
-    Returns: bool
-        True if char is token.
+    Returns:
+        bool: True if char is token.
     """
     return char in TOKENS
 
@@ -27,8 +27,8 @@ def _is_number(char: str) -> bool:
 
     Args:
         char (str): Char to check.
-    Returns: bool
-        True if char is a number.
+    Returns:
+        bool: True if char is a number.
     Raises:
         ValueError: If the input char format is invalid.
     """
@@ -47,8 +47,8 @@ def _to_int(position: str) -> int:
 
     Args:
         position (str): String representation of number.
-    Returns: int
-        Integer representation of number.
+    Returns:
+        int: Integer representation of number.
     Raises:
         ValueError: If the input position format is invalid.
     """
@@ -66,8 +66,8 @@ def pauli_string_parser(pauli_string: str) -> str:
 
     Args:
         pauli_string (str): Compact string representation of the Pauli string.
-    Returns: str
-        Expanded Pauli string with I's in unspecified positions.
+    Returns:
+        str: Expanded Pauli string with I's in unspecified positions.
 
     Raises:
         ValueError: If the input string format is invalid.

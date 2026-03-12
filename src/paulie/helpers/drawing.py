@@ -97,8 +97,8 @@ def _animation_graph(record: RecordGraph, interval:int=1000,
         Args:
             edges (list[tuple[str,str]]): List of edges.
             center (str): Vertex of center.
-        Returns: tuple[dict[str,numpy.array],int]
-            Positions of vertices and position of lighting.
+        Returns:
+            tuple[dict[str,numpy.array],int]: Positions of vertices and position of lighting.
         """
         legs = []
         positions = {}

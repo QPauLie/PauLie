@@ -32,7 +32,7 @@ class FrameGraph:
         """
         Get the graph data in the frame.
 
-        Returns: tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]
+        Returns:
             Vertices, edges, and labels of edges.
         """
         return self.vertices.copy(), self.edges.copy(), self.edge_labels
@@ -85,7 +85,7 @@ class FrameRecord:
         """
         Get graph data stored in the frame.
 
-        Returns: tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]
+        Returns:
             Vertices, edges, and labels of edges.
         """
         if not self.graph:
@@ -95,8 +95,8 @@ class FrameRecord:
         """
         Get the vertex to be added.
 
-        Returns: str
-            The vertex to be added.
+        Returns:
+            str: The vertex to be added.
         """
         return self.lighting
 
@@ -104,8 +104,8 @@ class FrameRecord:
         """
         Get the title of the frame.
 
-        Returns: str
-            The title of the frame.
+        Returns:
+            str: The title of the frame.
         """
         return self.title
 
@@ -113,8 +113,8 @@ class FrameRecord:
         """
         Check if the new vertex is being appended to the graph.
 
-        Returns: bool
-            True if not appending.
+        Returns:
+            bool: True if not appending.
         """
         return not self.appending
 
@@ -124,8 +124,8 @@ class FrameRecord:
 
         Args:
             vertex (str): Vertex for checking.
-        Returns: bool
-            True if vertex is being appended to.
+        Returns:
+            bool: True if vertex is being appended to.
         """
         if not self.appending:
             return False
@@ -137,8 +137,8 @@ class FrameRecord:
 
         Args:
             vertex (str): Vertex for checking.
-        Returns: bool
-            True if vertex is being contracted.
+        Returns:
+            bool: True if vertex is being contracted.
 
         """
         if not self.contracting:
@@ -151,8 +151,8 @@ class FrameRecord:
 
         Args:
             vertex (str): Vertex for checking.
-        Returns: bool
-            True if vertex is p.
+        Returns:
+            bool: True if vertex is p.
         """
         if not self.p:
             return False
@@ -164,8 +164,8 @@ class FrameRecord:
 
         Args:
             vertex (str): Vertex for checking.
-        Returns: bool
-            True if vertex is q.
+        Returns:
+            bool: True if vertex is q.
         """
         if not self.q:
             return False
@@ -177,8 +177,8 @@ class FrameRecord:
 
         Args:
             vertex (str): Vertex for checking.
-        Returns: bool
-            True if vertex is dependent.
+        Returns:
+            bool: True if vertex is dependent.
         """
         if not self.dependent:
             return False
@@ -190,8 +190,8 @@ class FrameRecord:
 
         Args:
             vertex (str): Vertex for checking.
-        Returns: bool
-            True if vertex is lit.
+        Returns:
+            bool: True if vertex is lit.
         """
         return vertex in self.lits
 
@@ -200,7 +200,7 @@ class FrameRecord:
         Check if vertices are not being removed.
 
         Returns:
-            True if vertices are not being removed.
+            bool: True if vertices are not being removed.
         """
         return not self.removing_vertices
 
@@ -210,8 +210,8 @@ class FrameRecord:
 
         Args:
             vertex (str): Vertex for checking.
-        Returns: bool
-            True if vertex is being removed.
+        Returns:
+            bool: True if vertex is being removed.
         """
         return vertex in self.removing_vertices
 
@@ -222,7 +222,7 @@ class FrameRecord:
         Args:
             vertex (str): Vertex for checking.
         Returns:
-            True if vertex is being replaced.
+            bool: True if vertex is being replaced.
         """
         return vertex in self.replacing_vertices
 
@@ -231,7 +231,7 @@ class FrameRecord:
         Check if this is the initial frame.
 
         Returns:
-            True if this is the initial frame.
+            bool: True if this is the initial frame.
         """
         return self.init
 
@@ -300,11 +300,10 @@ class RecordGraph:
 
         Args:
             index (int): Index of frame.
-        Returns: FrameRecord
-            Frame of record.
+        Returns:
+            FrameRecord: Frame of record.
         Raises:
-            ValueError:
-                If is index is greater than the number of frames.
+            ValueError: If is index is greater than the number of frames.
         """
         if index > len(self.frames) - 1:
             raise ValueError("Out of index")
@@ -323,8 +322,8 @@ class RecordGraph:
         """
         Get the number of frames in the record.
 
-        Returns: int
-            Number of frames.
+        Returns:
+            int: Number of frames.
         """
         return len(self.frames)
 
@@ -335,7 +334,7 @@ class RecordGraph:
 
         Args:
             index (int): Index of frame.
-        Returns: tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]|None
+        Returns:
             Vertices, edges, and labels of edges.
         """
         while index > -1:
@@ -353,8 +352,8 @@ class RecordGraph:
 
         Args:
             index (int): Index of frame.
-        Returns: bool
-            True if the frame has no graph data.
+        Returns:
+            bool: True if the frame has no graph data.
         """
         frame = self.get_frame(index)
         return frame.get_graph() is None
@@ -374,8 +373,8 @@ class RecordGraph:
         """
         Get the positions of the vertices.
 
-        Returns: dict[str,numpy.array]
-            Positions of vertices.
+        Returns:
+            dict[str,numpy.array]: Positions of vertices.
         """
         return self.positions
 

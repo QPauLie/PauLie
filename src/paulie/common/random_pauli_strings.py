@@ -10,8 +10,8 @@ def get_random(n: int) -> str:
 
     Args:
         n (int): Length of Pauli string.
-    Returns: str
-      Random Pauli string.
+    Returns:
+      str: Random Pauli string.
     """
     return ''.join([choice("IXYZ") for _ in range(n)])
 
@@ -22,8 +22,8 @@ def get_random_k_local(k: int, n: int) -> str:
     Args:
         k (int): Length of locality.
         n (int): Length of Pauli string.
-    Returns: str
-        Random k-local Pauli string of length n.
+    Returns:
+        str: Random k-local Pauli string of length n.
 
     Raises:
          ValueError: If k > n.
@@ -43,7 +43,7 @@ def get_random_list(n: int, size: int) -> list[str]:
     Args:
          n (int): Length of each Pauli string.
          size (int): Size of list.
-    Returns: list[str]
-        Random list of Pauli strings of length n.
+    Returns:
+        list[str]: Random list of Pauli strings of length n.
     """
     return [get_random(n) for _ in range(size)]

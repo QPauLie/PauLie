@@ -13,8 +13,8 @@ def get_identity(n: int) -> PauliString:
 
     Args:
         n (int): Length of Pauli string.
-    Returns: PauliString
-        Identity of the given length.
+    Returns:
+        PauliString: Identity of the given length.
     """
     return PauliString(n=n)
 
@@ -26,8 +26,8 @@ def get_single(n: int, i: int, label: str) -> PauliString:
         n (int): Length of Pauli string.
         i (int): Position in Pauli string.
         label (str): Pauli at position.
-    Returns: PauliString
-        PauliString with set label.
+    Returns:
+        PauliString: PauliString with set label.
     """
     p = get_identity(n)
     p[i] = label
@@ -39,8 +39,8 @@ def get_last(n:int) -> PauliString:
 
     Args:
         n (int): Length of Pauli string.
-    Returns: PauliString
-        Pauli string of given length with `Y` at every position.
+    Returns:
+        PauliString: Pauli string of given length with `Y` at every position.
     """
     return PauliString(bits = bitarray([1] * (2 * n)))
 
@@ -52,7 +52,8 @@ def get_pauli_string(o: PauliString|PauliStringCollection,
     Args:
          o (PauliString|PauliStringCollection): A Pauli string or a collection of Pauli strings.
          n (int, optional): Length of Pauli strings
-    Returns: PauliString|PauliStringLinear|PauliStringCollection
+    Returns:
+        PauliString|PauliStringLinear|PauliStringCollection:
         If `o` is a Pauli string, then it is tensored with identities at the end until its length is
         `n`. Otherwise a collection of Pauli strings is created. Given n, the collection is expanded
         as a k-local set where k is the maximum length of a Pauli string in the given collection.

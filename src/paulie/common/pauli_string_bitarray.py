@@ -55,8 +55,8 @@ class PauliString:
         """
         Get index in matrix decomposition vector.
 
-        Returns: int
-            Index in matrix decomposition vector.
+        Returns:
+            int: Index in matrix decomposition vector.
         """
         return ba2int(self.bits)
 
@@ -64,8 +64,8 @@ class PauliString:
         """
         Get index in diagonal matrix decomposition vector.
 
-        Returns: int
-            Index in diagonal matrix decomposition vector.
+        Returns:
+            int: Index in diagonal matrix decomposition vector.
         """
 
         if ba2int(self.bits_even) == 0:
@@ -78,8 +78,8 @@ class PauliString:
 
         Args:
             b_matrix (numpy.ndarray): Matrix decomposition vector.
-        Returns: complex
-            Weight in matrix decomposition vector.
+        Returns:
+            complex: Weight in matrix decomposition vector.
 
         Raises:
             ValueError: Incorrect matrix size.
@@ -101,16 +101,16 @@ class PauliString:
            Args:
                 n (int, optional): Length of the Pauli string.
                 pauli_str (str, optional): String representation of a Pauli string.
-           Returns: PauliString
-               Instance of a Pauli string.
+           Returns:
+               PauliString: Instance of a Pauli string.
         """
         return PauliString(n=n, pauli_str=pauli_str)
 
     def __repr__(self) -> str:
         """Convert PauliString to readable string.
 
-        Returns: str
-            String representation.
+        Returns:
+            str: String representation.
         """
 
         return f"PauliString({"".join(self.bits.decode(CODEC))})"
@@ -118,8 +118,8 @@ class PauliString:
     def __str__(self) -> str:
         """Convert PauliString to readable string.
 
-        Returns: str
-            String representation.
+        Returns:
+            str: String representation.
         """
         return "".join(self.bits.decode(CODEC))
 
@@ -130,7 +130,7 @@ class PauliString:
         Args:
             other: Pauli string representation.
         Returns:
-            Self representation.
+            PauliString: Self representation.
         """
         return other if isinstance(other, PauliString) else PauliString(pauli_str=str(other))
 
@@ -141,7 +141,7 @@ class PauliString:
         Args:
              other: Pauli string to compare with.
         Returns:
-            Result of the comparison.
+            bool: Result of the comparison.
         """
         other = self._ensure_pauli_string(other)
         return self.bits == other.bits
@@ -153,7 +153,7 @@ class PauliString:
         Args:
              other: Pauli string to compare with.
         Returns:
-            Result of the comparison.
+            bool: Result of the comparison.
         """
         other = self._ensure_pauli_string(other)
         return self.bits < other.bits
@@ -165,7 +165,7 @@ class PauliString:
         Args:
              other: Pauli string to compare with.
         Returns:
-            Result of the comparison.
+            bool: Result of the comparison.
         """
         other = self._ensure_pauli_string(other)
         return self.bits <= other.bits
@@ -177,7 +177,7 @@ class PauliString:
         Args:
              other: Pauli string to compare with.
         Returns:
-            Result of the comparison.
+            bool: Result of the comparison.
         """
         other = self._ensure_pauli_string(other)
         return self.bits > other.bits
@@ -189,7 +189,7 @@ class PauliString:
         Args:
              other: Pauli string to compare with.
         Returns:
-            Result of the comparison.
+            bool: Result of the comparison.
         """
         other = self._ensure_pauli_string(other)
         return self.bits >= other.bits
@@ -201,7 +201,7 @@ class PauliString:
         Args:
              other: Pauli string to compare with.
         Returns:
-            Result of the comparison.
+            bool: Result of the comparison.
         """
         other = self._ensure_pauli_string(other)
         return self.bits != other.bits
@@ -210,8 +210,8 @@ class PauliString:
         """
         Make Pauli string hashable so it can be used in sets.
 
-        Returns: int
-            Hash of Pauli string.
+        Returns:
+            int: Hash of Pauli string.
         """
         return hash(str(self.bits))
 
@@ -219,8 +219,8 @@ class PauliString:
         """
         Get the length of the Pauli string.
 
-        Returns: int
-            Length of the Pauli string.
+        Returns:
+            int: Length of the Pauli string.
         """
         return len(self.bits) // 2
 
@@ -238,8 +238,8 @@ class PauliString:
         """
         Get the value of the next position of the Pauli string.
 
-        Returns: PauliString
-            Value of the next position of the Pauli string.
+        Returns:
+            PauliString: Value of the next position of the Pauli string.
 
         Raises:
             StopIteration: End of Pauli string.
@@ -270,7 +270,7 @@ class PauliString:
         Args:
             position (int): Position in Pauli string.
         Returns:
-            Pauli at the specified position.
+            PauliString: Pauli at the specified position.
         """
         return self.get_substring(position)
 
@@ -279,7 +279,7 @@ class PauliString:
         Pauli string copy operator.
 
         Returns:
-            Copy of self.
+            PauliString: Copy of self.
         """
         return PauliString(bits=self.bits)
 
@@ -287,8 +287,8 @@ class PauliString:
         """
         Copy Pauli string.
 
-        Returns: PauliString
-            Copy of self.
+        Returns:
+            PauliString: Copy of self.
         """
         return PauliString(bits=self.bits)
 
@@ -299,7 +299,7 @@ class PauliString:
         Args:
              other: Pauli string to add.
         Returns:
-            Result of adding.
+            PauliString: Result of adding.
         """
         other = self._ensure_pauli_string(other)
         return self.tensor(other)
@@ -311,7 +311,7 @@ class PauliString:
         Args:
              other: Pauli string to commutes_with.
         Returns:
-            Result of commutes_with.
+            bool: Result of commutes_with.
         """
         return self.commutes_with(other)
 
@@ -322,7 +322,7 @@ class PauliString:
         Args:
              other: Pauli string to adjoint_map.
         Returns:
-            Result of adjoint_map.
+            PauliString|None: Result of adjoint_map.
         """
         return self.adjoint_map(other)
 
@@ -333,7 +333,7 @@ class PauliString:
         Args:
              other: Pauli string to multiply.
         Returns:
-            Result of multiply.
+            PauliString: Result of multiply.
         """
         return self.multiply(other)
 
@@ -349,8 +349,8 @@ class PauliString:
 
         Args:
             other (PauliString): Pauli string to multiply with.
-        Returns: complex
-            Complex phase of the product (1, -1, 1j, or -1j).
+        Returns:
+            complex: Complex phase of the product (1, -1, 1j, or -1j).
 
         Raises:
             ValueError: If the length of `self` is not equal to the length of `other`.
@@ -375,8 +375,8 @@ class PauliString:
         """
         Get the complex conjugate of the Pauli string.
 
-        Returns: tuple[complex, Self]
-            Complex conjugate of the Pauli string.
+        Returns:
+            tuple[complex, Self]: Complex conjugate of the Pauli string.
         """
         ys = count_and(self.bits_odd, self.bits_even)
         return ((-1)**(ys), self)
@@ -388,7 +388,7 @@ class PauliString:
         Args:
             other: Pauli string to commutes.
         Returns:
-            True if they commute, False if they anticommute.
+            bool: True if they commute, False if they anticommute.
         Raises:
             ValueError: If the length of `self` is not equal to the length of `other`.
         """
@@ -408,8 +408,8 @@ class PauliString:
         Args:
             start (int): Starting index of the substring.
             length (int, optional): Length of the substring. Default is 1.
-        Returns: PauliString
-            Substring of the Pauli string.
+        Returns:
+            PauliString: Substring of the Pauli string.
         """
         return PauliString(bits=self.bits[2*start:2*start+2*length])
 
@@ -435,8 +435,8 @@ class PauliString:
         """
         Check if this Pauli string is the identity.
 
-        Returns: bool
-            True if `self` is the identity.
+        Returns:
+            bool: True if `self` is the identity.
         """
         return bitarray(len(self.bits)) == self.bits
 
@@ -447,7 +447,7 @@ class PauliString:
         Args:
             other: Pauli string to tensor product.
         Returns:
-            Result of the tensor product of `self` with `other`.
+            PauliString: Result of the tensor product of `self` with `other`.
         """
         new_bits = bitarray(len(self.bits) + len(other.bits))
         for i in range(len(new_bits)):
@@ -464,7 +464,7 @@ class PauliString:
         Args:
             other: Pauli string to multiply.
         Returns:
-            PauliString proportional to the multiplication of `self` with `other`.
+            PauliString: Pauli string proportional to the multiplication of `self` with `other`.
 
         Raises:
             ValueError: If the length of `self` is not equal to the length of `other`.
@@ -482,8 +482,9 @@ class PauliString:
 
         Args:
             other: Pauli string to adjoint map with self.
-        Returns: PauliString|None
-            None if the commutator is zero (i.e., if A and B commute).
+        Returns:
+            PauliString|None: None if the commutator is zero (i.e., if A and B commute).
+
             Otherwise, returns a PauliString proportional to the commutator.
 
         Raises:
@@ -526,7 +527,7 @@ class PauliString:
         Args:
             n (int): New Pauli string length.
         Returns:
-            Pauli string of expanded size.
+            PauliString: Pauli string of expanded size.
         """
         return self + PauliString(n = n - len(self))
 
@@ -554,8 +555,8 @@ class PauliString:
         Args:
             generators (list[PauliString], optional): Collection of Pauli strings on which commutant
                 is searched. If None, then the search area is all Pauli strings of the same size.
-        Returns: list[PauliString]
-            List of Pauli strings that commute with this string.
+        Returns:
+            list[PauliString]: List of Pauli strings that commute with this string.
         """
         if generators is None:
             generators = self.gen_all_pauli_strings()
@@ -570,8 +571,8 @@ class PauliString:
             generators (list[PauliString], optional): Collection of Pauli strings on which
                 anticommutant is searched. If None, then the search area is all Pauli strings of the
                 same size.
-        Returns: list[PauliString]
-            List of Pauli strings that anticommute with this string.
+        Returns:
+            list[PauliString]: List of Pauli strings that anticommute with this string.
         """
         if generators is None:
             generators = self.gen_all_pauli_strings()
@@ -587,7 +588,8 @@ class PauliString:
             generators (list[PauliString], optional): Collection of Pauli strings on which commutant
                 is to be searched. If not specified, then the search area is all Pauli strings of
                 the same size.
-        Returns: list[tuple[PauliString, PauliString]]
+        Returns:
+            list[tuple[PauliString, PauliString]]:
             List of pairs of Pauli strings whose commutator is proportional to `self`.
         """
 
@@ -607,12 +609,12 @@ class PauliString:
 
     def _match_matrix(self, v:str) -> np.ndarray:
         """
-         Matching matrix for the string item.
+        Return the matrix representation of the Pauli operator.
 
-         Args:
-             v: Item of Pauli string.
-         Returns:
-             Matrix representation for the string item.
+        Args:
+            v (str): String representation of the Pauli operator.
+        Returns:
+            numpy.ndarray: Matrix representation of the Pauli operator.
         """
         match v:
             case "I":
@@ -630,8 +632,8 @@ class PauliString:
         """
         Get the matrix representation of the Pauli string.
 
-        Returns: numpy.ndarray
-            Matrix representation for the Pauli string.
+        Returns:
+            numpy.ndarray: Matrix representation for the Pauli string.
         """
         return reduce(lambda matrix, v: np.kron(matrix, self._match_matrix(v))
                       if matrix is not None else self._match_matrix(v), str(self), None)
@@ -640,7 +642,7 @@ class PauliString:
         """ 
         Get the count of non-identity operators in the Pauli string.
 
-        Returns: int
-            Count of non-identity operators.
+        Returns:
+            int: Count of non-identity operators.
         """
         return count_or(self.bits_even, self.bits_odd)
