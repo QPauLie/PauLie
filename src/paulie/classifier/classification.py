@@ -198,10 +198,10 @@ class Morph:
     def gen_independent_pair(self
         )-> Generator[list[list[PauliString]], None, None]:
         """
-        Generate all independent pairs of Pauli .
+        Generate all independent pairs of Pauli strings in the transformed generating set.
 
         Yields:
-            All independent pairs of Pauli string in canonic graph.
+            All independent pairs of Pauli strings in the canonical graph.
         """
         for i in range(len(self.legs) - 1, 0, -1):
             leg = self.legs[i]
@@ -217,14 +217,14 @@ class Morph:
     def gen_pq(self
         )-> Generator[dict[str, list[PauliString]|int], None, None]:
         """
-        Generate pq.
+        Generate products of all pairs of Pauli strings in the canonical graph.
 
         Yields:
-            Dictionary:
-                w: Vertex of graph.
-                v: Other vertex of graph.
-                vw: v@w
-                neighbour: True if w and v are neighbour.
+            Dictionary of
+            v (PauliString): Vertex of graph.
+            w (PauliString): Other vertex of graph.
+            vw (PauliString): Proportional product of v and w.
+            neighbour: True if v and w are neighbours.
         """
         for i in range(len(self.legs) - 1, 0, -1):
             leg = self.legs[i]
@@ -250,13 +250,13 @@ class Morph:
                                 vertex_generators:list[PauliString],
                                 vertices:list[PauliString])->bool:
         """
-        Incriminate the generator.
+        Increment the generator.
 
         Args:
-             i: Current index of vertices.
-             init_vertices: Initial list of vertices.
-             vertex_generators: List of vertex pair dictionaries.
-             vertices: Resulting list of vertices.
+             i (int): Current index of vertices.
+             init_vertices (list[PauliString]): Initial list of vertices.
+             vertex_generators (list[PauliString]): List of vertex pair dictionaries.
+             vertices (list[PauliString]): Resulting list of vertices.
         Returns: 
             True if all possible options have been tried.
             Otherwise, False if went through all indexes.
@@ -314,10 +314,10 @@ class Classification:
 
     def add(self, morph: Morph) -> None:
         """
-        Add canonical form.
+        Add a canonical graph inside the full algebra.
 
         Args:
-            morph: Canonical form.
+            morph (Morph): A canonical graph inside the full algebra.
         Returns:
             None
         """
@@ -325,19 +325,19 @@ class Classification:
 
     def get_morphs(self) -> set[Morph]:
         """
-        Get canonical form.
+        Get the canonical subgraphs of the full algebra.
 
-        Returns:
-            Canonical form.
+        Returns: set[Morph]
+            Set of canonical subgraphs of the full algebra.
         """
         return self.morphs
 
     def get_algebra(self) -> str:
         """
-        Get algebra.
+        Get the full algebra as a direct sum over the algebras of each canonical subgraph.
 
-        Returns:
-            Algebra.
+        Returns: str
+            The full algebra.
         """
         algebras:dict[str, int] = {}
         for morph in self.morphs:
@@ -359,12 +359,12 @@ class Classification:
 
     def contains_algebra(self, algebra:str) -> bool:
         """
-        Algebra inclusion check.
+        Check if an algebra has a corresponding canonical subgraph within this algebra.
 
         Args:
-            algebra: Name of algebra.
-        Returns:
-            True if algebra equals graph algebra.
+            algebra (str): Name of algebra.
+        Returns: bool
+            True if algebra has a corresponding canonical subgraph within this algebra.
         """
         _algebra = self.get_algebra()
         algebra.replace(" ", "")
@@ -375,8 +375,8 @@ class Classification:
         Reformat algebra.
 
         Args:
-            algebra: Name of algebra.
-        Returns:
+            algebra (str): Name of algebra.
+        Returns: list[str]
             Reformatted algebra.
         """
         algebra = algebra.replace(" ", "")
@@ -398,12 +398,12 @@ class Classification:
 
     def is_algebra(self, algebra:str) -> bool:
         """
-        Checking for compliance with a given algebra.
+        Check if an algebra is equal to this algebra.
 
         Args:
-            algebra: Name of algebra.
+            algebra (str): Name of algebra.
         Returns:
-            True if the algebra matches.
+            True if the algebra matches this algebra.
         """
         _algebra = self.get_algebra()
         algebras = self._parse_algebra(algebra)
@@ -417,13 +417,14 @@ class Classification:
                 return False
         return True
 
-    def get_subalgebras(self, algebra:str|None=None) -> list[str]:
+    def get_subalgebras(self, algebra:str=None) -> list[str]:
         """
-        Get subalgebras.
+        Get the subalgebras of an algebra.
 
         Args:
-            algebra: Name of algebra.
-        Returns:
+            algebra (str, optional): Name of algebra. Defaults to None, in which case the
+                subalgebras of this algebra are returned.
+        Returns: list[str]
             List of subalgebras.
         """
         if algebra is None:
@@ -434,12 +435,12 @@ class Classification:
 
     def get_vertices(self) -> list[PauliString]:
         """
-        Get a list of independent strings of Pauli algebra.
+        Get the list of Pauli strings in this algebra.
 
-        Returns:
-            List of independent strings of Pauli algebra.
+        Returns: list[PauliString]
+            List of Pauli strings in this algebra.
         """
-        return [v for morph in self.morphs for v in morph.get_vertices() ]
+        return [v for morph in self.morphs for v in morph.get_vertices()]
 
     def get_dependents(self) -> list[PauliString]:
         """
@@ -452,10 +453,10 @@ class Classification:
 
     def get_isomorphisms(self) -> dict[str, str]:
         """
-        Get dictionary of isomorphisms.
+        Get dictionary of special isomorphisms between Lie algebras.
 
-        Returns:
-            Dictionary of isomorphisms.
+        Returns: dict[str,str]
+            Dictionary of special isomorphisms between Lie algebras.
         """
         return {"2*so(2)":"2*su(2)",
                 "so(3)":"su(2)",
@@ -464,12 +465,12 @@ class Classification:
 
     def get_isomorphism(self, algebra:str)->str|None:
         """
-        Get algebra isomorphism.
+        Get an isomorphic algebra.
 
         Args:
-            algebra: Name of algebra.
-        Returns: 
-            Isomorphic representation of algebra.
+            algebra (str): Name of algebra.
+        Returns: str
+            Isomorphic algebra.
         """
         n = 1
         core_algebra = ""
@@ -496,7 +497,7 @@ class Classification:
         """
         Get the dimension of the classified dynamical Lie algebra.
 
-        Returns:
+        Returns: int
             Dimension of the classified dynamical Lie algebra.
         """
 
@@ -525,14 +526,14 @@ class Classification:
     def _inc_morph_generator(self, ms:int, morphs:list[Morph], morph_generators:list[PauliString],
                              current_morph_generators:list[PauliString]) -> bool:
         """
-        Incriminate the generator.
+        Get the next generator.
 
         Args:
-            ms: Index in list of generators.
-            morphs: Canonic form.
-            morph_generators: List of generators.
-            current_morph_generators: New list of generators.
-        Returns:
+            ms (int): Index in list of generators.
+            morphs (list[Morph]): A canonical graph.
+            morph_generators (list[PauliString]): List of generators of the canonical graph.
+            current_morph_generators (list[PauliString]): New list of generators.
+        Returns: bool
             False if ms out of range.
         """
         if ms == len(morph_generators):
@@ -550,9 +551,9 @@ class Classification:
 
     def gen_generators(self) -> Generator[list[list[PauliString]], None, None]:
         """
-        Get a list of independent strings of Pauli algebra.
+        Generate the generators of this algebra.
 
-        Yields: 
+        Yields:
             List of generators.
         """
         generators = []
