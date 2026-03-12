@@ -1,5 +1,5 @@
 """
- Two local algebra
+    Module with explicit algebras and generator sets for two local algebras.
 """
 #A dictionary representing 2 local generators
 G_LIE: dict[str, list[str]] = {
@@ -34,13 +34,13 @@ G_LIE: dict[str, list[str]] = {
 }
 
 def _a3(n:int) -> str|None:
-    """
-    Get algebra for a3 algebra
+    r"""
+    Get algebra for :math:`\mathfrak{a}_3` algebra.
 
     Args:
-        n: a length of Pauli string
+        n (int): Length of Pauli strings.
     Returns:
-        algebra for a3 algebra
+        str|None: Algebra for :math:`\mathfrak{a}_3` algebra.
     """
     match n % 8 :
         case 0:
@@ -56,13 +56,13 @@ def _a3(n:int) -> str|None:
     return None
 
 def _a5(n:int) -> str|None:
-    """
-    Get algebra for a5 algebra
+    r"""
+    Get algebra for :math:`\mathfrak{a}_5` algebra.
 
     Args:
-        n: a length of Pauli string
+        n (int): Length of Pauli strings.
     Returns:
-        algebra for a5 algebra
+        str|None: Algebra for :math:`\mathfrak{a}_5` algebra.
     """
     match n % 6:
         case 0:
@@ -76,13 +76,13 @@ def _a5(n:int) -> str|None:
     return None
 
 def _a6(n:int) -> str|None:
-    """
-    Get algebra for a6 algebra
+    r"""
+    Get algebra for :math:`\mathfrak{a}_6` algebra.
 
     Args:
-        n: a length of Pauli string
+        n (int): Length of Pauli strings.
     Returns:
-        algebra for a6 algebra
+        str|None: Algebra for :math:`\mathfrak{a}_6` algebra.
     """
     if n % 2 == 1: #odd
         return f"su({2**(n-1)})"
@@ -91,35 +91,36 @@ def _a6(n:int) -> str|None:
     return None
 
 def _a7(n:int) -> str|None:
-    """
-    Get algebra for a7 algebra
+    r"""
+    Get algebra for :math:`\mathfrak{a}_7` algebra.
 
     Args:
-        n: a length of Pauli string
+        n (int): Length of Pauli strings.
     Returns:
-        algebra for a7 algebra
+        str|None: Algebra for :math:`\mathfrak{a}_7` algebra.
     """
     return _a6(n)
 
 def _a10(n:int) -> str|None:
-    """
-    Get algebra for a10 algebra
+    r"""
+    Get algebra for :math:`\mathfrak{a}_10` algebra.
 
     Args:
-        n: a length of Pauli string
+        n (int): Length of Pauli strings.
     Returns:
-        algebra for a10 algebra
+        str|None: Algebra for :math:`\mathfrak{a}_10` algebra.
     """
     return _a6(n)
 
 def two_local_algebras(n:int) -> dict[str, str|None]:
     """
-    Get a dictionary of the DLAs n>=3
+    Get a dictionary of the dynamical Lie algebras with Pauli strings of length at least 3.
 
     Args:
-        n: a length of Pauli string
+        n: Length of the Pauli strings.
     Returns:
-        a dictionary of the DLAs n>=3
+        dict[str, str|None]:
+        A dictionary of the dynamical Lie algebras with Pauli strings of length at least 3.
     """
 
     return  {
@@ -157,11 +158,12 @@ def two_local_algebras(n:int) -> dict[str, str|None]:
 
 def get_lie_algebra(name:str) -> list[str]:
     """
-    Get generators of Lie algebra by name. 
+    Get the generators of a Lie algebra by name. 
 
     Args:
-        name (str): name of Lie algebra
-    Returns: generators of Lie algebra by name. 
+        name (str): Name of the Lie algebra.
+    Returns:
+        list[str]: Generators of the Lie algebra by name. 
     """
     return G_LIE[name]
 
@@ -170,6 +172,6 @@ def get_lie_algebras() -> dict[str, list[str]]:
     Get the dictionary of generators of Lie algebras.
 
     Returns:
-        the dictionary of generators of Lie algebras.
+        dict[str, list[str]]: The dictionary of generators of Lie algebras.
     """
     return G_LIE
