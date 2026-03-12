@@ -68,6 +68,7 @@ def pauli_string_parser(pauli_string: str) -> str:
         pauli_string (str): Compact string representation of the Pauli string.
     Returns: str
         Expanded Pauli string with I's in unspecified positions.
+
     Raises:
         ValueError: If the input string format is invalid.
     """

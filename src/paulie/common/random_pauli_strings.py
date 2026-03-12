@@ -24,6 +24,7 @@ def get_random_k_local(k: int, n: int) -> str:
         n (int): Length of Pauli string.
     Returns: str
         Random k-local Pauli string of length n.
+
     Raises:
          ValueError: If k > n.
     """
