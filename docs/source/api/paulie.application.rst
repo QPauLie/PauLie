@@ -89,14 +89,4 @@ Utilities related to Pauli compilation.
    pauli_compiler.construct_universal_set
    pauli_compiler.left_a_minimal
    pauli_compiler.left_map_over_a
-   
-Reachability of states
-----------------------
-Utilities for testing if a state is reachable.
 
-.. autosummary::
-   :toctree: generated/
-
-   reach.is_in_sp
-   reach.is_in_so
-   reach.reachable
