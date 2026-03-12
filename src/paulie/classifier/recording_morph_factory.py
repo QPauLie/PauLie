@@ -5,29 +5,12 @@ from collections.abc import Generator
 from typing import Self
 from paulie.helpers._recording import recording_graph, RecordGraph
 from paulie.classifier.classification import Morph, Classification
+from paulie.classifier.morph_factory import MorphFactory, AppendedException,DependentException,
+     NotConnectedException, MorphFactoryException
 from paulie.common.pauli_string_bitarray import PauliString
 
-class AppendedException(Exception):
-    """
-    The vertex is appended.
-    """
 
-class DependentException(Exception):
-    """
-    Vertex dependent.
-    """
-
-class NotConnectedException(Exception):
-    """
-    No connection with canonic graph.
-    """
-
-class MorphFactoryException(Exception):
-    """
-    Morph factory exception.
-    """
-
-class RecordingMorphFactory:
+class RecordingMorphFactory(MorphFactory):
     """
     Factory for constructing a canonical graph.
     """
@@ -41,41 +24,8 @@ class RecordingMorphFactory:
             None
 
         """
-        self.legs = [] # center is zero leg
+        super().__init__()
         self.record = record
-        self.lighting = None
-        self.delayed_vertices = []
-        self.dependents = []
-
-
-    def set_lighting(self, lighting:PauliString) -> None:
-        """
-        Set lighting.
-
-        Args:
-            lighting: Paulie string, which is lightning.
-        Returns:
-            None
-        """
-        self.lighting = lighting
-
-    def get_lighting(self) -> PauliString:
-        """
-        Get lighting.
-
-        Returns:
-            Lighting.
-        """
-        return self.lighting
-
-    def get_morph(self) -> Morph:
-        """
-        Get canonical graph form.
-
-        Returns:
-            Canonical form.
-        """
-        return Morph(self.legs, self.dependents)
 
     def lit(self, lighting:PauliString, vertex:PauliString) -> PauliString:
         """
@@ -94,298 +44,31 @@ class RecordingMorphFactory:
             raise DependentException()
         return lighting
 
-    def get_lits(self, lighting:PauliString, vertices:list[PauliString]=None) -> list[PauliString]:
+    def check_dependency_one_leg(self, lighting:PauliString) -> None:
         """
-        Get lited vertices (connected to the selected vertex).
+        Dependency check when attaching a vertex to the center of the graph.
 
         Args:
             lighting: Canonical graph join candidate.
-            vertices: List of vertices.
-        Returns:
-            list of lited vertices (connected to the selected vertex).
-        """
-        if vertices is None:
-            vertices = self.get_vertices()
-        return [v for v in vertices if v != lighting and not lighting|v]
-
-
-    def is_empty(self) -> bool:
-        """
-        Checking for emptiness.
-
-        Returns:
-            True if graph is empty.
-        """
-        return len(self.legs) == 0
-
-    def is_empty_legs(self) -> bool:
-        """
-        Checking for missing legs.
-
-        Returns:
-            True if graph no core.
-        """
-        return len(self.legs) < 3
-
-    def _find_in_leg(self, leg:list[PauliString], v:PauliString)->int:
-        """
-        Find vertex in leg.
-
-        Args:
-            leg: List of vertices.
-            v: Required vertex.
-        Returns:
-            Index of vertex in the leg.
-        """
-        try:
-            index = leg.index(v)
-        except ValueError:
-            index = -1
-        return index
-
-    def find(self, v:PauliString) -> tuple[int, int]:
-        """
-        Find vertex.
-
-        Args:
-            v: Required vertex.
-        Returns:
-            Tuple index of leg and index vertex in the leg.
-        """
-        for i, leg in enumerate(self.legs):
-            index = self._find_in_leg(leg, v)
-            if index > -1:
-                return i, index
-        return -1, -1
-
-    def is_included(self, v: PauliString) -> bool:
-        """
-        Checking a vertex for inclusion in the graph.
-
-        Args:
-            v: Required vertex.
-        Returns:
-            True if vertex in the graph.
-        """
-        leg_index = self.find(v)[0]
-        return leg_index > -1
-
-    def get_vertices(self) -> list[PauliString]:
-        """
-        Get graph vertices.
-
-        Returns:
-            List of vertices in the graph.
-        """
-        return [v for leg in self.legs for v in leg]
-
-    def get_center(self) -> PauliString:
-        """
-        Get center.
-
-        Returns:
-            Center of the graph.
-        """
-        if self.is_empty():
-            return None
-        return self.legs[0][0]
-
-    def set_center(self, v:PauliString) -> None:
-        """
-        Set center.
-
-        Args:
-            v: Vertex of the graph center.
-        Returns:
-            None
-        """
-        if self.is_empty() is False:
-            raise MorphFactoryException("Center is setted")
-        self.legs.append([v])
-
-    def get_long_leg(self) -> list[PauliString]:
-        """
-        Get long leg.
-
-        Returns:
-            List of vertices in long leg.
-        """
-        if self.is_empty_legs():
-            raise MorphFactoryException("No legs")
-        return self.legs[len(self.legs) - 1]
-
-    def get_one_vertex(self) -> PauliString:
-        """
-        Get one vertex in leg.
-
-        Returns:
-            Control vertex in the graph.
-        """
-        if self.is_empty_legs():
-            raise MorphFactoryException("No legs")
-        return self.legs[1][0]
-
-    def _gen_one_legs(self) -> Generator[list[list[PauliString]], None, None]:
-        """
-        Generate vertices included in single legs.
-
-        Yields:
-            Vertices included in legs of length 1.
-        """
-        if self.is_empty_legs():
-            raise MorphFactoryException("No legs")
-        for i in range(1, len(self.legs)):
-            if len(self.legs[i]) == 1:
-                yield self.legs[i]
-            else:
-                break
-
-    def get_one_vertices(self) -> list[PauliString]:
-        """
-        Get vertices included in single legs.
-
-        Returns:
-            List of vertices included in legs of length 1.
-        """
-        vertices = []
-        for leg in self._gen_one_legs():
-            vertices.append(leg[0].copy())
-        return vertices
-
-    def get_pq(self, lighting:PauliString
-    ) -> tuple[PauliString|None,PauliString|None,PauliString|None]:
-        """
-        Get pq.
-
-        Args:
-            lighting: Canonical graph join candidate.
-        Returns:
-            tuple:
-                pq: p@q where p and q are vertices
-                in one leg, and p is lited, q is unlited.
-                p: Lited vertex.
-        """
-        one_verices = self.get_one_vertices()
-        lits = self.get_lits(lighting, one_verices)
-        p = None
-        q = None
-        for v in one_verices:
-            if v in lits:
-                p = v
-            else:
-                q = v
-            if p is not None and q is not None:
-                return p@q, p, q
-        return None, None, None
-
-    def _gen_two_legs(self) -> Generator[list[list[PauliString]], None, None]:
-        """
-        Generate vertices included in two legs.
-
-        Yields:
-            Legs long 2.
-        """
-        if self.is_empty_legs():
-            raise MorphFactoryException("No legs")
-        for i in range(1, len(self.legs)):
-            if len(self.legs[i]) == 2:
-                yield self.legs[i]
-            else:
-                if len(self.legs[i]) > 2:
-                    break
-
-    def get_two_legs(self) -> list[tuple[PauliString, PauliString]]:
-        """
-        Get vertices included in two legs.
-
-        Returns:
-            List of vertices included in two legs.
-        """
-        return [(leg[0].copy(), leg[1].copy()) for leg in self._gen_two_legs()]
-
-    def get_count_two_legs(self) -> int:
-        """
-        Get the number of legs of length two.
-
-        Returns:
-            Number of legs long 2.
-        """
-        return len(self.get_two_legs())
-
-    def is_two_leg(self) -> bool:
-        """
-        Checking the leg for length two.
-
-        Returns:
-            True if there is a leg of length 2.
-        """
-        count_two_legs = self.get_count_two_legs()
-        if count_two_legs == 0:
-            return False
-
-        long_leg = self.get_long_leg()
-        if len(long_leg) != 2:
-            return True
-        return count_two_legs > 1
-
-    def _gen_long_legs(self) -> Generator[list[list[PauliString]], None, None]:
-        """
-        Generate long leg vertices.
-
-        Yields:
-            Vertices from long leg.
-        """
-        if self.is_empty_legs():
-            raise MorphFactoryException("No legs")
-        for i in range(len(self.legs)-1, 1, -1):
-            if len(self.legs) > 2:
-                yield self.legs[i]
-            else:
-                break
-
-    def get_long_legs(self) -> list[list[PauliString]]:
-        """
-        Get long leg vertices.
-
-        Returns:
-            List of vertices from long leg.
-        """
-        return [leg.copy() for leg in self._gen_long_legs()]
-
-    def append(self, v:PauliString, lit:PauliString) -> None:
-        """
-        Append vertex to graph.
-
-        Args:
-            v: Added vertex.
-            lit: Vertex to which is added.
         Returns:
             None
         Raises:
-            MorphFactoryException:
-                if No vertex
-                or lit is not last in leg
-                or can't append.
+            NotConnectedException:
+                If lighting is not connected.
         """
-        leg_index, vertex_index = self.find(lit)
-        if leg_index == -1:
-            raise MorphFactoryException("No vertex")
-        if leg_index == 0:
-            self.legs.insert(1, [v])
-            return
-        if vertex_index !=  len(self.legs[leg_index]) - 1:
-            raise MorphFactoryException("The vertex is not the last")
-        leg = self.legs[leg_index].copy()
-        del self.legs[leg_index]
-        leg.append(v)
-        if len(leg) >= len(self.legs[len(self.legs) - 1]):
-            self.legs.append(leg)
-            return
-        for i in range(len(self.legs) - 1, 0, -1):
-            if len(self.legs[i]) <= len(leg):
-                self.legs.insert(i+1, leg)
-                return
-        raise MorphFactoryException("Can't append")
+        ones = self.get_one_vertices()
+        vertices = set(self.get_vertices())
+        for one in ones:
+            pq = one @ lighting
+            for v in vertices:
+                if v == one:
+                    continue
+                n_v = pq @ v
+                if n_v in vertices or n_v == lighting:
+                    recording_graph(self.record, lighting=lighting,
+                    dependent=n_v, title=f"Dependent: {lighting}")
+                    raise DependentException()
+
 
     def append_to_two_center(self, lighting:PauliString) -> None:
         """
@@ -436,69 +119,6 @@ class RecordingMorphFactory:
             appending=center, title=f"Step I: {lighting}")
             return
         raise NotConnectedException()
-
-    def remove(self, v: PauliString) -> None:
-        """
-        Removing a graph vertex.
-
-        Args:
-            v: Removed vertex.
-        Returns:
-            None
-        """
-        leg_index, vertex_index = self.find(v)
-        if leg_index == -1:
-            raise MorphFactoryException("No vertex")
-        if leg_index == 0:
-            raise MorphFactoryException("Can't delete the center")
-
-        leg = [self.legs[leg_index][i] for i in range(0, vertex_index)]
-        del self.legs[leg_index]
-        if len(leg) == 0:
-            return
-        if len(leg) == 1:
-            self.legs.insert(1, leg)
-            return
-        if len(leg) >= len(self.legs[len(self.legs) - 1]):
-            self.legs.append(leg)
-            return
-        for i in range(len(self.legs) - 1, 1, -1):
-            if len(self.legs[i]) <= len(leg):
-                self.legs.insert(i+1, leg)
-                return
-        raise MorphFactoryException("Can't remove")
-
-    def replace(self, v:PauliString, v_new:PauliString) -> None:
-        """
-        Replacing a graph vertex with an equivalent one.
-
-        Args:
-            v: Removed vertices.
-            v_new: Added vertices.
-        Returns:
-            None
-        """
-        leg_index, vertex_index = self.find(v)
-        if leg_index == -1:
-            raise MorphFactoryException("No vertex")
-        self.legs[leg_index][vertex_index] = v_new
-
-
-    def get_lit_indexes(self, vertices:list[PauliString], lits:[PauliString]) -> list[int]:
-        """
-        Get the indices of the lited vertices in lits.
-
-        Args:
-            vertices: List of vertices.
-            lits: List of lited vertices.
-        Returns:
-            List of indexes of lited vertices in vertices.
-        """
-        indexes = []
-        for i, v in enumerate(vertices):
-            if v in lits:
-                indexes.append(i)
-        return indexes
 
     def _append_three_graph(self) -> Self:
         """
@@ -787,7 +407,7 @@ class RecordingMorphFactory:
         Step IV. Reducing the long leg lits to standard configurations.
 
         Returns:
-            Self.
+            Self
         Raises:
             AppendedException:
                 If success.
@@ -797,17 +417,22 @@ class RecordingMorphFactory:
         lighting = self.get_lighting()
         recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
         title=f"Step IV: {lighting}")
-        omega = self.get_one_vertex()
-        center = self.get_center()
         long_leg = self.get_long_leg()
-        v0 = long_leg[0]
+        #Offset the first vertex to the end of the linear leg. Since the leg is finite,
+        #we will always reach the highlighting of one vertex,
+        #it will be either the last one or the penultimate one
         while True:
             lits = self.get_lits(lighting, long_leg)
             if len(lits) == 0:
-                self.append(lighting, center)
+                self.append_to_center(lighting)
                 recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
                 appending=center, title=f"Step IV: {lighting}")
                 raise AppendedException()
+
+            if len(lits) == 2:
+                lit_indexes = self.get_lit_indexes(long_leg, lits)
+                if lit_indexes[0] == 0 and lit_indexes[1] == len(long_leg) - 1:
+                    break
             if len(lits) == 1:
                 if long_leg[0] == lits[0] or long_leg[len(long_leg) - 1] == lits[0]:
                     break
@@ -826,10 +451,6 @@ class RecordingMorphFactory:
                         recording_graph(self.record, collection=self.get_vertices(),
                         lighting=lighting,
                         lits=self.get_lits(lighting), title=f"Step IV: {lighting}")
-                    break
-            if len(lits) == 2:
-                lit_indexes = self.get_lit_indexes(long_leg, lits)
-                if lit_indexes[0] == 0 and lit_indexes[1] == len(long_leg) - 1:
                     break
             lit_indexes = self.get_lit_indexes(long_leg, lits)
             first = lit_indexes[0]
@@ -839,61 +460,13 @@ class RecordingMorphFactory:
                     lighting = self.lit(lighting, long_leg[i])
                     recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
                     contracting=long_leg[i], title=f"Step IV: {lighting}")
-            lits = self.get_lits(lighting, long_leg)
-            if len(lits) == 1:
-                if long_leg[0] == lits[0] or long_leg[len(long_leg) - 1] == lits[0]:
-                    break
-                if long_leg[0] != lits[0]:
-                    lit_indexes = self.get_lit_indexes(long_leg, lits)
-                    if lit_indexes[0] < len(long_leg) - 1:
-                        removing = []
-                        for i in range(lit_indexes[0] + 1, len(long_leg)):
-                            self.append_delayed(long_leg[i])
-                            removing.append(long_leg[i])
-                        if len(removing) > 0:
-                            recording_graph(self.record, lighting=lighting,
-                            lits=self.get_lits(lighting),
-                            removing_vertices=removing, title=f"Step IV: {lighting}")
-                        self.remove(long_leg[lit_indexes[0] + 1])
-                        recording_graph(self.record, collection=self.get_vertices(),
-                        lighting=lighting,
-                        lits=self.get_lits(lighting), title=f"Step IV: {lighting}")
-                    break
-            lit_indexes = self.get_lit_indexes(long_leg, lits)
-            if len(lit_indexes) > 0:
-                first = lit_indexes[0]
-                if first != 0:
-                    for i in range(first, 0, -1):
-                        lighting = self.lit(lighting, long_leg[i])
-                        recording_graph(self.record, lighting=lighting,
-                        lits=self.get_lits(lighting),
-                        contracting=long_leg[i], title=f"Step IV: {lighting}")
-                    lits = self.get_lits(lighting, long_leg)
-            lits = self.get_lits(lighting, long_leg)
-            if len(lits) == 1:
-                if long_leg[0] == lits[0] or long_leg[len(long_leg) - 1] == lits[0]:
-                    break
-            if v0 in lits:
-                lighting = self.lit(lighting, center)
+            else:
+                lighting = self.lit(lighting, long_leg[second])
                 recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
-                contracting=center, title=f"Step IV: {lighting}")
-                lighting = self.lit(lighting, omega)
-                recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
-                contracting=omega, title=f"Step IV: {lighting}")
-                lits = self.get_lits(lighting, long_leg)
-                recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
-                contracting=long_leg, title=f"Step IV: {lighting}")
-                lit_indexes = self.get_lit_indexes(long_leg, lits)
-                first = lit_indexes[0]
-                for i in range(first, -1, -1):
-                    lighting = self.lit(lighting, long_leg[i])
-                    recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
-                    contracting=long_leg[i], title=f"Step IV: {lighting}")
-                lighting = self.lit(lighting, center)
-                recording_graph(self.record, lighting=lighting, lits=self.get_lits(lighting),
-                contracting=center, title=f"Step IV: {lighting}")
+                contracting=long_leg[second], title=f"Step IV: {lighting}")
         self.set_lighting(lighting)
         return self
+
 
     def _append_long_leg_first_and_center_lit(self) -> Self:
         """
@@ -1040,6 +613,7 @@ class RecordingMorphFactory:
         long_leg = self.get_long_leg()
         lits = self.get_lits(lighting, long_leg)
         if len(lits) == 1:
+            self.check_dependency_one_leg(lighting)
             last_v = long_leg[len(long_leg) - 1]
             if len(long_leg) == 1:
                 lighting = self.lit(lighting, last_v)
@@ -1129,151 +703,6 @@ class RecordingMorphFactory:
         self.append(lighting, center)
         raise AppendedException
 
-    def _pipeline(self, lighting:PauliString) -> None:
-        """
-        Pipeline.
-
-        Args:
-            lighting: Canonical graph join candidate.
-        Returns:
-            None
-        Raises:
-            AppendedException:
-                If success.
-            DependentException:
-                If added vertex is dependent.
-        """
-        # pipeline building
-        self.set_lighting(lighting)
-        self._append_three_graph()
-        self._append_one_legs_in_different_state()
-        self._lit_only_long_leg()
-        self._lit_center()
-        self._reduce_long_leg_more_than_one_lits()
-        self._append_long_leg_first_and_center_lit()
-        self._append_long_leg_only_last_lit()
-        self._append_long_leg_last_and_first_lit()
-
-    def append_delayed(self, v:PauliString) -> None:
-        """
-        Append to delayed.
-
-        Args:
-            v: Vertex to append in delayed.
-        Return:
-            None
-        """
-        self.delayed_vertices.append(v)
-
-    def restore_delayed(self, vertices:list[PauliString]) -> list[PauliString]:
-        """
-        Restore to delayed.
-
-        Args:
-            vertices: List of vertices.
-        Returns:
-            List of vertices.
-        """
-        for i in range(len(self.delayed_vertices) - 1, -1, -1):
-            vertices.insert(0, self.delayed_vertices[i])
-        self.delayed_vertices = []
-        return vertices
-
-
-    def _get_anti_commutates(self, pauli_string:PauliString,
-                             generators:list[PauliString]) -> list[PauliString]:
-        """
-        Get a collection of non-commuting Pauli strings.
-
-        Args:
-            pauli_string: Pauli string to which commutators are defined.
-            generators: The area of Pauli strings over which to build a graph.
-            If not specified, then collection.
-        Returns:
-            List of non-commuting Pauli strings.
-        """
-        return [g for g in generators
-               if g != pauli_string and not pauli_string|g]
-
-
-    def _get_max_connected(self, generators:list[PauliString]
-    ) -> tuple[PauliString|None, list[PauliString]|None]:
-        """
-        Get the Pauli string that has the maximum number of non-commutable.
-
-        Args:
-            generators: List of Pauli strings.
-        Returns:
-            tuple:
-                PauliString.
-                List of Pauli strings connected with first.
-        """
-        if len(generators) == 0:
-            return None, None
-        pauli_string = generators[0]
-        anti_commutates = self._get_anti_commutates(pauli_string, generators)
-        for p in generators:
-            _anti_commutates = self._get_anti_commutates(p, generators)
-            if len(_anti_commutates) > len(anti_commutates):
-                pauli_string = p
-                anti_commutates = _anti_commutates
-        return pauli_string, anti_commutates
-
-    def _append_to_queue(self, queue_pauli_strings:list[PauliString],
-                         pauli_strings:list[PauliString]) -> None:
-        """
-        Append the next related Pauli string to the queue.
-
-        Args:
-            queue_pauli_strings: Queue of Pauli strings.
-            pauli_strings: List of Pauli strings.
-        Returns:
-            None
-        """
-        for p in pauli_strings:
-            if p in queue_pauli_strings:
-                pauli_strings.remove(p)
-                continue
-            anti_commutates = self._get_anti_commutates(p, queue_pauli_strings)
-            if len(anti_commutates) == 0:
-                continue
-            if len(anti_commutates) > 1:
-                min_index = len(queue_pauli_strings)
-                for anti_commutate in anti_commutates:
-                    index = queue_pauli_strings.index(anti_commutate)
-                    if index < min_index:
-                        min_index = index
-                        queue_pauli_strings.insert(min_index + 1, p)
-            else:
-                queue_pauli_strings.append(p)
-            pauli_strings.remove(p)
-            return
-
-    def _get_queue(self, generators:list[PauliString]) -> list[PauliString]:
-        """
-        Get associated sequence of Pauli strings.
-
-        Args:
-            generators: List of Pauli strings.
-        Returns:
-            Associated sequence of Pauli strings.
-        """
-        new_generators = generators.copy()
-        new_generators.sort()
-        queue_pauli_strings = []
-        pauli_string, anti_commutates = self._get_max_connected(new_generators)
-
-        new_generators.remove(pauli_string)
-        queue_pauli_strings.append(pauli_string)
-        for anti_commutate in anti_commutates:
-            new_generators.remove(anti_commutate)
-            if anti_commutate not in queue_pauli_strings:
-                queue_pauli_strings.append(anti_commutate)
-
-        while len(new_generators) > 0:
-            self._append_to_queue(queue_pauli_strings, new_generators)
-        return queue_pauli_strings
-
     def build(self, generators:list[PauliString]) -> Self:
         """
         Transform a connected graph to a canonic type.
@@ -1287,29 +716,11 @@ class RecordingMorphFactory:
             return self
         vertices = self._get_queue(generators)
         recording_graph(self.record, collection=vertices, title="Original graph", init=True)
-        unappended = []
-        self.dependents = []
-        while len(vertices) > 0:
-            lighting = vertices[0]
-            #if len(self.get_vertices()) > 0:
+        def record_lighiting(lighting: PauliString) -> None:
             recording_graph(self.record, collection=self.get_vertices(), lighting=lighting,
             title=f"Adding: {lighting}")
-            vertices.remove(lighting)
-            try:
-                self._pipeline(lighting)
-            except AppendedException:
-                vertices = self.restore_delayed(vertices)
-                if lighting in unappended:
-                    unappended.remove(lighting)
-            except DependentException:
-                self.dependents.append(lighting)
-                vertices = self.restore_delayed(vertices)
-            except NotConnectedException:
-                if lighting not in unappended:
-                    unappended.append(lighting)
-                    vertices.append(lighting)
-            except Exception:
-                unappended.append(lighting)
+
+        self._build(vertices, record_lighiting)
         classification = Classification()
         classification.add(self.get_morph())
         recording_graph(self.record, collection=self.get_vertices(),
