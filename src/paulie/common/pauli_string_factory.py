@@ -1,6 +1,5 @@
 """
-Pauli's String Factory. Responsible for creating instances
-of Pauli strings of various implementations.
+    Module for creating instances of Pauli strings of various implementations.
 """
 from collections.abc import Generator
 from bitarray import bitarray
@@ -13,9 +12,9 @@ def get_identity(n: int) -> PauliString:
     Get an identity of a given length.
 
     Args:
-        n: Length of Pauli string.
-    Returns:
-        Identity.
+        n (int): Length of Pauli string.
+    Returns: PauliString
+        Identity of the given length.
     """
     return PauliString(n=n)
 
@@ -24,10 +23,10 @@ def get_single(n: int, i: int, label: str) -> PauliString:
     Get a Pauli string with a single value at position.
 
     Args:
-        n: Length of Pauli string.
-        i: Position in Pauli string.
-        label: PauliString in single position.
-    Returns:
+        n (int): Length of Pauli string.
+        i (int): Position in Pauli string.
+        label (str): Pauli at position.
+    Returns: PauliString
         PauliString with set label.
     """
     p = get_identity(n)
@@ -36,28 +35,27 @@ def get_single(n: int, i: int, label: str) -> PauliString:
 
 def get_last(n:int) -> PauliString:
     """
-    Get an all Y of a given length.
+    Get a Pauli string with `Y` at all positions of a given length.
 
     Args:
-        n: Length of Pauli string.
-    Returns:
-        All Y.
+        n (int): Length of Pauli string.
+    Returns: PauliString
+        Pauli string of given length with `Y` at every position.
     """
     return PauliString(bits = bitarray([1] * (2 * n)))
 
 def get_pauli_string(o: PauliString|PauliStringCollection,
-                     n:int|None = None) -> PauliString|PauliStringLinear|PauliStringCollection:
+                     n:int = None) -> PauliString|PauliStringLinear|PauliStringCollection:
     """
     Get Pauli strings in their current representation.
 
     Args:
-         o: a Pauli string or a collection of Pauli strings.
-         n: length of Pauli strings
-    Returns:
-        If o is a Pauli string, then its current instantiation value n is created
-        otherwise PauliStringCollection is created - a collection of Pauli strings.
-        Given n, the collection is expanded as k-local.
-        Where k is the maximum length of a Pauli string in a given collection
+         o (PauliString|PauliStringCollection): A Pauli string or a collection of Pauli strings.
+         n (int, optional): Length of Pauli strings
+    Returns: PauliString|PauliStringLinear|PauliStringCollection
+        If `o` is a Pauli string, then it is tensored with identities at the end until its length is
+        `n`. Otherwise a collection of Pauli strings is created. Given n, the collection is expanded
+        as a k-local set where k is the maximum length of a Pauli string in the given collection.
     """
     if isinstance(o, str):
         return PauliString(pauli_str=o, n=n)
@@ -74,92 +72,61 @@ def get_pauli_string(o: PauliString|PauliStringCollection,
     return generators
 
 
-class Used:
-    """
-    Helper class for monitoring previously created Pauli strings
-    """
-
-    used: set[str]
-
-    def __init__(self) -> None:
-        """
-        init class
-        """
-        self.clear()
-
-    def clear(self) -> None:
-        """
-        Clear set
-
-        Returns:
-            None
-        """
-        self.used = set()
-
-    def append(self, p: PauliString) -> None:
-        """Append to set
-
-        Args:
-            p: Pauli string to append in the set.
-        Returns:
-            None
-        """
-        self.used.add(p)
-
-    def is_used(self, p: PauliString) -> bool:
-        """
-        Checking a Pauli string in a set.
-
-        Args:
-            p: Pauli string for checking in the used.
-        Returns:
-            True if Pauli string in a set.
-        """
-        return p in self.used
-
-def gen_k_local(n: int, p: PauliString, used:Used|None=None
+def gen_k_local(n: int, p: PauliString, used:set[PauliString]=None
                 ) -> Generator[list[PauliString], None, None]:
     """
     Generates k-local Pauli strings.
 
+    Examples:
+        >>> from paulie.common.pauli_string_factory import gen_k_local
+        >>> from paulie import get_pauli_string as p
+        >>> print([s for s in gen_k_local(4, p('XY'))])
+        [PauliString(XYII), PauliString(IXYI), PauliString(IIXY)]
+
     Args:
-        n: Length of Pauli string.
-        p: Local Pauli string.
-        used: Repository of already generated strings.
-    Returns:
-        k-local string generator.
+        n (int): Length of Pauli string.
+        p (PauliString): Local Pauli string.
+        used (set[PauliString], optional): Set of already generated strings.
+    Yields:
+        k-local strings.
     Raises:
-        ValueError:
-            n < len(p)
+        ValueError: If the desired length is less than the length of the local Pauli string.
     """
     if n < len(p):
         raise ValueError(f"Size must be greater than {len(p)}")
 
-    used = used or Used()
+    used = used or set()
     n_p = n - len(p)
     for k in range(n_p + 1):
         left = get_identity(k) + p + get_identity(n_p - k)
-        if used.is_used(left):
+        if left in used:
             continue
-
-        used.append(left)
+        used.add(left)
         yield left
 
 
 def gen_k_local_generators(n: int,
                            generators: list[str] | list[PauliString] | PauliStringCollection,
-                           used:Used|None=None) -> Generator[list[PauliString], None, None]:
+                           used:set[PauliString]=None) -> Generator[list[PauliString], None, None]:
     """
     Generates k-local operators for a set of generators.
 
+    Examples:
+        >>> from paulie.common.pauli_string_factory import gen_k_local_generators
+        >>> from paulie import get_pauli_string as p
+        >>> print([s for s in gen_k_local_generators(4, p(['XY', 'Z']))])
+        [PauliString(XYII), PauliString(IXYI), PauliString(IIXY), PauliString(ZIII),
+        PauliString(IZII), PauliString(IIZI)]
+
     Args:
-        n: Length of Pauli string.
-        generators: Collection of Pauli strings.
-        used: Repository of already generated strings.
-    Returns:
-        k-local string generator.
+        n (int): Length of Pauli string.
+        generators (list[str] | list[PauliString] | PauliStringCollection): Collection of Pauli
+            strings.
+        used (set[PauliString]): Set of already generated strings.
+    Yields:
+        k-local strings.
     """
-    used = used or Used()
+    used = set()
     longest = max(generators, key=len)
     for g in generators:
         if isinstance(g, str):
