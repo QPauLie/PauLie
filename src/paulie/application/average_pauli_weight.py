@@ -63,11 +63,9 @@ def get_pauli_weights(num_qubits: int, identity_pos: int=0) -> np.ndarray:
         weights[i] = weight
     return weights
 
-def average_pauli_weight(o: np.ndarray, weights: np.ndarray) -> float:
+def average_pauli_weight(o: np.ndarray) -> float:
     r"""
     Calculates the average Pauli weight (influence) for an operator :math:`O`.
-
-    The influence :math:`I` is calculated as
 
     .. math::
 
@@ -76,13 +74,8 @@ def average_pauli_weight(o: np.ndarray, weights: np.ndarray) -> float:
     
     where :math:`|P|` is the weight of the Pauli operator :math:`P`.
 
-    .. currentmodule::
-        paulie.application.matrix_decomposition
-
     Args:
         o (numpy.ndarray): The operator :math:`O` in matrix form.
-        weights (numpy.ndarray): The weights of each Pauli operator in the ordering corresponding to
-            the output of :func:`matrix_decomposition`.
 
     Returns:
         float: The average Pauli weight (influence) of the operator.
@@ -93,6 +86,18 @@ def average_pauli_weight(o: np.ndarray, weights: np.ndarray) -> float:
     # The "probability" of a Pauli term P is c_P^2.
     # Note: sum(|c_P|^2) = 1 due to O^2=I.
     probs = np.abs(coeffs)**2
+    weights = get_pauli_weights(int(np.log2(o.shape[0])))
+    if weights.shape != probs.shape:
+        raise ValueError(
+            f"weights has shape {weights.shape}, expected {probs.shape}"
+        )
+
+    if not np.isclose(np.sum(probs), 1.0, atol=1e-10):
+        raise ValueError(
+            "Pauli coefficients are not normalized: sum_P |c_P|^2 != 1. "
+            "(for states typically sqrt(d^n) |psi><psi|)."
+        )
+
     # Calculate the influence I(O)
     influence = np.sum(weights * probs)
     return influence

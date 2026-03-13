@@ -59,7 +59,7 @@ Utilities related to different DLA properties.
 .. autosummary::
    :toctree: generated/
 
-   graph_complexity.average_graph_complexity
+   average_graph_complexity.average_graph_complexity
    otoc.average_otoc
    second_moment.second_moment
 

@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 from paulie import (
     quantum_fourier_entropy,
     average_pauli_weight,
-    get_pauli_weights
 )
 
 # --- Testing the Conjecture ---
@@ -33,9 +32,9 @@ def compute_c_for_weights(args):
     """
     compute c = H(O) / I(O) for given weights
     """
-    n_qubits, weights = args
+    n_qubits = args
     o = generate_hermitian_operator(n_qubits)
-    i = average_pauli_weight(o, weights=weights)
+    i = average_pauli_weight(o)
     h = quantum_fourier_entropy(o)
     if i < 1e-12:
         return None  # Mark as zero
@@ -54,8 +53,7 @@ def test():
         print(f"\nNumber of qubits: {n_qubits}")
         #pauli_strings = [''.join(p) for p in product('XYZI', repeat=n_qubits)]
         #args = [(n_qubits, pauli_strings)] * TRIAL_COUNT
-        weights = get_pauli_weights(n_qubits, identity_pos=0)
-        args = [(n_qubits, weights)] * TRIAL_COUNT
+        args = [n_qubits] * TRIAL_COUNT
         c_list = []
         num_of_zeros = 0
         max_ratio = 0

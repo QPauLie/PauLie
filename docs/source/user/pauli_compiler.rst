@@ -1,7 +1,7 @@
 Pauli compiler
 ==============
 
-The Pauli compiler implements the algorithm from :cite:t:`Bittel_2024` to compile a target
+The Pauli compiler implements the algorithm from :cite:t:`Smith_2025` to compile a target
 Pauli string into a sequence of generators that produces the target via nested commutators.
 The resulting sequence has length :math:`\mathcal{O}(N)` for :math:`N` qubits.
 

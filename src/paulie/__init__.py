@@ -18,7 +18,7 @@ from .application.fourpoint import fourpoint
 from .application.charges import non_commuting_charges
 from .application.second_moment import second_moment
 from .application.get_optimal_su2_n import get_optimal_su_2_n_generators
-from .application.graph_complexity import average_graph_complexity
+from .application.average_graph_complexity import average_graph_complexity
 from .application.animation import animation_anti_commutation_graph
 from .application.average_pauli_weight import (
     quantum_fourier_entropy,
