@@ -27,11 +27,7 @@ test_case_pauli_str = [
 ]
 
 test_n_qubit = [1, 2, 3, 4]
-test_case_weight_O = [
-    (n_qubit1, n_qubit2)
-    for (n_qubit1, n_qubit2)
-    in itertools.product(test_n_qubit, repeat=2)
-]
+test_case_weight_O = list(itertools.product(test_n_qubit, repeat=2))
 
 @pytest.mark.parametrize("P, expected_weight", test_case_pauli_str)
 def test_avg_pauli_weight_pauli_str(P, expected_weight) -> None:
