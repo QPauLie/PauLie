@@ -160,6 +160,7 @@ def make_heisenberg_generators(n: int) -> PauliStringCollection:
 
 
 def main() -> None:
+    """Run all benchmark sections and print results."""
     print("=" * 80, flush=True)
     print(" Benchmark: brute-force Lie closure vs PauLie graph classification", flush=True)
     print("=" * 80, flush=True)
