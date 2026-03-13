@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 from paulie import (
     quantum_fourier_entropy,
     average_pauli_weight,
-    get_pauli_weights
 )
 
 # --- Testing the Conjecture ---
