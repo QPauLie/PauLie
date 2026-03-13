@@ -508,15 +508,16 @@ class Classification:
 
         dim = 0
         for morph in self.morphs:
-            result = morph.get_algebra_properties()
-            type_algebra = result[0]
-            n = result[2]
-            if type_algebra == TypeAlgebra.SU:
-                dim+= dim_su(n)
-            if type_algebra == TypeAlgebra.SP:
-                dim+= dim_sp(n)
-            if type_algebra == TypeAlgebra.SO:
-                dim+= dim_so(n)
+            type_algebra, nc, n = morph.get_algebra_properties()
+            multiplicity = nc if nc == 1 else 2**(nc - 1)
+            if type_algebra == TypeAlgebra.U:
+                dim += multiplicity
+            elif type_algebra == TypeAlgebra.SU:
+                dim += multiplicity * dim_su(n)
+            elif type_algebra == TypeAlgebra.SP:
+                dim += multiplicity * dim_sp(n)
+            elif type_algebra == TypeAlgebra.SO:
+                dim += multiplicity * dim_so(n)
         return dim
 
     def _inc_morph_generator(self, ms:int, morphs:list[Morph], morph_generators:list[PauliString],
