@@ -59,6 +59,17 @@ def average_pauli_weight(o: np.ndarray, weights: np.ndarray) -> float:
     # The "probability" of a Pauli term P is c_P^2.
     # Note: sum(|c_P|^2) = 1 due to O^2=I.
     probs = np.abs(coeffs)**2
+    if weights.shape != probs.shape:
+        raise ValueError(
+            f"weights has shape {weights.shape}, expected {probs.shape}"
+        )
+
+    if not np.isclose(np.sum(probs), 1.0, atol=atol):
+        raise ValueError(
+            "Pauli coefficients are not normalized: sum_P |c_P|^2 != 1. "
+            "(for states typically sqrt(d^n) |psi><psi|)."
+        )
+
     # Calculate the influence I(O)
     influence = np.sum(weights * probs)
     return influence

@@ -6,8 +6,5 @@ User Guide
 
    classification
    commutator_graph
-   average_graph_complexity
-   second_moment
-   matrix_decomposition
    optimal_universal_generators
    pauli_compiler
