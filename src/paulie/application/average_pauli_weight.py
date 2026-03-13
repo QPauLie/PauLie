@@ -64,7 +64,7 @@ def average_pauli_weight(o: np.ndarray, weights: np.ndarray) -> float:
             f"weights has shape {weights.shape}, expected {probs.shape}"
         )
 
-    if not np.isclose(np.sum(probs), 1.0, atol=atol):
+    if not np.isclose(np.sum(probs), 1.0, atol=1e-10):
         raise ValueError(
             "Pauli coefficients are not normalized: sum_P |c_P|^2 != 1. "
             "(for states typically sqrt(d^n) |psi><psi|)."
