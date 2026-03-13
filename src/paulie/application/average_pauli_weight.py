@@ -44,7 +44,7 @@ def get_pauli_weights(num_qubits: int, identity_pos: int=0) -> np.ndarray:
         weights[i] = weight
     return weights
 
-def average_pauli_weight(o: np.ndarray, weights: np.ndarray) -> float:
+def average_pauli_weight(o: np.ndarray) -> float:
     """
     Calculates the average Pauli weight (influence) for an operator O.
 
@@ -59,6 +59,7 @@ def average_pauli_weight(o: np.ndarray, weights: np.ndarray) -> float:
     # The "probability" of a Pauli term P is c_P^2.
     # Note: sum(|c_P|^2) = 1 due to O^2=I.
     probs = np.abs(coeffs)**2
+    weights = get_pauli_weights(int(np.log2(o.shape[0])))
     if weights.shape != probs.shape:
         raise ValueError(
             f"weights has shape {weights.shape}, expected {probs.shape}"
