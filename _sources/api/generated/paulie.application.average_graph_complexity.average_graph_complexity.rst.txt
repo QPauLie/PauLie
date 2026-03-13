@@ -1,0 +1,4 @@
+﻿paulie.application.average_graph_complexity.average_graph_complexity
+====================================================================
+
+.. autofunction:: paulie.application.average_graph_complexity.average_graph_complexity
