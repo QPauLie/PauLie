@@ -13,10 +13,10 @@ def get_O(n_qubit):
     """
     Create operator O = 2^(n/2) |0><0|^kron n
     """
-    O = np.zeros((2 ** n_qubit, 2 ** n_qubit))
-    O[0,0] = 2 ** (n_qubit / 2)
+    operator = np.zeros((2 ** n_qubit, 2 ** n_qubit))
+    operator[0,0] = 2 ** (n_qubit / 2)
 
-    return O
+    return operator
 
 test_case_pauli_str = [
     ("I", 0), ("X", 1), ("Y", 1), ("Z", 1),
@@ -50,13 +50,13 @@ def test_avg_pauli_weight_O(n1, n2) -> None:
     Test average Pauli weight from operator O
     """
 
-    O1 = get_O(n1)
-    O2 = get_O(n2)
-    O1O2 = np.kron(O1,O2)
+    operator1 = get_O(n1)
+    operator2 = get_O(n2)
+    operator12 = np.kron(operator1, operator2)
 
-    weight1 = average_pauli_weight(O1)
-    weight2 = average_pauli_weight(O2)
-    weight12 = average_pauli_weight(O1O2)
+    weight1 = average_pauli_weight(operator1)
+    weight2 = average_pauli_weight(operator2)
+    weight12 = average_pauli_weight(operator12)
 
     assert np.isclose(weight1, n1 / 2, atol=1e-10)
     assert np.isclose(weight2, n2 / 2, atol=1e-10)
@@ -79,7 +79,7 @@ def test_quantum_fourier_entropy_O(n, _) -> None:
     Test quantum Fourier entropy from operator O
     """
 
-    O = get_O(n)
-    entropy = quantum_fourier_entropy(O)
+    operator = get_O(n)
+    entropy = quantum_fourier_entropy(operator)
 
     assert np.isclose(entropy, n, atol=1e-10)
