@@ -31,7 +31,7 @@
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=583b3f71" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=39c2561c" />
   
   <!-- So that users can add custom icons -->
   <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -498,51 +498,26 @@ using just contractions: we may have to remove a vertex to complete this step. B
 </div>
 <p>We can also animate the transformation to a canonical graph.
 We use the following color convention.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<colgroup>
-<col style="width: 66.7%" />
-<col style="width: 33.3%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Node</p></th>
-<th class="head"><p>Color</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Lighting</p></td>
-<td><p><span class="raw-html"><span style="display:inline-block; width:1.4em; height:1.4em; background:red; border:1px solid #666;"></span></span></p></td>
-</tr>
-<tr class="row-odd"><td><p>Dependent</p></td>
-<td><p><span class="raw-html"><span style="display:inline-block; width:1.4em; height:1.4em; background:#2F4F4F; border:1px solid #666;"></span></span></p></td>
-</tr>
-<tr class="row-even"><td><p>Unlit vertex in a leg of length one</p></td>
-<td><p><span class="raw-html"><span style="display:inline-block; width:1.4em; height:1.4em; background:#FF00FF; border:1px solid #666;"></span></span></p></td>
-</tr>
-<tr class="row-odd"><td><p>Removing</p></td>
-<td><p><span class="raw-html"><span style="display:inline-block; width:1.4em; height:1.4em; background:black; border:1px solid #666;"></span></span></p></td>
-</tr>
-<tr class="row-even"><td><p>Unlit</p></td>
-<td><p><span class="raw-html"><span style="display:inline-block; width:1.4em; height:1.4em; background:#cccccc; border:1px solid #666;"></span></span></p></td>
-</tr>
-<tr class="row-odd"><td><p>Appending</p></td>
-<td><p><span class="raw-html"><span style="display:inline-block; width:1.4em; height:1.4em; background:#00FF00; border:1px solid #666;"></span></span></p></td>
-</tr>
-<tr class="row-even"><td><p>Contracting</p></td>
-<td><p><span class="raw-html"><span style="display:inline-block; width:1.4em; height:1.4em; background:#008080; border:1px solid #666;"></span></span></p></td>
-</tr>
-<tr class="row-odd"><td><p>Lit vertex in a leg of length one</p></td>
-<td><p><span class="raw-html"><span style="display:inline-block; width:1.4em; height:1.4em; background:#6A5ACD; border:1px solid #666;"></span></span></p></td>
-</tr>
-<tr class="row-even"><td><p>Replacing</p></td>
-<td><p><span class="raw-html"><span style="display:inline-block; width:1.4em; height:1.4em; background:#8B008B; border:1px solid #666;"></span></span></p></td>
-</tr>
-<tr class="row-odd"><td><p>Lit</p></td>
-<td><p><span class="raw-html"><span style="display:inline-block; width:1.4em; height:1.4em; background:cyan; border:1px solid #666;"></span></span></p></td>
-</tr>
-</tbody>
+<table class="docutils align-default color-legend">
+  <thead>
+    <tr>
+      <th>Node</th>
+      <th>Color</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Lighting</td><td><span class="swatch" style="background:red;"></span></td></tr>
+    <tr><td>Dependent</td><td><span class="swatch" style="background:#2F4F4F;"></span></td></tr>
+    <tr><td>Unlit vertex in a leg of length one</td><td><span class="swatch" style="background:#FF00FF;"></span></td></tr>
+    <tr><td>Removing</td><td><span class="swatch" style="background:black;"></span></td></tr>
+    <tr><td>Unlit</td><td><span class="swatch" style="background:#cccccc;"></span></td></tr>
+    <tr><td>Appending</td><td><span class="swatch" style="background:#00FF00;"></span></td></tr>
+    <tr><td>Contracting</td><td><span class="swatch" style="background:#008080;"></span></td></tr>
+    <tr><td>Lit vertex in a leg of length one</td><td><span class="swatch" style="background:#6A5ACD;"></span></td></tr>
+    <tr><td>Replacing</td><td><span class="swatch" style="background:#8B008B;"></span></td></tr>
+    <tr><td>Lit</td><td><span class="swatch" style="background:cyan;"></span></td></tr>
+  </tbody>
 </table>
-</div>
-
 <link rel="stylesheet"
 href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <script language="javascript">

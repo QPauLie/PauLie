@@ -101,40 +101,33 @@ outputs
 
     algebra = 4*so(5)
 
+.. Here we should add some definitions like lit, dependent etc.
+
 We can also animate the transformation to a canonical graph.
 We use the following color convention.
 
-.. Here we should add some definitions like lit, dependent etc.
+.. raw:: html
 
-.. role:: raw-html(raw)
-   :format: html
-
-.. list-table::
-   :header-rows: 1
-   :widths: 40 20
-
-   * - Node
-     - Color
-   * - Lighting
-     - :raw-html:`<span style="display:inline-block; width:1.4em; height:1.4em; background:red; border:1px solid #666;"></span>`
-   * - Dependent
-     - :raw-html:`<span style="display:inline-block; width:1.4em; height:1.4em; background:#2F4F4F; border:1px solid #666;"></span>`
-   * - Unlit vertex in a leg of length one
-     - :raw-html:`<span style="display:inline-block; width:1.4em; height:1.4em; background:#FF00FF; border:1px solid #666;"></span>`
-   * - Removing
-     - :raw-html:`<span style="display:inline-block; width:1.4em; height:1.4em; background:black; border:1px solid #666;"></span>`
-   * - Unlit
-     - :raw-html:`<span style="display:inline-block; width:1.4em; height:1.4em; background:#cccccc; border:1px solid #666;"></span>`
-   * - Appending
-     - :raw-html:`<span style="display:inline-block; width:1.4em; height:1.4em; background:#00FF00; border:1px solid #666;"></span>`
-   * - Contracting
-     - :raw-html:`<span style="display:inline-block; width:1.4em; height:1.4em; background:#008080; border:1px solid #666;"></span>`
-   * - Lit vertex in a leg of length one
-     - :raw-html:`<span style="display:inline-block; width:1.4em; height:1.4em; background:#6A5ACD; border:1px solid #666;"></span>`
-   * - Replacing
-     - :raw-html:`<span style="display:inline-block; width:1.4em; height:1.4em; background:#8B008B; border:1px solid #666;"></span>`
-   * - Lit
-     - :raw-html:`<span style="display:inline-block; width:1.4em; height:1.4em; background:cyan; border:1px solid #666;"></span>`
+   <table class="docutils align-default color-legend">
+     <thead>
+       <tr>
+         <th>Node</th>
+         <th>Color</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr><td>Lighting</td><td><span class="swatch" style="background:red;"></span></td></tr>
+       <tr><td>Dependent</td><td><span class="swatch" style="background:#2F4F4F;"></span></td></tr>
+       <tr><td>Unlit vertex in a leg of length one</td><td><span class="swatch" style="background:#FF00FF;"></span></td></tr>
+       <tr><td>Removing</td><td><span class="swatch" style="background:black;"></span></td></tr>
+       <tr><td>Unlit</td><td><span class="swatch" style="background:#cccccc;"></span></td></tr>
+       <tr><td>Appending</td><td><span class="swatch" style="background:#00FF00;"></span></td></tr>
+       <tr><td>Contracting</td><td><span class="swatch" style="background:#008080;"></span></td></tr>
+       <tr><td>Lit vertex in a leg of length one</td><td><span class="swatch" style="background:#6A5ACD;"></span></td></tr>
+       <tr><td>Replacing</td><td><span class="swatch" style="background:#8B008B;"></span></td></tr>
+       <tr><td>Lit</td><td><span class="swatch" style="background:cyan;"></span></td></tr>
+     </tbody>
+   </table>
 
 .. raw:: html
    :file: ../media/example_c.html
