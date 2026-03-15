@@ -14,6 +14,7 @@ For so(n) algebras (dim ~ n^2), brute force is manageable. For su(2^n) or sp(2^n
 algebras (dim ~ 4^n), brute force becomes infeasible while PauLie remains fast.
 """
 
+import random
 import signal
 import time
 from itertools import product
@@ -159,6 +160,34 @@ def make_heisenberg_generators(n: int) -> PauliStringCollection:
     return p(gens)
 
 
+def make_random_pauli_hamiltonian(n: int, n_terms: int,
+                                  locality: int = 2,
+                                  seed: int | None = None) -> PauliStringCollection:
+    """Build a random Pauli Hamiltonian with k-local terms.
+
+    Args:
+        n: Number of qubits.
+        n_terms: Number of generator terms.
+        locality: Maximum locality of each term.
+        seed: Random seed for reproducibility.
+
+    Returns:
+        PauliStringCollection of random generators.
+    """
+    rng = random.Random(seed)
+    paulis = "XYZ"
+    gens = set()
+    while len(gens) < n_terms:
+        s = ["I"] * n
+        # Pick k random positions and assign random non-identity Paulis
+        k = rng.randint(1, min(locality, n))
+        positions = rng.sample(range(n), k)
+        for pos in positions:
+            s[pos] = rng.choice(paulis)
+        gens.add("".join(s))
+    return p(list(gens))
+
+
 def main() -> None:
     """Run all benchmark sections and print results."""
     print("=" * 80, flush=True)
@@ -172,28 +201,117 @@ def main() -> None:
         bf_timeout=30.0,
     )
 
-    # 2. su(2^n) — exponential dim, brute force explodes
+    # 2. so(2^n) algebras — exponential dim
     run_section(
-        "[2] su(2^n) algebras (a12: [XX, XY, YZ]) -- dim = 4^n - 1",
+        "[2] so(2^n) algebras (a11: [XY, YX, YZ]) -- dim = 2^n(2^n-1)/2",
+        [(n, p(G_LIE["a11"], n=n)) for n in [3, 4, 5, 6, 7]],
+        bf_timeout=15.0,
+    )
+
+    # 3. su(2^n) algebras — exponential dim, brute force explodes
+    run_section(
+        "[3] su(2^n) algebras (a12: [XX, XY, YZ]) -- dim = 4^n - 1",
         [(n, p(G_LIE["a12"], n=n)) for n in [3, 4, 5, 6, 7]],
         bf_timeout=15.0,
     )
 
-    # 3. sp(2^(n-2)) — exponential dim
+    # 4. su(2^(n-1))+su(2^(n-1)) algebras
     run_section(
-        "[3] sp algebras (a9: [XY, XZ]) -- dim grows exponentially",
+        "[4] su+su algebras (a13: [XX, YY, YZ]) -- two direct summands",
+        [(n, p(G_LIE["a13"], n=n)) for n in [3, 4, 5, 6, 7]],
+        bf_timeout=15.0,
+    )
+
+    # 5. sp(2^(n-2)) — exponential dim
+    run_section(
+        "[5] sp algebras (a9: [XY, XZ]) -- dim grows exponentially",
         [(n, p(G_LIE["a9"], n=n)) for n in [3, 4, 5, 6, 7]],
         bf_timeout=15.0,
     )
 
-    # 4. Heisenberg model -> so(2n), with large qubit counts for PauLie
+    # 6. so(2n-1) algebras — polynomial but larger
     run_section(
-        "[4] Heisenberg model: XX+YY couplings + Z fields -> so(2n)",
+        "[6] so(2n-1) algebras (a8: [XX, XZ]) -- dim = (2n-1)(2n-2)/2",
+        [(n, p(G_LIE["a8"], n=n)) for n in [3, 4, 5, 6, 7, 8]],
+        bf_timeout=30.0,
+    )
+
+    # 7. Heisenberg model -> so(2n), with large qubit counts for PauLie
+    run_section(
+        "[7] Heisenberg model: XX+YY couplings + Z fields -> so(2n)",
         [(n, make_heisenberg_generators(n))
          for n in [3, 4, 5, 6, 7, 8, 10, 15, 20, 50, 100]],
         bf_timeout=30.0,
         bf_max_n=8,
     )
+
+    # 8. Random Pauli Hamiltonians — 2-local
+    print("\n[8] Random 2-local Pauli Hamiltonians (seed=42)", flush=True)
+    print_header()
+    for n in [4, 5, 6, 7, 8, 10, 15, 20]:
+        n_terms = 3 * n
+        generators = make_random_pauli_hamiltonian(n, n_terms, locality=2, seed=42)
+
+        t0 = time.perf_counter()
+        algebra = generators.get_algebra()
+        dla_dim = generators.get_dla_dim()
+        t_paulie = time.perf_counter() - t0
+
+        if n <= 7:
+            t0 = time.perf_counter()
+            try:
+                dla = lie_closure_brute_force(generators.get(), timeout=30.0)
+                t_brute = time.perf_counter() - t0
+                bf_str = f"{format_time(t_brute)} ({len(dla)})"
+                speedup = t_brute / t_paulie if t_paulie > 1e-9 else float("inf")
+                speedup_str = f"{speedup:.0f}x"
+            except _BruteForceTimeout:
+                t_brute = time.perf_counter() - t0
+                bf_str = "TIMEOUT"
+                speedup_str = f">{t_brute / t_paulie:.0f}x"
+        else:
+            bf_str = "INFEASIBLE"
+            speedup_str = "-"
+
+        print(
+            f"  {n:>3}  {algebra:>20}  {dla_dim:>8}  "
+            f"{format_time(t_paulie):>10}  {bf_str:>12}  {speedup_str:>10}",
+            flush=True,
+        )
+
+    # 9. Random Pauli Hamiltonians — 3-local (larger algebras)
+    print("\n[9] Random 3-local Pauli Hamiltonians (seed=42)", flush=True)
+    print_header()
+    for n in [4, 5, 6, 7, 8, 10, 15, 20]:
+        n_terms = 2 * n
+        generators = make_random_pauli_hamiltonian(n, n_terms, locality=3, seed=42)
+
+        t0 = time.perf_counter()
+        algebra = generators.get_algebra()
+        dla_dim = generators.get_dla_dim()
+        t_paulie = time.perf_counter() - t0
+
+        if n <= 6:
+            t0 = time.perf_counter()
+            try:
+                dla = lie_closure_brute_force(generators.get(), timeout=30.0)
+                t_brute = time.perf_counter() - t0
+                bf_str = f"{format_time(t_brute)} ({len(dla)})"
+                speedup = t_brute / t_paulie if t_paulie > 1e-9 else float("inf")
+                speedup_str = f"{speedup:.0f}x"
+            except _BruteForceTimeout:
+                t_brute = time.perf_counter() - t0
+                bf_str = "TIMEOUT"
+                speedup_str = f">{t_brute / t_paulie:.0f}x"
+        else:
+            bf_str = "INFEASIBLE"
+            speedup_str = "-"
+
+        print(
+            f"  {n:>3}  {algebra:>20}  {dla_dim:>8}  "
+            f"{format_time(t_paulie):>10}  {bf_str:>12}  {speedup_str:>10}",
+            flush=True,
+        )
 
     print("\n" + "=" * 80, flush=True)
     print(" PauLie classifies in polynomial time regardless of algebra dimension.", flush=True)
