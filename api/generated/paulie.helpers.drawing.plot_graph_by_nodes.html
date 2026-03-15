@@ -470,12 +470,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="paulie.helpers.drawing.plot_graph_by_nodes">
 <span class="sig-prename descclassname"><span class="pre">paulie.helpers.drawing.</span></span><span class="sig-name descname"><span class="pre">plot_graph_by_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commutators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.helpers.drawing.plot_graph_by_nodes" title="Link to this definition">#</a></dt>
-<dd><p>Plot graph by nodes.</p>
+<dd><p>Plot anticommutator graph with edges labeled by commutator of endpoints.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nodes</strong> – Collection of Pauli strings.</p></li>
-<li><p><strong>commutators</strong> – Collection of commutators (Pauli strings).</p></li>
+<li><p><strong>nodes</strong> (<a class="reference internal" href="paulie.common.pauli_string_collection.PauliStringCollection.html#paulie.common.pauli_string_collection.PauliStringCollection" title="paulie.common.pauli_string_collection.PauliStringCollection"><em>PauliStringCollection</em></a>) – Generating set for anticommutator graph.</p></li>
+<li><p><strong>commutators</strong> (<a class="reference internal" href="paulie.common.pauli_string_collection.PauliStringCollection.html#paulie.common.pauli_string_collection.PauliStringCollection" title="paulie.common.pauli_string_collection.PauliStringCollection"><em>PauliStringCollection</em></a><em>|</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em><em>, </em><em>optional</em>) – Only show those edges which
+have labels belonging to this set. Defaults to None, in which case all edges are shown.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

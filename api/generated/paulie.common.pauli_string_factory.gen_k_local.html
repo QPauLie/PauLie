@@ -471,19 +471,26 @@
 <dt class="sig sig-object py" id="paulie.common.pauli_string_factory.gen_k_local">
 <span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_factory.</span></span><span class="sig-name descname"><span class="pre">gen_k_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">used</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_factory.gen_k_local" title="Link to this definition">#</a></dt>
 <dd><p>Generates k-local Pauli strings.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">paulie.common.pauli_string_factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">gen_k_local</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">paulie</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_pauli_string</span> <span class="k">as</span> <span class="n">p</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">gen_k_local</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="s1">&#39;XY&#39;</span><span class="p">))])</span>
+<span class="go">[PauliString(XYII), PauliString(IXYI), PauliString(IIXY)]</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> – Length of Pauli string.</p></li>
-<li><p><strong>p</strong> – Local Pauli string.</p></li>
-<li><p><strong>used</strong> – Repository of already generated strings.</p></li>
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Length of Pauli string.</p></li>
+<li><p><strong>p</strong> (<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>) – Local Pauli string.</p></li>
+<li><p><strong>used</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><em>set</em></a><em>[</em><a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em><em>, </em><em>optional</em>) – Set of already generated strings.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>k-local string generator.</p>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p>k-local strings.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – n &lt; len(p)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the desired length is less than the length of the local Pauli string.</p>
 </dd>
 </dl>
 </dd></dl>

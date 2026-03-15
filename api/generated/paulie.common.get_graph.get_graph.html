@@ -470,17 +470,19 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="paulie.common.get_graph.get_graph">
 <span class="sig-prename descclassname"><span class="pre">paulie.common.get_graph.</span></span><span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commutators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.get_graph.get_graph" title="Link to this definition">#</a></dt>
-<dd><p>Get anticommutator graph.</p>
+<dd><p>Get the anticommutation graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>generators</strong> – Array of PauliString.</p></li>
-<li><p><strong>commutators</strong> – Area of Pauli strings over which to build a graph.</p></li>
-<li><p><strong>flag_labels</strong> – Boolean indicating whether to include labels in the graph.</p></li>
+<li><p><strong>nodes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>) – Generating set for anticommutator graph.</p></li>
+<li><p><strong>commutators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em><em>, </em><em>optional</em>) – Only add those edges which have labels belonging
+to this set. Defaults to None, in which case all edges are added.</p></li>
+<li><p><strong>flag_labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean indicating whether to include labels in the graph.
+Defaults to <cite>True</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Vertices, edges, and labels of edges.</p>
+<dd class="field-even"><p>Vertices, edges, and edge labels for the anticommutation graph.</p>
 </dd>
 </dl>
 </dd></dl>

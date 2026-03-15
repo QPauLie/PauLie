@@ -470,14 +470,18 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="paulie.application.charges.non_commuting_charges">
 <span class="sig-prename descclassname"><span class="pre">paulie.application.charges.</span></span><span class="sig-name descname"><span class="pre">non_commuting_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.charges.non_commuting_charges" title="Link to this definition">#</a></dt>
-<dd><p>Non-commuting charges describe non-Abelian symmetries — that is, elements of the
-stabilizer of the DLA that do not commute with each other.</p>
+<dd><p>Finds the non-commuting charges of a DLA.</p>
+<p>Non-commuting charges describe non-Abelian symmetries — that is, elements of the stabilizer of
+the DLA that do not commute with each other.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>generators</strong> – Collection of Pauli strings.</p>
+<dd class="field-odd"><p><strong>generators</strong> (<a class="reference internal" href="paulie.common.pauli_string_collection.PauliStringCollection.html#paulie.common.pauli_string_collection.PauliStringCollection" title="paulie.common.pauli_string_collection.PauliStringCollection"><em>PauliStringCollection</em></a>) – Generating set of the DLA.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of charges as strings.</p>
+<dd class="field-even"><p>Set of non-commuting charges.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="paulie.common.pauli_string_collection.PauliStringCollection.html#paulie.common.pauli_string_collection.PauliStringCollection" title="paulie.common.pauli_string_collection.PauliStringCollection">PauliStringCollection</a></p>
 </dd>
 </dl>
 </dd></dl>

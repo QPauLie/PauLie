@@ -482,11 +482,15 @@
 <dd class="field-odd"><p><strong>other</strong> – Pauli string to adjoint map with self.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None if the commutator is zero (i.e., if A and B commute).
-Otherwise, returns a PauliString proportional to the commutator.</p>
+<dd class="field-even"><p><p>None if the commutator is zero (i.e., if A and B commute).</p>
+<p>Otherwise, returns a PauliString proportional to the commutator.</p>
+</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – len(self.bits) != len(other.bits)</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>|None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the length of <cite>self</cite> is not equal to the length of <cite>other</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -502,8 +506,11 @@ Otherwise, returns a PauliString proportional to the commutator.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if they commute, False if they anticommute.</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – len(self) != len(other)</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the length of <cite>self</cite> is not equal to the length of <cite>other</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -516,6 +523,9 @@ Otherwise, returns a PauliString proportional to the commutator.</p>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Complex conjugate of the Pauli string.</p>
 </dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.14)">complex</a>, Self]</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -527,6 +537,9 @@ Otherwise, returns a PauliString proportional to the commutator.</p>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Copy of self.</p>
 </dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a></p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -537,12 +550,15 @@ Otherwise, returns a PauliString proportional to the commutator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> – Length of the Pauli string.</p></li>
-<li><p><strong>pauli_str</strong> – String representation of a Pauli string.</p></li>
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Length of the Pauli string.</p></li>
+<li><p><strong>pauli_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – String representation of a Pauli string.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Intensity of a Pauli string.</p>
+<dd class="field-even"><p>Instance of a Pauli string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -550,14 +566,16 @@ Otherwise, returns a PauliString proportional to the commutator.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.expand">
 <span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.expand" title="Link to this definition">#</a></dt>
-<dd><p>Increasing the size of the Pauli string
-by taking the tensor product with identities in the end.</p>
+<dd><p>Expand the Pauli string by tensoring it with identity operators at the end.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – New Pauli string length.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Pauli string of extend length.</p>
+<dd class="field-even"><p>Pauli string of expanded size.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -565,24 +583,29 @@ by taking the tensor product with identities in the end.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.gen_all_pauli_strings">
 <span class="sig-name descname"><span class="pre">gen_all_pauli_strings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.gen_all_pauli_strings" title="Link to this definition">#</a></dt>
-<dd><p>Generate a list of Pauli strings that commute with this string.
-:Yields: Commutant of the Pauli string.</p>
+<dd><p>Generate a list of Pauli strings that commute with this string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Yields<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Commutant of the Pauli string.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_anti_commutants">
 <span class="sig-name descname"><span class="pre">get_anti_commutants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_anti_commutants" title="Link to this definition">#</a></dt>
-<dd><p>Get a list of Pauli strings that no-commute with this string.</p>
+<dd><p>Get a list of Pauli strings that anticommute with this string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>generators</strong> – Collection of Pauli strings on which commutant is searched.</p></li>
-<li><p><strong>specified</strong> (<em>If not</em>)</p></li>
-<li><p><strong>size.</strong> (<em>then the search area is all Pauli strings</em><em> of </em><em>the same</em>)</p></li>
-</ul>
+<dd class="field-odd"><p><strong>generators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em><em>, </em><em>optional</em>) – Collection of Pauli strings on which
+anticommutant is searched. If None, then the search area is all Pauli strings of the
+same size.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of Pauli strings that no-commute with this string.</p>
+<dd class="field-even"><p>List of Pauli strings that anticommute with this string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -593,14 +616,14 @@ by taking the tensor product with identities in the end.</p>
 <dd><p>Get a list of Pauli strings that commute with this string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>generators</strong> – Collection of Pauli strings on which commutant is searched.</p></li>
-<li><p><strong>specified</strong> (<em>If not</em>)</p></li>
-<li><p><strong>size.</strong> (<em>then the search area is all Pauli strings</em><em> of </em><em>the same</em>)</p></li>
-</ul>
+<dd class="field-odd"><p><strong>generators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em><em>, </em><em>optional</em>) – Collection of Pauli strings on which commutant
+is searched. If None, then the search area is all Pauli strings of the same size.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of Pauli strings that commute with this string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -608,8 +631,15 @@ by taking the tensor product with identities in the end.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_count_non_trivially">
 <span class="sig-name descname"><span class="pre">get_count_non_trivially</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_count_non_trivially" title="Link to this definition">#</a></dt>
-<dd><p>Get count non-trivially.
-:returns: Count non-trivially.</p>
+<dd><p>Get the count of non-identity operators in the Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Count of non-identity operators.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -618,7 +648,10 @@ by taking the tensor product with identities in the end.</p>
 <dd><p>Get index in diagonal matrix decomposition vector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Index in matrix decomposition vector.</p>
+<dd class="field-odd"><p>Index in diagonal matrix decomposition vector.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -631,16 +664,22 @@ by taking the tensor product with identities in the end.</p>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Index in matrix decomposition vector.</p>
 </dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_matrix">
 <span class="sig-name descname"><span class="pre">get_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_matrix" title="Link to this definition">#</a></dt>
-<dd><p>Get matrix representation for Pauli string.</p>
+<dd><p>Get the matrix representation of the Pauli string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Matrix representation for the Pauli string.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -648,17 +687,18 @@ by taking the tensor product with identities in the end.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_nested">
 <span class="sig-name descname"><span class="pre">get_nested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_nested" title="Link to this definition">#</a></dt>
-<dd><p>Get nested of Pauli string.</p>
+<dd><p>Get pairs of Pauli strings whose commutator is proportional to <cite>self</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>generators</strong> – Collection of Pauli strings on which commutant is searched.</p></li>
-<li><p><strong>specified</strong> (<em>If not</em>)</p></li>
-<li><p><strong>size.</strong> (<em>then the search area is all Pauli strings</em><em> of </em><em>the same</em>)</p></li>
-</ul>
+<dd class="field-odd"><p><strong>generators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em><em>, </em><em>optional</em>) – Collection of Pauli strings on which commutant
+is to be searched. If not specified, then the search area is all Pauli strings of
+the same size.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Nested of Pauli string.</p>
+<dd class="field-even"><p>List of pairs of Pauli strings whose commutator is proportional to <cite>self</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>, <a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -670,12 +710,15 @@ by taking the tensor product with identities in the end.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> – Index to begin extracting the string.</p></li>
-<li><p><strong>length</strong> – Length of each substring.</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Starting index of the substring.</p></li>
+<li><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Length of the substring. Default is 1.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Substring of the Pauli string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -683,16 +726,19 @@ by taking the tensor product with identities in the end.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_weight_in_matrix">
 <span class="sig-name descname"><span class="pre">get_weight_in_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b_matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_weight_in_matrix" title="Link to this definition">#</a></dt>
-<dd><p>Get weight in diagonal matrix decomposition vector.</p>
+<dd><p>Get weight in matrix decomposition vector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>b_matrix</strong> – Matrix decomposition vector.</p>
+<dd class="field-odd"><p><strong>b_matrix</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>numpy.ndarray</em></a>) – Matrix decomposition vector.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Weight in diagonal matrix decomposition vector.</p>
+<dd class="field-even"><p>Weight in matrix decomposition vector.</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – Incorrect matrix size.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.14)">complex</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – Incorrect matrix size.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -714,7 +760,10 @@ by taking the tensor product with identities in the end.</p>
 <dd><p>Check if this Pauli string is the identity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if self is the identity.</p>
+<dd class="field-odd"><p>True if <cite>self</cite> is the identity.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -725,13 +774,16 @@ by taking the tensor product with identities in the end.</p>
 <dd><p>Proportional multiplication operator of two Pauli strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>other</strong> – Pauli string to multiplication.</p>
+<dd class="field-odd"><p><strong>other</strong> – Pauli string to multiply.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>PauliString proportional to the multiplication.</p>
+<dd class="field-even"><p>Pauli string proportional to the multiplication of <cite>self</cite> with <cite>other</cite>.</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – len(self.bits) != len(other.bits)</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the length of <cite>self</cite> is not equal to the length of <cite>other</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -743,8 +795,8 @@ by taking the tensor product with identities in the end.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> – Index to begin the string.</p></li>
-<li><p><strong>pauli_string</strong> – Substring of PauliString.</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Starting index of the substring.</p></li>
+<li><p><strong>pauli_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>|</em><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>) – Pauli string to substitute.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -767,10 +819,13 @@ See also: arxiv.org:2405.19287</p>
 <dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>) – Pauli string to multiply with.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Complex phase of the product (1, -1, 1j, or -1j) .</p>
+<dd class="field-even"><p>Complex phase of the product (1, -1, 1j, or -1j).</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – len(self) != len(other)</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.14)">complex</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the length of <cite>self</cite> is not equal to the length of <cite>other</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -784,7 +839,10 @@ See also: arxiv.org:2405.19287</p>
 <dd class="field-odd"><p><strong>other</strong> – Pauli string to tensor product.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Result of the tensor product self on another.</p>
+<dd class="field-even"><p>Result of the tensor product of <cite>self</cite> with <cite>other</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a></p>
 </dd>
 </dl>
 </dd></dl>

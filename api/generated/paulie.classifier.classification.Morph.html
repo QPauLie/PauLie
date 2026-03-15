@@ -42,6 +42,7 @@
     <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/paulie.classifier.classification.Morph';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -471,17 +472,20 @@
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">paulie.classifier.classification.</span></span><span class="sig-name descname"><span class="pre">Morph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependents</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Class of canonical form of a graph.</p>
+<p>Stores the structural data of a canonical graph.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph.counts">
 <span class="sig-name descname"><span class="pre">counts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.counts" title="Link to this definition">#</a></dt>
-<dd><p>Get number of leg types.</p>
+<dd><p>Get counts of length 1 legs, length 2 legs, and number of vertices on the longest leg.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple of number legs length 1, 2, and long vertices.</p>
+<dd class="field-odd"><p>Counts of length 1 legs, length 2 legs, and number of vertices on the longest leg.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="paulie.classifier.classification.ClassificationException.html#paulie.classifier.classification.ClassificationException" title="paulie.classifier.classification.ClassificationException"><strong>ClassificationException</strong></a> – If graph of non-canonical type.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>,<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>,<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="paulie.classifier.classification.ClassificationException.html#paulie.classifier.classification.ClassificationException" title="paulie.classifier.classification.ClassificationException"><strong>ClassificationException</strong></a> – If the graph is of non-canonical type.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -500,10 +504,10 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph.gen_independent_pair">
 <span class="sig-name descname"><span class="pre">gen_independent_pair</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.gen_independent_pair" title="Link to this definition">#</a></dt>
-<dd><p>Generate independent pairs.</p>
+<dd><p>Generate all independent pairs of Pauli strings in the transformed generating set.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Yields<span class="colon">:</span></dt>
-<dd class="field-odd"><p>All independent pairs of Pauli string in canonic graph.</p>
+<dd class="field-odd"><p>All independent pairs of Pauli strings in the canonical graph.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -511,13 +515,14 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph.gen_pq">
 <span class="sig-name descname"><span class="pre">gen_pq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.gen_pq" title="Link to this definition">#</a></dt>
-<dd><p>Generate pq.</p>
+<dd><p>Generate products of all pairs of Pauli strings in the canonical graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Yields<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Dictionary</em> –     w: Vertex of graph.
-v: Other vertex of graph.
-vw: v&#64;w
-neighbour: True if w and v are neighbour.</p>
+<dd class="field-odd"><p>Dictionary of
+v (PauliString): Vertex of graph.
+w (PauliString): Other vertex of graph.
+vw (PauliString): Proportional product of v and w.
+neighbour: True if v and w are neighbours.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -525,10 +530,17 @@ neighbour: True if w and v are neighbour.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph.get_algebra_properties">
 <span class="sig-name descname"><span class="pre">get_algebra_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.get_algebra_properties" title="Link to this definition">#</a></dt>
-<dd><p>Get properties of algebra.</p>
+<dd><p>Get the properties of the algebra.</p>
+<p>If the algebra is</p>
+<div class="math notranslate nohighlight">
+\[\bigoplus_{i=1}^{n}\mathfrak{a}(m)\]</div>
+<p>Then the tuple <span class="math notranslate nohighlight">\(\{\mathfrak{a},n,m\}\)</span> is returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple of type of algebra, number one legs, exponent params.</p>
+<dd class="field-odd"><p>Tuple of type of algebra, number of copies of the algebra, and the size of the algebra.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference internal" href="paulie.classifier.classification.TypeAlgebra.html#paulie.classifier.classification.TypeAlgebra" title="paulie.classifier.classification.TypeAlgebra">TypeAlgebra</a>,<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>,<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -541,16 +553,22 @@ neighbour: True if w and v are neighbour.</p>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List of dependent Pauli strings.</p>
 </dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>]</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph.get_legs">
 <span class="sig-name descname"><span class="pre">get_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.get_legs" title="Link to this definition">#</a></dt>
-<dd><p>Get legs.</p>
+<dd><p>Get list of legs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List of legs.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -558,13 +576,17 @@ neighbour: True if w and v are neighbour.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph.get_properties">
 <span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.get_properties" title="Link to this definition">#</a></dt>
-<dd><p>Get graph properties.</p>
+<dd><p>Get the properties of the graph including its type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple of type of graph, number legs length 1, 2, and long vertices.</p>
+<dd class="field-odd"><p>Type of the graph and counts of length 1 legs, length 2 legs, and number of vertices on
+the longest leg.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="paulie.classifier.classification.ClassificationException.html#paulie.classifier.classification.ClassificationException" title="paulie.classifier.classification.ClassificationException"><strong>ClassificationException</strong></a> – If graph of non-canonical type.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference internal" href="paulie.classifier.classification.TypeGraph.html#paulie.classifier.classification.TypeGraph" title="paulie.classifier.classification.TypeGraph">TypeGraph</a>,<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>,<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>,<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="paulie.classifier.classification.ClassificationException.html#paulie.classifier.classification.ClassificationException" title="paulie.classifier.classification.ClassificationException"><strong>ClassificationException</strong></a> – If the graph is of non-canonical type.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -572,10 +594,13 @@ neighbour: True if w and v are neighbour.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph.get_type">
 <span class="sig-name descname"><span class="pre">get_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.get_type" title="Link to this definition">#</a></dt>
-<dd><p>Get graph type.</p>
+<dd><p>Get the type of the graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Type of graph.</p>
+<dd class="field-odd"><p>Type of the graph.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="paulie.classifier.classification.TypeGraph.html#paulie.classifier.classification.TypeGraph" title="paulie.classifier.classification.TypeGraph">TypeGraph</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -583,10 +608,13 @@ neighbour: True if w and v are neighbour.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph.get_vertices">
 <span class="sig-name descname"><span class="pre">get_vertices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.get_vertices" title="Link to this definition">#</a></dt>
-<dd><p>Get a list of graph vertices.</p>
+<dd><p>Get a list of vertices in the graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a list of Pauli strings.</p>
+<dd class="field-odd"><p>List of vertices in the graph.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -594,10 +622,13 @@ neighbour: True if w and v are neighbour.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph.is_empty">
 <span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.is_empty" title="Link to this definition">#</a></dt>
-<dd><p>Checking for emptiness of a graph.</p>
+<dd><p>Check if the graph is empty.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if length of legs is zero.</p>
+<dd class="field-odd"><p>True if graph is empty.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -605,10 +636,13 @@ neighbour: True if w and v are neighbour.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph.is_empty_legs">
 <span class="sig-name descname"><span class="pre">is_empty_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.is_empty_legs" title="Link to this definition">#</a></dt>
-<dd><p>Checking for missing legs in a graph.</p>
+<dd><p>Check if the graph has a center but no legs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if only center.</p>
+<dd class="field-odd"><p>True if the graph only has a center.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>

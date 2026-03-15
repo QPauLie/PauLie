@@ -42,6 +42,7 @@
     <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/paulie.application.fourpoint.fourpoint';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -470,21 +471,26 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="paulie.application.fourpoint.fourpoint">
 <span class="sig-prename descclassname"><span class="pre">paulie.application.fourpoint.</span></span><span class="sig-name descname"><span class="pre">fourpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.fourpoint.fourpoint" title="Link to this definition">#</a></dt>
-<dd><p>Computes the four point according to Proposition 2.
-For PQ, RS prop L this reduces to the average OTOC of P and Q.</p>
+<dd><p>Computes the four-point correlator of Pauli strings <span class="math notranslate nohighlight">\(P\)</span>, <span class="math notranslate nohighlight">\(Q\)</span>,  <span class="math notranslate nohighlight">\(R\)</span>, and
+<span class="math notranslate nohighlight">\(S\)</span>.</p>
+<p>For <span class="math notranslate nohighlight">\(PR,QS \propto L\)</span> where <span class="math notranslate nohighlight">\(L\)</span> is a linear symmetry, this reduces to the average
+OTOC of <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>.</p>
 <p>(arXiV: 2502.16404)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>generators</strong> – Generating set of the Pauli string DLA.</p></li>
-<li><p><strong>p</strong> – Pauli string P</p></li>
-<li><p><strong>q</strong> – Pauli string Q</p></li>
-<li><p><strong>r</strong> – Pauli string R</p></li>
-<li><p><strong>s</strong> – Pauli string S</p></li>
+<li><p><strong>generators</strong> (<a class="reference internal" href="paulie.common.pauli_string_collection.PauliStringCollection.html#paulie.common.pauli_string_collection.PauliStringCollection" title="paulie.common.pauli_string_collection.PauliStringCollection"><em>PauliStringCollection</em></a>) – Generating set of the Pauli string DLA.</p></li>
+<li><p><strong>p</strong> (<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>) – Pauli string <span class="math notranslate nohighlight">\(P\)</span>.</p></li>
+<li><p><strong>q</strong> (<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>) – Pauli string <span class="math notranslate nohighlight">\(Q\)</span>.</p></li>
+<li><p><strong>r</strong> (<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>) – Pauli string <span class="math notranslate nohighlight">\(R\)</span>.</p></li>
+<li><p><strong>s</strong> (<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a>) – Pauli string <span class="math notranslate nohighlight">\(S\)</span>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Four point according to Proposition 2.</p>
+<dd class="field-even"><p>The four-point correlator of the Pauli strings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>

@@ -42,6 +42,7 @@
     <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/paulie.application.second_moment.second_moment';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -470,18 +471,21 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="paulie.application.second_moment.second_moment">
 <span class="sig-prename descclassname"><span class="pre">paulie.application.second_moment.</span></span><span class="sig-name descname"><span class="pre">second_moment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator_m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.application.second_moment.second_moment" title="Link to this definition">#</a></dt>
-<dd><p>Computes the second-order twirl of an operator M by projecting it onto the
-subspace of quadratic symmetries.</p>
+<dd><p>Computes the second-order twirl of an operator <span class="math notranslate nohighlight">\(M\)</span> by projecting it onto the subspace of
+quadratic symmetries of a DLA.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>operator_m</strong> – collection of Pauli strings</p></li>
-<li><p><strong>system_generators</strong> – collection of Pauli strings</p></li>
+<li><p><strong>operator_m</strong> (<a class="reference internal" href="paulie.common.pauli_string_linear.PauliStringLinear.html#paulie.common.pauli_string_linear.PauliStringLinear" title="paulie.common.pauli_string_linear.PauliStringLinear"><em>PauliStringLinear</em></a>) – An operator <span class="math notranslate nohighlight">\(M\)</span> expressed as a linear combination of
+Pauli strings.</p></li>
+<li><p><strong>system_generators</strong> (<a class="reference internal" href="paulie.common.pauli_string_collection.PauliStringCollection.html#paulie.common.pauli_string_collection.PauliStringCollection" title="paulie.common.pauli_string_collection.PauliStringCollection"><em>PauliStringCollection</em></a>) – Generating set of the Pauli string DLA.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the second-order twirl of an operator M by projecting it onto the
-subspace of quadratic symmetries</p>
+<dd class="field-even"><p>The second-order twirl of the operator <span class="math notranslate nohighlight">\(M\)</span>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="paulie.common.pauli_string_linear.PauliStringLinear.html#paulie.common.pauli_string_linear.PauliStringLinear" title="paulie.common.pauli_string_linear.PauliStringLinear">PauliStringLinear</a></p>
 </dd>
 </dl>
 </dd></dl>

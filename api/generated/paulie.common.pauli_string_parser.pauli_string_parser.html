@@ -470,10 +470,11 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_parser.pauli_string_parser">
 <span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_parser.</span></span><span class="sig-name descname"><span class="pre">pauli_string_parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pauli_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_parser.pauli_string_parser" title="Link to this definition">#</a></dt>
-<dd><p>Parse a Pauli string representation and return the expanded form.</p>
+<dd><p>Parse a compact Pauli string representation and return the expanded form.</p>
+<p>For example, <cite>X_4s10</cite> is expanded to <cite>IIIXIIIIII</cite> and <cite>ZYX_4s10</cite> is expanded to <cite>ZYIXIIIIII</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pauli_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – String representation like “X_4s10”, “ZYX_4s10”, etc.</p>
+<dd class="field-odd"><p><strong>pauli_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Compact string representation of the Pauli string.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Expanded Pauli string with I’s in unspecified positions.</p>
