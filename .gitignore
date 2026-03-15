@@ -18,8 +18,8 @@ src/paulie.egg-info/
 src/paulie.egg-info/*
 .venv/
 .venv/*
-docs/_examples/data
-docs/_examples/data/*
+docs/examples/data
+docs/examples/data/*
 __pycache__/
 .pytest_cache/
 debugging/

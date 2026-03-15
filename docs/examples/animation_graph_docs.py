@@ -8,7 +8,7 @@ from paulie import animation_anti_commutation_graph, get_pauli_string as p
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MEDIA_DIR = ROOT / "docs" / "source" / "media"
+MEDIA_DIR = ROOT / "source" / "media"
 MEDIA_DIR.mkdir(parents=True, exist_ok=True)
 
 
