@@ -1,5 +1,5 @@
 """
-Drawing graph
+    Module with graph drawing utilities.
 """
 import math
 import networkx as nx
@@ -15,12 +15,13 @@ def plot_graph(vertices:list[str],
                edges:list[tuple[str,str]],
                edge_labels:dict[tuple[str,str],str] = None) -> None:
     """
-    Plot graph.
+    Plot an arbitrary graph.
 
     Args:
-        vertices: List of vertices.
-        edges: List of edges.
-        edge_labels: List of labels.
+        vertices (list[str]): List of vertices.
+        edges (list[tuple[str, str]]): List of edges.
+        edge_labels (dict[tuple[str,str],str], optional): List of edge labels. Defaults to None, in
+            which case no edge labels are drawn.
     Returns:
         None
     """
@@ -38,11 +39,12 @@ def plot_graph_by_nodes(nodes:PauliStringCollection,
                         commutators:PauliStringCollection|list[PauliString]=None
 ) -> None:
     """
-    Plot graph by nodes.
+    Plot anticommutator graph with edges labeled by commutator of endpoints.
 
     Args:
-        nodes: Collection of Pauli strings.
-        commutators: Collection of commutators (Pauli strings).
+        nodes (PauliStringCollection): Generating set for anticommutator graph.
+        commutators (PauliStringCollection|list[PauliString], optional): Only show those edges which
+            have labels belonging to this set. Defaults to None, in which case all edges are shown.
     Returns:
         None
     """
@@ -55,20 +57,22 @@ def _animation_graph(record: RecordGraph, interval:int=1000,
                     repeat:bool=False, storage:dict[str,str]=None
 ) -> None:
     """
-    Animate graph building.
+    Animate the canonical graph construction from a recording.
 
     Args:
-        generators: Collection of Pauli strings.
-        storage: Storage in file.
-            dictionary:
-            filename: path to file.
-            writer: Specifies the software used to write the animation.
-            Common options include:
-            'ffmpeg' (for MP4, AVI, etc., requires FFmpeg to be installed
-            and accessible in your system's PATH,
-            or its path specified via matplotlib.rcParams['animation.ffmpeg_path']).
-            'pillow' (for GIF, requires the Pillow library).
-            'imagemagick' (for GIF, requires ImageMagick).
+        record (RecordGraph): A recording of the canonical graph construction.
+        interval (int, optional): Interval between recording frames in milliseconds. Defaults to
+            1000 milliseconds.
+        repeat (bool, optional): Whether to loop the animation. Defaults to `False`.
+        storage (dict[str,str], optional): Location and format to save the animation to. Defaults to
+            `None`, in which case the animation is not saved.
+
+            - filename (string): Path to the output file.
+            - writer (string): Specifies the software used to write the animation. Common options
+              include `ffmpeg` for MP4, AVI, etc. output, and `pillow` and `imagemagick` for GIF
+              output. Note that the necessary libraries must be available and usable by
+              `matplotlib`.
+        
     Returns:
         None
     """
@@ -76,7 +80,7 @@ def _animation_graph(record: RecordGraph, interval:int=1000,
     fig, ax = plt.subplots(figsize=(6,4))
     def clear() -> None:
         """
-        Clear frame.
+        Clear the frame.
 
         Returns:
             None
@@ -88,13 +92,13 @@ def _animation_graph(record: RecordGraph, interval:int=1000,
     def build_positions(edges:list[tuple[str,str]],
                         center:str) -> tuple[dict[str,np.array], int]:
         """
-        Build position of vertices in canonical graph.
+        Build the position of vertices in the canonical graph.
 
         Args:
-            edges: List of edges.
-            center: Vertex of center.
+            edges (list[tuple[str,str]]): List of edges.
+            center (str): Vertex of center.
         Returns:
-            Positions of vertices and position of lighting.
+            tuple[dict[str,numpy.array],int]: Positions of vertices and position of lighting.
         """
         legs = []
         positions = {}

@@ -1,5 +1,5 @@
 """
-    Compute the average out-of-time-order correlator between two Pauli strings.
+    Module to compute the four-point correlator of Pauli strings.
 """
 from paulie.common.pauli_string_collection import PauliStringCollection
 from paulie.common.pauli_string_bitarray import PauliString
@@ -11,20 +11,23 @@ def fourpoint(generators: PauliStringCollection,
             q: PauliString,
             r: PauliString,
             s: PauliString) -> float:
-    """
-    Computes the four point according to Proposition 2. 
-    For PQ, RS prop L this reduces to the average OTOC of P and Q.
+    r"""
+    Computes the four-point correlator of Pauli strings :math:`P`, :math:`Q`,  :math:`R`, and
+    :math:`S`.
+    
+    For :math:`PR,QS \propto L` where :math:`L` is a linear symmetry, this reduces to the average
+    OTOC of :math:`P` and :math:`Q`.
 
     (arXiV: 2502.16404)
 
     Args:
-        generators: Generating set of the Pauli string DLA.
-        p: Pauli string P
-        q: Pauli string Q
-        r: Pauli string R
-        s: Pauli string S
+        generators (PauliStringCollection): Generating set of the Pauli string DLA.
+        p (PauliString): Pauli string :math:`P`.
+        q (PauliString): Pauli string :math:`Q`.
+        r (PauliString): Pauli string :math:`R`.
+        s (PauliString): Pauli string :math:`S`.
     Returns:
-        Four point according to Proposition 2.
+        float: The four-point correlator of the Pauli strings.
     """
     commutant = generators.get_commutants()
     rp = r@p

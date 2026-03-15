@@ -1,5 +1,5 @@
 """
-Exceptions
+    Module with all Paulie exception definitions.
 """
 
 class PaulieError(Exception):
