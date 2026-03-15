@@ -57,7 +57,7 @@ class TestSecondMoment:
         # is_zero() is a helper method we implemented
         assert twirled_m.is_zero(), f"Expected a zero operator, but got {twirled_m}"
 
-    def test_gksmail_demonstration_case(self):
+    def test_a5(self):
         """
         Tests the quadratic symmetry generation against the specific a_5 system.
         This test now correctly calls the low-level component-specific method.
