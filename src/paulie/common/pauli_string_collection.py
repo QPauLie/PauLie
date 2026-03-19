@@ -926,7 +926,7 @@ class PauliStringCollection:
 
     def find_generators_with_connection(self, number_connections: int) -> PauliStringCollection:
         """
-        Get generators with connections.
+        Get generators with a specified number of connections.
 
         Args:
             number_connections: Required number of connections.
