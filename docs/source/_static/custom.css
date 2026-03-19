@@ -82,3 +82,15 @@ ul, ol {
     padding-left: 0;
 }
 
+.swatch {
+  display: inline-block;
+  width: 1.4em;
+  height: 1.4em;
+  border: 1px solid #666;
+  vertical-align: middle;
+}
+
+.color-legend td,
+.color-legend th {
+  padding: 0.4em 0.6em;
+}

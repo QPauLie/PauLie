@@ -1,9 +1,10 @@
 """
-    Fast Pauli basis matrix decomposition algorithm.
+    Module implementing the fast Pauli basis matrix decomposition algorithm.
 """
 import numpy as np
 
 def _pauli_ord(row: np.ndarray, col: np.ndarray, n: int) -> None:
+    r"""Recursively constructs the Pauli ordering."""
     if n == 1:
         row[0], col[0] = 0, 0
         row[1], col[1] = 1, 1
@@ -20,17 +21,35 @@ def _pauli_ord(row: np.ndarray, col: np.ndarray, n: int) -> None:
     col[3 * pw: 4 * pw] = col[:pw]
 
 def _mat_to_vec(matrix: np.ndarray) -> np.ndarray:
-    """
+    r"""
     Vectorizes a matrix in Pauli order.
-                                                          [vec(A)]
-    Given a matrix M = [A B], we vectorize it as vec(M) = [vec(D)].
-                       [C D]                              [vec(B)]
-                                                          [vec(C)]
+
+    Given a matrix
+
+    .. math::
+
+        M =
+        \begin{bmatrix}
+            A & B \\
+            C & D
+        \end{bmatrix}
+
+    we vectorize it as
+
+    .. math::
+
+        \text{vec}(M) =
+        \begin{bmatrix}
+            A \\
+            B \\
+            C \\
+            D
+        \end{bmatrix}
 
     Args:
-        matrix: Matrix to vectorize.
+        matrix (np.ndarray): Matrix to vectorize.
     Returns:
-        Vector of matrix.
+        np.ndarray: Vector of matrix.
     """
     log2n = int(matrix.shape[0]).bit_length() - 1
     row = np.zeros(4 ** log2n, dtype=np.int64)
@@ -40,13 +59,14 @@ def _mat_to_vec(matrix: np.ndarray) -> np.ndarray:
     return matrix.reshape(-1)[flat_index].astype(np.complex128)
 
 def matrix_decomposition(matrix: np.ndarray) -> np.ndarray:
-    """
-    Get the weight vector corresponding to the Pauli basis decomposition of a matrix.
+    r"""
+    Returns the weight vector corresponding to the Pauli basis decomposition of a matrix.
 
     Args:
-        matrix: Matrix to be decomposed.
+        matrix (numpy.ndarray): Matrix to be decomposed.
+
     Returns:
-        Weight vector corresponding to the Pauli basis decomposition of a matrix.
+        numpy.ndarray: Weight vector corresponding to the Pauli basis decomposition of a matrix.
     """
     if matrix.ndim != 2:
         raise ValueError("matrix must be a 2D ndarray")
@@ -71,13 +91,14 @@ def matrix_decomposition(matrix: np.ndarray) -> np.ndarray:
     return b
 
 def matrix_decomposition_diagonal(diag: np.ndarray) -> np.ndarray:
-    """
-    Get the weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.
+    r"""
+    Returns the weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.
 
     Args:
-        diag: Main diagonal of the diagonal matrix to be decomposed.
+        diag (numpy.ndarray): Main diagonal of the diagonal matrix to be decomposed.
     Returns:
-        Weight vector corresponding to the Pauli basis decomposition of a diagonal matrix.
+        numpy.ndarray: Weight vector corresponding to the Pauli basis decomposition of a diagonal
+        matrix.
     """
     if diag.ndim != 1:
         raise ValueError("matrix must be a 1D ndarray")

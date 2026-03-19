@@ -101,10 +101,36 @@ outputs
 
     algebra = 4*so(5)
 
-We can also animate the transformation to a canonical graph:
+.. Here we should add some definitions like lit, dependent etc.
+
+We can also animate the transformation to a canonical graph.
+We use the following color convention.
 
 .. raw:: html
-    :file: ../media/example_c.html
+
+   <table class="docutils align-default color-legend">
+     <thead>
+       <tr>
+         <th>Node</th>
+         <th>Color</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr><td>Lighting</td><td><span class="swatch" style="background:red;"></span></td></tr>
+       <tr><td>Dependent</td><td><span class="swatch" style="background:#2F4F4F;"></span></td></tr>
+       <tr><td>Unlit vertex in a leg of length one</td><td><span class="swatch" style="background:#FF00FF;"></span></td></tr>
+       <tr><td>Removing</td><td><span class="swatch" style="background:black;"></span></td></tr>
+       <tr><td>Unlit</td><td><span class="swatch" style="background:#cccccc;"></span></td></tr>
+       <tr><td>Appending</td><td><span class="swatch" style="background:#00FF00;"></span></td></tr>
+       <tr><td>Contracting</td><td><span class="swatch" style="background:#008080;"></span></td></tr>
+       <tr><td>Lit vertex in a leg of length one</td><td><span class="swatch" style="background:#6A5ACD;"></span></td></tr>
+       <tr><td>Replacing</td><td><span class="swatch" style="background:#8B008B;"></span></td></tr>
+       <tr><td>Lit</td><td><span class="swatch" style="background:cyan;"></span></td></tr>
+     </tbody>
+   </table>
+
+.. raw:: html
+   :file: ../media/example_c.html
 
 This is what happens:
 
