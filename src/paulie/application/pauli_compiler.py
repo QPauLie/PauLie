@@ -558,54 +558,56 @@ class OptimalPauliCompiler:
                     return _sequence_to_paulie_orientation(sequence)
             raise RuntimeError("Left-only mapping failed.")
 
-        if not v_left.is_identity():
-            g_right = self.sub.subsystem_compiler(w_right)
-            v_prime = self._left_factor_from_sequence(g_right)
-            seq = left_map_over_a(v_prime, v_left, self.a_left)
-            candidates = [
-                list(g_right) + [self.extend_left(a) for a in seq],
-                [self.extend_left(a) for a in seq] + list(g_right),
-                list(reversed(g_right)) + [self.extend_left(a) for a in seq],
-            ]
-            for sequence in candidates:
-                result = _evaluate_sequence(sequence)
-                if (
-                    result is not None
-                    and result.get_substring(0, self.k) == v_left
-                    and result.get_substring(self.k, self.n_right) == w_right
-                ):
+        if v_left.is_identity():
+            for w1, w2 in self._candidate_decompositions(w_right):
+                g1 = self.sub.subsystem_compiler(w1)
+                g2 = self.sub.subsystem_compiler(w2)
+                v1_prime = self._left_factor_from_sequence(g1)
+                v2_prime = self._left_factor_from_sequence(g2)
+                a_seq = left_map_over_a(v2_prime, v1_prime, self.a_left)
+                a_ext = [self.extend_left(a) for a in a_seq]
+                sequence = self._case3_best_reordering(g1, g2, a_ext, w_right)
+                if sequence is not None:
                     return _sequence_to_paulie_orientation(sequence)
-            return _sequence_to_paulie_orientation(
-                list(g_right) + [self.extend_left(a) for a in seq]
-            )
 
-        for w1, w2 in self._candidate_decompositions(w_right):
+            seq_fb = self._bfs_case3(w_right, self.fallback_depth, self.fallback_nodes)
+            if seq_fb is not None:
+                return _sequence_to_paulie_orientation(seq_fb)
+
+            w_str = str(w_right)
+            site = next(index for index, label in enumerate(w_str) if label != "I")
+            label = "X" if w_str[site] == "Z" else ("Z" if w_str[site] == "X" else "X")
+            w1 = get_single(self.n_right, site, label)
+            w2 = w1 @ w_right
             g1 = self.sub.subsystem_compiler(w1)
             g2 = self.sub.subsystem_compiler(w2)
             v1_prime = self._left_factor_from_sequence(g1)
             v2_prime = self._left_factor_from_sequence(g2)
             a_seq = left_map_over_a(v2_prime, v1_prime, self.a_left)
             a_ext = [self.extend_left(a) for a in a_seq]
-            sequence = self._case3_best_reordering(g1, g2, a_ext, w_right)
-            if sequence is not None:
+            return _sequence_to_paulie_orientation(
+                list(reversed(g1)) + a_ext + list(reversed(g2))
+            )
+
+        g_right = self.sub.subsystem_compiler(w_right)
+        v_prime = self._left_factor_from_sequence(g_right)
+        seq = left_map_over_a(v_prime, v_left, self.a_left)
+        candidates = [
+            list(g_right) + [self.extend_left(a) for a in seq],
+            [self.extend_left(a) for a in seq] + list(g_right),
+            list(reversed(g_right)) + [self.extend_left(a) for a in seq],
+        ]
+        for sequence in candidates:
+            result = _evaluate_sequence(sequence)
+            if (
+                result is not None
+                and result.get_substring(0, self.k) == v_left
+                and result.get_substring(self.k, self.n_right) == w_right
+            ):
                 return _sequence_to_paulie_orientation(sequence)
-
-        seq_fb = self._bfs_case3(w_right, self.fallback_depth, self.fallback_nodes)
-        if seq_fb is not None:
-            return _sequence_to_paulie_orientation(seq_fb)
-
-        w_str = str(w_right)
-        site = next(index for index, label in enumerate(w_str) if label != "I")
-        label = "X" if w_str[site] == "Z" else ("Z" if w_str[site] == "X" else "X")
-        w1 = get_single(self.n_right, site, label)
-        w2 = w1 @ w_right
-        g1 = self.sub.subsystem_compiler(w1)
-        g2 = self.sub.subsystem_compiler(w2)
-        v1_prime = self._left_factor_from_sequence(g1)
-        v2_prime = self._left_factor_from_sequence(g2)
-        a_seq = left_map_over_a(v2_prime, v1_prime, self.a_left)
-        a_ext = [self.extend_left(a) for a in a_seq]
-        return _sequence_to_paulie_orientation(list(reversed(g1)) + a_ext + list(reversed(g2)))
+        return _sequence_to_paulie_orientation(
+            list(g_right) + [self.extend_left(a) for a in seq]
+        )
 
 
 def construct_universal_set(n_total: int, k: int) -> list[PauliString]:
