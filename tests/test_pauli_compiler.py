@@ -48,13 +48,13 @@ def _assert_compiles(target_str: str, k_left: int) -> None:
         (2, 3, "XII"),
         (2, 3, "YII"),
         (2, 4, "XZII"),
-        # Case 2: both sides (V != I, W != I)
-        (2, 4, "IZXI"),
-        (3, 5, "IIZXI"),
-        # Case 3: right-only targets (V = I, W != I)
+        # Case 2: right-only targets (V = I, W != I)
         (2, 3, "IIY"),
         (2, 4, "IIYZ"),
         (3, 5, "IIIYZ"),
+        # Case 3: both sides (V != I, W != I)
+        (2, 4, "IZXI"),
+        (3, 5, "IIZXI"),
     ],
 )
 def test_compile_target(k_left: int, n_total: int, target_str: str) -> None:
