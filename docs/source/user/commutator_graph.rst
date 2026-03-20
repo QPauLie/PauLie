@@ -6,8 +6,6 @@ The Hamiltonian of the system is described by a linear combination of Pauli stri
 :math:`\mathcal{G}` is the generator set. The commutator graph of an :math:`n`-qubit system has the :math:`4^n` Pauli strings as
 vertices and there exists and edge :math:`(P,Q)` if there exists a generator :math:`G \in \mathcal{G}` s.t.
 :math:`[P,G] \propto Q`.
-While the anticommutation graph is isomorphic for generator sets with isomorphic DLA's and only capture the
-long term dynamics, the commutator graph captures short term dynamics.
 We can plot the commutator graph
 
 .. code-block:: python
@@ -20,7 +18,8 @@ We can plot the commutator graph
 
 .. image:: ../media/commutator_graph.png
 
-With the help of the commutator graph we can analyse the short-term dynamics of the quantum system.
+While the anticommutation graph is isomorphic for generator sets with isomorphic DLA's and only capture the
+long term dynamics, the commutator graph captures the short term dynamics (see :cite:t:`West_2025`).
 In particular, we can determine how chaotic the system behaves. A quantifier of quantum chaos is the
 the out-of-time-order correlator (OTOC) between two unitary operators :math:`W` and :math:`V` defined as
 
