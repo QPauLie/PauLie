@@ -404,8 +404,6 @@ The Hamiltonian of the system is described by a linear combination of Pauli stri
 <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> is the generator set. The commutator graph of an <span class="math notranslate nohighlight">\(n\)</span>-qubit system has the <span class="math notranslate nohighlight">\(4^n\)</span> Pauli strings as
 vertices and there exists and edge <span class="math notranslate nohighlight">\((P,Q)\)</span> if there exists a generator <span class="math notranslate nohighlight">\(G \in \mathcal{G}\)</span> s.t.
 <span class="math notranslate nohighlight">\([P,G] \propto Q\)</span>.
-While the anticommutation graph is isomorphic for generator sets with isomorphic DLA’s and only capture the
-long term dynamics, the commutator graph captures short term dynamics.
 We can plot the commutator graph</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">paulie</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_pauli_string</span> <span class="k">as</span> <span class="n">p</span>
 <span class="n">generators</span> <span class="o">=</span> <span class="n">p</span><span class="p">([</span><span class="s2">&quot;XI&quot;</span><span class="p">,</span> <span class="s2">&quot;ZI&quot;</span><span class="p">,</span> <span class="s2">&quot;IX&quot;</span><span class="p">,</span> <span class="s2">&quot;IZ&quot;</span><span class="p">,</span> <span class="s2">&quot;ZZ&quot;</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -414,7 +412,8 @@ We can plot the commutator graph</p>
 </pre></div>
 </div>
 <img alt="../_images/commutator_graph.png" src="../_images/commutator_graph.png" />
-<p>With the help of the commutator graph we can analyse the short-term dynamics of the quantum system.
+<p>While the anticommutation graph is isomorphic for generator sets with isomorphic DLA’s and only capture the
+long term dynamics, the commutator graph captures the short term dynamics (see <span id="id1">West <em>et al.</em> [<a class="reference internal" href="../references.html#id3" title="Maxwell West, Neil Dowling, Angus Southwell, Martin Sevior, Muhammad Usman, Kavan Modi, and Thomas Quella. A graph-theoretic approach to chaos and complexity in quantum systems. 2025. URL: https://arxiv.org/abs/2502.16404, arXiv:2502.16404.">2025</a>]</span>).
 In particular, we can determine how chaotic the system behaves. A quantifier of quantum chaos is the
 the out-of-time-order correlator (OTOC) between two unitary operators <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(V\)</span> defined as</p>
 <div class="math notranslate nohighlight">
