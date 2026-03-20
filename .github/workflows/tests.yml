@@ -39,4 +39,4 @@ jobs:
     - name: Lint
       run: |
         uvx ruff check .
-        uvx pylint $(git ls-files '*.py')
+        git ls-files -z '*.py' | xargs -0 uvx pylint

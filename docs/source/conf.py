@@ -13,10 +13,10 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../'))
 
-from intersphinx_registry import get_intersphinx_mapping
+from intersphinx_registry import get_intersphinx_mapping  # pylint: disable=wrong-import-position
 
 project = 'paulie'
-copyright = '2026, PauLie contributors'
+copyright = '2026, PauLie contributors'  # pylint: disable=redefined-builtin
 author = 'PauLie contributors'
 release = '0.0.1'
 
