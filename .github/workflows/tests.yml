@@ -36,7 +36,7 @@ jobs:
     - name: Run tests
       run: uv run pytest -q
 
-- name: Lint
-  run: |
-    uvx ruff check .
-    uvx pylint $(git ls-files '*.py')
+    - name: Lint
+      run: |
+        uvx ruff check .
+        uvx pylint $(git ls-files '*.py')
