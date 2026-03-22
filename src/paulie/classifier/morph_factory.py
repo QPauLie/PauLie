@@ -54,7 +54,7 @@ class MorphFactory:
         self.is_check = False
 
 
-    def set_lighting(self, lighting:PauliString) -> None:
+    def _set_lighting(self, lighting:PauliString) -> None:
         """
         Set lighting.
 
@@ -65,7 +65,7 @@ class MorphFactory:
         """
         self.lighting = lighting
 
-    def get_lighting(self) -> PauliString:
+    def _get_lighting(self) -> PauliString:
         """
         Get lighting.
 
@@ -74,17 +74,7 @@ class MorphFactory:
         """
         return self.lighting
 
-    def get_morph(self) -> Morph:
-        """
-        Get canonical graph form.
-
-        Returns:
-            Canonical form.
-        """
-        return Morph(self.legs, self.dependents)
-
-
-    def lit(self, lighting:PauliString, vertex:PauliString) -> PauliString:
+    def _lit(self, lighting:PauliString, vertex:PauliString) -> PauliString:
         """
         Lit vertex.
 
@@ -95,11 +85,11 @@ class MorphFactory:
             New lighting.
         """
         lighting = lighting@vertex
-        if self.is_included(lighting):
+        if self._is_included(lighting):
             raise DependentException()
         return lighting
 
-    def get_lits(self, lighting:PauliString,
+    def _get_lits(self, lighting:PauliString,
                  vertices:list[PauliString]=None) ->list[PauliString]:
         """
         Get lited vertices (connected to the selected vertex).
@@ -115,7 +105,7 @@ class MorphFactory:
         return [v for v in vertices if v != lighting and not lighting|v]
 
 
-    def is_empty(self) -> bool:
+    def _is_empty(self) -> bool:
         """
         Checking for emptiness.
 
@@ -124,7 +114,7 @@ class MorphFactory:
         """
         return len(self.legs) == 0
 
-    def is_empty_legs(self) -> bool:
+    def _is_empty_legs(self) -> bool:
         """
         Checking for missing legs.
 
@@ -150,7 +140,7 @@ class MorphFactory:
         return index
 
 
-    def find(self, v:PauliString) -> tuple[int,int]:
+    def _find(self, v:PauliString) -> tuple[int,int]:
         """
         Find vertex.
 
@@ -165,7 +155,7 @@ class MorphFactory:
                 return i, index
         return -1, -1
 
-    def is_included(self, v:PauliString) -> bool:
+    def _is_included(self, v:PauliString) -> bool:
         """
         Checking a vertex for inclusion in the graph.
 
@@ -174,10 +164,10 @@ class MorphFactory:
         Returns:
             True if vertex in the graph.
         """
-        leg_index = self.find(v)[0]
+        leg_index = self._find(v)[0]
         return leg_index > -1
 
-    def get_vertices(self) -> list[PauliString]:
+    def _get_vertices(self) -> list[PauliString]:
         """
         Get graph vertices.
 
@@ -186,18 +176,18 @@ class MorphFactory:
         """
         return [v for leg in self.legs for v in leg]
 
-    def get_center(self) -> PauliString|None:
+    def _get_center(self) -> PauliString|None:
         """
         Get center.
 
         Returns:
            Canter of the graph.
         """
-        if self.is_empty():
+        if self._is_empty():
             return None
         return self.legs[0][0]
 
-    def set_center(self, v: PauliString) -> None:
+    def _set_center(self, v: PauliString) -> None:
         """
         Set center.
 
@@ -206,29 +196,29 @@ class MorphFactory:
         Returns:
             None
         """
-        if self.is_empty() is False:
+        if self._is_empty() is False:
             raise MorphFactoryException("Center is setted")
         self.legs.append([v])
 
-    def get_long_leg(self) -> list[PauliString]:
+    def _get_long_leg(self) -> list[PauliString]:
         """
         Get long leg.
 
         Returns:
             List of vertices in long leg.
         """
-        if self.is_empty_legs():
+        if self._is_empty_legs():
             raise MorphFactoryException("No legs")
         return self.legs[len(self.legs) - 1]
 
-    def get_one_vertex(self) -> PauliString:
+    def _get_one_vertex(self) -> PauliString:
         """
         Get one vertex in leg.
 
         Returns:
             Control vertex in the graph.
         """
-        if self.is_empty_legs():
+        if self._is_empty_legs():
             raise MorphFactoryException("No legs")
         return self.legs[1][0]
 
@@ -239,7 +229,7 @@ class MorphFactory:
         Yields:
             Vertices included in legs of length 1.
         """
-        if self.is_empty_legs():
+        if self._is_empty_legs():
             raise MorphFactoryException("No legs")
         for i in range(1, len(self.legs)):
             if len(self.legs[i]) == 1:
@@ -247,7 +237,7 @@ class MorphFactory:
             else:
                 break
 
-    def get_one_vertices(self)->list[PauliString]:
+    def _get_one_vertices(self)->list[PauliString]:
         """
         Get vertices included in single legs.
 
@@ -259,7 +249,7 @@ class MorphFactory:
             vertices.append(leg[0].copy())
         return vertices
 
-    def get_pq(self, lighting:PauliString) -> tuple[PauliString|None,PauliString|None]:
+    def _get_pq(self, lighting:PauliString) -> tuple[PauliString|None,PauliString|None]:
         """
         Get pq.
 
@@ -271,8 +261,8 @@ class MorphFactory:
                 and p is lited, q is unlited.
                 p: Lited vertex.
         """
-        one_verices = self.get_one_vertices()
-        lits = self.get_lits(lighting, one_verices)
+        one_verices = self._get_one_vertices()
+        lits = self._get_lits(lighting, one_verices)
         p = None
         q = None
         for v in one_verices:
@@ -291,7 +281,7 @@ class MorphFactory:
         Yields:
             Legs long 2.
         """
-        if self.is_empty_legs():
+        if self._is_empty_legs():
             raise MorphFactoryException("No legs")
         for i in range(1, len(self.legs)):
             if len(self.legs[i]) == 2:
@@ -300,7 +290,7 @@ class MorphFactory:
                 if len(self.legs[i]) > 2:
                     break
 
-    def get_two_legs(self) -> list[tuple[PauliString, PauliString]]:
+    def _get_two_legs(self) -> list[tuple[PauliString, PauliString]]:
         """
         Get vertices included in two legs.
 
@@ -309,27 +299,27 @@ class MorphFactory:
         """
         return [(leg[0].copy(), leg[1].copy()) for leg in self._gen_two_legs()]
 
-    def get_count_two_legs(self) -> int:
+    def _get_count_two_legs(self) -> int:
         """
         Get the number of legs of length two.
 
         Returns:
             Number of legs long 2.
         """
-        return len(self.get_two_legs())
+        return len(self._get_two_legs())
 
-    def is_two_leg(self) -> bool:
+    def _is_two_leg(self) -> bool:
         """
         Checking the leg for length two.
 
         Returns:
             True if there is a leg of length 2.
         """
-        count_two_legs = self.get_count_two_legs()
+        count_two_legs = self._get_count_two_legs()
         if count_two_legs == 0:
             return False
 
-        long_leg = self.get_long_leg()
+        long_leg = self._get_long_leg()
         if len(long_leg) != 2:
             return True
         return count_two_legs > 1
@@ -341,7 +331,7 @@ class MorphFactory:
         Yields:
            Vertices from long leg.
         """
-        if self.is_empty_legs():
+        if self._is_empty_legs():
             raise MorphFactoryException("No legs")
         for i in range(len(self.legs)-1, 1, -1):
             if len(self.legs) > 2:
@@ -349,16 +339,7 @@ class MorphFactory:
             else:
                 break
 
-    def get_long_legs(self) -> list[list[PauliString]]:
-        """
-        Get long leg vertices.
-
-        Returns:
-            List of vertices from long leg.
-        """
-        return [leg.copy() for leg in self._gen_long_legs()]
-
-    def append(self, v:PauliString, lit:PauliString) -> None:
+    def _append(self, v:PauliString, lit:PauliString) -> None:
         """
         Append vertex to graph.
 
@@ -377,7 +358,7 @@ class MorphFactory:
         """
         if self.is_check:
             raise CheckAppendedException()
-        leg_index, vertex_index = self.find(lit)
+        leg_index, vertex_index = self._find(lit)
         if leg_index == -1:
             raise MorphFactoryException("No vertex")
         if leg_index == 0:
@@ -397,7 +378,7 @@ class MorphFactory:
                 return
         raise MorphFactoryException("Can't append")
 
-    def append_to_two_center(self, lighting:PauliString) -> None:
+    def _append_to_two_center(self, lighting:PauliString) -> None:
         """
         Append vertex to two vertices graph.
 
@@ -409,29 +390,29 @@ class MorphFactory:
             NotConnectedException:
                 If lighting is not connected.
         """
-        center = self.get_center()
+        center = self._get_center()
         if len(self.legs) == 1:
-            self.append(lighting, center)
+            self._append(lighting, center)
             return
-        vertices = self.get_vertices()
-        lits = self.get_lits(lighting, vertices)
+        vertices = self._get_vertices()
+        lits = self._get_lits(lighting, vertices)
 
         if len(lits) == 1:
             if center in lits:
-                self.append(lighting, center)
+                self._append(lighting, center)
                 return
             else:
-                lighting = self.lit(lighting, lits[0])
-                lighting = self.lit(lighting, center)
-                self.append(lighting, center)
+                lighting = self._lit(lighting, lits[0])
+                lighting = self._lit(lighting, center)
+                self._append(lighting, center)
                 return
         if len(lits) == 2:
-            lighting = self.lit(lighting, center)
-            self.append(lighting, center)
+            lighting = self._lit(lighting, center)
+            self._append(lighting, center)
             return
         raise NotConnectedException()
 
-    def check_dependency_one_leg(self, lighting:PauliString) -> None:
+    def _check_dependency_one_leg(self, lighting:PauliString) -> None:
         """
         Dependency check when attaching a vertex to the center of the graph.
 
@@ -443,8 +424,8 @@ class MorphFactory:
             NotConnectedException:
                 If lighting is not connected.
         """
-        ones = self.get_one_vertices()
-        vertices = set(self.get_vertices())
+        ones = self._get_one_vertices()
+        vertices = set(self._get_vertices())
         for one in ones:
             pq = one @ lighting
             for v in vertices:
@@ -454,7 +435,7 @@ class MorphFactory:
                 if n_v in vertices or n_v == lighting:
                     raise DependentException()
 
-    def append_to_center(self, lighting:PauliString) -> None:
+    def _append_to_center(self, lighting:PauliString) -> None:
         """
         Joining a vertex to the center of the graph.
 
@@ -463,11 +444,11 @@ class MorphFactory:
         Returns:
             None
         """
-        self.check_dependency_one_leg(lighting)
-        center = self.get_center()
-        self.append(lighting, center)
+        self._check_dependency_one_leg(lighting)
+        center = self._get_center()
+        self._append(lighting, center)
 
-    def remove(self, v:PauliString) -> None:
+    def _remove(self, v:PauliString) -> None:
         """
         Removing a graph vertex.
 
@@ -476,7 +457,7 @@ class MorphFactory:
         Returns:
             None
         """
-        leg_index, vertex_index = self.find(v)
+        leg_index, vertex_index = self._find(v)
         if leg_index == -1:
             raise MorphFactoryException("No vertex")
         if leg_index == 0:
@@ -498,7 +479,7 @@ class MorphFactory:
                 return
         raise MorphFactoryException("Can't remove")
 
-    def replace(self, v:PauliString, v_new:PauliString) -> None:
+    def _replace(self, v:PauliString, v_new:PauliString) -> None:
         """
         Replacing a graph vertex with an equivalent one.
 
@@ -508,13 +489,13 @@ class MorphFactory:
         Returns:
             None
         """
-        leg_index, vertex_index = self.find(v)
+        leg_index, vertex_index = self._find(v)
         if leg_index == -1:
             raise MorphFactoryException("No vertex")
         self.legs[leg_index][vertex_index] = v_new
 
 
-    def get_lit_indexes(self, vertices:list[PauliString], lits:list[PauliString]) -> list[int]:
+    def _get_lit_indexes(self, vertices:list[PauliString], lits:list[PauliString]) -> list[int]:
         """
         Get the indices of the lited vertices in lits.
 
@@ -530,6 +511,31 @@ class MorphFactory:
                 indexes.append(i)
         return indexes
 
+    def _append_delayed(self, v:PauliString) -> None:
+        """
+        Append to delayed.
+
+        Args:
+            v: Vertex to append in delayed.
+        Return:
+            None
+        """
+        self.delayed_vertices.append(v)
+
+    def _restore_delayed(self, vertices:list[PauliString]) -> list[PauliString]:
+        """
+        Restore to delayed.
+
+        Args:
+            vertices: List of vertices.
+        Returns:
+            List of vertices.
+        """
+        for i in range(len(self.delayed_vertices) - 1, -1, -1):
+            vertices.insert(0, self.delayed_vertices[i])
+        self.delayed_vertices = []
+        return vertices
+
     def _append_three_graph(self) -> Self:
         """
         Step I. Construct a graph of three vertices.
@@ -542,16 +548,16 @@ class MorphFactory:
             DependentException:
                 If added vertex is dependent.
         """
-        lighting = self.get_lighting()
-        if self.is_empty():
-            self.set_center(lighting)
+        lighting = self._get_lighting()
+        if self._is_empty():
+            self._set_center(lighting)
             raise AppendedException
-        if self.is_included(lighting):
+        if self._is_included(lighting):
             raise DependentException
-        if self.is_empty_legs():
-            self.append_to_two_center(lighting)
+        if self._is_empty_legs():
+            self._append_to_two_center(lighting)
             raise AppendedException
-        self.set_lighting(lighting)
+        self._set_lighting(lighting)
         return self
 
     def _append_one_legs_in_different_state(self) -> Self:
@@ -566,27 +572,27 @@ class MorphFactory:
             DependentException:
                 If added vertex is dependent.
         """
-        lighting = self.get_lighting()
-        pq, p = self.get_pq(lighting)
+        lighting = self._get_lighting()
+        pq, p = self._get_pq(lighting)
         if pq is not None:
-            lits = self.get_lits(lighting)
+            lits = self._get_lits(lighting)
             for lit in lits:
                 if lit != p:
                     v = pq@lit
-                    if self.is_included(v):
+                    if self._is_included(v):
                         raise DependentException()
             for lit in lits:
                 if lit != p:
                     v = pq@lit
-                    self.replace(lit, v)
-            self.append(lighting, p)
-            long_leg = self.get_long_leg()
+                    self._replace(lit, v)
+            self._append(lighting, p)
+            long_leg = self._get_long_leg()
             if len(long_leg) > 4:
                 for i in range(4, len(long_leg)):
-                    self.append_delayed(long_leg[i])
-                self.remove(long_leg[4])
+                    self._append_delayed(long_leg[i])
+                self._remove(long_leg[4])
             raise AppendedException
-        self.set_lighting(lighting)
+        self._set_lighting(lighting)
         return self
 
     def _append_fast(self) -> Self:
@@ -601,23 +607,23 @@ class MorphFactory:
             DependentException:
                 If added vertex is dependent.
         """
-        lighting = self.get_lighting()
-        center = self.get_center()
-        two_legs = self.get_two_legs()
-        long_leg = self.get_long_leg()
+        lighting = self._get_lighting()
+        center = self._get_center()
+        two_legs = self._get_two_legs()
+        long_leg = self._get_long_leg()
         if len(long_leg) == 2:
             del two_legs[len(two_legs) - 1]
         if len(two_legs) == 0:
-            lits = self.get_lits(lighting)
+            lits = self._get_lits(lighting)
             if len(lits) == 1:
                 if center in lits:
-                    self.append_to_center(lighting)
+                    self._append_to_center(lighting)
                     raise AppendedException
-                long_leg = self.get_long_leg()
+                long_leg = self._get_long_leg()
                 if long_leg[len(long_leg) - 1] in lits:
-                    self.append(lighting, long_leg[len(long_leg) - 1])
+                    self._append(lighting, long_leg[len(long_leg) - 1])
                     raise AppendedException
-        self.set_lighting(lighting)
+        self._set_lighting(lighting)
         return self
 
     def _lit_only_long_leg(self) -> Self:
@@ -632,95 +638,95 @@ class MorphFactory:
             DependentException:
                 If added vertex is dependent.
         """
-        lighting = self.get_lighting()
-        omega = self.get_one_vertex()
-        center = self.get_center()
-        center_lits = self.get_lits(lighting, [center])
-        lits = self.get_lits(lighting, [omega])
+        lighting = self._get_lighting()
+        omega = self._get_one_vertex()
+        center = self._get_center()
+        center_lits = self._get_lits(lighting, [center])
+        lits = self._get_lits(lighting, [omega])
         if omega in lits:
             if center not in center_lits:
-                lighting = self.lit(lighting, omega)
-            lighting = self.lit(lighting, center)
-        two_legs = self.get_two_legs()
-        long_leg = self.get_long_leg()
+                lighting = self._lit(lighting, omega)
+            lighting = self._lit(lighting, center)
+        two_legs = self._get_two_legs()
+        long_leg = self._get_long_leg()
         if len(long_leg) == 2:
             del two_legs[len(two_legs) - 1]
         elif len(long_leg) == 1:
-            self.set_lighting(lighting)
+            self._set_lighting(lighting)
             return self
         if len(two_legs) == 0:
-            self.set_lighting(lighting)
+            self._set_lighting(lighting)
             return self
-        long_lits = self.get_lits(lighting, long_leg)
+        long_lits = self._get_lits(lighting, long_leg)
         if len(long_lits) == 0:
             # find lited two leg
-            center_lits = self.get_lits(lighting, [center])
+            center_lits = self._get_lits(lighting, [center])
             if center in center_lits:
-                lighting = self.lit(lighting, center)
-                lighting = self.lit(lighting, long_leg[0])
-                lighting = self.lit(lighting, omega)
-                lighting = self.lit(lighting, center)
+                lighting = self._lit(lighting, center)
+                lighting = self._lit(lighting, long_leg[0])
+                lighting = self._lit(lighting, omega)
+                lighting = self._lit(lighting, center)
             else:
                 for leg in two_legs:
-                    lits = self.get_lits(lighting, leg)
+                    lits = self._get_lits(lighting, leg)
                     v0 = leg[0]
                     v1 = leg[1]
                     if v1 in lits and v0 not in lits:
-                        lighting = self.lit(lighting, v1)
+                        lighting = self._lit(lighting, v1)
                         lits.append(v0)
                     if v0 in lits:
-                        lighting = self.lit(lighting, v0)
-                        lighting = self.lit(lighting, center)
-                        lighting = self.lit(lighting, long_leg[0])
-                        lighting = self.lit(lighting, omega)
-                        lighting = self.lit(lighting, center)
+                        lighting = self._lit(lighting, v0)
+                        lighting = self._lit(lighting, center)
+                        lighting = self._lit(lighting, long_leg[0])
+                        lighting = self._lit(lighting, omega)
+                        lighting = self._lit(lighting, center)
                         break
         # lit second vertex on long leg
-        long_lits = self.get_lits(lighting, long_leg)
-        lit_indexes = self.get_lit_indexes(long_leg, long_lits)
+        long_lits = self._get_lits(lighting, long_leg)
+        lit_indexes = self._get_lit_indexes(long_leg, long_lits)
         if 1 not in lit_indexes:
             if 0 in lit_indexes:
-                lighting = self.lit(lighting, long_leg[0])
+                lighting = self._lit(lighting, long_leg[0])
             else:
                 if len(lit_indexes) == 0:
                     raise NotConnectedException()
                 first_lit = lit_indexes[0]
                 for i in range(first_lit, 1, -1):
-                    lighting = self.lit(lighting, long_leg[i])
+                    lighting = self._lit(lighting, long_leg[i])
         long_v0 = long_leg[0]
         long_v1 = long_leg[1]
         for i,leg in enumerate(two_legs):
-            lits = self.get_lits(lighting, leg)
+            lits = self._get_lits(lighting, leg)
             v0 = leg[0]
             v1 = leg[1]
             if v0 not in lits and v1 not in lits:
                 continue
             if v0 in lits and v1 not in lits:
-                lighting = self.lit(lighting, v0)
+                lighting = self._lit(lighting, v0)
                 lits.append(v1)
             elif v0 not in lits and v1 in lits:
-                lighting = self.lit(lighting, v1)
+                lighting = self._lit(lighting, v1)
                 lits.append(v0)
             if v0 in lits and v1 in lits:
-                center_lits = self.get_lits(lighting, [center])
+                center_lits = self._get_lits(lighting, [center])
                 if center in center_lits:
-                    lighting = self.lit(lighting, center)
+                    lighting = self._lit(lighting, center)
                     #omega is lited
-                    lighting = self.lit(lighting, v1)
-                    lighting = self.lit(lighting, v0)
-                    lighting = self.lit(lighting, omega)
-                    lighting = self.lit(lighting, center)
+                    lighting = self._lit(lighting, v1)
+                    lighting = self._lit(lighting, v0)
+                    lighting = self._lit(lighting, omega)
+                    lighting = self._lit(lighting, center)
                 else:
-                    long_lits = self.get_lits(lighting, [long_leg[0]])
+                    long_lits = self._get_lits(lighting, [long_leg[0]])
                     if len(long_lits) == 0:
-                        lighting = self.lit(lighting, long_v1)
-                    lighting = self.lit(lighting, long_v0)
-                    lighting = self.lit(lighting, center)
-                    lighting = self.lit(lighting, omega)
-                    lighting = self.lit(lighting, v1)
-                    lighting = self.lit(lighting, v0)
-                    lighting = self.lit(lighting, center)
-        self.set_lighting(lighting)
+                        lighting = self._lit(lighting, long_v1)
+                    lighting = self._lit(lighting, long_v0)
+                    lighting = self._lit(lighting, center)
+                    lighting = self._lit(lighting, omega)
+                    lighting = self._lit(lighting, v1)
+                    lighting = self._lit(lighting, v0)
+                    lighting = self._lit(lighting, center)
+        self._set_lighting(lighting)
         return self
 
     def _lit_center(self) -> Self:
@@ -735,17 +741,17 @@ class MorphFactory:
             DependentException:
                 If added vertex is dependent.
         """
-        lighting = self.get_lighting()
-        center = self.get_center()
-        center_lits = self.get_lits(lighting, [center])
+        lighting = self._get_lighting()
+        center = self._get_center()
+        center_lits = self._get_lits(lighting, [center])
         if center not in center_lits:
-            long_leg = self.get_long_leg()
-            long_lits = self.get_lits(lighting, long_leg)
-            lit_indexes = self.get_lit_indexes(long_leg, long_lits)
+            long_leg = self._get_long_leg()
+            long_lits = self._get_lits(lighting, long_leg)
+            lit_indexes = self._get_lit_indexes(long_leg, long_lits)
             first_lit = lit_indexes[0]
             for i in range(first_lit, -1, -1):
-                lighting = self.lit(lighting, long_leg[i])
-        self.set_lighting(lighting)
+                lighting = self._lit(lighting, long_leg[i])
+        self._set_lighting(lighting)
         return self
 
 
@@ -761,40 +767,40 @@ class MorphFactory:
             DependentException:
                 If added vertex is dependent.
         """
-        lighting = self.get_lighting()
-        long_leg = self.get_long_leg()
+        lighting = self._get_lighting()
+        long_leg = self._get_long_leg()
         #Offset the first vertex to the end of the linear leg. Since the leg is finite,
         #we will always reach the highlighting of one vertex,
         #it will be either the last one or the penultimate one
         while True:
-            lits = self.get_lits(lighting, long_leg)
+            lits = self._get_lits(lighting, long_leg)
             if len(lits) == 0:
-                self.append_to_center(lighting)
+                self._append_to_center(lighting)
                 raise AppendedException()
 
             if len(lits) == 2:
-                lit_indexes = self.get_lit_indexes(long_leg, lits)
+                lit_indexes = self._get_lit_indexes(long_leg, lits)
                 if lit_indexes[0] == 0 and lit_indexes[1] == len(long_leg) - 1:
                     break
             if len(lits) == 1:
                 if long_leg[0] == lits[0] or long_leg[len(long_leg) - 1] == lits[0]:
                     break
                 if long_leg[0] != lits[0]:
-                    lit_indexes = self.get_lit_indexes(long_leg, lits)
+                    lit_indexes = self._get_lit_indexes(long_leg, lits)
                     if lit_indexes[0] < len(long_leg) - 1:
                         for i in range(lit_indexes[0] + 1, len(long_leg)):
-                            self.append_delayed(long_leg[i])
-                        self.remove(long_leg[lit_indexes[0] + 1])
+                            self._append_delayed(long_leg[i])
+                        self._remove(long_leg[lit_indexes[0] + 1])
                     break
-            lit_indexes = self.get_lit_indexes(long_leg, lits)
+            lit_indexes = self._get_lit_indexes(long_leg, lits)
             first = lit_indexes[0]
             second = lit_indexes[1]
             if first > 0 and first + 1 != second:
                 for i in range(second, first, -1): ## maybe + 1
-                    lighting = self.lit(lighting, long_leg[i])
+                    lighting = self._lit(lighting, long_leg[i])
             else:
-                lighting = self.lit(lighting, long_leg[second])
-        self.set_lighting(lighting)
+                lighting = self._lit(lighting, long_leg[second])
+        self._set_lighting(lighting)
         return self
 
     def _append_long_leg_first_and_center_lit(self) -> Self:
@@ -809,61 +815,61 @@ class MorphFactory:
             DependentException:
                 If added vertex is dependent.
         """
-        lighting = self.get_lighting()
-        omega = self.get_one_vertex()
-        center = self.get_center()
-        lits = self.get_lits(lighting, [center, omega])
+        lighting = self._get_lighting()
+        omega = self._get_one_vertex()
+        center = self._get_center()
+        lits = self._get_lits(lighting, [center, omega])
         is_center_lit = center in lits
         # lit only long leg
-        long_leg = self.get_long_leg()
-        lits = self.get_lits(lighting, long_leg)
+        long_leg = self._get_long_leg()
+        lits = self._get_lits(lighting, long_leg)
         if is_center_lit and len(lits) == 0:
             #lit only center
-            self.append_to_center(lighting)
+            self._append_to_center(lighting)
             raise AppendedException
-        lit_indexes = self.get_lit_indexes(long_leg, lits)
+        lit_indexes = self._get_lit_indexes(long_leg, lits)
         # only long leg and center are lited
         if len(lit_indexes) == 1 and 0 in lit_indexes:
             # if leg less than 4 or not legs long 2, we can connect to the end of long leg
             is_can_connect_to_end = True
-            if self.is_two_leg() and len(long_leg) > 3:
+            if self._is_two_leg() and len(long_leg) > 3:
                 is_can_connect_to_end = False
             if is_can_connect_to_end:
                 for v in long_leg:
-                    lighting = self.lit(lighting, v)
-                self.append(lighting, long_leg[len(long_leg)-1])
+                    lighting = self._lit(lighting, v)
+                self._append(lighting, long_leg[len(long_leg)-1])
                 raise AppendedException
-            two_legs = self.get_two_legs()
+            two_legs = self._get_two_legs()
             two_leg = two_legs[0]
             v0 = two_leg[0]
             v1 = two_leg[1]
-            lighting = self.lit(lighting, center)
-            lighting = self.lit(lighting, v0)
-            lighting = self.lit(lighting, omega)
-            lighting = self.lit(lighting, center)
-            lighting = self.lit(lighting, long_leg[0])
-            lighting = self.lit(lighting, v1)
-            lighting = self.lit(lighting, v0)
-            lighting = self.lit(lighting, center)
-            lighting = self.lit(lighting, long_leg[1])
-            lighting = self.lit(lighting, long_leg[0])
-            lighting = self.lit(lighting, long_leg[2])
-            lighting = self.lit(lighting, long_leg[1])
-            lighting = self.lit(lighting, long_leg[3])
-            lighting = self.lit(lighting, long_leg[2])
-            lighting = self.lit(lighting, omega)
-            lighting = self.lit(lighting, center)
-            lighting = self.lit(lighting, long_leg[0])
-            lighting = self.lit(lighting, long_leg[1])
-            lighting = self.lit(lighting, v0)
-            lighting = self.lit(lighting, v1)
-            lighting = self.lit(lighting, center)
-            lighting = self.lit(lighting, long_leg[0])
-            lighting = self.lit(lighting, v0)
-            lighting = self.lit(lighting, center)
-            self.append_to_center(lighting)
+            lighting = self._lit(lighting, center)
+            lighting = self._lit(lighting, v0)
+            lighting = self._lit(lighting, omega)
+            lighting = self._lit(lighting, center)
+            lighting = self._lit(lighting, long_leg[0])
+            lighting = self._lit(lighting, v1)
+            lighting = self._lit(lighting, v0)
+            lighting = self._lit(lighting, center)
+            lighting = self._lit(lighting, long_leg[1])
+            lighting = self._lit(lighting, long_leg[0])
+            lighting = self._lit(lighting, long_leg[2])
+            lighting = self._lit(lighting, long_leg[1])
+            lighting = self._lit(lighting, long_leg[3])
+            lighting = self._lit(lighting, long_leg[2])
+            lighting = self._lit(lighting, omega)
+            lighting = self._lit(lighting, center)
+            lighting = self._lit(lighting, long_leg[0])
+            lighting = self._lit(lighting, long_leg[1])
+            lighting = self._lit(lighting, v0)
+            lighting = self._lit(lighting, v1)
+            lighting = self._lit(lighting, center)
+            lighting = self._lit(lighting, long_leg[0])
+            lighting = self._lit(lighting, v0)
+            lighting = self._lit(lighting, center)
+            self._append_to_center(lighting)
             raise AppendedException
-        self.set_lighting(lighting)
+        self._set_lighting(lighting)
         return self
 
     def _append_long_leg_only_last_lit(self) -> Self:
@@ -878,34 +884,34 @@ class MorphFactory:
             DependentException:
                 If added vertex is dependent.
         """
-        lighting = self.get_lighting()
-        center = self.get_center()
-        long_leg = self.get_long_leg()
-        lits = self.get_lits(lighting, long_leg)
+        lighting = self._get_lighting()
+        center = self._get_center()
+        long_leg = self._get_long_leg()
+        lits = self._get_lits(lighting, long_leg)
         if len(lits) == 1:
-            self.check_dependency_one_leg(lighting)
+            self._check_dependency_one_leg(lighting)
             last_v = long_leg[len(long_leg) - 1]
             if len(long_leg) == 1:
-                lighting = self.lit(lighting, last_v)
-                self.append(lighting, last_v)
+                lighting = self._lit(lighting, last_v)
+                self._append(lighting, last_v)
                 raise AppendedException
             g = long_leg[len(long_leg) - 2]
-            omega = self.get_one_vertex()
+            omega = self._get_one_vertex()
             pq = omega@lighting
             new_g = pq@g
-            if self.is_included(new_g):
+            if self._is_included(new_g):
                 raise DependentException()
-            self.remove(last_v)
-            self.append(lighting, center)
-            self.replace(g, new_g)
-            self.append(last_v, lighting)
-            long_leg = self.get_long_leg()
+            self._remove(last_v)
+            self._append(lighting, center)
+            self._replace(g, new_g)
+            self._append(last_v, lighting)
+            long_leg = self._get_long_leg()
             if len(long_leg) > 4:
                 for i in range(4, len(long_leg)):
-                    self.append_delayed(long_leg[i])
-                self.remove(long_leg[4])
+                    self._append_delayed(long_leg[i])
+                self._remove(long_leg[4])
             raise AppendedException
-        self.set_lighting(lighting)
+        self._set_lighting(lighting)
         return self
 
     def _append_long_leg_last_and_first_lit(self) -> None:
@@ -920,18 +926,18 @@ class MorphFactory:
             DependentException:
                 If added vertex is dependent.
         """
-        lighting = self.get_lighting()
-        omega = self.get_one_vertex()
-        center = self.get_center()
-        long_leg = self.get_long_leg()
+        lighting = self._get_lighting()
+        omega = self._get_one_vertex()
+        center = self._get_center()
+        long_leg = self._get_long_leg()
         first_v = long_leg[0]
         for i in range(len(long_leg)-1, 0, -1):
-            lighting = self.lit(lighting, long_leg[i])
-        lighting = self.lit(lighting, center)
-        lighting = self.lit(lighting, omega)
-        lighting = self.lit(lighting, first_v)
-        lighting = self.lit(lighting, center)
-        self.append_to_center(lighting)
+            lighting = self._lit(lighting, long_leg[i])
+        lighting = self._lit(lighting, center)
+        lighting = self._lit(lighting, omega)
+        lighting = self._lit(lighting, first_v)
+        lighting = self._lit(lighting, center)
+        self._append_to_center(lighting)
         raise AppendedException
 
 
@@ -950,7 +956,7 @@ class MorphFactory:
                 If added vertex is dependent.
         """
         # pipeline building
-        self.set_lighting(lighting)
+        self._set_lighting(lighting)
         self._append_three_graph()
         self._append_one_legs_in_different_state()
         self._append_fast()
@@ -960,32 +966,6 @@ class MorphFactory:
         self._append_long_leg_first_and_center_lit()
         self._append_long_leg_only_last_lit()
         self._append_long_leg_last_and_first_lit()
-
-    def append_delayed(self, v:PauliString) -> None:
-        """
-        Append to delayed.
-
-        Args:
-            v: Vertex to append in delayed.
-        Return:
-            None
-        """
-        self.delayed_vertices.append(v)
-
-    def restore_delayed(self, vertices:list[PauliString]) -> list[PauliString]:
-        """
-        Restore to delayed.
-
-        Args:
-            vertices: List of vertices.
-        Returns:
-            List of vertices.
-        """
-        for i in range(len(self.delayed_vertices) - 1, -1, -1):
-            vertices.insert(0, self.delayed_vertices[i])
-        self.delayed_vertices = []
-        return vertices
-
 
     def _get_anti_commutates(self, pauli_string:PauliString,
                              generators) -> list[PauliString]:
@@ -1104,14 +1084,14 @@ class MorphFactory:
             try:
                 self._pipeline(lighting)
             except AppendedException:
-                vertices = self.restore_delayed(vertices)
+                vertices = self._restore_delayed(vertices)
                 if lighting in unappended:
                     unappended.remove(lighting)
             except DependentException:
                 self.dependents.append(lighting)
-                vertices = self.restore_delayed(vertices)
+                vertices = self._restore_delayed(vertices)
             except NotConnectedException:
-                vertices = self.restore_delayed(vertices)
+                vertices = self._restore_delayed(vertices)
                 if lighting not in unappended:
                     unappended.append(lighting)
                     vertices.append(lighting)
@@ -1119,7 +1099,7 @@ class MorphFactory:
                 self.restore()
                 break
             except Exception:
-                vertices = self.restore_delayed(vertices)
+                vertices = self._restore_delayed(vertices)
                 unappended.append(lighting)
         return self
 
@@ -1188,3 +1168,12 @@ class MorphFactory:
                 continue
 
         return dependents
+
+    def get_morph(self) -> Morph:
+        """
+        Get canonical graph form.
+
+        Returns:
+            Canonical form.
+        """
+        return Morph(self.legs, self.dependents)
