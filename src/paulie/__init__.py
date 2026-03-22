@@ -20,6 +20,7 @@ from .application.second_moment import second_moment
 from .application.get_optimal_su2_n import get_optimal_su_2_n_generators
 from .application.average_graph_complexity import average_graph_complexity
 from .application.animation import animation_anti_commutation_graph
+from .application.plot import plot_anti_commutation_graph
 from .application.average_pauli_weight import (
     quantum_fourier_entropy,
     average_pauli_weight,
@@ -79,6 +80,7 @@ __all__ = [
     "get_optimal_su_2_n_generators",
     "average_graph_complexity",
     "animation_anti_commutation_graph",
+    "plot_anti_commutation_graph",
     "quantum_fourier_entropy",
     "average_pauli_weight",
     "get_pauli_weights",
