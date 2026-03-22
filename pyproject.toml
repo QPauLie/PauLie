@@ -42,6 +42,7 @@ markers = [
   "slow: slower benchmark-style tests",
 ]
 testpaths = ["tests"]
+addopts = ["-p", "no:warnings"]
 
 [tool.ruff]
 exclude = ["submodules"]
