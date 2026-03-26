@@ -15,17 +15,15 @@ from paulie.common.pauli_string_bitarray import PauliString
 
 class RecordingMorphFactory(MorphFactory):
     """
-    Factory for constructing a canonical graph.
+    Factory for constructing a canonical graph with
+        a recording of the transformation process.
     """
     def __init__(self, record:RecordGraph=None) -> None:
         """
-        Constructor.
-
+        Initialize a RecordingMorphFactory
         Args:
-            record: Record.
-        Returns:
-            None
-
+            record (RecordGraph): Recording of the canonical
+                graph transformation process.
         """
         super().__init__()
         self.record = record
@@ -736,9 +734,9 @@ class RecordingMorphFactory(MorphFactory):
         Transform a connected graph to a canonic type.
 
         Args:
-            generators: List of Pauli strings.
+            generators (list[PauliString]): List of Pauli strings.
         Returns:
-            Self
+            Self: State of MorphFactory after transformation
         """
         if len(generators) == 0:
             return self

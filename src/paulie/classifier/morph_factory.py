@@ -41,11 +41,7 @@ class MorphFactory:
     """
     def __init__(self) -> None:
         """
-        Constructor
-
-        Args:
-        Returns:
-            None
+        Initialize a MorphFactory
         """
         self.legs = [] # center is zero leg
         self.lighting = None
@@ -101,7 +97,7 @@ class MorphFactory:
             list of lited vertices (connected to the selected vertex).
         """
         if vertices is None:
-            vertices = self.get_vertices()
+            vertices = self._get_vertices()
         return [v for v in vertices if v != lighting and not lighting|v]
 
 
@@ -378,40 +374,6 @@ class MorphFactory:
                 return
         raise MorphFactoryException("Can't append")
 
-    def _append_to_two_center(self, lighting:PauliString) -> None:
-        """
-        Append vertex to two vertices graph.
-
-        Args:
-            lighting: Canonical graph join candidate.
-        Returns:
-            None
-        Raises:
-            NotConnectedException:
-                If lighting is not connected.
-        """
-        center = self._get_center()
-        if len(self.legs) == 1:
-            self._append(lighting, center)
-            return
-        vertices = self._get_vertices()
-        lits = self._get_lits(lighting, vertices)
-
-        if len(lits) == 1:
-            if center in lits:
-                self._append(lighting, center)
-                return
-            else:
-                lighting = self._lit(lighting, lits[0])
-                lighting = self._lit(lighting, center)
-                self._append(lighting, center)
-                return
-        if len(lits) == 2:
-            lighting = self._lit(lighting, center)
-            self._append(lighting, center)
-            return
-        raise NotConnectedException()
-
     def _check_dependency_one_leg(self, lighting:PauliString) -> None:
         """
         Dependency check when attaching a vertex to the center of the graph.
@@ -434,19 +396,6 @@ class MorphFactory:
                 n_v = pq @ v
                 if n_v in vertices or n_v == lighting:
                     raise DependentException()
-
-    def _append_to_center(self, lighting:PauliString) -> None:
-        """
-        Joining a vertex to the center of the graph.
-
-        Args:
-            lighting: Canonical graph join candidate.
-        Returns:
-            None
-        """
-        self._check_dependency_one_leg(lighting)
-        center = self._get_center()
-        self._append(lighting, center)
 
     def _remove(self, v:PauliString) -> None:
         """
@@ -535,6 +484,53 @@ class MorphFactory:
             vertices.insert(0, self.delayed_vertices[i])
         self.delayed_vertices = []
         return vertices
+
+    def _append_to_center(self, lighting:PauliString) -> None:
+        """
+        Joining a vertex to the center of the graph.
+
+        Args:
+            lighting: Canonical graph join candidate.
+        Returns:
+            None
+        """
+        self._check_dependency_one_leg(lighting)
+        center = self._get_center()
+        self._append(lighting, center)
+
+    def _append_to_two_center(self, lighting:PauliString) -> None:
+        """
+        Append vertex to two vertices graph.
+
+        Args:
+            lighting: Canonical graph join candidate.
+        Returns:
+            None
+        Raises:
+            NotConnectedException:
+                If lighting is not connected.
+        """
+        center = self._get_center()
+        if len(self.legs) == 1:
+            self._append(lighting, center)
+            return
+        vertices = self._get_vertices()
+        lits = self._get_lits(lighting, vertices)
+
+        if len(lits) == 1:
+            if center in lits:
+                self._append(lighting, center)
+                return
+            else:
+                lighting = self._lit(lighting, lits[0])
+                lighting = self._lit(lighting, center)
+                self._append(lighting, center)
+                return
+        if len(lits) == 2:
+            lighting = self._lit(lighting, center)
+            self._append(lighting, center)
+            return
+        raise NotConnectedException()
 
     def _append_three_graph(self) -> Self:
         """
@@ -967,6 +963,7 @@ class MorphFactory:
         self._append_long_leg_only_last_lit()
         self._append_long_leg_last_and_first_lit()
 
+
     def _get_anti_commutates(self, pauli_string:PauliString,
                              generators) -> list[PauliString]:
         """
@@ -1108,9 +1105,9 @@ class MorphFactory:
         Transform a connected graph to a canonic type.
 
         Args:
-            generators: List of Pauli strings.
+            generators (list[PauliString]): List of Pauli strings.
         Returns:
-            Self
+            Self: State of MorphFactory after transformation
         """
         if len(generators) == 0:
             return self
@@ -1123,10 +1120,13 @@ class MorphFactory:
         All Pauli strings of one algebra are dependent on another.
 
         Args:
-            legs: List of legs.
-            generators: List of Pauli strings.
+            legs (list[list[PauliString]]): List of legs of 
+                the canonical graph to compare with.
+            generators (list[PauliString]): List of Pauli strings to check
+                for inclusion in the canonical graph
         Returns:
-            True if generators are dependent.
+            bool: The result of checking for the equivalence
+                of generators to a given canonical graph.
         """
         self.legs = legs.copy()
         for g in generators:
@@ -1144,13 +1144,15 @@ class MorphFactory:
     def select_dependents(self, legs:list[list[PauliString]], generators:list[PauliString]
         ) -> list[PauliString]:
         """
-        Select dependent strings.
+        Selecting generators that are dependent on the canonical graph
 
         Args:
-            legs: List of legs.
-            generators: List of Pauli strings.
+            legs (list[list[PauliString]]): List of legs of 
+                the canonical graph to check with.
+            generators (list[PauliString]): List of Pauli strings to check
+                for inclusion in the canonical graph
         Returns:
-            List of dependent generators.
+            list[PauliString]: List of dependent generators.
         """
         self.legs = legs.copy()
         self.is_check = True
@@ -1171,9 +1173,9 @@ class MorphFactory:
 
     def get_morph(self) -> Morph:
         """
-        Get canonical graph form.
+        Get the canonical graph built by the factory.
 
         Returns:
-            Canonical form.
+            Morph: Canonical graph.
         """
         return Morph(self.legs, self.dependents)
