@@ -473,205 +473,18 @@
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Factory for constructing a canonical graph</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.append">
-<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.append" title="Link to this definition">#</a></dt>
-<dd><p>Append vertex to graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>v</strong> – Added vertex.</p></li>
-<li><p><strong>lit</strong> – Vertex to which is added.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="paulie.classifier.morph_factory.CheckAppendedException.html#paulie.classifier.morph_factory.CheckAppendedException" title="paulie.classifier.morph_factory.CheckAppendedException"><strong>CheckAppendedException</strong></a> – If check mode.</p></li>
-<li><p><a class="reference internal" href="paulie.classifier.morph_factory.MorphFactoryException.html#paulie.classifier.morph_factory.MorphFactoryException" title="paulie.classifier.morph_factory.MorphFactoryException"><strong>MorphFactoryException</strong></a> – If No vertex.
-    or lit is not last in leg
-    or can’t append.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.append_delayed">
-<span class="sig-name descname"><span class="pre">append_delayed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.append_delayed" title="Link to this definition">#</a></dt>
-<dd><p>Append to delayed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>v</strong> – Vertex to append in delayed.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.append_to_center">
-<span class="sig-name descname"><span class="pre">append_to_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.append_to_center" title="Link to this definition">#</a></dt>
-<dd><p>Joining a vertex to the center of the graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lighting</strong> – Canonical graph join candidate.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.append_to_two_center">
-<span class="sig-name descname"><span class="pre">append_to_two_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.append_to_two_center" title="Link to this definition">#</a></dt>
-<dd><p>Append vertex to two vertices graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lighting</strong> – Canonical graph join candidate.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="paulie.classifier.morph_factory.NotConnectedException.html#paulie.classifier.morph_factory.NotConnectedException" title="paulie.classifier.morph_factory.NotConnectedException"><strong>NotConnectedException</strong></a> – If lighting is not connected.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.build">
 <span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.build" title="Link to this definition">#</a></dt>
 <dd><p>Transform a connected graph to a canonic type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>generators</strong> – List of Pauli strings.</p>
+<dd class="field-odd"><p><strong>generators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>) – List of Pauli strings.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Self</p>
+<dd class="field-even"><p>State of MorphFactory after transformation</p>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.check_dependency_one_leg">
-<span class="sig-name descname"><span class="pre">check_dependency_one_leg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.check_dependency_one_leg" title="Link to this definition">#</a></dt>
-<dd><p>Dependency check when attaching a vertex to the center of the graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lighting</strong> – Canonical graph join candidate.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="paulie.classifier.morph_factory.NotConnectedException.html#paulie.classifier.morph_factory.NotConnectedException" title="paulie.classifier.morph_factory.NotConnectedException"><strong>NotConnectedException</strong></a> – If lighting is not connected.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.find">
-<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.find" title="Link to this definition">#</a></dt>
-<dd><p>Find vertex.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>v</strong> – Required vertex.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tuple index of leg and index vertex in the leg.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_center">
-<span class="sig-name descname"><span class="pre">get_center</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_center" title="Link to this definition">#</a></dt>
-<dd><p>Get center.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Canter of the graph.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_count_two_legs">
-<span class="sig-name descname"><span class="pre">get_count_two_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_count_two_legs" title="Link to this definition">#</a></dt>
-<dd><p>Get the number of legs of length two.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of legs long 2.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_lighting">
-<span class="sig-name descname"><span class="pre">get_lighting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_lighting" title="Link to this definition">#</a></dt>
-<dd><p>Get lighting.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Lighting.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_lit_indexes">
-<span class="sig-name descname"><span class="pre">get_lit_indexes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_lit_indexes" title="Link to this definition">#</a></dt>
-<dd><p>Get the indices of the lited vertices in lits.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>vertices</strong> – List of vertices.</p></li>
-<li><p><strong>lits</strong> – List of lited vertices.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of indexes of lited vertices in vertices.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_lits">
-<span class="sig-name descname"><span class="pre">get_lits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_lits" title="Link to this definition">#</a></dt>
-<dd><p>Get lited vertices (connected to the selected vertex).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>lighting</strong> – Canonical graph join candidate.</p></li>
-<li><p><strong>vertices</strong> – List of vertices.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>list of lited vertices (connected to the selected vertex).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_long_leg">
-<span class="sig-name descname"><span class="pre">get_long_leg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_long_leg" title="Link to this definition">#</a></dt>
-<dd><p>Get long leg.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of vertices in long leg.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_long_legs">
-<span class="sig-name descname"><span class="pre">get_long_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_long_legs" title="Link to this definition">#</a></dt>
-<dd><p>Get long leg vertices.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of vertices from long leg.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
 </dd>
 </dl>
 </dd></dl>
@@ -679,95 +492,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_morph">
 <span class="sig-name descname"><span class="pre">get_morph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_morph" title="Link to this definition">#</a></dt>
-<dd><p>Get canonical graph form.</p>
+<dd><p>Get the canonical graph built by the factory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Canonical form.</p>
+<dd class="field-odd"><p>Canonical graph.</p>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_one_vertex">
-<span class="sig-name descname"><span class="pre">get_one_vertex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_one_vertex" title="Link to this definition">#</a></dt>
-<dd><p>Get one vertex in leg.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Control vertex in the graph.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_one_vertices">
-<span class="sig-name descname"><span class="pre">get_one_vertices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_one_vertices" title="Link to this definition">#</a></dt>
-<dd><p>Get vertices included in single legs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of vertices included in legs of length 1.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_pq">
-<span class="sig-name descname"><span class="pre">get_pq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_pq" title="Link to this definition">#</a></dt>
-<dd><p>Get pq.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lighting</strong> – Canonical graph join candidate.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>pq: p&#64;q where p and q are vertices in one leg,
-and p is lited, q is unlited.
-p: Lited vertex.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_two_legs">
-<span class="sig-name descname"><span class="pre">get_two_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_two_legs" title="Link to this definition">#</a></dt>
-<dd><p>Get vertices included in two legs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of vertices included in two legs.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.get_vertices">
-<span class="sig-name descname"><span class="pre">get_vertices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.get_vertices" title="Link to this definition">#</a></dt>
-<dd><p>Get graph vertices.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of vertices in the graph.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.is_empty">
-<span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.is_empty" title="Link to this definition">#</a></dt>
-<dd><p>Checking for emptiness.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if graph is empty.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.is_empty_legs">
-<span class="sig-name descname"><span class="pre">is_empty_legs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.is_empty_legs" title="Link to this definition">#</a></dt>
-<dd><p>Checking for missing legs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if graph no core.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="paulie.classifier.classification.Morph.html#paulie.classifier.classification.Morph" title="paulie.classifier.classification.Morph">Morph</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -780,99 +511,21 @@ All Pauli strings of one algebra are dependent on another.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>legs</strong> – List of legs.</p></li>
-<li><p><strong>generators</strong> – List of Pauli strings.</p></li>
+<li><p><strong>legs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em><em>]</em>) – List of legs of
+the canonical graph to compare with.</p></li>
+<li><p><strong>generators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>) – List of Pauli strings to check
+for inclusion in the canonical graph</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if generators are dependent.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>The result of checking for the equivalence</dt><dd><p>of generators to a given canonical graph.</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.is_included">
-<span class="sig-name descname"><span class="pre">is_included</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.is_included" title="Link to this definition">#</a></dt>
-<dd><p>Checking a vertex for inclusion in the graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>v</strong> – Required vertex.</p>
+</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if vertex in the graph.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.is_two_leg">
-<span class="sig-name descname"><span class="pre">is_two_leg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.is_two_leg" title="Link to this definition">#</a></dt>
-<dd><p>Checking the leg for length two.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if there is a leg of length 2.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.lit">
-<span class="sig-name descname"><span class="pre">lit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertex</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.lit" title="Link to this definition">#</a></dt>
-<dd><p>Lit vertex.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>lighting</strong> – Canonical graph join candidate.</p></li>
-<li><p><strong>vertex</strong> – Vertex that will be lited by lightning.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>New lighting.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.remove">
-<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.remove" title="Link to this definition">#</a></dt>
-<dd><p>Removing a graph vertex.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>v</strong> – Removed vertex.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.replace">
-<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.replace" title="Link to this definition">#</a></dt>
-<dd><p>Replacing a graph vertex with an equivalent one.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>v</strong> – Removed vertices.</p></li>
-<li><p><strong>v_new</strong> – Added vertices.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.restore_delayed">
-<span class="sig-name descname"><span class="pre">restore_delayed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.restore_delayed" title="Link to this definition">#</a></dt>
-<dd><p>Restore to delayed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vertices</strong> – List of vertices.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of vertices.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -880,44 +533,21 @@ All Pauli strings of one algebra are dependent on another.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.select_dependents">
 <span class="sig-name descname"><span class="pre">select_dependents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.select_dependents" title="Link to this definition">#</a></dt>
-<dd><p>Select dependent strings.</p>
+<dd><p>Selecting generators that are dependent on the canonical graph</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>legs</strong> – List of legs.</p></li>
-<li><p><strong>generators</strong> – List of Pauli strings.</p></li>
+<li><p><strong>legs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em><em>]</em>) – List of legs of
+the canonical graph to check with.</p></li>
+<li><p><strong>generators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>) – List of Pauli strings to check
+for inclusion in the canonical graph</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of dependent generators.</p>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.set_center">
-<span class="sig-name descname"><span class="pre">set_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.set_center" title="Link to this definition">#</a></dt>
-<dd><p>Set center.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>v</strong> – Vertex of the graph center.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.morph_factory.MorphFactory.set_lighting">
-<span class="sig-name descname"><span class="pre">set_lighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.morph_factory.MorphFactory.set_lighting" title="Link to this definition">#</a></dt>
-<dd><p>Set lighting.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lighting</strong> – Paulie string, which is lightning.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -974,38 +604,10 @@ All Pauli strings of one algebra are dependent on another.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory"><code class="docutils literal notranslate"><span class="pre">MorphFactory</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.append"><code class="docutils literal notranslate"><span class="pre">MorphFactory.append()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.append_delayed"><code class="docutils literal notranslate"><span class="pre">MorphFactory.append_delayed()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.append_to_center"><code class="docutils literal notranslate"><span class="pre">MorphFactory.append_to_center()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.append_to_two_center"><code class="docutils literal notranslate"><span class="pre">MorphFactory.append_to_two_center()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.build"><code class="docutils literal notranslate"><span class="pre">MorphFactory.build()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.check_dependency_one_leg"><code class="docutils literal notranslate"><span class="pre">MorphFactory.check_dependency_one_leg()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.find"><code class="docutils literal notranslate"><span class="pre">MorphFactory.find()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_center"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_center()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_count_two_legs"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_count_two_legs()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_lighting"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_lighting()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_lit_indexes"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_lit_indexes()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_lits"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_lits()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_long_leg"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_long_leg()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_long_legs"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_long_legs()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_morph"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_morph()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_one_vertex"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_one_vertex()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_one_vertices"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_one_vertices()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_pq"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_pq()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_two_legs"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_two_legs()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.get_vertices"><code class="docutils literal notranslate"><span class="pre">MorphFactory.get_vertices()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.is_empty"><code class="docutils literal notranslate"><span class="pre">MorphFactory.is_empty()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.is_empty_legs"><code class="docutils literal notranslate"><span class="pre">MorphFactory.is_empty_legs()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.is_eq"><code class="docutils literal notranslate"><span class="pre">MorphFactory.is_eq()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.is_included"><code class="docutils literal notranslate"><span class="pre">MorphFactory.is_included()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.is_two_leg"><code class="docutils literal notranslate"><span class="pre">MorphFactory.is_two_leg()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.lit"><code class="docutils literal notranslate"><span class="pre">MorphFactory.lit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.remove"><code class="docutils literal notranslate"><span class="pre">MorphFactory.remove()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.replace"><code class="docutils literal notranslate"><span class="pre">MorphFactory.replace()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.restore_delayed"><code class="docutils literal notranslate"><span class="pre">MorphFactory.restore_delayed()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.select_dependents"><code class="docutils literal notranslate"><span class="pre">MorphFactory.select_dependents()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.set_center"><code class="docutils literal notranslate"><span class="pre">MorphFactory.set_center()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.morph_factory.MorphFactory.set_lighting"><code class="docutils literal notranslate"><span class="pre">MorphFactory.set_lighting()</span></code></a></li>
 </ul>
 </li>
 </ul>

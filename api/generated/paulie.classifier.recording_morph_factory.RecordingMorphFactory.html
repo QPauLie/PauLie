@@ -471,87 +471,23 @@
 <dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">paulie.classifier.recording_morph_factory.</span></span><span class="sig-name descname"><span class="pre">RecordingMorphFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="paulie.classifier.morph_factory.MorphFactory.html#paulie.classifier.morph_factory.MorphFactory" title="paulie.classifier.morph_factory.MorphFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">MorphFactory</span></code></a></p>
-<p>Factory for constructing a canonical graph.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.append_to_two_center">
-<span class="sig-name descname"><span class="pre">append_to_two_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.append_to_two_center" title="Link to this definition">#</a></dt>
-<dd><p>Append vertex to two vertices graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lighting</strong> – Canonical graph join candidate.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="paulie.classifier.morph_factory.NotConnectedException.html#paulie.classifier.morph_factory.NotConnectedException" title="paulie.classifier.morph_factory.NotConnectedException"><strong>NotConnectedException</strong></a> – If lighting is not connected.</p>
+<dl class="simple">
+<dt>Factory for constructing a canonical graph with</dt><dd><p>a recording of the transformation process.</p>
 </dd>
 </dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.build">
 <span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.build" title="Link to this definition">#</a></dt>
 <dd><p>Transform a connected graph to a canonic type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>generators</strong> – List of Pauli strings.</p>
+<dd class="field-odd"><p><strong>generators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString"><em>PauliString</em></a><em>]</em>) – List of Pauli strings.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Self</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.check_dependency_one_leg">
-<span class="sig-name descname"><span class="pre">check_dependency_one_leg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.check_dependency_one_leg" title="Link to this definition">#</a></dt>
-<dd><p>Dependency check when attaching a vertex to the center of the graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lighting</strong> – Canonical graph join candidate.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="paulie.classifier.morph_factory.NotConnectedException.html#paulie.classifier.morph_factory.NotConnectedException" title="paulie.classifier.morph_factory.NotConnectedException"><strong>NotConnectedException</strong></a> – If lighting is not connected.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_pq">
-<span class="sig-name descname"><span class="pre">get_pq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_pq" title="Link to this definition">#</a></dt>
-<dd><p>Get pq.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lighting</strong> – Canonical graph join candidate.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>pq: p&#64;q where p and q are vertices
-in one leg, and p is lited, q is unlited.
-p: Lited vertex.</p>
+<dd class="field-even"><p>State of MorphFactory after transformation</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="paulie.classifier.recording_morph_factory.RecordingMorphFactory.lit">
-<span class="sig-name descname"><span class="pre">lit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lighting</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertex</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.lit" title="Link to this definition">#</a></dt>
-<dd><p>Lit vertex.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>lighting</strong> – Canonical graph join candidate</p></li>
-<li><p><strong>vertex</strong> – Vertex that will be lited by lightning.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>New lighting.</p>
+<dd class="field-odd"><p>Self</p>
 </dd>
 </dl>
 </dd></dl>
@@ -608,11 +544,7 @@ p: Lited vertex.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.append_to_two_center"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.append_to_two_center()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.build"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.build()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.check_dependency_one_leg"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.check_dependency_one_leg()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.get_pq"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.get_pq()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.recording_morph_factory.RecordingMorphFactory.lit"><code class="docutils literal notranslate"><span class="pre">RecordingMorphFactory.lit()</span></code></a></li>
 </ul>
 </li>
 </ul>
