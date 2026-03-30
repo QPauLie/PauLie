@@ -295,26 +295,19 @@ class OptimalPauliCompiler:
         """Return candidate decompositions ``W = W1 @ W2``
         with ``W1`` anti-commuting with ``W2``."""
         candidates: list[tuple[PauliString, PauliString]] = []
-        n_right = len(w_right)
-
-        for site, label in enumerate(str(w_right)):
-            if label == "I":
-                continue
-            labels = ["X", "Z"] if label == "Y" else (["Z"] if label == "X" else ["X"])
-            for local_label in labels:
-                w1 = get_single(n_right, site, local_label)
-                w2 = w1 @ w_right
-                if not w1 | w2:
-                    candidates.append((w1, w2))
-
-        unique: list[tuple[PauliString, PauliString]] = []
         seen: set[tuple[PauliString, PauliString]] = set()
-        for pair in candidates:
-            if pair in seen:
-                continue
-            seen.add(pair)
-            unique.append(pair)
-        return unique
+
+        for w1 in w_right.get_anti_commutants():
+            w2 = w1 @ w_right
+
+            w1, w2 = sorted((w1, w2))
+            pair = (w1, w2)
+
+            if pair not in seen:
+                seen.add(pair)
+                candidates.append(pair)
+
+        return candidates
 
     def _all_interleavings_preserving(
         self,
