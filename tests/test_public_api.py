@@ -38,6 +38,9 @@ public_symbols = [
 
     # Application
     "average_otoc",
+    "mean_abs_otoc_uniform",
+    "otoc_fixed_unitary",
+    "pauli_instability",
     "fourpoint",
     "non_commuting_charges",
     "second_moment",
@@ -66,6 +69,7 @@ public_symbols = [
     "get_identity",
     "get_pauli_string",
     "get_single",
+    "pauli_string_from_index",
     "get_lie_algebra",
     "G_LIE",
     "two_local_algebras",

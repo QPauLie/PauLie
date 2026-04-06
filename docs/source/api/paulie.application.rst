@@ -63,6 +63,18 @@ Utilities related to different DLA properties.
    otoc.average_otoc
    second_moment.second_moment
 
+Pauli instability and fixed-unitary OTOC
+-----------------------------------------
+Expectations over uniform Pauli pairs for a given unitary (contrast with Haar-averaged
+:func:`~paulie.application.otoc.average_otoc` over a DLA).
+
+.. autosummary::
+   :toctree: generated/
+
+   pauli_instability.otoc_fixed_unitary
+   pauli_instability.mean_abs_otoc_uniform
+   pauli_instability.pauli_instability
+
 Matrix decomposition
 --------------------
 Utilities related to matrix decompositions.

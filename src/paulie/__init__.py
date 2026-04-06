@@ -14,6 +14,11 @@ from .exceptions import (
 
 # Application
 from .application.otoc import average_otoc
+from .application.pauli_instability import (
+    mean_abs_otoc_uniform,
+    otoc_fixed_unitary,
+    pauli_instability,
+)
 from .application.fourpoint import fourpoint
 from .application.charges import non_commuting_charges
 from .application.second_moment import second_moment
@@ -50,7 +55,8 @@ from .common.pauli_string_linear import PauliStringLinear
 from .common.pauli_string_factory import (
     get_identity,
     get_pauli_string,
-    get_single
+    get_single,
+    pauli_string_from_index,
 )
 from .common.two_local_generators import (
     get_lie_algebra,
@@ -74,6 +80,9 @@ __all__ = [
 
     # Application
     "average_otoc",
+    "mean_abs_otoc_uniform",
+    "otoc_fixed_unitary",
+    "pauli_instability",
     "fourpoint",
     "non_commuting_charges",
     "second_moment",
@@ -102,6 +111,7 @@ __all__ = [
     "get_identity",
     "get_pauli_string",
     "get_single",
+    "pauli_string_from_index",
     "get_lie_algebra",
     "G_LIE",
     "two_local_algebras",
