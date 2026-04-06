@@ -26,6 +26,7 @@ Utilities for generating and manipulating Pauli string expressions.
    pauli_string_factory.gen_k_local
    pauli_string_factory.gen_k_local_generators
    pauli_string_factory.get_identity
+   pauli_string_factory.pauli_string_from_index
    pauli_string_factory.get_last
    pauli_string_factory.get_pauli_string
    pauli_string_factory.get_single
