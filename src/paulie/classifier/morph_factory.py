@@ -48,6 +48,8 @@ class MorphFactory:
         self.delayed_vertices = []
         self.dependents = []
         self.is_check = False
+        self.all_vertices = set()
+        self.qubit_to_vertices = {}
 
 
     def _set_lighting(self, lighting:PauliString) -> None:
@@ -96,10 +98,33 @@ class MorphFactory:
         Returns:
             list of lited vertices (connected to the selected vertex).
         """
-        if vertices is None:
-            vertices = self._get_vertices()
-        return [v for v in vertices if v != lighting and not lighting|v]
+        if vertices is not None:
+            return [v for v in vertices if v != lighting and not lighting|v]
+        
+        # Use overlap index for efficiency in sparse graphs
+        candidates = set()
+        for qubit in lighting.get_support():
+            if qubit in self.qubit_to_vertices:
+                for v in self.qubit_to_vertices[qubit]:
+                    if v != lighting:
+                        candidates.add(v)
+        
+        return [v for v in candidates if not lighting|v]
 
+    def _add_to_index(self, v: PauliString) -> None:
+        self.all_vertices.add(v)
+        for qubit in v.get_support():
+            if qubit not in self.qubit_to_vertices:
+                self.qubit_to_vertices[qubit] = []
+            self.qubit_to_vertices[qubit].append(v)
+
+    def _remove_from_index(self, v: PauliString) -> None:
+        if v in self.all_vertices:
+            self.all_vertices.remove(v)
+        for qubit in v.get_support():
+            if qubit in self.qubit_to_vertices:
+                if v in self.qubit_to_vertices[qubit]:
+                    self.qubit_to_vertices[qubit].remove(v)
 
     def _is_empty(self) -> bool:
         """
@@ -145,6 +170,8 @@ class MorphFactory:
         Returns:
             Tuple index of leg and index vertex in the leg.
         """
+        if v not in self.all_vertices:
+            return -1, -1
         for i, leg in enumerate(self.legs):
             index = self._find_in_leg(leg, v)
             if index > -1:
@@ -160,8 +187,7 @@ class MorphFactory:
         Returns:
             True if vertex in the graph.
         """
-        leg_index = self._find(v)[0]
-        return leg_index > -1
+        return v in self.all_vertices
 
     def _get_vertices(self) -> list[PauliString]:
         """
@@ -195,6 +221,7 @@ class MorphFactory:
         if self._is_empty() is False:
             raise MorphFactoryException("Center is setted")
         self.legs.append([v])
+        self._add_to_index(v)
 
     def _get_long_leg(self) -> list[PauliString]:
         """
@@ -357,6 +384,9 @@ class MorphFactory:
         leg_index, vertex_index = self._find(lit)
         if leg_index == -1:
             raise MorphFactoryException("No vertex")
+        
+        self._add_to_index(v)
+
         if leg_index == 0:
             self.legs.insert(1, [v])
             return
@@ -387,7 +417,7 @@ class MorphFactory:
                 If lighting is not connected.
         """
         ones = self._get_one_vertices()
-        vertices = set(self._get_vertices())
+        vertices = self.all_vertices
         for one in ones:
             pq = one @ lighting
             for v in vertices:
@@ -411,6 +441,16 @@ class MorphFactory:
             raise MorphFactoryException("No vertex")
         if leg_index == 0:
             raise MorphFactoryException("Can't delete the center")
+
+        # Before removing from self.legs, we should find which vertices are actually removed.
+        # Actually, all vertices from vertex_index to the end of the leg are removed.
+        # Wait, the original code:
+        # leg = [self.legs[leg_index][i] for i in range(0, vertex_index)]
+        # del self.legs[leg_index]
+        # This removes everything FROM vertex_index to the end.
+        
+        for i in range(vertex_index, len(self.legs[leg_index])):
+            self._remove_from_index(self.legs[leg_index][i])
 
         leg = [self.legs[leg_index][i] for i in range(0, vertex_index)]
         del self.legs[leg_index]
@@ -441,6 +481,8 @@ class MorphFactory:
         leg_index, vertex_index = self._find(v)
         if leg_index == -1:
             raise MorphFactoryException("No vertex")
+        self._remove_from_index(v)
+        self._add_to_index(v_new)
         self.legs[leg_index][vertex_index] = v_new
 
 
@@ -1049,30 +1091,103 @@ class MorphFactory:
             pauli_strings.remove(p)
             return
 
-    def _get_queue(self, generators:list[PauliString])->list[PauliString]:
+    def _get_queue(self, generators: list[PauliString]) -> list[PauliString]:
         """
-        Get associated sequence of Pauli strings.
+        Get associated sequence of Pauli strings efficiently.
 
         Args:
             generators: List of Pauli strings.
         Returns: 
             Associated sequence of Pauli strings.
         """
-        new_generators = generators.copy()
-        new_generators.sort()
-        queue_pauli_strings = []
-        pauli_string, anti_commutates = self._get_max_connected(new_generators)
+        if not generators:
+            return []
 
-        new_generators.remove(pauli_string)
-        queue_pauli_strings.append(pauli_string)
-        for anti_commutate in anti_commutates:
-            new_generators.remove(anti_commutate)
-            if anti_commutate not in queue_pauli_strings:
-                queue_pauli_strings.append(anti_commutate)
+        # O(M log M)
+        new_generators = sorted(generators)
+        m = len(new_generators)
+        
+        # Precompute all anticommutation pairs for this subset using overlap index
+        # O(M * k) for sparse graphs
+        adj = [[] for _ in range(m)]
+        qubit_to_indices = {}
+        for i, g in enumerate(new_generators):
+            for qubit in g.get_support():
+                if qubit not in qubit_to_indices:
+                    qubit_to_indices[qubit] = []
+                qubit_to_indices[qubit].append(i)
+        
+        for i, a in enumerate(new_generators):
+            candidates = set()
+            for qubit in a.get_support():
+                for j in qubit_to_indices[qubit]:
+                    if j > i:
+                        candidates.add(j)
+            for j in candidates:
+                b = new_generators[j]
+                if not a | b:
+                    adj[i].append(j)
+                    adj[j].append(i)
+        
+        queue_indices = []
+        processed = [False] * m
+        
+        # Start with index 0 (consistent with sorted order)
+        p0_idx = 0
+        processed[p0_idx] = True
+        queue_indices.append(p0_idx)
+        
+        # Add all neighbors of p0 to start the queue
+        for neighbor_idx in adj[p0_idx]:
+            if not processed[neighbor_idx]:
+                processed[neighbor_idx] = True
+                queue_indices.append(neighbor_idx)
+        
+        # To maintain index mapping efficiently
+        vertex_to_queue_pos = {p0_idx: 0}
+        for i, idx in enumerate(queue_indices[1:], 1):
+            vertex_to_queue_pos[idx] = i
 
-        while len(new_generators) > 0:
-            self._append_to_queue(queue_pauli_strings, new_generators)
-        return queue_pauli_strings
+        # Set of remaining vertices to add
+        remaining_indices = [i for i in range(m) if not processed[i]]
+        
+        # While there are vertices left, find one connected to the current queue
+        while remaining_indices:
+            found_idx = -1
+            best_p_idx = -1
+            min_pos_in_queue = m + 1
+            
+            # Find a vertex that connects to the queue at the earliest possible position
+            for i, p_idx in enumerate(remaining_indices):
+                neighbors_in_queue = [n_idx for n_idx in adj[p_idx] if processed[n_idx]]
+                if neighbors_in_queue:
+                    # Find min position in queue for its neighbors
+                    current_min_pos = min(vertex_to_queue_pos[n_idx] for n_idx in neighbors_in_queue)
+                    
+                    found_idx = i
+                    best_p_idx = p_idx
+                    best_neighbors_in_queue = neighbors_in_queue
+                    min_pos_in_queue = current_min_pos
+                    break
+            
+            if best_p_idx != -1:
+                p_idx = remaining_indices.pop(found_idx)
+                processed[p_idx] = True
+                
+                if len(best_neighbors_in_queue) > 1:
+                    # Insert at min_pos + 1 to maintain connectivity structure
+                    queue_indices.insert(min_pos_in_queue + 1, p_idx)
+                    # Shift all positions in vertex_to_queue_pos for vertices after insertion
+                    for k in range(min_pos_in_queue + 1, len(queue_indices)):
+                        vertex_to_queue_pos[queue_indices[k]] = k
+                else:
+                    queue_indices.append(p_idx)
+                    vertex_to_queue_pos[p_idx] = len(queue_indices) - 1
+            else:
+                # Should not happen for connected component
+                break
+                
+        return [new_generators[i] for i in queue_indices]
 
     def _build(self, vertices:list[PauliString],
         call_lighting: Callable[[PauliString], None] = None) -> Self:

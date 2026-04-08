@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from collections.abc import Generator
-from typing import Self
+from typing import Self, Any
 from six.moves import reduce
 import numpy as np
 from bitarray import bitarray
@@ -17,6 +17,13 @@ CODEC = {
     "Z": bitarray([0, 1]),
 }
 
+DECODEC = {
+    (0, 0): "I",
+    (1, 0): "X",
+    (1, 1): "Y",
+    (0, 1): "Z",
+}
+
 SI = np.array([[1, 0], [0, 1]])
 SX = np.array([[0, 1], [1, 0]])
 SY = np.array([[0, -1j], [1j, 0]])
@@ -25,33 +32,65 @@ SZ = np.array([[1, 0], [0, -1]])
 
 class PauliString:
     """Representation of a Pauli string as a bitarray."""
-    performance = []
-    current_performance: dict = None
+    performance: list[dict[str, Any]] = []
+    current_performance: dict[str, Any] | None = None
 
     def __init__(self, n: int | None = None, pauli_str: str | None = None,
-                 bits: bitarray | None = None) -> None:
+                 bits: bitarray | None = None,
+                 bits_even: bitarray | None = None,
+                 bits_odd: bitarray | None = None) -> None:
         """Initialize a Pauli string.
 
         Args:
             n (int, optional): Length of the Pauli string.
             pauli_str (str, optional): String representation of a Pauli string.
             bits (bitarray, optional): Bits representation of a Pauli string.
+            bits_even (bitarray, optional): X-bits representation.
+            bits_odd (bitarray, optional): Z-bits representation.
         """
-        super().__init__()
         self.nextpos = 0
-        if bits is not None:
-            self.bits = bits.copy()
+        self._bits = None
+        if bits_even is not None and bits_odd is not None:
+            self.bits_even = bits_even
+            self.bits_odd = bits_odd
+        elif bits is not None:
+            self._bits = bits.copy()
+            self.bits_even = self._bits[::2]
+            self.bits_odd = self._bits[1::2]
         elif n is not None and pauli_str is None:
-            self.bits = bitarray(2 * n)
+            self.bits_even = bitarray(n)
+            self.bits_even.setall(0)
+            self.bits_odd = bitarray(n)
+            self.bits_odd.setall(0)
         elif pauli_str is not None:
             pauli_str = pauli_string_parser(pauli_str)
-            self.bits = bitarray()
-            self.bits.encode(CODEC, pauli_str)
-            if n is not None and n > len(self):
-                o = self + PauliString(n=n - len(self))
-                self.bits = o.bits.copy()
-        self.bits_even = self.bits[::2]
-        self.bits_odd = self.bits[1::2]
+            temp_bits = bitarray()
+            temp_bits.encode(CODEC, pauli_str)
+            if n is not None and n > len(temp_bits) // 2:
+                # Padding with identity
+                pad_n = n - len(temp_bits) // 2
+                temp_bits.extend(bitarray([0, 0] * pad_n))
+            self._bits = temp_bits
+            self.bits_even = self._bits[::2]
+            self.bits_odd = self._bits[1::2]
+        else:
+            self.bits_even = bitarray(0)
+            self.bits_odd = bitarray(0)
+
+    @property
+    def bits(self) -> bitarray:
+        if self._bits is None:
+            n = len(self.bits_even)
+            self._bits = bitarray(2 * n)
+            self._bits[::2] = self.bits_even
+            self._bits[1::2] = self.bits_odd
+        return self._bits
+
+    @bits.setter
+    def bits(self, value: bitarray) -> None:
+        self._bits = value
+        self.bits_even = value[::2]
+        self.bits_odd = value[1::2]
 
     @staticmethod
     def reset_performance() -> None:
@@ -198,7 +237,7 @@ class PauliString:
             str: String representation.
         """
 
-        return f"PauliString({"".join(self.bits.decode(CODEC))})"
+        return f"PauliString({str(self)})"
 
     def __str__(self) -> str:
         """Convert PauliString to readable string.
@@ -206,7 +245,7 @@ class PauliString:
         Returns:
             str: String representation.
         """
-        return "".join(self.bits.decode(CODEC))
+        return "".join(DECODEC[(self.bits_even[i], self.bits_odd[i])] for i in range(len(self)))
 
     def _ensure_pauli_string(self, other: object) -> PauliString:
         """
@@ -228,8 +267,9 @@ class PauliString:
         Returns:
             bool: Result of the comparison.
         """
-        other = self._ensure_pauli_string(other)
-        return self.bits == other.bits
+        if not isinstance(other, PauliString):
+            other = self._ensure_pauli_string(other)
+        return self.bits_even == other.bits_even and self.bits_odd == other.bits_odd
 
     def __lt__(self, other: object) -> bool:
         """
@@ -240,7 +280,8 @@ class PauliString:
         Returns:
             bool: Result of the comparison.
         """
-        other = self._ensure_pauli_string(other)
+        if not isinstance(other, PauliString):
+            other = self._ensure_pauli_string(other)
         return self.bits < other.bits
 
     def __le__(self, other: object) -> bool:
@@ -252,7 +293,8 @@ class PauliString:
         Returns:
             bool: Result of the comparison.
         """
-        other = self._ensure_pauli_string(other)
+        if not isinstance(other, PauliString):
+            other = self._ensure_pauli_string(other)
         return self.bits <= other.bits
 
     def __gt__(self, other: object) -> bool:
@@ -264,7 +306,8 @@ class PauliString:
         Returns:
             bool: Result of the comparison.
         """
-        other = self._ensure_pauli_string(other)
+        if not isinstance(other, PauliString):
+            other = self._ensure_pauli_string(other)
         return self.bits > other.bits
 
     def __ge__(self, other: object) -> bool:
@@ -276,7 +319,8 @@ class PauliString:
         Returns:
             bool: Result of the comparison.
         """
-        other = self._ensure_pauli_string(other)
+        if not isinstance(other, PauliString):
+            other = self._ensure_pauli_string(other)
         return self.bits >= other.bits
 
     def __ne__(self, other: object) -> bool:
@@ -288,8 +332,9 @@ class PauliString:
         Returns:
             bool: Result of the comparison.
         """
-        other = self._ensure_pauli_string(other)
-        return self.bits != other.bits
+        if not isinstance(other, PauliString):
+            other = self._ensure_pauli_string(other)
+        return self.bits_even != other.bits_even or self.bits_odd != other.bits_odd
 
     def __hash__(self) -> int:
         """
@@ -298,7 +343,7 @@ class PauliString:
         Returns:
             int: Hash of Pauli string.
         """
-        return hash(str(self.bits))
+        return hash((self.bits_even.tobytes(), self.bits_odd.tobytes()))
 
     def __len__(self) -> int:
         """
@@ -307,7 +352,7 @@ class PauliString:
         Returns:
             int: Length of the Pauli string.
         """
-        return len(self.bits) // 2
+        return len(self.bits_even)
 
     def __iter__(self) -> Self:
         """
@@ -332,7 +377,8 @@ class PauliString:
         if self.nextpos >= len(self):
             # we are done
             raise StopIteration
-        value = PauliString(bits=self.bits[2 * self.nextpos:2 * self.nextpos + 2])
+        value = PauliString(bits_even=self.bits_even[self.nextpos:self.nextpos+1],
+                          bits_odd=self.bits_odd[self.nextpos:self.nextpos+1])
         self.nextpos += 1
         return value
 
@@ -366,7 +412,8 @@ class PauliString:
         Returns:
             PauliString: Copy of self.
         """
-        return PauliString(bits=self.bits)
+        return PauliString(bits_even=self.bits_even.copy(),
+                          bits_odd=self.bits_odd.copy())
 
     def copy(self) -> PauliString:
         """
@@ -375,7 +422,7 @@ class PauliString:
         Returns:
             PauliString: Copy of self.
         """
-        return PauliString(bits=self.bits)
+        return self.__copy__()
 
     def __add__(self, other: object) -> PauliString:
         """
@@ -499,7 +546,8 @@ class PauliString:
         Returns:
             PauliString: Substring of the Pauli string.
         """
-        return PauliString(bits=self.bits[2*start:2*start+2*length])
+        return PauliString(bits_even=self.bits_even[start:start+length],
+                          bits_odd=self.bits_odd[start:start+length])
 
     def set_substring(self, start: int, pauli_string:str|PauliString) -> None:
         """
@@ -514,10 +562,10 @@ class PauliString:
         pauli_string = self._ensure_pauli_string(pauli_string)
 
         for i in range(0, len(pauli_string)):
-            self.bits[2*start + 2*i] = pauli_string.bits[2*i]
-            self.bits[2*start + 2*i + 1] = pauli_string.bits[2*i + 1]
             self.bits_even[start  + i] = pauli_string.bits_even[i]
             self.bits_odd[start + i] = pauli_string.bits_odd[i]
+        # Invalidate cached bits
+        self._bits = None
 
     def is_identity(self) -> bool:
         """
@@ -526,7 +574,7 @@ class PauliString:
         Returns:
             bool: True if `self` is the identity.
         """
-        return bitarray(len(self.bits)) == self.bits
+        return self.bits_even.count(1) == 0 and self.bits_odd.count(1) == 0
 
     def tensor(self, other: Self) -> PauliString:
         """
@@ -537,13 +585,11 @@ class PauliString:
         Returns:
             PauliString: Result of the tensor product of `self` with `other`.
         """
-        new_bits = bitarray(len(self.bits) + len(other.bits))
-        for i in range(len(new_bits)):
-            s = self.bits if i < len(self.bits) else other.bits
-            j = i if i < len(self.bits) else i - len(self.bits)
-            new_bits[i] = s[j]
-
-        return PauliString(bits=new_bits)
+        new_even = self.bits_even.copy()
+        new_even.extend(other.bits_even)
+        new_odd = self.bits_odd.copy()
+        new_odd.extend(other.bits_odd)
+        return PauliString(bits_even=new_even, bits_odd=new_odd)
 
     def multiply(self, other:object) -> PauliString:
         """
@@ -559,10 +605,10 @@ class PauliString:
         """
         other = self._ensure_pauli_string(other)
 
-        if len(self.bits) != len(other.bits):
+        if len(self) != len(other):
             raise ValueError("Pauli arrays must have the same length")
-        # Bitwise XOR is equivalent to mod-2 addition
-        return PauliString(bits = self.bits ^ other.bits)
+        return PauliString(bits_even=self.bits_even ^ other.bits_even,
+                          bits_odd=self.bits_odd ^ other.bits_odd)
 
     def adjoint_map(self, other:object) -> PauliString|None:
         r"""
@@ -734,3 +780,13 @@ class PauliString:
             int: Count of non-identity operators.
         """
         return count_or(self.bits_even, self.bits_odd)
+
+    def get_support(self) -> list[int]:
+        """
+        Get the indices of non-identity operators in the Pauli string.
+
+        Returns:
+            list[int]: List of indices where the Pauli operator is not the identity.
+        """
+        support_bits = self.bits_even | self.bits_odd
+        return [i for i, bit in enumerate(support_bits) if bit]

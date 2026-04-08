@@ -483,18 +483,22 @@ class PauliStringCollection:
         n_iso = len(list(nx.isolates(graph)))
         return n_comp * n_iso
 
-    def _convert(self, generators: set[str]) -> PauliStringCollection:
+    def _convert(self, generators: set[PauliString] | list[PauliString] | set[str] | list[str]) -> PauliStringCollection:
         """
-        Convert a set of strings to a Pauli string collection.
+        Convert a set of Pauli strings or strings to a Pauli string collection.
 
         Args:
-            generators (set[str]): A set of string representations of Pauli strings.
+            generators: A set or list of PauliString objects or their string representations.
         Returns:
-            A Pauli string collection formed from the set of Pauli strings.
+            A Pauli string collection formed from the Pauli strings.
         """
-        return PauliStringCollection(
-            [self.create_instance(pauli_str=g) for g in generators]
-        )
+        processed_generators = []
+        for g in generators:
+            if isinstance(g, str):
+                processed_generators.append(self.create_instance(pauli_str=g))
+            else:
+                processed_generators.append(g)
+        return PauliStringCollection(processed_generators)
 
     def get_subgraphs(self) -> list[PauliStringCollection]:
         """
@@ -503,11 +507,37 @@ class PauliStringCollection:
         Returns:
             list[PauliStringCollection]: List of connected subgraphs.
         """
-        vertices, edges, _ = self.get_graph()
+        # We don't need labels or edges labels here, just the graph structure.
+        # Modified get_graph returns (vertices, edges) if flag_labels=False.
+        # But let's just use the objects directly for efficiency.
+        
+        # Build adjacency using the same efficient logic as in get_graph
+        # or just call get_graph and use the results.
+        
+        # Let's rebuild the graph with objects as nodes.
+        g: nx.Graph[PauliString] = nx.Graph()
+        g.add_nodes_from(self.generators)
+        
+        # Build overlap index
+        qubit_to_indices: dict[int, list[int]] = {}
+        for i, pauli in enumerate(self.generators):
+            for qubit in pauli.get_support():
+                if qubit not in qubit_to_indices:
+                    qubit_to_indices[qubit] = []
+                qubit_to_indices[qubit].append(i)
 
-        g: nx.Graph[str] = nx.Graph()
-        g.add_nodes_from(vertices)
-        g.add_edges_from(edges)
+        for i, a in enumerate(self.generators):
+            candidates = set()
+            for qubit in a.get_support():
+                if qubit in qubit_to_indices:
+                    for j in qubit_to_indices[qubit]:
+                        if j > i:
+                            candidates.add(j)
+            for j in candidates:
+                b = self.generators[j]
+                if not a | b: # Anticommuting
+                    g.add_edge(a, b)
+        
         return [self._convert(subgraph) for subgraph in
                 sorted(nx.connected_components(g), key=len, reverse=True)]
 
