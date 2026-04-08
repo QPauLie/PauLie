@@ -470,7 +470,7 @@
 <h1>paulie.common.pauli_string_bitarray.PauliString<a class="headerlink" href="#paulie-common-pauli-string-bitarray-paulistring" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_bitarray.</span></span><span class="sig-name descname"><span class="pre">PauliString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_bitarray.</span></span><span class="sig-name descname"><span class="pre">PauliString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bits_even</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bits_odd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Representation of a Pauli string as a bitarray.</p>
 <dl class="py method">
@@ -772,6 +772,20 @@ the same size.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_support">
+<span class="sig-name descname"><span class="pre">get_support</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_support" title="Link to this definition">#</a></dt>
+<dd><p>Get the indices of non-identity operators in the Pauli string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of indices where the Pauli operator is not the identity.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_total_performance">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_total_performance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_total_performance" title="Link to this definition">#</a></dt>
 <dd><p>get total performance
@@ -993,6 +1007,7 @@ See also: arxiv.org:2405.19287</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_nested"><code class="docutils literal notranslate"><span class="pre">PauliString.get_nested()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_performance"><code class="docutils literal notranslate"><span class="pre">PauliString.get_performance()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_substring"><code class="docutils literal notranslate"><span class="pre">PauliString.get_substring()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_support"><code class="docutils literal notranslate"><span class="pre">PauliString.get_support()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_total_performance"><code class="docutils literal notranslate"><span class="pre">PauliString.get_total_performance()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_weight_in_matrix"><code class="docutils literal notranslate"><span class="pre">PauliString.get_weight_in_matrix()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.inc"><code class="docutils literal notranslate"><span class="pre">PauliString.inc()</span></code></a></li>
