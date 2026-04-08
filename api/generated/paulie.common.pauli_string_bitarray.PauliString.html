@@ -564,6 +564,22 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.create_performance">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">create_performance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.create_performance" title="Link to this definition">#</a></dt>
+<dd><p>Create new performance
+:param name: name of performance
+:type name: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>new performance with name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.expand">
 <span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.expand" title="Link to this definition">#</a></dt>
 <dd><p>Expand the Pauli string by tensoring it with identity operators at the end.</p>
@@ -643,6 +659,22 @@ is searched. If None, then the search area is all Pauli strings of the same size
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_count_performance">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_count_performance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_count_performance" title="Link to this definition">#</a></dt>
+<dd><p>get count performance
+:param name: name of performance
+:type name: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>count operations</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_diagonal_index">
 <span class="sig-name descname"><span class="pre">get_diagonal_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_diagonal_index" title="Link to this definition">#</a></dt>
 <dd><p>Get index in diagonal matrix decomposition vector.</p>
@@ -704,6 +736,22 @@ the same size.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_performance">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_performance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_performance" title="Link to this definition">#</a></dt>
+<dd><p>Get of performance
+:param name: name of performance
+:type name: str|None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>performance by name or list all performances</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a>|<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_substring">
 <span class="sig-name descname"><span class="pre">get_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_substring" title="Link to this definition">#</a></dt>
 <dd><p>Get a substring of Paulis inside the Pauli string.</p>
@@ -721,6 +769,14 @@ the same size.</p>
 <dd class="field-odd"><p><a class="reference internal" href="#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.get_total_performance">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_total_performance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.get_total_performance" title="Link to this definition">#</a></dt>
+<dd><p>get total performance
+:returns: total count operations
+:rtype: int</p>
 </dd></dl>
 
 <dl class="py method">
@@ -755,6 +811,12 @@ the same size.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.inc_performance">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">inc_performance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.inc_performance" title="Link to this definition">#</a></dt>
+<dd><p>Increment current performance</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.is_identity">
 <span class="sig-name descname"><span class="pre">is_identity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.is_identity" title="Link to this definition">#</a></dt>
 <dd><p>Check if this Pauli string is the identity.</p>
@@ -786,6 +848,20 @@ the same size.</p>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the length of <cite>self</cite> is not equal to the length of <cite>other</cite>.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.reset_performance">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reset_performance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.reset_performance" title="Link to this definition">#</a></dt>
+<dd><p>Reset of performance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.set_performance">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set_performance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.set_performance" title="Link to this definition">#</a></dt>
+<dd><p>Set current performance
+:param name: name of performance
+:type name: str</p>
 </dd></dl>
 
 <dl class="py method">
@@ -904,20 +980,27 @@ See also: arxiv.org:2405.19287</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.complex_conj"><code class="docutils literal notranslate"><span class="pre">PauliString.complex_conj()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.copy"><code class="docutils literal notranslate"><span class="pre">PauliString.copy()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.create_instance"><code class="docutils literal notranslate"><span class="pre">PauliString.create_instance()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.create_performance"><code class="docutils literal notranslate"><span class="pre">PauliString.create_performance()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.expand"><code class="docutils literal notranslate"><span class="pre">PauliString.expand()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.gen_all_pauli_strings"><code class="docutils literal notranslate"><span class="pre">PauliString.gen_all_pauli_strings()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_anti_commutants"><code class="docutils literal notranslate"><span class="pre">PauliString.get_anti_commutants()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_commutants"><code class="docutils literal notranslate"><span class="pre">PauliString.get_commutants()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_count_non_trivially"><code class="docutils literal notranslate"><span class="pre">PauliString.get_count_non_trivially()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_count_performance"><code class="docutils literal notranslate"><span class="pre">PauliString.get_count_performance()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_diagonal_index"><code class="docutils literal notranslate"><span class="pre">PauliString.get_diagonal_index()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_index"><code class="docutils literal notranslate"><span class="pre">PauliString.get_index()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_matrix"><code class="docutils literal notranslate"><span class="pre">PauliString.get_matrix()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_nested"><code class="docutils literal notranslate"><span class="pre">PauliString.get_nested()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_performance"><code class="docutils literal notranslate"><span class="pre">PauliString.get_performance()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_substring"><code class="docutils literal notranslate"><span class="pre">PauliString.get_substring()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_total_performance"><code class="docutils literal notranslate"><span class="pre">PauliString.get_total_performance()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.get_weight_in_matrix"><code class="docutils literal notranslate"><span class="pre">PauliString.get_weight_in_matrix()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.inc"><code class="docutils literal notranslate"><span class="pre">PauliString.inc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.inc_performance"><code class="docutils literal notranslate"><span class="pre">PauliString.inc_performance()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.is_identity"><code class="docutils literal notranslate"><span class="pre">PauliString.is_identity()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.multiply"><code class="docutils literal notranslate"><span class="pre">PauliString.multiply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.reset_performance"><code class="docutils literal notranslate"><span class="pre">PauliString.reset_performance()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.set_performance"><code class="docutils literal notranslate"><span class="pre">PauliString.set_performance()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.set_substring"><code class="docutils literal notranslate"><span class="pre">PauliString.set_substring()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.sign"><code class="docutils literal notranslate"><span class="pre">PauliString.sign()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.tensor"><code class="docutils literal notranslate"><span class="pre">PauliString.tensor()</span></code></a></li>
