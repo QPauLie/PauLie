@@ -706,7 +706,7 @@ class PauliStringCollection:
         """
         classification = self.get_class()
         generators = PauliStringCollection(classification.get_vertices())
-        return generators.get_graph(self)
+        return generators.get_graph()
 
     def get_anti_commutates(
             self, pauli_string: PauliString, generators: PauliStringCollection=None
