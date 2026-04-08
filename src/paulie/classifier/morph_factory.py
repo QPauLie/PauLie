@@ -773,7 +773,10 @@ class MorphFactory:
             if len(lits) == 0:
                 self._append_to_center(lighting)
                 raise AppendedException()
-
+            if len(lits) == 3 and len(long_leg) > 10:
+                lit_indexes = self._get_lit_indexes(long_leg, lits)
+                if lit_indexes[0] == 0 and lit_indexes[1] == lit_indexes[2] - 1:
+                    raise DependentException()
             if len(lits) == 2:
                 lit_indexes = self._get_lit_indexes(long_leg, lits)
                 if lit_indexes[0] == 0 and lit_indexes[1] == len(long_leg) - 1:
@@ -797,6 +800,8 @@ class MorphFactory:
             else:
                 lighting = self._lit(lighting, long_leg[second])
         self._set_lighting(lighting)
+        lits = self._get_lits(lighting, long_leg)
+
         return self
 
     def _append_long_leg_first_and_center_lit(self) -> Self:
@@ -952,16 +957,25 @@ class MorphFactory:
                 If added vertex is dependent.
         """
         # pipeline building
+        PauliString.set_performance('s1')
         self._set_lighting(lighting)
         self._append_three_graph()
+        PauliString.set_performance('s2')
         self._append_one_legs_in_different_state()
+        PauliString.set_performance('fast')
         self._append_fast()
+        PauliString.set_performance('s3')
         self._lit_only_long_leg()
         self._lit_center()
+        PauliString.set_performance('s4')
         self._reduce_long_leg_more_than_one_lits()
+        PauliString.set_performance('s4.1')
         self._append_long_leg_first_and_center_lit()
+        PauliString.set_performance('s4.2')
         self._append_long_leg_only_last_lit()
+        PauliString.set_performance('s4.3')
         self._append_long_leg_last_and_first_lit()
+        PauliString.set_performance('all')
 
 
     def _get_anti_commutates(self, pauli_string:PauliString,
@@ -996,11 +1010,11 @@ class MorphFactory:
             return None, None
         pauli_string = generators[0]
         anti_commutates = self._get_anti_commutates(pauli_string, generators)
-        for p in generators:
-            _anti_commutates = self._get_anti_commutates(p, generators)
-            if len(_anti_commutates) > len(anti_commutates):
-                pauli_string = p
-                anti_commutates = _anti_commutates
+        #for p in generators:
+        #    _anti_commutates = self._get_anti_commutates(p, generators)
+        #    if len(_anti_commutates) > len(anti_commutates):
+        #        pauli_string = p
+        #        anti_commutates = _anti_commutates
         return pauli_string, anti_commutates
 
 
@@ -1111,7 +1125,9 @@ class MorphFactory:
         """
         if len(generators) == 0:
             return self
+        PauliString.set_performance('queue')
         vertices = self._get_queue(generators)
+        PauliString.set_performance('all')
         return self._build(vertices)
 
     def is_eq(self, legs:list[list[PauliString]], generators:list[PauliString]) -> bool:
