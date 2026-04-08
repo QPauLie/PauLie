@@ -79,6 +79,14 @@ class PauliString:
 
     @property
     def bits(self) -> bitarray:
+        """
+        Return the interleaved bit representation.
+
+        The bitarray is constructed by interleaving ``bits_even`` and
+        ``bits_odd`` such that even indices correspond to ``bits_even``
+        and odd indices correspond to ``bits_odd``. The result is cached
+        after the first construction.
+        """
         if self._bits is None:
             n = len(self.bits_even)
             self._bits = bitarray(2 * n)
@@ -88,6 +96,12 @@ class PauliString:
 
     @bits.setter
     def bits(self, value: bitarray) -> None:
+        """
+        Set the interleaved bit representation.
+
+        Updates the cached bitarray and reconstructs ``bits_even`` and
+        ``bits_odd`` by splitting the input into even and odd indices.
+        """
         self._bits = value
         self.bits_even = value[::2]
         self.bits_odd = value[1::2]
@@ -412,8 +426,7 @@ class PauliString:
         Returns:
             PauliString: Copy of self.
         """
-        return PauliString(bits_even=self.bits_even.copy(),
-                          bits_odd=self.bits_odd.copy())
+        return self.copy()
 
     def copy(self) -> PauliString:
         """
@@ -422,7 +435,8 @@ class PauliString:
         Returns:
             PauliString: Copy of self.
         """
-        return self.__copy__()
+        return PauliString(bits_even=self.bits_even.copy(),
+                          bits_odd=self.bits_odd.copy())
 
     def __add__(self, other: object) -> PauliString:
         """

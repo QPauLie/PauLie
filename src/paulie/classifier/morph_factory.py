@@ -100,7 +100,7 @@ class MorphFactory:
         """
         if vertices is not None:
             return [v for v in vertices if v != lighting and not lighting|v]
-        
+
         # Use overlap index for efficiency in sparse graphs
         candidates = set()
         for qubit in lighting.get_support():
@@ -108,7 +108,7 @@ class MorphFactory:
                 for v in self.qubit_to_vertices[qubit]:
                     if v != lighting:
                         candidates.add(v)
-        
+
         return [v for v in candidates if not lighting|v]
 
     def _add_to_index(self, v: PauliString) -> None:
@@ -384,7 +384,7 @@ class MorphFactory:
         leg_index, vertex_index = self._find(lit)
         if leg_index == -1:
             raise MorphFactoryException("No vertex")
-        
+
         self._add_to_index(v)
 
         if leg_index == 0:
@@ -448,7 +448,7 @@ class MorphFactory:
         # leg = [self.legs[leg_index][i] for i in range(0, vertex_index)]
         # del self.legs[leg_index]
         # This removes everything FROM vertex_index to the end.
-        
+
         for i in range(vertex_index, len(self.legs[leg_index])):
             self._remove_from_index(self.legs[leg_index][i])
 
@@ -1097,7 +1097,7 @@ class MorphFactory:
 
         Args:
             generators: List of Pauli strings.
-        Returns: 
+        Returns:
             Associated sequence of Pauli strings.
         """
         if not generators:
@@ -1106,7 +1106,7 @@ class MorphFactory:
         # O(M log M)
         new_generators = sorted(generators)
         m = len(new_generators)
-        
+
         # Precompute all anticommutation pairs for this subset using overlap index
         # O(M * k) for sparse graphs
         adj = [[] for _ in range(m)]
@@ -1116,7 +1116,7 @@ class MorphFactory:
                 if qubit not in qubit_to_indices:
                     qubit_to_indices[qubit] = []
                 qubit_to_indices[qubit].append(i)
-        
+
         for i, a in enumerate(new_generators):
             candidates = set()
             for qubit in a.get_support():
@@ -1128,21 +1128,21 @@ class MorphFactory:
                 if not a | b:
                     adj[i].append(j)
                     adj[j].append(i)
-        
+
         queue_indices = []
         processed = [False] * m
-        
+
         # Start with index 0 (consistent with sorted order)
         p0_idx = 0
         processed[p0_idx] = True
         queue_indices.append(p0_idx)
-        
+
         # Add all neighbors of p0 to start the queue
         for neighbor_idx in adj[p0_idx]:
             if not processed[neighbor_idx]:
                 processed[neighbor_idx] = True
                 queue_indices.append(neighbor_idx)
-        
+
         # To maintain index mapping efficiently
         vertex_to_queue_pos = {p0_idx: 0}
         for i, idx in enumerate(queue_indices[1:], 1):
@@ -1150,30 +1150,33 @@ class MorphFactory:
 
         # Set of remaining vertices to add
         remaining_indices = [i for i in range(m) if not processed[i]]
-        
+
         # While there are vertices left, find one connected to the current queue
         while remaining_indices:
             found_idx = -1
             best_p_idx = -1
             min_pos_in_queue = m + 1
-            
+
             # Find a vertex that connects to the queue at the earliest possible position
             for i, p_idx in enumerate(remaining_indices):
                 neighbors_in_queue = [n_idx for n_idx in adj[p_idx] if processed[n_idx]]
                 if neighbors_in_queue:
                     # Find min position in queue for its neighbors
-                    current_min_pos = min(vertex_to_queue_pos[n_idx] for n_idx in neighbors_in_queue)
-                    
+                    current_min_pos = min(
+                        vertex_to_queue_pos[idx]
+                        for idx in neighbors_in_queue
+                    )
+
                     found_idx = i
                     best_p_idx = p_idx
                     best_neighbors_in_queue = neighbors_in_queue
                     min_pos_in_queue = current_min_pos
                     break
-            
+
             if best_p_idx != -1:
                 p_idx = remaining_indices.pop(found_idx)
                 processed[p_idx] = True
-                
+
                 if len(best_neighbors_in_queue) > 1:
                     # Insert at min_pos + 1 to maintain connectivity structure
                     queue_indices.insert(min_pos_in_queue + 1, p_idx)
@@ -1186,7 +1189,7 @@ class MorphFactory:
             else:
                 # Should not happen for connected component
                 break
-                
+
         return [new_generators[i] for i in queue_indices]
 
     def _build(self, vertices:list[PauliString],
@@ -1247,11 +1250,11 @@ class MorphFactory:
 
     def is_eq(self, legs:list[list[PauliString]], generators:list[PauliString]) -> bool:
         """
-        Testing for equivalence of two algebras. 
+        Testing for equivalence of two algebras.
         All Pauli strings of one algebra are dependent on another.
 
         Args:
-            legs (list[list[PauliString]]): List of legs of 
+            legs (list[list[PauliString]]): List of legs of
                 the canonical graph to compare with.
             generators (list[PauliString]): List of Pauli strings to check
                 for inclusion in the canonical graph
@@ -1278,7 +1281,7 @@ class MorphFactory:
         Selecting generators that are dependent on the canonical graph
 
         Args:
-            legs (list[list[PauliString]]): List of legs of 
+            legs (list[list[PauliString]]): List of legs of
                 the canonical graph to check with.
             generators (list[PauliString]): List of Pauli strings to check
                 for inclusion in the canonical graph

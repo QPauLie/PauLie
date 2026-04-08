@@ -3,9 +3,14 @@
 """
 from paulie.common.pauli_string_bitarray import PauliString
 
-def get_graph(generators: list[PauliString], commutators: list[PauliString] | None = None,
-              flag_labels: bool = True) -> (tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]
-                                            | tuple[list[str], list[tuple[str, str]]]):
+GraphWithLabels = tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]
+Graph = tuple[list[str], list[tuple[str, str]]]
+
+def get_graph(
+    generators: list[PauliString],
+    commutators: list[PauliString] | None = None,
+    flag_labels: bool = True,
+) -> GraphWithLabels | Graph:
     """
     Get the anticommutation graph.
 

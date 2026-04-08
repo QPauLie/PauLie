@@ -108,7 +108,7 @@ class PauliStringCollection:
         return f"[{', '.join(str(g) for g in self.generators)}]"
 
     def __len__(self) -> int:
-        """ 
+        """
         Get the number of Pauli strings in the collection.
 
         Returns:
@@ -483,7 +483,10 @@ class PauliStringCollection:
         n_iso = len(list(nx.isolates(graph)))
         return n_comp * n_iso
 
-    def _convert(self, generators: set[PauliString] | list[PauliString] | set[str] | list[str]) -> PauliStringCollection:
+    def _convert(
+            self,
+            generators: set[PauliString] | list[PauliString] | set[str] | list[str],
+    ) -> PauliStringCollection:
         """
         Convert a set of Pauli strings or strings to a Pauli string collection.
 
@@ -510,14 +513,14 @@ class PauliStringCollection:
         # We don't need labels or edges labels here, just the graph structure.
         # Modified get_graph returns (vertices, edges) if flag_labels=False.
         # But let's just use the objects directly for efficiency.
-        
+
         # Build adjacency using the same efficient logic as in get_graph
         # or just call get_graph and use the results.
-        
+
         # Let's rebuild the graph with objects as nodes.
         g: nx.Graph[PauliString] = nx.Graph()
         g.add_nodes_from(self.generators)
-        
+
         # Build overlap index
         qubit_to_indices: dict[int, list[int]] = {}
         for i, pauli in enumerate(self.generators):
@@ -537,7 +540,7 @@ class PauliStringCollection:
                 b = self.generators[j]
                 if not a | b: # Anticommuting
                     g.add_edge(a, b)
-        
+
         return [self._convert(subgraph) for subgraph in
                 sorted(nx.connected_components(g), key=len, reverse=True)]
 
@@ -748,7 +751,7 @@ class PauliStringCollection:
             pauli_string (PauliString): Pauli string against which anticommutation is checked.
             generators (PauliStringCollection, optional): Collection of Pauli strings to check.
                 Default is None, in which case the generators of this collection are used.
-        
+
         Returns:
             PauliStringCollection: Collection of anticommuting Pauli strings.
         """
@@ -766,7 +769,7 @@ class PauliStringCollection:
             pauli_string (PauliString): Pauli string against which commutation is checked.
             generators (PauliStringCollection, optional): Collection of Pauli strings to check.
                 Default is None, in which case the generators of this collection are used.
-        
+
         Returns:
             PauliStringCollection: Collection of commuting Pauli strings.
         """
