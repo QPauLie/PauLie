@@ -79,7 +79,8 @@ disable=[
   'useless-object-inheritance',
   'too-many-boolean-expressions',
   'invalid-name',
-  'unbalanced-tuple-unpacking'
+  'unbalanced-tuple-unpacking',
+  'unsupported-assignment-operation'
 ]
 
 [tool.mypy]

@@ -26,7 +26,7 @@ SZ = np.array([[1, 0], [0, -1]])
 class PauliString:
     """Representation of a Pauli string as a bitarray."""
     performance = []
-    current_performance = None
+    current_performance: dict = None
 
     def __init__(self, n: int | None = None, pauli_str: str | None = None,
                  bits: bitarray | None = None) -> None:
