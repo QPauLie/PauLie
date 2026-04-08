@@ -495,6 +495,16 @@
 </dl>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.bits">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">bits</span></span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.bits" title="Link to this definition">#</a></dt>
+<dd><p>Return the interleaved bit representation.</p>
+<p>The bitarray is constructed by interleaving <code class="docutils literal notranslate"><span class="pre">bits_even</span></code> and
+<code class="docutils literal notranslate"><span class="pre">bits_odd</span></code> such that even indices correspond to <code class="docutils literal notranslate"><span class="pre">bits_even</span></code>
+and odd indices correspond to <code class="docutils literal notranslate"><span class="pre">bits_odd</span></code>. The result is cached
+after the first construction.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.commutes_with">
 <span class="sig-name descname"><span class="pre">commutes_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.commutes_with" title="Link to this definition">#</a></dt>
@@ -990,6 +1000,7 @@ See also: arxiv.org:2405.19287</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString"><code class="docutils literal notranslate"><span class="pre">PauliString</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.adjoint_map"><code class="docutils literal notranslate"><span class="pre">PauliString.adjoint_map()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.bits"><code class="docutils literal notranslate"><span class="pre">PauliString.bits</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.commutes_with"><code class="docutils literal notranslate"><span class="pre">PauliString.commutes_with()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.complex_conj"><code class="docutils literal notranslate"><span class="pre">PauliString.complex_conj()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_bitarray.PauliString.copy"><code class="docutils literal notranslate"><span class="pre">PauliString.copy()</span></code></a></li>
