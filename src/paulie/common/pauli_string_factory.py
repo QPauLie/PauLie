@@ -4,37 +4,9 @@ Module for creating instances of Pauli strings of various implementations.
 
 from collections.abc import Generator
 from bitarray import bitarray
-from bitarray.util import int2ba
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
-
-
-def pauli_string_from_index(index: int, n: int) -> PauliString:
-    """
-    Build the unique n-qubit Pauli string with a given linear index.
-
-    Args:
-        index: Integer in [0, 4**n).
-        n: Number of qubits.
-
-    Returns:
-        PauliString: The string with get_index() == index.
-
-    Raises:
-        ValueError: If n or index is out of range.
-    """
-    if n < 0:
-        raise ValueError("n must be non-negative")
-    if n == 0:
-        if index != 0:
-            raise ValueError("index must be 0 for n=0")
-        return PauliString(n=0)
-    max_index = 4**n - 1
-    if index < 0 or index > max_index:
-        raise ValueError(f"index must be in [0, {max_index}] for n={n}")
-    bits = int2ba(index, length=2 * n, endian="big")
-    return PauliString(bits=bits)
 
 
 def get_identity(n: int) -> PauliString:

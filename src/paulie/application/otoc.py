@@ -6,6 +6,7 @@ Pauli instability quantities.
 from __future__ import annotations
 
 from collections import deque
+import random
 from typing import Literal, cast
 
 import numpy as np
@@ -13,7 +14,6 @@ from numpy.typing import NDArray
 
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
-from paulie.common.pauli_string_factory import pauli_string_from_index
 from paulie.common.random_pauli_strings import get_random
 
 # ``method="exact"`` sums over ``16**n`` Pauli pairs; cap ``n`` to avoid hangs.
@@ -82,14 +82,6 @@ def _abs_trace_times_factor(chained: NDArray[np.complex128], factor: float) -> f
     return abs(z * factor)
 
 
-def _pauli_dense_matrices(n: int) -> list[np.ndarray]:
-    """All :math:`4^n` Pauli matrices as dense ``(2^n, 2^n)`` arrays."""
-    return [
-        pauli_string_from_index(i, n).get_matrix().astype(np.complex128, copy=False)
-        for i in range(4**n)
-    ]
-
-
 def otoc_fixed_unitary(
     u: np.ndarray,
     p1: PauliString,
@@ -100,7 +92,8 @@ def otoc_fixed_unitary(
     atol: float = 1e-8,
 ) -> np.complex128:
     r"""
-    Out-of-time-order correlator for a fixed unitary :math:`U` and Pauli strings :math:`P_1`, :math:`P_2`:
+    Out-of-time-order correlator for a fixed unitary :math:`U` and Pauli strings
+    :math:`P_1`, :math:`P_2`:
 
     .. math::
 
@@ -180,11 +173,9 @@ def mean_abs_otoc_uniform(
             a fixed small :math:`n` (see error message); ``"monte_carlo"`` — sample
             :math:`P_1,P_2` i.i.d. uniform (any :math:`n` supported by dense arithmetic).
         num_samples: Number of i.i.d. pairs for ``method="monte_carlo"``.
-        seed: For ``method="monte_carlo"`` with modest :math:`n` (internal precomputation
-            cap), ``seed`` selects a :class:`numpy.random.Generator` for index sampling.
-            For larger :math:`n`, ``seed`` is ignored and Pauli strings are drawn with
-            ``get_random`` from :mod:`paulie.common.random_pauli_strings` (stdlib
-            :mod:`random`, not controlled by this argument).
+        seed: For ``method="monte_carlo"``, if not ``None``, calls :func:`random.seed`
+            before sampling so ``get_random`` (stdlib :mod:`random`) is reproducible across
+            calls with the same ``seed``.
         check_unitary: Forwarded to :func:`otoc_fixed_unitary`.
         rtol: Forwarded to :func:`otoc_fixed_unitary`.
         atol: Forwarded to :func:`otoc_fixed_unitary`.
@@ -241,26 +232,17 @@ def mean_abs_otoc_uniform(
         ud = u_ce.conj().T
         acc = 0.0
         inv_d = 1.0 / d
-        num_pauli = 4**n
-        for i in range(num_pauli):
-            p1_m = pauli_string_from_index(i, n).get_matrix().astype(
-                np.complex128, copy=False
-            )
+        all_paulis = list(PauliString(n=n).gen_all_pauli_strings())
+        for p1 in all_paulis:
+            p1_m = p1.get_matrix().astype(np.complex128, copy=False)
             mi = ud @ p1_m @ u_ce
-            for j in range(num_pauli):
-                pj = (
-                    pauli_string_from_index(j, n)
-                    .get_matrix()
-                    .astype(np.complex128, copy=False)
-                )
+            for p2 in all_paulis:
+                pj = p2.get_matrix().astype(np.complex128, copy=False)
                 chained = mi @ pj @ mi @ pj
                 acc += _abs_trace_times_factor(chained, inv_d)
         return float(acc / total_pairs)
 
     if method == "monte_carlo":
-        u_cm: NDArray[np.complex128] = u.astype(np.complex128, copy=False)
-        ud = u_cm.conj().T
-        inv_d = 1.0 / d
         acc = 0.0
         if n == 0:
             p0 = PauliString(n=0)
@@ -270,18 +252,8 @@ def mean_abs_otoc_uniform(
                 )
                 acc += abs(complex(o))
             return float(acc / num_samples)
-        if n <= _MAX_QUBITS_EXACT_OTOC_UNIFORM:
-            gen = np.random.default_rng(seed)
-            pauli_mats = _pauli_dense_matrices(n)
-            sandwiches = [ud @ pauli_mats[i] @ u_cm for i in range(4**n)]
-            for _ in range(num_samples):
-                i = int(gen.integers(0, 4**n))
-                j = int(gen.integers(0, 4**n))
-                mi = sandwiches[i]
-                pj = pauli_mats[j]
-                chained = mi @ pj @ mi @ pj
-                acc += _abs_trace_times_factor(chained, inv_d)
-            return float(acc / num_samples)
+        if seed is not None:
+            random.seed(seed)
         for _ in range(num_samples):
             p1 = PauliString(pauli_str=get_random(n))
             p2 = PauliString(pauli_str=get_random(n))

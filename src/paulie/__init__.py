@@ -56,7 +56,6 @@ from .common.pauli_string_factory import (
     get_identity,
     get_pauli_string,
     get_single,
-    pauli_string_from_index,
 )
 from .common.two_local_generators import (
     get_lie_algebra,
@@ -111,7 +110,6 @@ __all__ = [
     "get_identity",
     "get_pauli_string",
     "get_single",
-    "pauli_string_from_index",
     "get_lie_algebra",
     "G_LIE",
     "two_local_algebras",
