@@ -13,8 +13,8 @@ from .exceptions import (
 )
 
 # Application
-from .application.otoc import average_otoc
-from .application.pauli_instability import (
+from .application.otoc import (
+    average_otoc,
     mean_abs_otoc_uniform,
     otoc_fixed_unitary,
     pauli_instability,

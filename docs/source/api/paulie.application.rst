@@ -71,9 +71,9 @@ Expectations over uniform Pauli pairs for a given unitary (contrast with Haar-av
 .. autosummary::
    :toctree: generated/
 
-   pauli_instability.otoc_fixed_unitary
-   pauli_instability.mean_abs_otoc_uniform
-   pauli_instability.pauli_instability
+   otoc.otoc_fixed_unitary
+   otoc.mean_abs_otoc_uniform
+   otoc.pauli_instability
 
 Matrix decomposition
 --------------------
