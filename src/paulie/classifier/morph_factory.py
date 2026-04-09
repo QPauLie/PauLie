@@ -420,7 +420,7 @@ class MorphFactory:
         vertices = self.all_vertices
         for one in ones:
             pq = one @ lighting
-            for v in vertices:
+            for v in ones:
                 if v == one:
                     continue
                 n_v = pq @ v
