@@ -1,0 +1,4 @@
+﻿paulie.application.otoc.mean_abs_otoc_uniform
+=============================================
+
+.. autofunction:: paulie.application.otoc.mean_abs_otoc_uniform

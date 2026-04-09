@@ -1,0 +1,4 @@
+﻿paulie.application.otoc.pauli_instability
+=========================================
+
+.. autofunction:: paulie.application.otoc.pauli_instability

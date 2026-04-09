@@ -347,6 +347,9 @@
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.average_graph_complexity.average_graph_complexity.html">paulie.application.average_graph_complexity.average_graph_complexity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.otoc.average_otoc.html">paulie.application.otoc.average_otoc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.second_moment.second_moment.html">paulie.application.second_moment.second_moment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.otoc.otoc_fixed_unitary.html">paulie.application.otoc.otoc_fixed_unitary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.otoc.mean_abs_otoc_uniform.html">paulie.application.otoc.mean_abs_otoc_uniform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.otoc.pauli_instability.html">paulie.application.otoc.pauli_instability</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.matrix_decomposition.matrix_decomposition.html">paulie.application.matrix_decomposition.matrix_decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.matrix_decomposition.matrix_decomposition_diagonal.html">paulie.application.matrix_decomposition.matrix_decomposition_diagonal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.pauli_compiler.OptimalPauliCompiler.html">paulie.application.pauli_compiler.OptimalPauliCompiler</a></li>
@@ -555,6 +558,25 @@
 </table>
 </div>
 </section>
+<section id="pauli-instability-and-fixed-unitary-otoc">
+<h2>Pauli instability and fixed-unitary OTOC<a class="headerlink" href="#pauli-instability-and-fixed-unitary-otoc" title="Link to this heading">#</a></h2>
+<p>Expectations over uniform Pauli pairs for a given unitary (contrast with Haar-averaged
+<a class="reference internal" href="generated/paulie.application.otoc.average_otoc.html#paulie.application.otoc.average_otoc" title="paulie.application.otoc.average_otoc"><code class="xref py py-func docutils literal notranslate"><span class="pre">average_otoc()</span></code></a> over a DLA).</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/paulie.application.otoc.otoc_fixed_unitary.html#paulie.application.otoc.otoc_fixed_unitary" title="paulie.application.otoc.otoc_fixed_unitary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">otoc.otoc_fixed_unitary</span></code></a>(u, p1, p2, *[, ...])</p></td>
+<td><p>Out-of-time-order correlator for a fixed unitary <span class="math notranslate nohighlight">\(U\)</span> and Pauli strings <span class="math notranslate nohighlight">\(P_1\)</span>, <span class="math notranslate nohighlight">\(P_2\)</span>:</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/paulie.application.otoc.mean_abs_otoc_uniform.html#paulie.application.otoc.mean_abs_otoc_uniform" title="paulie.application.otoc.mean_abs_otoc_uniform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">otoc.mean_abs_otoc_uniform</span></code></a>(u, *[, method, ...])</p></td>
+<td><p>Uniform expectation of <span class="math notranslate nohighlight">\(\lvert\mathrm{OTOC}(U,P_1,P_2)\rvert\)</span> over independent <span class="math notranslate nohighlight">\(P_1,P_2 \in \{I,X,Y,Z\}^{\otimes n}\)</span> (each uniform on <span class="math notranslate nohighlight">\(4^n\)</span> strings).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/paulie.application.otoc.pauli_instability.html#paulie.application.otoc.pauli_instability" title="paulie.application.otoc.pauli_instability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">otoc.pauli_instability</span></code></a>(u, *[, method, ...])</p></td>
+<td><p>Pauli instability (Definition 1):</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="matrix-decomposition">
 <h2>Matrix decomposition<a class="headerlink" href="#matrix-decomposition" title="Link to this heading">#</a></h2>
 <p>Utilities related to matrix decompositions.</p>
@@ -661,6 +683,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#four-point-correlation-functions">Four-point correlation functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-mathfrak-su-2-n-generators">Optimal <span class="math notranslate nohighlight">\(\mathfrak{su}(2^n)\)</span> generators</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dla-metrics">DLA metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pauli-instability-and-fixed-unitary-otoc">Pauli instability and fixed-unitary OTOC</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-decomposition">Matrix decomposition</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pauli-compiler">Pauli compiler</a></li>
 </ul>

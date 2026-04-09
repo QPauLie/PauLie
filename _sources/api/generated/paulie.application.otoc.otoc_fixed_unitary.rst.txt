@@ -1,0 +1,4 @@
+﻿paulie.application.otoc.otoc_fixed_unitary
+==========================================
+
+.. autofunction:: paulie.application.otoc.otoc_fixed_unitary
