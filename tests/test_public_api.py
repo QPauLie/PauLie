@@ -69,7 +69,6 @@ public_symbols = [
     "get_identity",
     "get_pauli_string",
     "get_single",
-    "pauli_string_from_index",
     "get_lie_algebra",
     "G_LIE",
     "two_local_algebras",

@@ -1,7 +1,9 @@
 """
-Tests for OTOC: Haar-averaged ``average_otoc``, Pauli indexing helpers, and fixed-unitary
-quantities (``otoc_fixed_unitary``, ``mean_abs_otoc_uniform``, ``pauli_instability``).
+Tests for OTOC: Haar-averaged ``average_otoc``, Pauli enumeration vs ``get_index``, and
+fixed-unitary quantities (``otoc_fixed_unitary``, ``mean_abs_otoc_uniform``, ``pauli_instability``).
 """
+
+from collections.abc import Callable
 
 import networkx as nx
 import numpy as np
@@ -18,9 +20,8 @@ from paulie import (
     otoc_fixed_unitary,
     pauli_instability,
 )
-from collections.abc import Callable
 
-from paulie.common.pauli_string_factory import pauli_string_from_index
+_PAULI_N1 = list(PauliString(n=1).gen_all_pauli_strings())
 
 generators_list = [
     ["X"],
@@ -127,10 +128,9 @@ def test_su_otoc():
 
 
 @pytest.mark.parametrize("n", [1, 2])
-def test_pauli_string_from_index_round_trip(n: int) -> None:
-    num = 4**n
-    for i in range(num):
-        s = pauli_string_from_index(i, n)
+def test_pauli_string_enumeration_round_trip(n: int) -> None:
+    """``gen_all_pauli_strings`` order matches ``get_index()`` and length ``n``."""
+    for i, s in enumerate(PauliString(n=n).gen_all_pauli_strings()):
         assert s.get_index() == i
         assert len(s) == n
 
@@ -143,29 +143,19 @@ def test_pauli_string_from_index_round_trip(n: int) -> None:
         (8, 2, "XI"),
     ],
 )
-def test_pauli_string_from_index_string_form(index: int, n: int, expected: str) -> None:
-    assert str(pauli_string_from_index(index, n)) == expected
-
-
-@pytest.mark.parametrize(
-    ("index", "n"),
-    [
-        (-1, 1),
-        (4, 1),
-        (1, 0),
-    ],
-)
-def test_pauli_string_from_index_errors(index: int, n: int) -> None:
-    with pytest.raises(ValueError):
-        pauli_string_from_index(index, n)
+def test_pauli_string_enumeration_string_form(index: int, n: int, expected: str) -> None:
+    """String form from enumeration matches Pauli literals."""
+    all_p = list(PauliString(n=n).gen_all_pauli_strings())
+    assert str(all_p[index]) == expected
 
 
 @pytest.mark.parametrize("i", list(range(4)))
 @pytest.mark.parametrize("j", list(range(4)))
 def test_otoc_fixed_unitary_identity_n1_all_pairs_abs_one(i: int, j: int) -> None:
+    """With ``U = I``, every single-qubit Pauli pair gives ``|OTOC| = 1``."""
     eye = np.eye(2, dtype=np.complex128)
-    p1 = pauli_string_from_index(i, 1)
-    p2 = pauli_string_from_index(j, 1)
+    p1 = _PAULI_N1[i]
+    p2 = _PAULI_N1[j]
     val = otoc_fixed_unitary(eye, p1, p2)
     assert abs(val - round(val.real)) < 1e-10
     assert abs(val) == pytest.approx(1.0)
@@ -210,12 +200,14 @@ def test_otoc_fixed_unitary_validation_errors(
     pair: tuple,
     match: str,
 ) -> None:
+    """Reject non-unitary ``u`` or Pauli length mismatch with ``ValueError``."""
     f1, f2 = pair
     with pytest.raises(ValueError, match=match):
         otoc_fixed_unitary(u, f1(), f2())
 
 
 def test_otoc_fixed_unitary_n0() -> None:
+    """Zero-qubit trivial Hilbert space: OTOC is 1."""
     u = np.array([[1.0]], dtype=np.complex128)
     p0 = PauliString(n=0)
     assert otoc_fixed_unitary(u, p0, p0) == pytest.approx(1.0)
@@ -230,6 +222,7 @@ def test_otoc_fixed_unitary_n0() -> None:
     ],
 )
 def test_mean_abs_otoc_uniform_identity_exact(u: np.ndarray) -> None:
+    """Exact mean of ``|OTOC|`` over Pauli pairs is 1 for ``U = I``."""
     assert mean_abs_otoc_uniform(u, method="exact") == pytest.approx(1.0)
 
 
@@ -243,6 +236,7 @@ def test_mean_abs_otoc_uniform_identity_monte_carlo_is_one() -> None:
 
 
 def test_mean_abs_otoc_uniform_invalid_method() -> None:
+    """Unknown ``method`` raises ``ValueError``."""
     eye = np.eye(2, dtype=np.complex128)
     with pytest.raises(ValueError, match="Invalid method"):
         mean_abs_otoc_uniform(eye, method="not_a_method")  # type: ignore[arg-type]
@@ -254,12 +248,14 @@ def test_mean_abs_otoc_uniform_invalid_method() -> None:
     ids=["mean_abs_otoc_uniform", "pauli_instability"],
 )
 def test_exact_method_rejects_large_n(fn) -> None:
+    """``method='exact'`` is not allowed when :math:`n` exceeds the package cap."""
     eye64 = np.eye(64, dtype=np.complex128)  # n=6, above exact-mode cap
     with pytest.raises(ValueError, match=r"method='exact' supports at most \d+ qubits"):
         fn(eye64, method="exact")
 
 
 def test_mean_abs_otoc_uniform_monte_carlo_allows_five_qubits() -> None:
+    """Monte Carlo remains valid for ``n = 5`` without precomputed Pauli tables."""
     eye32 = np.eye(32, dtype=np.complex128)
     m = mean_abs_otoc_uniform(
         eye32, method="monte_carlo", num_samples=20, check_unitary=False
@@ -280,6 +276,7 @@ def test_pauli_instability_identity_vanishes(
     base: float | None,
     abs_tol: float,
 ) -> None:
+    """Clifford identity channels have zero Pauli instability (faithfulness)."""
     if base is None:
         out = pauli_instability(u, method="exact")
     else:
@@ -296,14 +293,14 @@ def test_mean_abs_otoc_uniform_exact_matches_bruteforce_random_unitary(
     n: int,
     rng_seed: int,
 ) -> None:
+    """Exact ``mean_abs_otoc_uniform`` matches a naive double sum over Pauli pairs."""
     rng = np.random.default_rng(rng_seed)
     d = 2**n
     u = np.asarray(unitary_group.rvs(d, random_state=rng), dtype=np.complex128)
     total = 0.0
-    for i in range(4**n):
-        p1 = pauli_string_from_index(i, n)
-        for j in range(4**n):
-            p2 = pauli_string_from_index(j, n)
+    all_p = list(PauliString(n=n).gen_all_pauli_strings())
+    for p1 in all_p:
+        for p2 in all_p:
             o = otoc_fixed_unitary(u, p1, p2, check_unitary=False)
             total += abs(complex(o))
     brute = total / (16**n)
@@ -358,12 +355,12 @@ def test_monte_carlo_seed_reproducible(
 ) -> None:
     """Repeated calls with the same ``seed`` return the same Monte Carlo estimate."""
     u = u_factory()
-    kw = dict(
-        method="monte_carlo",
-        num_samples=num_samples,
-        seed=seed,
-        check_unitary=False,
-    )
+    kw = {
+        "method": "monte_carlo",
+        "num_samples": num_samples,
+        "seed": seed,
+        "check_unitary": False,
+    }
     a = fn(u, **kw)
     b = fn(u, **kw)
     assert a == pytest.approx(b, rel=0, abs=0)
