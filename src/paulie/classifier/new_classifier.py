@@ -23,13 +23,13 @@ class ConnectedClassifier:
         return v
 
     def convert_to_single_lit_state(self, p_index: int, q_index: int, vertex_stack: list[PauliString], v: PauliString):
-        p, q = self.legs[p_index][0], self.legs[q_index][0]
+        pq = self.legs[p_index][0] @ self.legs[q_index][0]
         if self.is_lit(v, self.central_vertex):
-            self.central_vertex = p @ q @ self.central_vertex
+            self.central_vertex = pq @ self.central_vertex
         for i in range(len(self.legs)):
             for j in range(len(self.legs[i])):
                 if self.is_lit(v, self.legs[i][j]) and i != p_index:
-                    self.legs[i][j] = p @ q @ self.legs[i][j]
+                    self.legs[i][j] = pq @ self.legs[i][j]
         self.legs[p_index].append(v)
         # Truncate longest leg if necessary, this happens at most once
         big_leg_cnt = sum(1 for leg in self.legs if len(leg) >= 2)
@@ -88,9 +88,6 @@ class ConnectedClassifier:
             for i in range(m, -1, -1):
                 v = v @ self.legs[-1][i]
         # Now we need to reduce the lit vertices on the long leg to one position and a list of contractions
-        # We can do it naively because it will happen in O(n^2) at most once
-        # If it happens that the first or last vertex is lit, then the process happened in O(n)
-        # Otherwise now you have a graph of type B
         f, s = None, None
         for i in range(len(self.legs[-1])):
             if self.is_lit(v, self.legs[-1][i]):
@@ -106,21 +103,22 @@ class ConnectedClassifier:
         # Otherwise naively reduce until one element is left
         if s is not None:
             # Compute prefix products on the leg to perform operations in O(1) and O(n) overall
-            pref = [self.legs[-1][0]]
-            for i in range(1, len(self.legs[-1])):
-                pref.append(pref[-1] @ self.legs[-1][i])
+            pref = self.legs[-1][f]
+            for i in range(f, s):
+                pref = pref @ self.legs[-1][i]
             while s < len(self.legs[-1]):
-                # v = self.contract_sequence(v, [self.legs[-1][i] for i in range(s, f, -1)])
-                v = v @ pref[s] @ pref[f]
+                pref = pref @ self.legs[-1][s]
+                v = v @ pref
                 f += 1
                 s += 1
+                pref = pref @ self.legs[-1][f]
                 while s < len(self.legs[-1]) and not self.is_lit(v, self.legs[-1][s]):
+                    pref = pref @ self.legs[-1][s]
                     s += 1
         if f == 0:
             # Case 1: First vertex of long leg is lit
             if self.type == 'B' and len(self.legs[-1]) == 4:
                 # Graph is of type B2
-                # Find a leg of length 2
                 v = v @ self.legs[-1][1] @ self.legs[-1][3]
                 self.legs.append([v])
             else:
@@ -187,9 +185,11 @@ class ConnectedClassifier:
             for i in range(len(self.legs)):
                 if len(self.legs[i]) > 1:
                     break
+                if lit_index is not None and unlit_index is not None:
+                    break
                 if self.is_lit(v, self.legs[i][0]):
                     lit_index = i
-                if not self.is_lit(v, self.legs[i][0]):
+                else:
                     unlit_index = i
             if lit_index is not None and unlit_index is not None:
                 self.convert_to_single_lit_state(lit_index, unlit_index, vertex_stack, v)
