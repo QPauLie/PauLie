@@ -28,7 +28,7 @@ class ConnectedClassifier:
             self.central_vertex = pq @ self.central_vertex
         for i in range(len(self.legs)):
             for j in range(len(self.legs[i])):
-                if self.is_lit(v, self.legs[i][j]) and i != p_index:
+                if i != p_index and self.is_lit(v, self.legs[i][j]):
                     self.legs[i][j] = pq @ self.legs[i][j]
         self.legs[p_index].append(v)
         # Truncate longest leg if necessary, this happens at most once
@@ -60,6 +60,7 @@ class ConnectedClassifier:
                     for i in range(m, 1, -1):
                         v = v @ self.legs[-1][i]
         # Now handle all legs of length 2
+        l1b_is_lit = self.is_lit(v, self.legs[-1][0])
         for i in range(len(self.legs) - 1):
             if len(self.legs[i]) < 2:
                 continue
@@ -69,11 +70,12 @@ class ConnectedClassifier:
                 continue
             if self.is_lit(v, self.legs[i][0]) and not self.is_lit(v, self.legs[i][1]):
                 v = v @ self.legs[i][0]
-            elif not self.is_lit(v, self.legs[i][0]) and self.is_lit(v, self.legs[i][1]):
+            elif not self.is_lit(v, self.legs[i][0]):
                 v = v @ self.legs[i][1]
             if not self.is_lit(v, self.central_vertex):
-                if not self.is_lit(v, self.legs[-1][0]):
+                if not l1b_is_lit:
                     v = v @ self.legs[-1][1]
+                    l1b_is_lit = True
                 v = v @ self.legs[-1][0]
             v = v @ self.legs[i][1] @ self.legs[i][0] @ self.legs[0][0]
         return v
@@ -203,12 +205,14 @@ class ConnectedClassifier:
                 v = v @ self.central_vertex
             any_lit_leg = False
             for leg in self.legs:
+                if len(leg) == 1:
+                    continue
+                if any_lit_leg:
+                    break
                 for w in leg:
                     if self.is_lit(v, w):
                         any_lit_leg = True
                         break
-                if any_lit_leg:
-                    break
             if not any_lit_leg:
                 self.legs.append([v])
                 continue
