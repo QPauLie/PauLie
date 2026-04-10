@@ -15,12 +15,11 @@ from .exceptions import (
 # Application
 from .application.otoc import (
     average_otoc,
+    fourpoint,
     mean_abs_otoc_uniform,
     otoc_fixed_unitary,
     pauli_instability,
 )
-from .application.fourpoint import fourpoint
-from .application.charges import non_commuting_charges
 from .application.second_moment import second_moment
 from .application.get_optimal_su2_n import get_optimal_su_2_n_generators
 from .application.average_graph_complexity import average_graph_complexity

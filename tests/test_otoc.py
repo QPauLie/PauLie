@@ -14,6 +14,7 @@ from paulie import (
     PauliString,
     PauliStringCollection,
     average_otoc,
+    fourpoint,
     get_identity,
     get_pauli_string as p,
     mean_abs_otoc_uniform,
@@ -126,6 +127,15 @@ def test_su_otoc():
     for v, w in zip(all_paulis, all_paulis):
         assert pytest.approx(min_val) == average_otoc(g_su, v, w)
 
+# These are the generators of n=3 "matchgate" dynamics
+generators = p(["ZII", "IZI", "IIZ", "XXI", "IXX"])
+m = p("XYZ")
+q = p("YZZ")
+r = p("YXZ")
+s = p("YYZ")
+
+assert fourpoint(generators,m,q,m,q) == average_otoc(generators,m,q)
+assert fourpoint(generators,m,q,r,s) == 0
 
 @pytest.mark.parametrize("n", [1, 2])
 def test_pauli_string_enumeration_round_trip(n: int) -> None:

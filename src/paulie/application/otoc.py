@@ -76,6 +76,37 @@ def average_otoc(
     return 1 - 2 * anti_commute_count / v_connected_component_size
 
 
+def fourpoint(generators: PauliStringCollection,
+              m: PauliString,
+              q: PauliString,
+              r: PauliString,
+              s: PauliString) -> float:
+    r"""
+    Computes the four-point correlator of Pauli strings :math:`P`, :math:`Q`,  :math:`R`, and
+    :math:`S`.
+
+    For :math:`PR,QS \propto L` where :math:`L` is a linear symmetry, this reduces to the average
+    OTOC of :math:`P` and :math:`Q`.
+
+    (arXiV: 2502.16404)
+
+    Args:
+        generators (PauliStringCollection): Generating set of the Pauli string DLA.
+        m (PauliString): Pauli string :math:`P`.
+        q (PauliString): Pauli string :math:`Q`.
+        l (PauliString): Pauli string :math:`R`.
+        s (PauliString): Pauli string :math:`S`.
+    Returns:
+        float: The four-point correlator of the Pauli strings.
+    """
+    commutant = generators.get_commutants()
+    rm = r @ m
+    qs = q @ s
+    if rm == qs and qs in commutant:
+        return average_otoc(generators, m, q)
+    return 0
+
+
 def _abs_trace_times_factor(chained: NDArray[np.complex128], factor: float) -> float:
     """``| factor * Tr(chained) |`` as a plain ``float``."""
     z = cast(complex, np.trace(chained).item())
