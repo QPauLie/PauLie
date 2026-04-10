@@ -793,7 +793,7 @@ class PauliStringCollection:
         commutants = self.get_commutants()
 
         for c, q in combinations(commutants, 2):
-            if not (c | q):
+            if not c | q:
                 non_commuting_charges.append(c)
                 non_commuting_charges.append(q)
 

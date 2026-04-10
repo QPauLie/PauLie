@@ -36,7 +36,7 @@ Utilities related to :math:`\mathfrak{su}(2^n)` generators.
    get_optimal_su2_n.get_optimal_su_2_n_generators
 
 Chaos metrics
------------
+-------------
 Utilities related to different DLA properties.
 
 .. autosummary::
