@@ -1,4 +1,0 @@
-﻿paulie.application.charges.non_commuting_charges
-================================================
-
-.. autofunction:: paulie.application.charges.non_commuting_charges

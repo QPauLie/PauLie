@@ -1,0 +1,4 @@
+﻿paulie.application.otoc.fourpoint
+=================================
+
+.. autofunction:: paulie.application.otoc.fourpoint

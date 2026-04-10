@@ -1,4 +1,0 @@
-﻿paulie.application.fourpoint.fourpoint
-======================================
-
-.. autofunction:: paulie.application.fourpoint.fourpoint

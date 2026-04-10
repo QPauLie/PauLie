@@ -24,23 +24,6 @@ Utilities related to average Pauli weights.
    average_pauli_weight.get_pauli_weights
    average_pauli_weight.quantum_fourier_entropy
 
-Charges
--------
-Utilities for finding charges.
-
-.. autosummary::
-   :toctree: generated/
-
-   charges.non_commuting_charges
-
-Four-point correlation functions
---------------------------------
-Utilities for finding four-point correlation functions.
-
-.. autosummary::
-   :toctree: generated/
-
-   fourpoint.fourpoint
 
 Optimal :math:`\mathfrak{su}(2^n)` generators
 ---------------------------------------------
@@ -52,8 +35,8 @@ Utilities related to :math:`\mathfrak{su}(2^n)` generators.
    get_optimal_su2_n.get_optimal_edges_su_2_n
    get_optimal_su2_n.get_optimal_su_2_n_generators
 
-DLA metrics
------------
+Chaos metrics
+-------------
 Utilities related to different DLA properties.
 
 .. autosummary::
@@ -61,6 +44,7 @@ Utilities related to different DLA properties.
 
    average_graph_complexity.average_graph_complexity
    otoc.average_otoc
+   otoc.fourpoint
    second_moment.second_moment
 
 Pauli instability and fixed-unitary OTOC
