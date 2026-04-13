@@ -4,32 +4,55 @@ from paulie.common.pauli_string_bitarray import PauliString
 from paulie.classifier.classification import Classification, Morph
 import networkx as nx
 
-class ConnectedClassifier:
-    def __init__(self):
-        self.type = 'A' # B when at least two legs of length at least 2
+
+class ConnectedCanonicalizer:
+    def __init__(self, track_operations: bool=False):
+        self.type = None
         self.central_vertex: PauliString = None
-        self.legs: list[list[PauliString]] = []
+        self.legs: list[list[PauliString]] = None
+        self.init_state()
+        self.track_operations = track_operations
+        if self.track_operations:
+            self.multiplied_by: dict[PauliString, PauliString] = {}
+
+    def init_state(self):
+        self.type = 'A' # B when at least two legs of length at least 2
+        self.central_vertex = None
+        self.legs = []
+        if self.track_operations:
+            self.multiplied_by = {}
 
     def is_lit(self, v: PauliString, w: PauliString):
         return v ^ w is not None
+
+    def operate(self, v: PauliString, w: PauliString):
+        if self.track_operations:
+            u = self.multiplied_by.pop(v, None)
+        v = v @ w
+        if self.track_operations:
+            if u is None:
+                self.multiplied_by[v] = w
+            else:
+                self.multiplied_by[v] = u @ w
+        return v
 
     def build_core(self, v: PauliString) -> PauliString:
         if len(self.legs) == 1:
             if self.is_lit(v, self.legs[0][0]):
                 if not self.is_lit(v, self.central_vertex):
-                    v = v @ self.legs[0][0]
-                v = v @ self.central_vertex
+                    v = self.operate(v, self.legs[0][0])
+                v = self.operate(v, self.central_vertex)
         self.legs.append([v])
         return v
 
     def convert_to_single_lit_state(self, p_index: int, q_index: int, vertex_stack: list[PauliString], v: PauliString):
         pq = self.legs[p_index][0] @ self.legs[q_index][0]
         if self.is_lit(v, self.central_vertex):
-            self.central_vertex = pq @ self.central_vertex
+            self.central_vertex = self.operate(self.central_vertex, pq)
         for i in range(len(self.legs)):
             for j in range(len(self.legs[i])):
                 if i != p_index and self.is_lit(v, self.legs[i][j]):
-                    self.legs[i][j] = pq @ self.legs[i][j]
+                    self.legs[i][j] = self.operate(self.legs[i][j], pq)
         self.legs[p_index].append(v)
         # Truncate longest leg if necessary, this happens at most once
         big_leg_cnt = sum(1 for leg in self.legs if len(leg) >= 2)
@@ -49,16 +72,16 @@ class ConnectedClassifier:
             if m is None:
                 if not self.is_lit(v, self.central_vertex):
                     if self.is_lit(v, self.legs[lit_2_leg_index][0]):
-                        v = v @ self.legs[lit_2_leg_index][0]
+                        v = self.operate(v, self.legs[lit_2_leg_index][0])
                     else:
-                        v = v @ self.legs[lit_2_leg_index][1] @ self.legs[lit_2_leg_index][0]
-                v = v @ self.legs[-1][0] @ self.legs[0][0]
+                        v = self.operate(v, self.legs[lit_2_leg_index][1] @ self.legs[lit_2_leg_index][0])
+                v = self.operate(v, self.legs[-1][0] @ self.legs[0][0])
             else:
                 if m == 0:
-                    v = v @ self.legs[-1][0]
+                    v = self.operate(v, self.legs[-1][0])
                 else:
                     for i in range(m, 1, -1):
-                        v = v @ self.legs[-1][i]
+                        v = self.operate(v, self.legs[-1][i])
         # Now handle all legs of length 2
         l1b_is_lit = self.is_lit(v, self.legs[-1][0])
         for i in range(len(self.legs) - 1):
@@ -69,15 +92,15 @@ class ConnectedClassifier:
             if not self.is_lit(v, self.legs[i][0]) and not self.is_lit(v, self.legs[i][1]):
                 continue
             if self.is_lit(v, self.legs[i][0]) and not self.is_lit(v, self.legs[i][1]):
-                v = v @ self.legs[i][0]
+                v = self.operate(v, self.legs[i][0])
             elif not self.is_lit(v, self.legs[i][0]):
-                v = v @ self.legs[i][1]
+                v = self.operate(v, self.legs[i][1])
             if not self.is_lit(v, self.central_vertex):
                 if not l1b_is_lit:
-                    v = v @ self.legs[-1][1]
+                    v = self.operate(v, self.legs[-1][1])
                     l1b_is_lit = True
-                v = v @ self.legs[-1][0]
-            v = v @ self.legs[i][1] @ self.legs[i][0] @ self.legs[0][0]
+                v = self.operate(v, self.legs[-1][0])
+            v = self.operate(v, self.legs[i][1] @ self.legs[i][0] @ self.legs[0][0])
         return v
 
     def reduce_lightning(self, vertex_stack: list[PauliString], v: PauliString):
@@ -88,7 +111,7 @@ class ConnectedClassifier:
                     m = i
                     break
             for i in range(m, -1, -1):
-                v = v @ self.legs[-1][i]
+                v = self.operate(v, self.legs[-1][i])
         # Now we need to reduce the lit vertices on the long leg to one position and a list of contractions
         f, s = None, None
         for i in range(len(self.legs[-1])):
@@ -110,7 +133,7 @@ class ConnectedClassifier:
                 pref = pref @ self.legs[-1][i]
             while s < len(self.legs[-1]):
                 pref = pref @ self.legs[-1][s]
-                v = v @ pref
+                v = self.operate(v, pref)
                 f += 1
                 s += 1
                 pref = pref @ self.legs[-1][f]
@@ -121,18 +144,18 @@ class ConnectedClassifier:
             # Case 1: First vertex of long leg is lit
             if self.type == 'B' and len(self.legs[-1]) == 4:
                 # Graph is of type B2
-                v = v @ self.legs[-1][1] @ self.legs[-1][3]
+                v = self.operate(v, self.legs[-1][1] @ self.legs[-1][3])
                 self.legs.append([v])
             else:
                 for w in self.legs[-1]:
-                    v = v @ w
+                    v = self.operate(v, w)
                 self.legs[-1].append(v)
         else:
             # Now we have to do careful case handling based on the type of the graph
             # Here f is either the middle or last vertex
             # If it is an A type graph, it may or may not become B type after this
             # First we break the legs
-            self.legs[-1][f - 1] = self.legs[-1][f - 1] @ v @ self.legs[0][0]
+            self.legs[-1][f - 1] = self.operate(self.legs[-1][f - 1], v @ self.legs[0][0])
             subleg = self.legs[-1][f:]
             self.legs[-1] = self.legs[-1][:f]
             self.legs.append([v] + subleg)
@@ -170,7 +193,7 @@ class ConnectedClassifier:
         self.legs = confirmed_legs
 
     def connected_canonical_graph(self, vertex_stack: list[PauliString]):
-        self.__init__()
+        self.init_state()
         while vertex_stack:
             v = vertex_stack.pop()
             # Don't forget to sort self.legs by length before accessing them!
@@ -234,18 +257,23 @@ class ConnectedClassifier:
         self.legs.sort(key=len)
         return self.central_vertex, self.legs
 
-def canonical_graph(gens: PauliStringCollection):
+def canonical_graph(gens: PauliStringCollection, return_independent_basis: bool=False):
     verts, edges, _ = gens.get_graph()
     g = nx.Graph()
     g.add_nodes_from(verts)
     g.add_edges_from(edges)
     ccs = nx.connected_components(g)
-    classif = ConnectedClassifier()
+    conn_canon = ConnectedCanonicalizer(track_operations=return_independent_basis)
     classification = Classification()
+    independent_basis = []
     for cc in ccs:
         vertex_stack = [get_pauli_string(s) for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
         vertex_stack.reverse()
-        central_vertex, legs = classif.connected_canonical_graph(vertex_stack)
+        central_vertex, legs = conn_canon.connected_canonical_graph(vertex_stack)
         legs.insert(0, [central_vertex])
         classification.add(Morph(legs, []))
+        if return_independent_basis:
+            independent_basis.extend([v @ conn_canon.multiplied_by[v] for leg in legs for v in leg])
+    if return_independent_basis:
+        return classification, independent_basis
     return classification
