@@ -4,55 +4,38 @@ from paulie.common.pauli_string_bitarray import PauliString
 from paulie.classifier.classification import Classification, Morph
 import networkx as nx
 
-
 class ConnectedCanonicalizer:
-    def __init__(self, track_operations: bool=False):
-        self.type = None
-        self.central_vertex: PauliString = None
-        self.legs: list[list[PauliString]] = None
-        self.init_state()
-        self.track_operations = track_operations
-        if self.track_operations:
-            self.multiplied_by: dict[PauliString, PauliString] = {}
-
-    def init_state(self):
+    def __init__(self):
         self.type = 'A' # B when at least two legs of length at least 2
         self.central_vertex = None
         self.legs = []
-        if self.track_operations:
-            self.multiplied_by = {}
+
+    def representative(self, v: PauliString):
+        return v
 
     def is_lit(self, v: PauliString, w: PauliString):
-        return v ^ w is not None
+        return self.representative(v) ^ self.representative(w) is not None
 
-    def operate(self, v: PauliString, w: PauliString):
-        if self.track_operations:
-            u = self.multiplied_by.pop(v, None)
-        v = v @ w
-        if self.track_operations:
-            if u is None:
-                self.multiplied_by[v] = w
-            else:
-                self.multiplied_by[v] = u @ w
-        return v
+    def tracked_multiply(self, v: PauliString, w: PauliString):
+        return v @ w
 
     def build_core(self, v: PauliString) -> PauliString:
         if len(self.legs) == 1:
             if self.is_lit(v, self.legs[0][0]):
                 if not self.is_lit(v, self.central_vertex):
-                    v = self.operate(v, self.legs[0][0])
-                v = self.operate(v, self.central_vertex)
+                    v = self.tracked_multiply(v, self.representative(self.legs[0][0]))
+                v = self.tracked_multiply(v, self.representative(self.central_vertex))
         self.legs.append([v])
         return v
 
     def convert_to_single_lit_state(self, p_index: int, q_index: int, vertex_stack: list[PauliString], v: PauliString):
-        pq = self.legs[p_index][0] @ self.legs[q_index][0]
+        pq = self.representative(self.legs[p_index][0]) @ self.representative(self.legs[q_index][0])
         if self.is_lit(v, self.central_vertex):
-            self.central_vertex = self.operate(self.central_vertex, pq)
+            self.central_vertex = self.tracked_multiply(self.central_vertex, pq)
         for i in range(len(self.legs)):
             for j in range(len(self.legs[i])):
                 if i != p_index and self.is_lit(v, self.legs[i][j]):
-                    self.legs[i][j] = self.operate(self.legs[i][j], pq)
+                    self.legs[i][j] = self.tracked_multiply(self.legs[i][j], pq)
         self.legs[p_index].append(v)
         # Truncate longest leg if necessary, this happens at most once
         big_leg_cnt = sum(1 for leg in self.legs if len(leg) >= 2)
@@ -72,16 +55,16 @@ class ConnectedCanonicalizer:
             if m is None:
                 if not self.is_lit(v, self.central_vertex):
                     if self.is_lit(v, self.legs[lit_2_leg_index][0]):
-                        v = self.operate(v, self.legs[lit_2_leg_index][0])
+                        v = self.tracked_multiply(v, self.representative(self.legs[lit_2_leg_index][0]))
                     else:
-                        v = self.operate(v, self.legs[lit_2_leg_index][1] @ self.legs[lit_2_leg_index][0])
-                v = self.operate(v, self.legs[-1][0] @ self.legs[0][0])
+                        v = self.tracked_multiply(v, self.representative(self.legs[lit_2_leg_index][1]) @ self.representative(self.legs[lit_2_leg_index][0]))
+                v = self.tracked_multiply(v, self.representative(self.legs[-1][0]) @ self.representative(self.legs[0][0]))
             else:
                 if m == 0:
-                    v = self.operate(v, self.legs[-1][0])
+                    v = self.tracked_multiply(v, self.representative(self.legs[-1][0]))
                 else:
-                    for i in range(m, 1, -1):
-                        v = self.operate(v, self.legs[-1][i])
+                    for i in range(m, -1, -1):
+                        v = self.tracked_multiply(v, self.representative(self.legs[-1][i]))
         # Now handle all legs of length 2
         l1b_is_lit = self.is_lit(v, self.legs[-1][0])
         for i in range(len(self.legs) - 1):
@@ -92,15 +75,15 @@ class ConnectedCanonicalizer:
             if not self.is_lit(v, self.legs[i][0]) and not self.is_lit(v, self.legs[i][1]):
                 continue
             if self.is_lit(v, self.legs[i][0]) and not self.is_lit(v, self.legs[i][1]):
-                v = self.operate(v, self.legs[i][0])
+                v = self.tracked_multiply(v, self.representative(self.legs[i][0]))
             elif not self.is_lit(v, self.legs[i][0]):
-                v = self.operate(v, self.legs[i][1])
+                v = self.tracked_multiply(v, self.representative(self.legs[i][1]))
             if not self.is_lit(v, self.central_vertex):
                 if not l1b_is_lit:
-                    v = self.operate(v, self.legs[-1][1])
+                    v = self.tracked_multiply(v, self.representative(self.legs[-1][1]))
                     l1b_is_lit = True
-                v = self.operate(v, self.legs[-1][0])
-            v = self.operate(v, self.legs[i][1] @ self.legs[i][0] @ self.legs[0][0])
+                v = self.tracked_multiply(v, self.representative(self.legs[-1][0]))
+            v = self.tracked_multiply(v, self.representative(self.legs[i][1]) @ self.representative(self.legs[i][0]) @ self.representative(self.legs[0][0]))
         return v
 
     def reduce_lightning(self, vertex_stack: list[PauliString], v: PauliString):
@@ -111,7 +94,7 @@ class ConnectedCanonicalizer:
                     m = i
                     break
             for i in range(m, -1, -1):
-                v = self.operate(v, self.legs[-1][i])
+                v = self.tracked_multiply(v, self.representative(self.legs[-1][i]))
         # Now we need to reduce the lit vertices on the long leg to one position and a list of contractions
         f, s = None, None
         for i in range(len(self.legs[-1])):
@@ -128,34 +111,34 @@ class ConnectedCanonicalizer:
         # Otherwise naively reduce until one element is left
         if s is not None:
             # Compute prefix products on the leg to perform operations in O(1) and O(n) overall
-            pref = self.legs[-1][f]
+            pref = self.representative(self.legs[-1][f])
             for i in range(f, s):
-                pref = pref @ self.legs[-1][i]
+                pref = pref @ self.representative(self.legs[-1][i])
             while s < len(self.legs[-1]):
-                pref = pref @ self.legs[-1][s]
-                v = self.operate(v, pref)
+                pref = pref @ self.representative(self.legs[-1][s])
+                v = self.tracked_multiply(v, pref)
                 f += 1
                 s += 1
-                pref = pref @ self.legs[-1][f]
+                pref = pref @ self.representative(self.legs[-1][f])
                 while s < len(self.legs[-1]) and not self.is_lit(v, self.legs[-1][s]):
-                    pref = pref @ self.legs[-1][s]
+                    pref = pref @ self.representative(self.legs[-1][s])
                     s += 1
         if f == 0:
             # Case 1: First vertex of long leg is lit
             if self.type == 'B' and len(self.legs[-1]) == 4:
                 # Graph is of type B2
-                v = self.operate(v, self.legs[-1][1] @ self.legs[-1][3])
+                v = self.tracked_multiply(v, self.representative(self.legs[-1][1]) @ self.representative(self.legs[-1][3]))
                 self.legs.append([v])
             else:
                 for w in self.legs[-1]:
-                    v = self.operate(v, w)
+                    v = self.tracked_multiply(v, self.representative(w))
                 self.legs[-1].append(v)
         else:
             # Now we have to do careful case handling based on the type of the graph
             # Here f is either the middle or last vertex
             # If it is an A type graph, it may or may not become B type after this
             # First we break the legs
-            self.legs[-1][f - 1] = self.operate(self.legs[-1][f - 1], v @ self.legs[0][0])
+            self.legs[-1][f - 1] = self.tracked_multiply(self.legs[-1][f - 1], self.representative(v) @ self.representative(self.legs[0][0]))
             subleg = self.legs[-1][f:]
             self.legs[-1] = self.legs[-1][:f]
             self.legs.append([v] + subleg)
@@ -174,10 +157,9 @@ class ConnectedCanonicalizer:
                     vertex_stack.append(self.legs[-2].pop())
         return v
     
-    def dependency_check(self):
+    def dependency_check(self, length_1_legs: list[list[PauliString]]):
         # We need to do Gaussian elimination on the legs of length 1
-        confirmed_legs = [leg for leg in self.legs if len(leg) != 1]
-        length_1_legs = [leg for leg in self.legs if len(leg) == 1]
+        independent_legs = []
         basis: dict[int, PauliString] = {}
         for leg in length_1_legs:
             p = leg[0].copy()
@@ -187,13 +169,12 @@ class ConnectedCanonicalizer:
                 x = basis.get(p.bits.find(1))
                 if x is None:
                     basis[p.bits.find(1)] = p
-                    confirmed_legs.append(leg)
+                    independent_legs.append(leg)
                     break
                 p = p @ x
-        self.legs = confirmed_legs
+        return independent_legs
 
     def connected_canonical_graph(self, vertex_stack: list[PauliString]):
-        self.init_state()
         while vertex_stack:
             v = vertex_stack.pop()
             # Don't forget to sort self.legs by length before accessing them!
@@ -224,8 +205,8 @@ class ConnectedCanonicalizer:
             # we just connect it and exit
             if self.is_lit(v, self.legs[0][0]):
                 if not self.is_lit(v, self.central_vertex):
-                    v = v @ self.legs[0][0]
-                v = v @ self.central_vertex
+                    v = self.tracked_multiply(v, self.representative(self.legs[0][0]))
+                v = self.tracked_multiply(v, self.representative(self.central_vertex))
             any_lit_leg = False
             for leg in self.legs:
                 if len(leg) == 1:
@@ -253,27 +234,74 @@ class ConnectedCanonicalizer:
                 if lit_2_leg_index is not None:
                     v = self.transfer_lightning(lit_2_leg_index, v)
             v = self.reduce_lightning(vertex_stack, v)
-        self.dependency_check()
+        confirmed_legs = [leg for leg in self.legs if len(leg) != 1]
+        length_1_legs = [leg for leg in self.legs if len(leg) == 1]
+        confirmed_legs.extend(self.dependency_check(length_1_legs))
+        self.legs = confirmed_legs
         self.legs.sort(key=len)
         return self.central_vertex, self.legs
 
-def canonical_graph(gens: PauliStringCollection, return_independent_basis: bool=False):
+    def get_canonical_graph(self, vertex_stack: list[PauliString]):
+        self.__init__()
+        return self.connected_canonical_graph(vertex_stack)
+
+class TrackedConnectedCanonicalizer(ConnectedCanonicalizer):
+    def __init__(self):
+        self.multiplied_by: dict[PauliString, PauliString] = {}
+        super().__init__()
+
+    def representative(self, v: PauliString):
+        u = self.multiplied_by[v]
+        if u is None:
+            return v
+        return u @ v
+
+    def tracked_multiply(self, v: PauliString, w: PauliString):
+        u = self.multiplied_by[v]
+        if u is None:
+            u = w
+        else:
+            u = u @ w
+        self.multiplied_by[v] = u
+        return v
+
+    def dependency_check(self, length_1_legs: list[list[PauliString]]):
+        # Hacky way to couple the representative information for undoing
+        modified_legs = [[self.representative(leg[0]), self.multiplied_by[leg[0]]] for leg in length_1_legs]
+        reduced_legs = super().dependency_check(modified_legs)
+        independent_legs = []
+        for leg in reduced_legs:
+            if leg[1] is None:
+                independent_legs.append([leg[0]])
+            else:
+                independent_legs.append([leg[1] @ leg[0]])
+        return independent_legs
+
+    def get_canonical_graph(self, vertex_stack: list[PauliString]):
+        self.__init__()
+        for v in vertex_stack:
+            self.multiplied_by[v] = None
+        return super().connected_canonical_graph(vertex_stack)
+
+def canonical_graph(gens: PauliStringCollection, return_independent_subset: bool=False):
     verts, edges, _ = gens.get_graph()
     g = nx.Graph()
     g.add_nodes_from(verts)
     g.add_edges_from(edges)
     ccs = nx.connected_components(g)
-    conn_canon = ConnectedCanonicalizer(track_operations=return_independent_basis)
+    if return_independent_subset:
+        conn_canon = TrackedConnectedCanonicalizer()
+    else:
+        conn_canon = ConnectedCanonicalizer()
     classification = Classification()
-    independent_basis = []
+    independent_subset = []
     for cc in ccs:
         vertex_stack = [get_pauli_string(s) for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
         vertex_stack.reverse()
-        central_vertex, legs = conn_canon.connected_canonical_graph(vertex_stack)
+        central_vertex, legs = conn_canon.get_canonical_graph(vertex_stack)
         legs.insert(0, [central_vertex])
+        independent_subset.extend(sum(legs, []))
         classification.add(Morph(legs, []))
-        if return_independent_basis:
-            independent_basis.extend([v @ conn_canon.multiplied_by[v] for leg in legs for v in leg])
-    if return_independent_basis:
-        return classification, independent_basis
+    if return_independent_subset:
+        return classification, PauliStringCollection(independent_subset)
     return classification
