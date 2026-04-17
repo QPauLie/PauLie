@@ -45,7 +45,6 @@ public_symbols = [
     "second_moment",
     "get_optimal_su_2_n_generators",
     "average_graph_complexity",
-    "animation_anti_commutation_graph",
     "plot_anti_commutation_graph",
     "quantum_fourier_entropy",
     "average_pauli_weight",

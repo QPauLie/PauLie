@@ -23,7 +23,6 @@ from .application.otoc import (
 from .application.second_moment import second_moment
 from .application.get_optimal_su2_n import get_optimal_su_2_n_generators
 from .application.average_graph_complexity import average_graph_complexity
-from .application.animation import animation_anti_commutation_graph
 from .application.plot import plot_anti_commutation_graph
 from .application.average_pauli_weight import (
     quantum_fourier_entropy,

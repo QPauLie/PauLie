@@ -13,9 +13,7 @@ from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.get_graph import get_graph
 from paulie.classifier.classification import Classification
-from paulie.classifier.morph_factory import MorphFactory
-from paulie.classifier.recording_morph_factory import RecordingMorphFactory
-from paulie.helpers._recording import RecordGraph
+from paulie.classifier.tracked_connected_canonicalizer import TrackedConnectedCanonicalizer
 from paulie.exceptions import PauliStringCollectionException
 
 class PauliStringCollection:
@@ -34,7 +32,6 @@ class PauliStringCollection:
         self.nextpos: int = 0
         self.generators: list[PauliString] = []
         self.classification: Classification = None
-        self.record: RecordGraph = None
         if not generators:
             return
 
@@ -64,28 +61,6 @@ class PauliStringCollection:
         if len(self) == 0:
             return 0
         return len(self.generators[0])
-
-    def set_record(self, record:RecordGraph) -> None:
-        """
-        In order to animate the transformations that lead to the canonical graph
-        and thus to the classification, set record of type RecordGraph.
-
-        Args:
-            record (RecordGraph): Record of type RecordGraph, recording the construction of
-                the canonical graph.
-        Returns:
-            None
-        """
-        self.record = record
-
-    def get_record(self) -> RecordGraph:
-        """
-        Get the record of graph construction.
-
-        Returns:
-            RecordGraph: Record of graph construction.
-        """
-        return self.record
 
     def __repr__(self) -> str:
         """
@@ -552,15 +527,18 @@ class PauliStringCollection:
             Classification:
             Result of building canonical graphs corresponding to the direct sum Lie algebra.
         """
-        subgraphs = self.get_subgraphs()
+        verts, edges, _ = self.get_graph()
+        g = nx.Graph()
+        g.add_nodes_from(verts)
+        g.add_edges_from(edges)
+        ccs = nx.connected_components(g)
+        conn_canon = TrackedConnectedCanonicalizer()
         self.classification = Classification()
-        for subgraph in subgraphs:
-            if not self.record:
-                morph_factory = MorphFactory()
-            else:
-                morph_factory = RecordingMorphFactory(record=self.record)
-
-            self.classification.add(morph_factory.build(subgraph.get()).get_morph())
+        for cc in ccs:
+            vertex_stack = [self.create_instance(pauli_str=s) for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
+            vertex_stack.reverse()
+            conn_canon.build_canonical_graph(vertex_stack.copy())
+            self.classification.add(conn_canon.get_morph())
         return self.classification
 
     def get_class(self) -> Classification:
@@ -595,83 +573,6 @@ class PauliStringCollection:
         """
         classification = self.get_class()
         return bool(classification.is_algebra(algebra))
-
-    def is_in(self, generators: Self) -> bool:
-        """
-        Testing generators in algebra. All Pauli strings of one algebra are dependent on another.
-
-        Args:
-            generators (Self): Generator collection for checking.
-        Returns:
-            bool: True when all generators can be obtained from DLA self.
-        """
-        if len(self) == 0:
-            return False
-
-        classification = self.get_class()
-        subgraphs = generators.get_subgraphs()
-        for subgraph in subgraphs:
-            is_eq = False
-            morphs = classification.get_morphs()
-            for morph in morphs:
-                legs = morph.get_legs()
-                morph_factory = MorphFactory()
-                is_eq = morph_factory.is_eq(legs, subgraph.get())
-                if is_eq:
-                    break
-            if not is_eq:
-                return False
-
-        return True
-
-    def is_eq(self, generators: Self) -> bool:
-        """
-        Testing for equivalence of two algebras. All Pauli strings of one algebra are dependent on
-        another.
-
-        Args:
-            generators (Self): Generator collection for checking.
-        Returns:
-            bool: True when two collections of generators are equivalent.
-        """
-        return self.is_in(generators) and generators.is_in(self)
-
-    def select_dependents(self, generators: Self) -> PauliStringCollection:
-        """
-        Select dependents from self.
-
-        Args:
-            generators (Self): Generator collection for selecting.
-        Returns:
-           PauliStringCollection: Collection of dependent Pauli strings.
-        """
-        if len(self) == 0:
-            return False
-        dependents = []
-        classification = self.get_class()
-        subgraphs = generators.get_subgraphs()
-        for subgraph in subgraphs:
-            morphs = classification.get_morphs()
-            for morph in morphs:
-                legs = morph.get_legs()
-                morph_factory = MorphFactory()
-                morph_dependents = morph_factory.select_dependents(legs, subgraph.get())
-                dependents += morph_dependents
-
-        return PauliStringCollection(dependents)
-
-    def get_space(self) -> PauliStringCollection:
-        """
-        Get all space.
-
-        Returns:
-          PauliStringCollection:
-          Collection of all Pauli strings formed by a collection of generators.
-        """
-        all_space = PauliStringCollection(
-            [g for g in PauliString(n=self.get_len()).gen_all_pauli_strings()
-            if g != PauliString(n=self.get_len())])
-        return self.select_dependents(all_space)
 
     def gen_generators(self) -> Generator[PauliStringCollection, None, None]:
         """
@@ -716,8 +617,7 @@ class PauliStringCollection:
         Returns:
             PauliStringCollection: List of independent strings in the collection.
         """
-        dependents = self.get_class().get_dependents()
-        return PauliStringCollection([v for v in self if v not in dependents])
+        return PauliStringCollection(self.get_class().get_independents())
 
     def get_canonic_vertices(self) -> PauliStringCollection:
         """
