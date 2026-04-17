@@ -1,11 +1,7 @@
 """
     Module with graph drawing utilities.
 """
-import math
 import networkx as nx
-import matplotlib.pyplot as plt
-import matplotlib.animation
-import numpy as np
 from paulie.common.pauli_string_collection import PauliStringCollection
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.get_graph import get_graph
