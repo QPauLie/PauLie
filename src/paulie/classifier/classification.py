@@ -35,18 +35,21 @@ class Morph:
     """
     Stores the structural data of a canonical graph.
     """
-    def __init__(self, legs:list[list[PauliString]], dependents:list[PauliString]) -> None:
+    def __init__(self, legs:list[list[PauliString]], independents:list[PauliString],
+        generators:list[PauliString]) -> None:
         """
         Initialize the structural data of the graph.
 
         Args:
            legs (list[list[PauliString]]): The center of the graph followed by the list of legs.
-           dependents (list[PauliString]): List of dependent vertices.
+           independents (list[PauliString]): List of independent vertices.
+           generators (list[PauliString]): list of generators
         Returns: 
             None
         """
         self.legs = legs # center is zero leg
-        self.dependents = dependents
+        self.independents = set(independents)
+        self.generators = generators
 
     def is_empty(self) -> bool:
         """
@@ -75,14 +78,32 @@ class Morph:
         """
         return [v for leg in self.legs for v in leg]
 
+    def get_independents(self) -> list[PauliString]:
+        """
+        Get a list of independent Pauli strings.
+
+        Returns:
+            list[PauliString]: List of independent Pauli strings.
+        """
+        return list(self.independents)
+
+    def get_generators(self) -> list[PauliString]:
+        """
+        Get a list of generators Pauli strings.
+
+        Returns:
+            list[PauliString]: List of generators.
+        """
+        return self.generators
+
     def get_dependents(self) -> list[PauliString]:
         """
         Get a list of dependent Pauli strings.
 
         Returns:
-            list[PauliString]: List of dependent Pauli strings.
+            list[PauliString]: List of independent Pauli strings.
         """
-        return self.dependents
+        return [g for g in self.generators if g not in self.independents]
 
     def get_legs(self) -> list[list[PauliString]]:
         """
@@ -455,6 +476,15 @@ class Classification:
             list[PauliString]: List of dependent strings of Pauli algebra.
         """
         return [v for morph in self.morphs for v in morph.get_dependents()]
+
+    def get_independents(self) -> list[PauliString]:
+        """
+        Get a list of independent strings of Pauli algebra.
+
+        Returns:
+            list[PauliString]: List of dependent strings of Pauli algebra.
+        """
+        return [v for morph in self.morphs for v in morph.get_independents()]
 
     def get_isomorphisms(self) -> dict[str, str]:
         """
