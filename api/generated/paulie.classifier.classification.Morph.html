@@ -335,7 +335,6 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../paulie.application.html">Application (<code class="xref py py-mod docutils literal notranslate"><span class="pre">paulie.application</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="paulie.application.animation.animation_anti_commutation_graph.html">paulie.application.animation.animation_anti_commutation_graph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paulie.application.plot.plot_anti_commutation_graph.html">paulie.application.plot.plot_anti_commutation_graph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paulie.application.average_pauli_weight.average_pauli_weight.html">paulie.application.average_pauli_weight.average_pauli_weight</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paulie.application.average_pauli_weight.get_pauli_weights.html">paulie.application.average_pauli_weight.get_pauli_weights</a></li>
@@ -389,15 +388,7 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">paulie.classifier.classification.Morph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paulie.classifier.classification.TypeAlgebra.html">paulie.classifier.classification.TypeAlgebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paulie.classifier.classification.TypeGraph.html">paulie.classifier.classification.TypeGraph</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.morph_factory.MorphFactory.html">paulie.classifier.morph_factory.MorphFactory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.recording_morph_factory.RecordingMorphFactory.html">paulie.classifier.recording_morph_factory.RecordingMorphFactory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paulie.classifier.classification.ClassificationException.html">paulie.classifier.classification.ClassificationException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.morph_factory.MorphFactoryException.html">paulie.classifier.morph_factory.MorphFactoryException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.morph_factory.NotConnectedException.html">paulie.classifier.morph_factory.NotConnectedException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.morph_factory.RaiseException.html">paulie.classifier.morph_factory.RaiseException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.morph_factory.AppendedException.html">paulie.classifier.morph_factory.AppendedException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.morph_factory.CheckAppendedException.html">paulie.classifier.morph_factory.CheckAppendedException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paulie.classifier.morph_factory.DependentException.html">paulie.classifier.morph_factory.DependentException</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../paulie.helpers.html">Helpers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">paulie.helpers</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -472,7 +463,7 @@
 <h1>paulie.classifier.classification.Morph<a class="headerlink" href="#paulie-classifier-classification-morph" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Morph">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">paulie.classifier.classification.</span></span><span class="sig-name descname"><span class="pre">Morph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependents</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">paulie.classifier.classification.</span></span><span class="sig-name descname"><span class="pre">Morph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">independents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Stores the structural data of a canonical graph.</p>
 <dl class="py method">
@@ -553,7 +544,35 @@ neighbour: True if v and w are neighbours.</p>
 <dd><p>Get a list of dependent Pauli strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of dependent Pauli strings.</p>
+<dd class="field-odd"><p>List of independent Pauli strings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.classification.Morph.get_generators">
+<span class="sig-name descname"><span class="pre">get_generators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.get_generators" title="Link to this definition">#</a></dt>
+<dd><p>Get a list of generators Pauli strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of generators.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.classification.Morph.get_independents">
+<span class="sig-name descname"><span class="pre">get_independents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Morph.get_independents" title="Link to this definition">#</a></dt>
+<dd><p>Get a list of independent Pauli strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of independent Pauli strings.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="paulie.common.pauli_string_bitarray.PauliString.html#paulie.common.pauli_string_bitarray.PauliString" title="paulie.common.pauli_string_bitarray.PauliString">PauliString</a>]</p>
@@ -707,6 +726,8 @@ the longest leg.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Morph.gen_pq"><code class="docutils literal notranslate"><span class="pre">Morph.gen_pq()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Morph.get_algebra_properties"><code class="docutils literal notranslate"><span class="pre">Morph.get_algebra_properties()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Morph.get_dependents"><code class="docutils literal notranslate"><span class="pre">Morph.get_dependents()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Morph.get_generators"><code class="docutils literal notranslate"><span class="pre">Morph.get_generators()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Morph.get_independents"><code class="docutils literal notranslate"><span class="pre">Morph.get_independents()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Morph.get_legs"><code class="docutils literal notranslate"><span class="pre">Morph.get_legs()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Morph.get_properties"><code class="docutils literal notranslate"><span class="pre">Morph.get_properties()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Morph.get_type"><code class="docutils literal notranslate"><span class="pre">Morph.get_type()</span></code></a></li>

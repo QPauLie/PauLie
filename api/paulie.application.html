@@ -46,7 +46,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/paulie.application';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="paulie.application.animation.animation_anti_commutation_graph" href="generated/paulie.application.animation.animation_anti_commutation_graph.html" />
+    <link rel="next" title="paulie.application.plot.plot_anti_commutation_graph" href="generated/paulie.application.plot.plot_anti_commutation_graph.html" />
     <link rel="prev" title="API Reference" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -335,7 +335,6 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Application (<code class="xref py py-mod docutils literal notranslate"><span class="pre">paulie.application</span></code>)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.animation.animation_anti_commutation_graph.html">paulie.application.animation.animation_anti_commutation_graph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.plot.plot_anti_commutation_graph.html">paulie.application.plot.plot_anti_commutation_graph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.average_pauli_weight.average_pauli_weight.html">paulie.application.average_pauli_weight.average_pauli_weight</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.application.average_pauli_weight.get_pauli_weights.html">paulie.application.average_pauli_weight.get_pauli_weights</a></li>
@@ -389,15 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.classification.Morph.html">paulie.classifier.classification.Morph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.classification.TypeAlgebra.html">paulie.classifier.classification.TypeAlgebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.classification.TypeGraph.html">paulie.classifier.classification.TypeGraph</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.morph_factory.MorphFactory.html">paulie.classifier.morph_factory.MorphFactory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.recording_morph_factory.RecordingMorphFactory.html">paulie.classifier.recording_morph_factory.RecordingMorphFactory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.classification.ClassificationException.html">paulie.classifier.classification.ClassificationException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.morph_factory.MorphFactoryException.html">paulie.classifier.morph_factory.MorphFactoryException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.morph_factory.NotConnectedException.html">paulie.classifier.morph_factory.NotConnectedException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.morph_factory.RaiseException.html">paulie.classifier.morph_factory.RaiseException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.morph_factory.AppendedException.html">paulie.classifier.morph_factory.AppendedException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.morph_factory.CheckAppendedException.html">paulie.classifier.morph_factory.CheckAppendedException</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/paulie.classifier.morph_factory.DependentException.html">paulie.classifier.morph_factory.DependentException</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="paulie.helpers.html">Helpers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">paulie.helpers</span></code>)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -472,10 +463,7 @@
 <p>Utilities for visualizing the anti-commutation graph.</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/paulie.application.animation.animation_anti_commutation_graph.html#paulie.application.animation.animation_anti_commutation_graph" title="paulie.application.animation.animation_anti_commutation_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">animation.animation_anti_commutation_graph</span></code></a>(...)</p></td>
-<td><p>Generates an animation showing the transformation of the anti-commutation graph into canonical form.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/paulie.application.plot.plot_anti_commutation_graph.html#paulie.application.plot.plot_anti_commutation_graph" title="paulie.application.plot.plot_anti_commutation_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot.plot_anti_commutation_graph</span></code></a>(generators)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/paulie.application.plot.plot_anti_commutation_graph.html#paulie.application.plot.plot_anti_commutation_graph" title="paulie.application.plot.plot_anti_commutation_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot.plot_anti_commutation_graph</span></code></a>(generators)</p></td>
 <td><p>Plot a canonical anti-commutation graph of a set of generators.</p></td>
 </tr>
 </tbody>
@@ -628,11 +616,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="generated/paulie.application.animation.animation_anti_commutation_graph.html"
+       href="generated/paulie.application.plot.plot_anti_commutation_graph.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">paulie.application.animation.animation_anti_commutation_graph</p>
+        <p class="prev-next-title">paulie.application.plot.plot_anti_commutation_graph</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

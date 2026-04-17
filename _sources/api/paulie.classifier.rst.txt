@@ -14,8 +14,6 @@ Utilities for classifying the DLA of a set of Pauli strings.
    classification.Morph
    classification.TypeAlgebra
    classification.TypeGraph
-   morph_factory.MorphFactory
-   recording_morph_factory.RecordingMorphFactory
 
 Exceptions
 ----------
@@ -25,9 +23,3 @@ Exceptions thrown by the above methods.
    :toctree: generated/
 
    classification.ClassificationException
-   morph_factory.MorphFactoryException
-   morph_factory.NotConnectedException
-   morph_factory.RaiseException
-   morph_factory.AppendedException
-   morph_factory.CheckAppendedException
-   morph_factory.DependentException

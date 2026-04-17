@@ -1,6 +1,0 @@
-﻿paulie.classifier.recording_morph_factory.RecordingMorphFactory
-===============================================================
-
-.. autoclass:: paulie.classifier.recording_morph_factory.RecordingMorphFactory
-    :members:
-    :show-inheritance:

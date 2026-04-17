@@ -1,6 +1,0 @@
-﻿paulie.classifier.morph\_factory.DependentException
-===================================================
-
-.. currentmodule:: paulie.classifier.morph_factory
-
-.. autoexception:: DependentException

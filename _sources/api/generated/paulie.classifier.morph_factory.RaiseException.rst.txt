@@ -1,6 +1,0 @@
-﻿paulie.classifier.morph\_factory.RaiseException
-===============================================
-
-.. currentmodule:: paulie.classifier.morph_factory
-
-.. autoexception:: RaiseException

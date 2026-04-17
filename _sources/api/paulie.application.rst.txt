@@ -10,7 +10,6 @@ Utilities for visualizing the anti-commutation graph.
 .. autosummary::
    :toctree: generated/
 
-   animation.animation_anti_commutation_graph
    plot.plot_anti_commutation_graph
 
 Average Pauli weight
