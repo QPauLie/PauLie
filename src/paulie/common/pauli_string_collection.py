@@ -532,11 +532,12 @@ class PauliStringCollection:
         g.add_nodes_from(verts)
         g.add_edges_from(edges)
         ccs = nx.connected_components(g)
-        conn_canon = TrackedConnectedCanonicalizer()
         self.classification = Classification()
         for cc in ccs:
-            vertex_stack = [self.create_instance(pauli_str=s) for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
+            vertex_stack = [self.create_instance(pauli_str=s)
+                for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
             vertex_stack.reverse()
+            conn_canon = TrackedConnectedCanonicalizer()
             conn_canon.build_canonical_graph(vertex_stack.copy())
             self.classification.add(conn_canon.get_morph())
         return self.classification

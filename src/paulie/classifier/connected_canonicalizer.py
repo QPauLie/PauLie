@@ -1,26 +1,70 @@
+"""
+Connected canonicalizer of generators
+"""
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.classifier.classification import Morph
 
 class ConnectedCanonicalizer:
+    """
+    Class of connected canonicalizer of generators
+    """
     def __init__(self):
+        """
+        Initialize a ConnectedCanonicalizer
+        """
         self.type = 'A' # B when at least two legs of length at least 2
         self.central_vertex = None
         self.legs = []
         self.vertex_stack = []
 
-    def _set_vertex_stack(self, vertex_stack):
+    def _set_vertex_stack(self, vertex_stack: list[PauliString]) -> None:
+        """
+        Set initial list of generators
+        Args:
+            vertex_stack (list[PauliString]): Initial list of generators
+        """
         self.vertex_stack = vertex_stack.copy()
 
-    def _representative(self, v: PauliString):
+    def _representative(self, v: PauliString)-> PauliString:
+        """
+        Pauli string representative
+        Args:
+            v (PauliString): Pauli string
+        Returns:
+            PauliString: representative
+        """
         return v
 
-    def _is_lit(self, v: PauliString, w: PauliString):
+    def _is_lit(self, v: PauliString, w: PauliString) -> bool:
+        """
+        Testing for non-commutativity of two Pauli strings
+        Args:
+            v (PauliString): Pauli string
+            w (PauliString): Pauli string
+        Returns:
+            bool: True if the two strings are not commutative
+        """
         return self._representative(v) ^ self._representative(w) is not None
 
-    def _tracked_multiply(self, v: PauliString, w: PauliString):
+    def _tracked_multiply(self, v: PauliString, w: PauliString) -> PauliString:
+        """
+        Tracked multiply of two Pauli strings
+        Args:
+            v (PauliString): Pauli string
+            w (PauliString): Pauli string
+        Returns:
+            PauliString: multiplication result
+        """
         return v @ w
 
     def _build_core(self, v: PauliString) -> PauliString:
+        """
+        Build the core of a canonical graph of 3 vertices
+        Args:
+            v (PauliString): Append Pauli string
+        Returns:
+            PauliString: Append Pauli string after core installation
+        """
         if len(self.legs) == 1:
             if self._is_lit(v, self.legs[0][0]):
                 if not self._is_lit(v, self.central_vertex):
@@ -29,8 +73,18 @@ class ConnectedCanonicalizer:
         self.legs.append([v])
         return v
 
-    def _convert_to_single_lit_state(self, p_index: int, q_index: int, vertex_stack: list[PauliString], v: PauliString):
-        pq = self._representative(self.legs[p_index][0]) @ self._representative(self.legs[q_index][0])
+    def _convert_to_single_lit_state(self, p_index: int, q_index: int,
+        vertex_stack: list[PauliString], v: PauliString) -> None:
+        """
+        Convert to single lit state
+        Args:
+            p_index (int): Lited single leg index
+            q_index (int): Unlited single leg index
+            vertex_stack (list[PauliString]): Generator stack
+            v (PauliString): Append Pauli string
+        """
+        pq = (self._representative(self.legs[p_index][0]) @
+            self._representative(self.legs[q_index][0]))
         if self._is_lit(v, self.central_vertex):
             self.central_vertex = self._tracked_multiply(self.central_vertex, pq)
         for i in range(len(self.legs)):
@@ -45,7 +99,15 @@ class ConnectedCanonicalizer:
             while len(self.legs[-1]) > 4:
                 vertex_stack.append(self.legs[-1].pop())
 
-    def _transfer_lightning(self, lit_2_leg_index: int, v: PauliString):
+    def _transfer_lightning(self, lit_2_leg_index: int, v: PauliString) -> PauliString:
+        """
+        Transferring lighting to the long leg from leg length 2
+        Args:
+            lit_2_leg_index (int): Lited leg index long 2
+            v (PauliString): Append Pauli string
+        Returns:
+            PauliString: Pauli string after transferring
+        """
         # We need to make self.legs[-1][1] lit
         if not self._is_lit(v, self.legs[-1][1]):
             m = None
@@ -56,10 +118,15 @@ class ConnectedCanonicalizer:
             if m is None:
                 if not self._is_lit(v, self.central_vertex):
                     if self._is_lit(v, self.legs[lit_2_leg_index][0]):
-                        v = self._tracked_multiply(v, self._representative(self.legs[lit_2_leg_index][0]))
+                        v = self._tracked_multiply(v,
+                            self._representative(self.legs[lit_2_leg_index][0]))
                     else:
-                        v = self._tracked_multiply(v, self._representative(self.legs[lit_2_leg_index][1]) @ self._representative(self.legs[lit_2_leg_index][0]))
-                v = self._tracked_multiply(v, self._representative(self.legs[-1][0]) @ self._representative(self.legs[0][0]))
+                        v = self._tracked_multiply(v,
+                            self._representative(self.legs[lit_2_leg_index][1]
+                            ) @ self._representative(self.legs[lit_2_leg_index][0]))
+                v = self._tracked_multiply(v,
+                    self._representative(self.legs[-1][0]) @ self._representative(
+                    self.legs[0][0]))
             else:
                 if m == 0:
                     v = self._tracked_multiply(v, self._representative(self.legs[-1][0]))
@@ -84,10 +151,21 @@ class ConnectedCanonicalizer:
                     v = self._tracked_multiply(v, self._representative(self.legs[-1][1]))
                     l1b_is_lit = True
                 v = self._tracked_multiply(v, self._representative(self.legs[-1][0]))
-            v = self._tracked_multiply(v, self._representative(self.legs[i][1]) @ self._representative(self.legs[i][0]) @ self._representative(self.legs[0][0]))
+            v = self._tracked_multiply(v,
+                self._representative(self.legs[i][1]) @ self._representative(
+                self.legs[i][0]) @ self._representative(self.legs[0][0]))
         return v
 
-    def _reduce_lightning(self, vertex_stack: list[PauliString], v: PauliString):
+    def _reduce_lightning(self, vertex_stack: list[PauliString],
+        v: PauliString)->PauliString:
+        """
+        Reduce lighting on long leg
+        Args:
+            vertex_stack (list[PauliString]): Generator stack
+            v (PauliString): Append Pauli string
+        Returns:
+            PauliString: Pauli string after reduce
+        """
         if not self._is_lit(v, self.central_vertex):
             m = None
             for i in range(len(self.legs[-1])):
@@ -96,7 +174,8 @@ class ConnectedCanonicalizer:
                     break
             for i in range(m, -1, -1):
                 v = self._tracked_multiply(v, self._representative(self.legs[-1][i]))
-        # Now we need to reduce the lit vertices on the long leg to one position and a list of contractions
+        # Now we need to reduce the lit vertices on the long leg to one position and
+        #a list of contractions
         f, s = None, None
         for i in range(len(self.legs[-1])):
             if self._is_lit(v, self.legs[-1][i]):
@@ -128,7 +207,9 @@ class ConnectedCanonicalizer:
             # Case 1: First vertex of long leg is lit
             if self.type == 'B' and len(self.legs[-1]) == 4:
                 # Graph is of type B2
-                v = self._tracked_multiply(v, self._representative(self.legs[-1][1]) @ self._representative(self.legs[-1][3]))
+                v = self._tracked_multiply(v,
+                    self._representative(self.legs[-1][1]) @ self._representative(
+                    self.legs[-1][3]))
                 self.legs.append([v])
             else:
                 for w in self.legs[-1]:
@@ -139,7 +220,9 @@ class ConnectedCanonicalizer:
             # Here f is either the middle or last vertex
             # If it is an A type graph, it may or may not become B type after this
             # First we break the legs
-            self.legs[-1][f - 1] = self._tracked_multiply(self.legs[-1][f - 1], self._representative(v) @ self._representative(self.legs[0][0]))
+            self.legs[-1][f - 1] = self._tracked_multiply(
+                self.legs[-1][f - 1], self._representative(
+                v) @ self._representative(self.legs[0][0]))
             subleg = self.legs[-1][f:]
             self.legs[-1] = self.legs[-1][:f]
             self.legs.append([v] + subleg)
@@ -147,7 +230,8 @@ class ConnectedCanonicalizer:
             # Let's order the legs in increasing size
             if len(self.legs[-1]) < len(self.legs[-2]):
                 self.legs[-1], self.legs[-2] = self.legs[-2], self.legs[-1]
-            # If the graph was type A and we violate the conditions, we need to remove vertices from legs
+            # If the graph was type A and we violate the conditions,
+            # we need to remove vertices from legs
             # Remove more from the larger leg and less from the smaller leg
             # This happens at most once
             if self.type == 'A' and len(self.legs[-1]) >= 2 and len(self.legs[-2]) >= 2:
@@ -157,8 +241,15 @@ class ConnectedCanonicalizer:
                 while len(self.legs[-2]) > 2:
                     vertex_stack.append(self.legs[-2].pop())
         return v
-    
-    def _dependency_check(self, length_1_legs: list[list[PauliString]]):
+
+    def _dependency_check(self, length_1_legs: list[list[PauliString]]) -> None:
+        """
+        Check depending on legs long 1
+        Args:
+            length_1_legs (list[list[PauliString]]): List of legs length 1
+        Returns:
+            list[list[PauliString]]: list of independent legs
+        """
         # We need to do Gaussian elimination on the legs of length 1
         independent_legs = []
         basis: dict[int, PauliString] = {}
@@ -176,6 +267,11 @@ class ConnectedCanonicalizer:
         return independent_legs
 
     def _connected_canonical_graph(self, vertex_stack: list[PauliString]) -> None:
+        """
+        Constructing a canonical graph from a stack
+        Args:
+            vertex_stack (list[PauliString]): Generator stack
+        """
         while vertex_stack:
             v = vertex_stack.pop()
             # Don't forget to sort self.legs by length before accessing them!
@@ -242,7 +338,12 @@ class ConnectedCanonicalizer:
         self.legs.sort(key=len)
 
     def build_canonical_graph(self, vertex_stack: list[PauliString]) -> None:
-        self.__init__()
+        """
+        Build a canonical graph from a stack of connected generators
+
+        Args:
+            vertex_stack (list[PauliString]): Generator stack
+        """
         self._set_vertex_stack(vertex_stack)
         self._connected_canonical_graph(vertex_stack)
 
