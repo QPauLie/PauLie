@@ -538,8 +538,7 @@ class PauliStringCollection:
                 for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
             vertex_stack.reverse()
             conn_canon = TrackedConnectedCanonicalizer()
-            conn_canon.build_canonical_graph(vertex_stack.copy())
-            self.classification.add(conn_canon.get_morph())
+            self.classification.add(conn_canon.build_canonical_graph(vertex_stack.copy()))
         return self.classification
 
     def get_class(self) -> Classification:
