@@ -68,7 +68,19 @@ class TrackedConnectedCanonicalizer(ConnectedCanonicalizer):
                 independent_legs.append([leg[1] @ leg[0]])
         return independent_legs
 
-    def build_canonical_graph(self, vertex_stack: list[PauliString]) -> None:
+    def _get_morph(self) -> Morph:
+        """
+        Get the canonical graph built by the canonicalizer.
+
+        Returns:
+            Morph: Canonical graph.
+        """
+        legs = self.legs.copy()
+        legs.insert(0, [self.central_vertex])
+        canonic_legs = [[self._representative(v) for v in leg] for leg in legs]
+        return Morph(canonic_legs, sum(legs, []), self.vertex_stack)
+
+    def build_canonical_graph(self, vertex_stack: list[PauliString]) -> Morph:
         """
         Build a canonical graph from a stack of connected generators
 
@@ -79,15 +91,4 @@ class TrackedConnectedCanonicalizer(ConnectedCanonicalizer):
         for v in vertex_stack:
             self.multiplied_by[v] = None
         super()._connected_canonical_graph(vertex_stack)
-
-    def get_morph(self) -> Morph:
-        """
-        Get the canonical graph built by the canonicalizer.
-
-        Returns:
-            Morph: Canonical graph.
-        """
-        legs = self.legs.copy()
-        legs.insert(0, [self.central_vertex])
-
-        return Morph(legs, sum(legs, []), self.vertex_stack)
+        return self._get_morph()

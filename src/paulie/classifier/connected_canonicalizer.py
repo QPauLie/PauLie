@@ -337,17 +337,7 @@ class ConnectedCanonicalizer:
         self.legs = confirmed_legs
         self.legs.sort(key=len)
 
-    def build_canonical_graph(self, vertex_stack: list[PauliString]) -> None:
-        """
-        Build a canonical graph from a stack of connected generators
-
-        Args:
-            vertex_stack (list[PauliString]): Generator stack
-        """
-        self._set_vertex_stack(vertex_stack)
-        self._connected_canonical_graph(vertex_stack)
-
-    def get_morph(self) -> Morph:
+    def _get_morph(self) -> Morph:
         """
         Get the canonical graph built by the canonicalizer.
 
@@ -358,3 +348,15 @@ class ConnectedCanonicalizer:
         legs.insert(0, [self.central_vertex])
 
         return Morph(legs, [], self.vertex_stack)
+
+    def build_canonical_graph(self, vertex_stack: list[PauliString]) -> Morph:
+        """
+        Build a canonical graph from a stack of connected generators
+
+        Args:
+            vertex_stack (list[PauliString]): Generator stack
+        """
+        self._set_vertex_stack(vertex_stack)
+        self._connected_canonical_graph(vertex_stack)
+        return self._get_morph()
+

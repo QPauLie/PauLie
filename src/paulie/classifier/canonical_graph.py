@@ -32,6 +32,5 @@ def canonical_graph(gens: PauliStringCollection, detect_independent_subset: bool
             conn_canon = TrackedConnectedCanonicalizer()
         else:
             conn_canon = ConnectedCanonicalizer()
-        conn_canon.build_canonical_graph(vertex_stack.copy())
-        classification.add(conn_canon.get_morph())
+        classification.add(conn_canon.build_canonical_graph(vertex_stack.copy()))
     return classification
