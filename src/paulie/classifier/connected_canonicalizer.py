@@ -359,4 +359,3 @@ class ConnectedCanonicalizer:
         self._set_vertex_stack(vertex_stack)
         self._connected_canonical_graph(vertex_stack)
         return self._get_morph()
-
