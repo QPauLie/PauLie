@@ -117,7 +117,12 @@ class ConnectedCanonicalizer:
                     break
             if m is None:
                 if not self._is_lit(v, self.central_vertex):
-                    if self._is_lit(v, self.legs[lit_2_leg_index][0]):
+                    lit_v_idx = None
+                    for k in range(len(self.legs[lit_2_leg_index])):
+                        if self._is_lit(v, self.legs[lit_2_leg_index][k]):
+                            lit_v_idx = k
+                            break
+                    if lit_v_idx == 0:
                         v = self._tracked_multiply(v,
                             self._representative(self.legs[lit_2_leg_index][0]))
                     else:
@@ -133,19 +138,33 @@ class ConnectedCanonicalizer:
                 else:
                     for i in range(m, -1, -1):
                         v = self._tracked_multiply(v, self._representative(self.legs[-1][i]))
-        # Now handle all legs of length 2
+        # Now handle all legs of length >= 2
         l1b_is_lit = self._is_lit(v, self.legs[-1][0])
         for i in range(len(self.legs) - 1):
             if len(self.legs[i]) < 2:
                 continue
-            if len(self.legs[i]) > 2:
-                break
-            if not self._is_lit(v, self.legs[i][0]) and not self._is_lit(v, self.legs[i][1]):
+
+            # Find first lit vertex in this leg
+            m = None
+            for k in range(len(self.legs[i])):
+                if self._is_lit(v, self.legs[i][k]):
+                    m = k
+                    break
+            if m is None:
                 continue
-            if self._is_lit(v, self.legs[i][0]) and not self._is_lit(v, self.legs[i][1]):
+
+            # Reduce lightning to index 0 or 1
+            if m > 1:
+                for k in range(m, 1, -1):
+                    v = self._tracked_multiply(v, self._representative(self.legs[i][k]) @
+                                               self._representative(self.legs[i][k-1]))
+                m = 1
+
+            if m == 0 and not self._is_lit(v, self.legs[i][1]):
                 v = self._tracked_multiply(v, self._representative(self.legs[i][0]))
-            elif not self._is_lit(v, self.legs[i][0]):
+            elif m == 1 and not self._is_lit(v, self.legs[i][0]):
                 v = self._tracked_multiply(v, self._representative(self.legs[i][1]))
+
             if not self._is_lit(v, self.central_vertex):
                 if not l1b_is_lit:
                     v = self._tracked_multiply(v, self._representative(self.legs[-1][1]))
@@ -253,7 +272,7 @@ class ConnectedCanonicalizer:
                     vertex_stack.append(self.legs[-2].pop())
         return v
 
-    def _dependency_check(self, length_1_legs: list[list[PauliString]]) -> None:
+    def _dependency_check(self, length_1_legs: list[list[PauliString]]) -> list[list[PauliString]]:
         """
         Check depending on legs long 1
         Args:
@@ -264,6 +283,12 @@ class ConnectedCanonicalizer:
         # We need to do Gaussian elimination on the legs of length 1
         independent_legs = []
         basis: dict[int, PauliString] = {}
+
+        if self.central_vertex is not None:
+            p_central = self._representative(self.central_vertex).copy()
+            if p_central.bits.find(1) != -1:
+                basis[p_central.bits.find(1)] = p_central
+
         for leg in length_1_legs:
             p = leg[0].copy()
             while True:
@@ -351,14 +376,17 @@ class ConnectedCanonicalizer:
             PauliString.set_performance('s3.2')
 
             if self.type == 'B':
-                # Check if there is a lit vertex in a leg of length 2
+                # Check if there is a lit vertex in a leg
                 lit_2_leg_index = None
                 for i in range(len(self.legs) - 1):
                     if len(self.legs[i]) < 2:
                         continue
-                    if len(self.legs[i]) > 2:
-                        break
-                    if self._is_lit(v, self.legs[i][0]) or self._is_lit(v, self.legs[i][1]):
+                    is_lit = False
+                    for w in self.legs[i]:
+                        if self._is_lit(v, w):
+                            is_lit = True
+                            break
+                    if is_lit:
                         lit_2_leg_index = i
                         break
                 if lit_2_leg_index is not None:
