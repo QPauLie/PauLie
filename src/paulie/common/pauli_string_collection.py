@@ -13,8 +13,8 @@ from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.get_graph import get_graph
 from paulie.classifier.classification import Classification
-from paulie.classifier.tracked_connected_canonicalizer import TrackedConnectedCanonicalizer
-from paulie.classifier.connected_canonicalizer import ConnectedCanonicalizer
+from paulie.classifier.tracked_canonicalizer import TrackedCanonicalizer
+from paulie.classifier.canonicalizer import Canonicalizer
 from paulie.exceptions import PauliStringCollectionException
 
 class PauliStringCollection:
@@ -540,9 +540,9 @@ class PauliStringCollection:
                 for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
             vertex_stack.reverse()
             if self._tracked:
-                conn_canon = TrackedConnectedCanonicalizer()
+                conn_canon = TrackedCanonicalizer()
             else:
-                conn_canon = ConnectedCanonicalizer()
+                conn_canon = Canonicalizer()
 
             self.classification.add(conn_canon.build_canonical_graph(vertex_stack.copy()))
         return self.classification

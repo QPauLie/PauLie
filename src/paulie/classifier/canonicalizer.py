@@ -1,16 +1,16 @@
 """
-Connected canonicalizer of generators
+Canonicalizer of generators
 """
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.classifier.classification import Morph
 
-class ConnectedCanonicalizer:
+class Canonicalizer:
     """
-    Class of connected canonicalizer of generators
+    Class of canonicalizer of generators
     """
     def __init__(self):
         """
-        Initialize a ConnectedCanonicalizer
+        Initialize a Canonicalizer
         """
         self.type = 'A' # B when at least two legs of length at least 2
         self.central_vertex = None

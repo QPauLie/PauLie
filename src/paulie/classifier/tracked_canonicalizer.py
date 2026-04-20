@@ -1,18 +1,18 @@
 """
-Tracked connected canonicalizer of generators
+Tracked canonicalizer of generators
 """
 
 from paulie.common.pauli_string_bitarray import PauliString
-from paulie.classifier.connected_canonicalizer import ConnectedCanonicalizer
+from paulie.classifier.canonicalizer import Canonicalizer
 from paulie.classifier.classification import Morph
 
-class TrackedConnectedCanonicalizer(ConnectedCanonicalizer):
+class TrackedCanonicalizer(Canonicalizer):
     """
-    Class of tracked connected canonicalizer of generators
+    Class of tracked canonicalizer of generators
     """
     def __init__(self):
         """
-        Initialize a TrackedConnectedCanonicalizer
+        Initialize a TrackedCanonicalizer
         """
         self.multiplied_by: dict[PauliString, PauliString] = {}
         super().__init__()
