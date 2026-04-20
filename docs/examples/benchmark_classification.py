@@ -25,7 +25,7 @@ import signal
 import time
 from dataclasses import dataclass, field
 from itertools import product
-
+import matplotlib.pyplot as plt
 from paulie import (
     G_LIE,
     PauliString,
@@ -33,6 +33,24 @@ from paulie import (
     get_pauli_string as p,
 )
 
+# ------------------------------------------------------------
+# Matplotlib config for paper-ready LaTeX-style plots
+# ------------------------------------------------------------
+
+plt.rcParams.update(
+    {
+        "font.size": 12,
+        "axes.labelsize": 13,
+        "axes.titlesize": 13,
+        "legend.fontsize": 11,
+        "xtick.labelsize": 11,
+        "ytick.labelsize": 11,
+        "figure.dpi": 150,
+        "savefig.dpi": 300,
+        "text.usetex": True,  # set False if LaTeX is unavailable
+        "font.family": "serif",
+    }
+)
 
 # ---------------------------------------------------------------------------
 # Brute-force Lie closure
@@ -158,12 +176,19 @@ def make_heisenberg_generators(n: int) -> PauliStringCollection:
 def make_random_pauli_hamiltonian(n: int, n_terms: int,
                                   locality: int = 2,
                                   seed: int | None = None) -> PauliStringCollection:
-    """Build a random Pauli Hamiltonian with k-local terms.
+    """Build a random geometrically k-local Pauli Hamiltonian on a 1D chain.
+
+    Each term acts non-trivially on a contiguous block of up to ``locality``
+    *neighboring* sites, matching the standard physics convention for
+    k-locality (e.g., a 2-local term has the form ``P_i P_{i+1}`` with
+    P in {X, Y, Z} at both sites, not ``P_i P_j`` for arbitrary i, j).
 
     Args:
         n: Number of qubits.
         n_terms: Number of generator terms.
-        locality: Maximum locality of each term.
+        locality: Maximum locality of each term (size of the contiguous
+            support window). Individual terms may have smaller support
+            (down to 1-local on-site terms).
         seed: Random seed for reproducibility.
 
     Returns:
@@ -172,11 +197,17 @@ def make_random_pauli_hamiltonian(n: int, n_terms: int,
     rng = random.Random(seed)
     paulis = "XYZ"
     gens = set()
+    max_unique = sum(3 ** k * (n - k + 1) for k in range(1, min(locality, n) + 1))
+    if n_terms > max_unique:
+        raise ValueError(
+            f"Requested {n_terms} unique {locality}-local terms on {n} sites, "
+            f"but only {max_unique} exist."
+        )
     while len(gens) < n_terms:
-        s = ["I"] * n
         k = rng.randint(1, min(locality, n))
-        positions = rng.sample(range(n), k)
-        for pos in positions:
+        start = rng.randint(0, n - k)
+        s = ["I"] * n
+        for pos in range(start, start + k):
             s[pos] = rng.choice(paulis)
         gens.add("".join(s))
     return p(list(gens))
@@ -257,7 +288,6 @@ def plot_results(sections: list[BenchmarkSection]) -> None:
     Args:
         sections: List of completed benchmark sections.
     """
-    import matplotlib.pyplot as plt  # pylint: disable=import-outside-toplevel
 
     # --- Figure 1: PauLie runtime across all algebra types ---
     fig1, ax1 = plt.subplots(figsize=(10, 6))
@@ -266,15 +296,14 @@ def plot_results(sections: list[BenchmarkSection]) -> None:
         ts = [r.t_paulie for r in sec.results]
         ax1.plot(ns, ts, "o-", label=sec.short_label, markersize=5)
 
-    ax1.set_xlabel("Number of qubits (n)", fontsize=12)
-    ax1.set_ylabel("Runtime (seconds)", fontsize=12)
-    ax1.set_title("PauLie classification runtime vs system size", fontsize=14)
+    ax1.set_xlabel(r"number of qubits $n$", fontsize=12)
+    ax1.set_ylabel("runtime (seconds)", fontsize=12)
+    #ax1.set_title("PauLie classification runtime vs system size", fontsize=14)
     ax1.set_yscale("log")
     ax1.legend(fontsize=9, loc="upper left")
-    ax1.grid(True, alpha=0.3)
+    ax1.grid(True, alpha=0.3, which="both" )
     fig1.tight_layout()
     fig1.savefig("benchmark_paulie_runtime.pdf", dpi=150)
-    fig1.savefig("benchmark_paulie_runtime.png", dpi=150)
     print("\nSaved: benchmark_paulie_runtime.pdf/.png", flush=True)
 
     # --- Figure 2: PauLie vs brute-force comparison (sections with BF data) ---
@@ -308,17 +337,17 @@ def plot_results(sections: list[BenchmarkSection]) -> None:
             ax.plot(ns_to, ts_to, "x", color="tab:red",
                     markersize=10, markeredgewidth=2, label="brute-force (timeout)")
 
-        ax.set_xlabel("Number of qubits (n)")
-        ax.set_ylabel("Runtime (seconds)")
+        ax.set_xlabel(r"number of qubits $n$")
+        ax.set_ylabel("runtime (seconds)")
         ax.set_title(sec.short_label, fontsize=11)
         ax.set_yscale("log")
         ax.legend(fontsize=8)
-        ax.grid(True, alpha=0.3)
+        ax.grid(True, alpha=0.3, which="both")
 
     for idx in range(n_plots, rows * cols):
         axes[idx // cols][idx % cols].set_visible(False)
 
-    fig2.suptitle("PauLie vs brute-force Lie closure", fontsize=14, y=1.02)
+    #fig2.suptitle("PauLie vs brute-force Lie closure", fontsize=14, y=1.02)
     fig2.tight_layout()
     fig2.savefig("benchmark_comparison.pdf", dpi=150, bbox_inches="tight")
     fig2.savefig("benchmark_comparison.png", dpi=150, bbox_inches="tight")
@@ -341,63 +370,69 @@ def main() -> None:
 
     sections = []
 
-    sections.append(run_section(
-        "[1] so(n) algebras (a1: [XY]) -- dim = n(n-1)/2",
-        "so(n)",
-        [(n, p(G_LIE["a1"], n=n)) for n in [3, 4, 5, 6, 7, 8]],
-        bf_timeout=30.0,
-    ))
+    # Sections [1]-[7] are currently disabled; flip the flag to re-enable them.
+    # They benchmark fixed Pauli generators on specific algebra families and the
+    # Heisenberg model. Disabled to focus on the random k-local benchmarks below.
+    run_fixed_generator_sections = False
+    if run_fixed_generator_sections:
+        sections.append(run_section(
+            "[1] so(n) algebras (a1: [XY]) -- dim = n(n-1)/2",
+            "so(n)",
+            [(n, p(G_LIE["a1"], n=n)) for n in [3, 4, 5, 6, 7, 8]],
+            bf_timeout=30.0,
+        ))
 
-    sections.append(run_section(
-        "[2] so(2^n) algebras (a11: [XY, YX, YZ]) -- dim = 2^n(2^n-1)/2",
-        "so(2^n)",
-        [(n, p(G_LIE["a11"], n=n)) for n in [3, 4, 5, 6, 7]],
-        bf_timeout=15.0,
-    ))
+        sections.append(run_section(
+            "[2] so(2^n) algebras (a11: [XY, YX, YZ]) -- dim = 2^n(2^n-1)/2",
+            "so(2^n)",
+            [(n, p(G_LIE["a11"], n=n)) for n in [3, 4, 5, 6, 7]],
+            bf_timeout=15.0,
+        ))
 
-    sections.append(run_section(
-        "[3] su(2^n) algebras (a12: [XX, XY, YZ]) -- dim = 4^n - 1",
-        "su(2^n)",
-        [(n, p(G_LIE["a12"], n=n)) for n in [3, 4, 5, 6, 7]],
-        bf_timeout=15.0,
-    ))
+        sections.append(run_section(
+            "[3] su(2^n) algebras (a12: [XX, XY, YZ]) -- dim = 4^n - 1",
+            "su(2^n)",
+            [(n, p(G_LIE["a12"], n=n)) for n in [3, 4, 5, 6, 7]],
+            bf_timeout=15.0,
+        ))
 
-    sections.append(run_section(
-        "[4] su+su algebras (a13: [XX, YY, YZ]) -- two direct summands",
-        "su+su",
-        [(n, p(G_LIE["a13"], n=n)) for n in [3, 4, 5, 6, 7]],
-        bf_timeout=15.0,
-    ))
+        sections.append(run_section(
+            "[4] su+su algebras (a13: [XX, YY, YZ]) -- two direct summands",
+            "su+su",
+            [(n, p(G_LIE["a13"], n=n)) for n in [3, 4, 5, 6, 7]],
+            bf_timeout=15.0,
+        ))
 
-    sections.append(run_section(
-        "[5] sp algebras (a9: [XY, XZ]) -- dim grows exponentially",
-        "sp(2^(n-2))",
-        [(n, p(G_LIE["a9"], n=n)) for n in [3, 4, 5, 6, 7]],
-        bf_timeout=15.0,
-    ))
+        sections.append(run_section(
+            "[5] sp algebras (a9: [XY, XZ]) -- dim grows exponentially",
+            "sp(2^(n-2))",
+            [(n, p(G_LIE["a9"], n=n)) for n in [3, 4, 5, 6, 7]],
+            bf_timeout=15.0,
+        ))
 
-    sections.append(run_section(
-        "[6] so(2n-1) algebras (a8: [XX, XZ]) -- dim = (2n-1)(2n-2)/2",
-        "so(2n-1)",
-        [(n, p(G_LIE["a8"], n=n)) for n in [3, 4, 5, 6, 7, 8]],
-        bf_timeout=30.0,
-    ))
+        sections.append(run_section(
+            "[6] so(2n-1) algebras (a8: [XX, XZ]) -- dim = (2n-1)(2n-2)/2",
+            "so(2n-1)",
+            [(n, p(G_LIE["a8"], n=n)) for n in [3, 4, 5, 6, 7, 8]],
+            bf_timeout=30.0,
+        ))
 
-    sections.append(run_section(
-        "[7] Heisenberg model: XX+YY couplings + Z fields -> so(2n)",
-        "Heisenberg",
-        [(n, make_heisenberg_generators(n))
-         for n in [3, 4, 5, 6, 7, 8, 10, 15, 20, 50, 100]],
-        bf_timeout=30.0,
-        bf_max_n=8,
-    ))
+        sections.append(run_section(
+            "[7] Heisenberg model: XX+YY couplings + Z fields -> so(2n)",
+            "Heisenberg",
+            [(n, make_heisenberg_generators(n))
+             for n in [3, 4, 5, 6, 7, 8, 10, 15, 20, 50, 100]],
+            bf_timeout=30.0,
+            bf_max_n=8,
+        ))
 
     # Random Hamiltonians need inline handling for the custom bf_max_n logic
     for locality, bf_cutoff in [(2, 7), (3, 6)]:
         sec_num = 7 + locality - 1
         label = f"random {locality}-local"
         sec = BenchmarkSection(
-            title=f"[{sec_num}] Random {locality}-local Pauli Hamiltonians (seed=42)",
+            title=(f"[{sec_num}] Random {locality}-local Pauli Hamiltonians "
+                   f"(contiguous {locality}-site support, seed=42)"),
             short_label=label,
         )
         print(f"\n{sec.title}", flush=True)
