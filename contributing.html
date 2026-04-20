@@ -392,7 +392,7 @@
 <p>We welcome contributions from everyone! By participating in PauLie, you agree to follow our guidelines.</p>
 <ol class="arabic simple">
 <li><p>As stated in <a class="reference external" href="getting_started.html">Getting started</a>, ensure you have Python 3.12 or higher installed on your machine or in a virtual environment.</p></li>
-<li><p>You requires to <a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/#pypi">install uv</a> to manage the dependencies of PauLie.</p></li>
+<li><p>It requires to <a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/#pypi">install uv</a> to manage the dependencies of PauLie.</p></li>
 <li><p>Make sure you have a <a class="reference external" href="https://github.com/signup/free">GitHub account</a>.</p></li>
 <li><p><a class="reference external" href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo">Fork</a> the repository on GitHub.</p></li>
 <li><p><a class="reference external" href="https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository">Clone</a> your fork locally:</p></li>
@@ -425,8 +425,8 @@ git<span class="w"> </span>merge<span class="w"> </span>upstream/main
 </div>
 <ol class="arabic simple" start="2">
 <li><p>Create your feature or idea on your local fork. It’s best to make changes on a dedicated <a class="reference external" href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository">branch</a>, with the branch name reflecting the feature or fix you are adding.</p></li>
-<li><p>Include tests and documentation for new features. If you’re adding a new feature, ensure you provide test cases and update the documentation. See <a class="reference internal" href="#adding-new-features"><span class="std std-ref">Adding a New Feature</span></a> for a detailed checklist.</p></li>
-<li><p>When the code is ready to go, make sure you run the <a class="reference internal" href="#functional-testing"><span class="std std-ref">test suite</span></a> using <code class="code docutils literal notranslate"><span class="pre">pytest</span></code>, <code class="code docutils literal notranslate"><span class="pre">ruff</span></code>, etc.</p></li>
+<li><p>If you’re adding a new feature, ensure you provide test cases and update the documentation. See <a class="reference internal" href="#adding-new-features"><span class="std std-ref">Adding a New Feature</span></a> for a detailed checklist.</p></li>
+<li><p>When the code is ready to go, make sure you run the <a class="reference internal" href="#functional-testing"><span class="std std-ref">test suite</span></a> using <code class="code docutils literal notranslate"><span class="pre">pytest</span></code>, <code class="code docutils literal notranslate"><span class="pre">ruff</span></code>, <code class="code docutils literal notranslate"><span class="pre">mypy</span></code>, etc.</p></li>
 <li><p>Open a <a class="reference external" href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests">pull request (PR)</a> on your local fork. When your feature is ready for review, go to your fork of PauLie on GitHub and open a PR. Any subsequent commits to that branch will automatically be added to the open PR. This will commit your feature to the branch of your local fork.</p></li>
 <li><p>Open a pull request on original fork. Once your changes are ready for merging, go to the <a class="reference external" href="https://github.com/QPauLie/PauLie/pulls">original PauLie</a> on GitHub. Then, open PR, selecting “compare across fork” to submit your changes from your fork’s branch, and add a comment indicating that your code is ready for review. The code will be reviewed after the continuous integration (CI) workflow passes and the primary developer approves the review.</p></li>
 </ol>
@@ -444,7 +444,7 @@ git<span class="w"> </span>merge<span class="w"> </span>upstream/main
 </ul>
 </li>
 <li><p>All added lines must be covered by tests and appear in the <code class="code docutils literal notranslate"><span class="pre">pytest</span></code> code coverage report. See <a class="reference internal" href="#functional-testing"><span class="std std-ref">Testing</span></a> for more details.</p></li>
-<li><p>The code and unit tests for the new feature should follow the Code Style guidelines, using <code class="code docutils literal notranslate"><span class="pre">ruff</span></code> for <a class="reference internal" href="#lint-checking"><span class="std std-ref">lint checking</span></a>.</p></li>
+<li><p>The code and unit tests for the new feature should follow the Code Style guidelines, using <code class="code docutils literal notranslate"><span class="pre">ruff</span></code> for <a class="reference internal" href="#lint-checking"><span class="std std-ref">lint checking</span></a> and <code class="code docutils literal notranslate"><span class="pre">mypy</span></code> for <a class="reference internal" href="#static-type-checking"><span class="std std-ref">static type checking</span></a>.</p></li>
 <li><p>The new feature must be added to the __init__.py file of its module to avoid import issues.</p></li>
 <li><p>If the new feature introduces a new module, it must be listed in docs/autoapi_members.rst so that it appears on the API Reference page via sphinx-autoapi.</p></li>
 </ol>
@@ -534,6 +534,15 @@ Code coverage can be checked using the <code class="code docutils literal notran
 </pre></div>
 </div>
 </section>
+<section id="static-type-checking">
+<span id="id5"></span><h2>Static Type Checking<a class="headerlink" href="#static-type-checking" title="Link to this heading">#</a></h2>
+<p>We use <code class="code docutils literal notranslate"><span class="pre">mypy</span></code> for static type analysis to ensure type safety across the codebase.</p>
+<p>To run type checking on the source code, use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>mypy<span class="w"> </span>src
+</pre></div>
+</div>
+<p>Before submitting a pull request, ensure that your changes do not introduce any new type errors.</p>
+</section>
 <section id="document-building">
 <span id="doc-building"></span><h2>Document Building<a class="headerlink" href="#document-building" title="Link to this heading">#</a></h2>
 <p>The sphinx is used in PauLie to build the HTML documentation, use:</p>
@@ -599,6 +608,7 @@ Code coverage can be checked using the <code class="code docutils literal notran
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-testing">Functional Testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lint-checking">Lint Checking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-type-checking">Static Type Checking</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#document-building">Document Building</a></li>
 </ul>
   </nav></div>

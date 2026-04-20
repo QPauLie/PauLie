@@ -4,7 +4,7 @@ Contribute to PauLie
 We welcome contributions from everyone! By participating in PauLie, you agree to follow our guidelines.
 
 1. As stated in `Getting started <getting_started.html>`_, ensure you have Python 3.12 or higher installed on your machine or in a virtual environment.
-2. You requires to `install uv <https://docs.astral.sh/uv/getting-started/installation/#pypi>`_ to manage the dependencies of PauLie.
+2. It requires to `install uv <https://docs.astral.sh/uv/getting-started/installation/#pypi>`_ to manage the dependencies of PauLie.
 3. Make sure you have a `GitHub account <https://github.com/signup/free>`_.
 4. `Fork <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo>`_ the repository on GitHub.
 5. `Clone <https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository>`_ your fork locally:
@@ -40,9 +40,9 @@ Making changes
 
 2. Create your feature or idea on your local fork. It’s best to make changes on a dedicated `branch <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository>`_, with the branch name reflecting the feature or fix you are adding.
 
-3. Include tests and documentation for new features. If you’re adding a new feature, ensure you provide test cases and update the documentation. See :ref:`Adding a New Feature <adding-new-features>` for a detailed checklist.
+3. If you’re adding a new feature, ensure you provide test cases and update the documentation. See :ref:`Adding a New Feature <adding-new-features>` for a detailed checklist.
 
-4. When the code is ready to go, make sure you run the :ref:`test suite <functional-testing>` using :code:`pytest`, :code:`ruff`, etc.
+4. When the code is ready to go, make sure you run the :ref:`test suite <functional-testing>` using :code:`pytest`, :code:`ruff`, :code:`mypy`, etc.
 
 5. Open a `pull request (PR) <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests>`_ on your local fork. When your feature is ready for review, go to your fork of PauLie on GitHub and open a PR. Any subsequent commits to that branch will automatically be added to the open PR. This will commit your feature to the branch of your local fork.
 
@@ -64,7 +64,7 @@ The new feature should follow these guidelines:
 
 3. All added lines must be covered by tests and appear in the :code:`pytest` code coverage report. See :ref:`Testing <functional-testing>` for more details.
 
-4. The code and unit tests for the new feature should follow the Code Style guidelines, using :code:`ruff` for :ref:`lint checking <lint-checking>`.
+4. The code and unit tests for the new feature should follow the Code Style guidelines, using :code:`ruff` for :ref:`lint checking <lint-checking>` and :code:`mypy` for :ref:`static type checking <static-type-checking>`.
 
 5. The new feature must be added to the __init__.py file of its module to avoid import issues.
 
@@ -167,6 +167,21 @@ To lint the source code, test scripts, and examples without installing :code:`py
 .. code-block:: bash
 
     uvx pylint "src/**/*.py" "tests/**/*.py" "examples/**/*.py"
+
+.. _static-type-checking:
+
+Static Type Checking
+====================
+
+We use :code:`mypy` for static type analysis to ensure type safety across the codebase.
+
+To run type checking on the source code, use:
+
+.. code-block:: bash
+
+    uv run mypy src
+
+Before submitting a pull request, ensure that your changes do not introduce any new type errors.
 
 .. _doc-building:
 
