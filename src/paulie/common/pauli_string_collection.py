@@ -14,6 +14,7 @@ from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.get_graph import get_graph
 from paulie.classifier.classification import Classification
 from paulie.classifier.tracked_connected_canonicalizer import TrackedConnectedCanonicalizer
+from paulie.classifier.connected_canonicalizer import ConnectedCanonicalizer
 from paulie.exceptions import PauliStringCollectionException
 
 class PauliStringCollection:
@@ -32,6 +33,7 @@ class PauliStringCollection:
         self.nextpos: int = 0
         self.generators: list[PauliString] = []
         self.classification: Classification = None
+        self._tracked: bool = False
         if not generators:
             return
 
@@ -537,7 +539,11 @@ class PauliStringCollection:
             vertex_stack = [self.create_instance(pauli_str=s)
                 for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
             vertex_stack.reverse()
-            conn_canon = TrackedConnectedCanonicalizer()
+            if self._tracked:
+                conn_canon = TrackedConnectedCanonicalizer()
+            else:
+                conn_canon = ConnectedCanonicalizer()
+
             self.classification.add(conn_canon.build_canonical_graph(vertex_stack.copy()))
         return self.classification
 
@@ -608,7 +614,15 @@ class PauliStringCollection:
         Returns:
             PauliStringCollection: List of dependent strings in the collection.
         """
-        return PauliStringCollection(self.get_class().get_dependents())
+        is_changed_tracked: bool = False
+        if not self._tracked:
+            self._tracked = True
+            self.classification = None
+            is_changed_tracked = True
+        dependens = PauliStringCollection(self.get_class().get_dependents())
+        if is_changed_tracked:
+            self._tracked = False
+        return dependens
 
     def get_independents(self) -> PauliStringCollection:
         """
@@ -617,7 +631,24 @@ class PauliStringCollection:
         Returns:
             PauliStringCollection: List of independent strings in the collection.
         """
-        return PauliStringCollection(self.get_class().get_independents())
+        is_changed_tracked: bool = False
+        if not self._tracked:
+            self._tracked = True
+            self.classification = None
+            is_changed_tracked = True
+        independens = PauliStringCollection(self.get_class().get_independents())
+        if is_changed_tracked:
+            self._tracked = False
+        return independens
+
+    def set_tracked(self, tracked: bool) -> None:
+        """
+        Set up tracking of independent Pauli strings when constructing a canonical graph
+        Args:
+            tracked (bool): Independent generator tracking flag
+        """
+
+        self._tracked = tracked
 
     def get_canonic_vertices(self) -> PauliStringCollection:
         """
