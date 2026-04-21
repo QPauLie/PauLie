@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from collections.abc import Generator
 from typing import Self, Any
-from six.moves import reduce
 import numpy as np
 from bitarray import bitarray
 from bitarray.util import count_and, count_or, ba2int

@@ -8,7 +8,7 @@ from collections import deque
 from collections.abc import Generator
 from dataclasses import dataclass
 from itertools import permutations
-from typing import Iterable, cast
+from typing import Iterable
 
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
