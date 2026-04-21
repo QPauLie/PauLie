@@ -1,14 +1,24 @@
 [project]
 name = "paulie"
 version = "0.0.1"
-description = "Classification of Lie algebras"
+description = "Classification of Pauli Lie algebras"
 authors = [
     {name = "Oxana Shaya", email = "shayaoxana@gmail.com"},
-    {name = "Konstantin Golovkin"}
+    {name = "Konstantin Golovkin"},
+    {name = "Mainak Roy"}
 ]
 
+keywords = ["quantum-simulation", "lie-algebra", "quantum-control"]
 readme = "README.md"
 requires-python = ">=3.12"
+license = {file = "LICENSE.txt"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
 
 dependencies = [
     "numpy>=2.2.2",
@@ -35,6 +45,11 @@ dev = [
     "sphinx-rtd-theme>=1.1.1",
     "pydata-sphinx-theme>=0.16.1"
 ]
+
+[project.urls]
+Documentation = "https://qpaulie.github.io/PauLie/"
+Repository = "https://github.com/QPauLie/PauLie"
+Issues = "https://github.com/QPauLie/PauLie/issues"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
