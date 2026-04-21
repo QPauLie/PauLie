@@ -479,7 +479,7 @@ class PauliStringLinear(PauliString):
         return p(new_terms)
 
     @property
-    def h(self) -> Self:
+    def h(self) -> PauliStringLinear:
         """
         Get the Hermitian conjugate of this linear combination.
         This is found by taking the complex conjugate of all coefficients,

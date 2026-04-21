@@ -30,7 +30,7 @@ def quantum_fourier_entropy(o: np.ndarray) -> float:
     non_zero_probs = probs[probs > 1e-12]
     # Calculate the Shannon entropy using base 2 for the logarithm
     entropy = -np.sum(non_zero_probs * np.log2(non_zero_probs))
-    return entropy
+    return float(entropy)
 
 def get_pauli_weights(num_qubits: int, identity_pos: int=0) -> np.ndarray:
     r"""
@@ -100,4 +100,4 @@ def average_pauli_weight(o: np.ndarray) -> float:
 
     # Calculate the influence I(O)
     influence = np.sum(weights * probs)
-    return influence
+    return float(influence)

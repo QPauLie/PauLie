@@ -33,7 +33,7 @@ def average_graph_complexity(generators: PauliStringCollection, p: PauliString) 
     # Get commutator graph
     vertices, edges = generators.get_commutator_graph()
     # Construct graph in NetworkX
-    graph = nx.Graph()
+    graph: nx.Graph[str] = nx.Graph()
     graph.add_nodes_from(vertices)
     graph.add_edges_from(edges)
     # Get connected component containing p

@@ -49,8 +49,28 @@ def get_last(n: int) -> PauliString:
     return PauliString(bits=bitarray([1] * (2 * n)))
 
 
+from typing import overload, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from paulie.common.pauli_string_linear import PauliStringLinear
+    from paulie.common.pauli_string_bitarray import PauliString
+    from paulie.common.pauli_string_collection import PauliStringCollection
+
+@overload
+def get_pauli_string(o: str, n: int | None = None) -> PauliString: ...
+
+@overload
+def get_pauli_string(o: PauliString, n: int | None = None) -> PauliString: ...
+
+@overload
+def get_pauli_string(o: list[tuple[float, str | PauliString]], n: int | None = None) -> PauliStringLinear: ...
+
+@overload
+def get_pauli_string(o: list[str] | list[PauliString] | PauliStringCollection, n: int | None = None) -> PauliStringCollection: ...
+
 def get_pauli_string(
-    o: PauliString | PauliStringCollection, n: int = None
+    o: str | PauliString | list[tuple[float, str | PauliString]] | list[str] | list[PauliString] | PauliStringCollection, 
+    n: int | None = None
 ) -> PauliString | PauliStringLinear | PauliStringCollection:
     """
     Get Pauli strings in their current representation.

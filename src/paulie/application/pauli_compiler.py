@@ -5,9 +5,10 @@ Pauli string via nested commutators.
 """
 
 from collections import deque
+from collections.abc import Generator
 from dataclasses import dataclass
 from itertools import permutations
-from typing import Iterable
+from typing import Iterable, cast
 
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
@@ -320,7 +321,7 @@ class OptimalPauliCompiler:
         count = 0
         len_a, len_b, len_c = len(a_block), len(b_block), len(c_block)
 
-        def rec(i: int, j: int, k: int, prefix: list[PauliString]):
+        def rec(i: int, j: int, k: int, prefix: list[PauliString]) -> Generator[list[PauliString], None, None]:
             nonlocal count
             if count >= cap:
                 return
@@ -359,7 +360,9 @@ class OptimalPauliCompiler:
         count = 0
         len_a, len_b, len_c, len_d = len(a_block), len(b_block), len(c_block), len(d_block)
 
-        def rec(i: int, j: int, k: int, l_idx: int, prefix: list[PauliString]):
+        def rec(
+            i: int, j: int, k: int, l_idx: int, prefix: list[PauliString]
+        ) -> Generator[list[PauliString], None, None]:
             nonlocal count
             if count >= cap:
                 return
@@ -541,14 +544,17 @@ class OptimalPauliCompiler:
                     seq_a = left_map_over_a(seed, v_left, self.a_left)
                 except RuntimeError:
                     continue
-                sequence = [self.extend_left(seed)] + [self.extend_left(a) for a in seq_a]
-                result = _evaluate_sequence(sequence)
+                sequence: list[PauliString] | None = [self.extend_left(seed)] + [self.extend_left(a) for a in seq_a]
+                result = None
+                if sequence is not None:
+                    result = _evaluate_sequence(sequence)
                 if (
                     result is not None
                     and result.get_substring(0, self.k) == v_left
                     and result.get_substring(self.k, self.n_right) == w_right
                 ):
-                    return _sequence_to_paulie_orientation(sequence)
+                    if sequence is not None:
+                        return _sequence_to_paulie_orientation(sequence)
             raise RuntimeError("Left-only mapping failed.")
 
         if v_left.is_identity():
