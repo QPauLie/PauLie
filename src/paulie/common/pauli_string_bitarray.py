@@ -108,7 +108,7 @@ class PauliString:
     @staticmethod
     def reset_performance() -> None:
         """
-        Reset of performance 
+        Reset of performance
         """
         PauliString.performance = []
         PauliString.current_performance = None
@@ -789,7 +789,7 @@ class PauliString:
         return matrix
 
     def get_count_non_trivially(self) -> int:
-        """ 
+        """
         Get the count of non-identity operators in the Pauli string.
 
         Returns:

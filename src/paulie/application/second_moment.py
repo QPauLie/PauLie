@@ -21,7 +21,9 @@ def second_moment(
         PauliStringLinear: The second-order twirl of the operator :math:`M`.
     """
     # Get the unnormalized basis directly from the collection object
-    orthonormal_basis: List[PauliStringLinear] = system_generators.get_full_quadratic_basis(normalized=True)
+    orthonormal_basis: List[PauliStringLinear] = (
+        system_generators.get_full_quadratic_basis(normalized=True)
+    )
 
     twirl_result = PauliStringLinear([(0.0, 'I' * operator_m.get_size())])
 

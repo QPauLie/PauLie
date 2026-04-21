@@ -71,7 +71,7 @@ def average_pauli_weight(o: np.ndarray) -> float:
 
         O &= \sum_{P \in \text{all Pauli strings}} c_P P \\
         I(O) &= \sum_{P} |P| * c_{P}^{2}
-    
+
     where :math:`|P|` is the weight of the Pauli operator :math:`P`.
 
     Args:

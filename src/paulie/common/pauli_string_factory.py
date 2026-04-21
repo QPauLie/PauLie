@@ -3,16 +3,11 @@ Module for creating instances of Pauli strings of various implementations.
 """
 
 from collections.abc import Generator
-from typing import overload, TYPE_CHECKING
+from typing import overload
 from bitarray import bitarray
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
-
-if TYPE_CHECKING:
-    from paulie.common.pauli_string_linear import PauliStringLinear
-    from paulie.common.pauli_string_bitarray import PauliString
-    from paulie.common.pauli_string_collection import PauliStringCollection
 
 
 def get_identity(n: int) -> PauliString:
@@ -62,14 +57,25 @@ def get_pauli_string(o: str, n: int | None = None) -> PauliString: ...
 def get_pauli_string(o: PauliString, n: int | None = None) -> PauliString: ...
 
 @overload
-def get_pauli_string(o: list[tuple[float, str | PauliString]], n: int | None = None) -> PauliStringLinear: ...
+def get_pauli_string(
+    o: list[tuple[float, str | PauliString]], n: int | None = None
+) -> PauliStringLinear: ...
 
 @overload
-def get_pauli_string(o: list[str] | list[PauliString] | PauliStringCollection, n: int | None = None) -> PauliStringCollection: ...
+def get_pauli_string(
+    o: list[str] | list[PauliString] | PauliStringCollection, n: int | None = None
+) -> PauliStringCollection: ...
 
 def get_pauli_string(
-    o: str | PauliString | list[tuple[float, str | PauliString]] | list[str] | list[PauliString] | PauliStringCollection, 
-    n: int | None = None
+    o: (
+        str
+        | PauliString
+        | list[tuple[float, str | PauliString]]
+        | list[str]
+        | list[PauliString]
+        | PauliStringCollection
+    ),
+    n: int | None = None,
 ) -> PauliString | PauliStringLinear | PauliStringCollection:
     """
     Get Pauli strings in their current representation.
@@ -79,9 +85,10 @@ def get_pauli_string(
          n (int, optional): Length of Pauli strings
     Returns:
         PauliString|PauliStringLinear|PauliStringCollection:
-        If `o` is a Pauli string, then it is tensored with identities at the end until its length is
-        `n`. Otherwise a collection of Pauli strings is created. Given n, the collection is expanded
-        as a k-local set where k is the maximum length of a Pauli string in the given collection.
+        If `o` is a Pauli string, then it is tensored with identities at the end until its
+        length is `n`. Otherwise a collection of Pauli strings is created. Given n, the
+        collection is expanded as a k-local set where k is the maximum length of a Pauli
+        string in the given collection.
     """
     if isinstance(o, str):
         return PauliString(pauli_str=o, n=n)
