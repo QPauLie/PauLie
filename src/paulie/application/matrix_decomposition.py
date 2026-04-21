@@ -56,7 +56,8 @@ def _mat_to_vec(matrix: np.ndarray) -> np.ndarray:
     col = np.zeros(4 ** log2n, dtype=np.int64)
     _pauli_ord(row, col, log2n)
     flat_index = (1 << log2n) * row + col
-    return matrix.reshape(-1)[flat_index].astype(np.complex128)
+    result = matrix.reshape(-1)[flat_index].astype(np.complex128)
+    return result  # type: ignore[no-any-return]
 
 def matrix_decomposition(matrix: np.ndarray) -> np.ndarray:
     r"""

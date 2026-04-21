@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from collections.abc import Generator
 from typing import Self, Any
-from six.moves import reduce
 import numpy as np
 from bitarray import bitarray
 from bitarray.util import count_and, count_or, ba2int
@@ -109,13 +108,13 @@ class PauliString:
     @staticmethod
     def reset_performance() -> None:
         """
-        Reset of performance 
+        Reset of performance
         """
         PauliString.performance = []
         PauliString.current_performance = None
 
     @staticmethod
-    def get_performance(name:str|None = None) -> dict|list:
+    def get_performance(name: str | None = None) -> dict[str, Any] | list[dict[str, Any]] | None:
         """
         Get of performance
         Args:
@@ -131,7 +130,7 @@ class PauliString:
         return None
 
     @staticmethod
-    def create_performance(name:str) -> dict:
+    def create_performance(name: str) -> dict[str, Any]:
         """
          Create new performance
          Args:
@@ -185,8 +184,8 @@ class PauliString:
              int: count operations
         """
         p = PauliString.get_performance(name)
-        if p:
-            return p['count']
+        if isinstance(p, dict):
+            return int(p['count'])
         return 0
 
     def get_index(self) -> int:
@@ -696,7 +695,7 @@ class PauliString:
             pauli_string.inc()
         yield pauli_string.copy()
 
-    def get_commutants(self, generators:list[PauliString]=None) -> list[PauliString]:
+    def get_commutants(self, generators: list[PauliString] | None = None) -> list[PauliString]:
         """
         Get a list of Pauli strings that commute with this string.
 
@@ -707,11 +706,11 @@ class PauliString:
             list[PauliString]: List of Pauli strings that commute with this string.
         """
         if generators is None:
-            generators = self.gen_all_pauli_strings()
+            generators = list(self.gen_all_pauli_strings())
 
-        return [g for g in generators if self|g]
+        return [g for g in generators if self | g]
 
-    def get_anti_commutants(self, generators:list[PauliString]|None = None) -> list[PauliString]:
+    def get_anti_commutants(self, generators: list[PauliString] | None = None) -> list[PauliString]:
         """
         Get a list of Pauli strings that anticommute with this string.
 
@@ -723,12 +722,12 @@ class PauliString:
             list[PauliString]: List of Pauli strings that anticommute with this string.
         """
         if generators is None:
-            generators = self.gen_all_pauli_strings()
+            generators = list(self.gen_all_pauli_strings())
 
-        return [g for g in generators if not self|g]
+        return [g for g in generators if not self | g]
 
-    def get_nested(self, generators:list[PauliString] = None
-                   ) ->list[tuple[PauliString, PauliString]]:
+    def get_nested(self, generators: list[PauliString] | None = None
+                   ) -> list[tuple[PauliString, PauliString]]:
         """
         Get pairs of Pauli strings whose commutator is proportional to `self`.
 
@@ -783,11 +782,14 @@ class PauliString:
         Returns:
             numpy.ndarray: Matrix representation for the Pauli string.
         """
-        return reduce(lambda matrix, v: np.kron(matrix, self._match_matrix(v))
-                      if matrix is not None else self._match_matrix(v), str(self), None)
+        pauli_str = str(self)
+        matrix = self._match_matrix(pauli_str[0])
+        for v in pauli_str[1:]:
+            matrix = np.kron(matrix, self._match_matrix(v))
+        return matrix
 
     def get_count_non_trivially(self) -> int:
-        """ 
+        """
         Get the count of non-identity operators in the Pauli string.
 
         Returns:
