@@ -304,7 +304,7 @@ def plot_results(sections: list[BenchmarkSection]) -> None:
     ax1.grid(True, alpha=0.3, which="both" )
     fig1.tight_layout()
     fig1.savefig("benchmark_paulie_runtime.pdf", dpi=150)
-    print("\nSaved: benchmark_paulie_runtime.pdf/.png", flush=True)
+    print("\nSaved: benchmark_paulie_runtime.pdf", flush=True)
 
     # --- Figure 2: PauLie vs brute-force comparison (sections with BF data) ---
     sections_with_bf = [s for s in sections
@@ -350,8 +350,7 @@ def plot_results(sections: list[BenchmarkSection]) -> None:
     #fig2.suptitle("PauLie vs brute-force Lie closure", fontsize=14, y=1.02)
     fig2.tight_layout()
     fig2.savefig("benchmark_comparison.pdf", dpi=150, bbox_inches="tight")
-    fig2.savefig("benchmark_comparison.png", dpi=150, bbox_inches="tight")
-    print("Saved: benchmark_comparison.pdf/.png", flush=True)
+    print("Saved: benchmark_comparison.pdf", flush=True)
 
 
 # ---------------------------------------------------------------------------
