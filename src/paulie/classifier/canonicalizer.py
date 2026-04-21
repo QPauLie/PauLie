@@ -117,12 +117,7 @@ class Canonicalizer:
                     break
             if m is None:
                 if not self._is_lit(v, self.central_vertex):
-                    lit_v_idx = None
-                    for k in range(len(self.legs[lit_2_leg_index])):
-                        if self._is_lit(v, self.legs[lit_2_leg_index][k]):
-                            lit_v_idx = k
-                            break
-                    if lit_v_idx == 0:
+                    if self._is_lit(v, self.legs[lit_2_leg_index][0]):
                         v = self._tracked_multiply(v,
                             self._representative(self.legs[lit_2_leg_index][0]))
                     else:
@@ -138,32 +133,19 @@ class Canonicalizer:
                 else:
                     for i in range(m, -1, -1):
                         v = self._tracked_multiply(v, self._representative(self.legs[-1][i]))
-        # Now handle all legs of length >= 2
+        # Now handle all legs of length 2
         l1b_is_lit = self._is_lit(v, self.legs[-1][0])
         for i in range(len(self.legs) - 1):
             if len(self.legs[i]) < 2:
                 continue
 
-            # Find first lit vertex in this leg
-            m = None
-            for k in range(len(self.legs[i])):
-                if self._is_lit(v, self.legs[i][k]):
-                    m = k
-                    break
-            if m is None:
-                continue
-
-            # Reduce lightning to index 0 or 1
-            if m > 1:
-                for k in range(m, 1, -1):
-                    v = self._tracked_multiply(v, self._representative(self.legs[i][k]) @
-                                               self._representative(self.legs[i][k-1]))
-                m = 1
-
-            if m == 0 and not self._is_lit(v, self.legs[i][1]):
-                v = self._tracked_multiply(v, self._representative(self.legs[i][0]))
-            elif m == 1 and not self._is_lit(v, self.legs[i][0]):
+            if not self._is_lit(v, self.legs[i][0]):
+                if not self._is_lit(v, self.legs[i][1]):
+                    continue
                 v = self._tracked_multiply(v, self._representative(self.legs[i][1]))
+            else:
+                if not self._is_lit(v, self.legs[i][1]):
+                    v = self._tracked_multiply(v, self._representative(self.legs[i][0]))
 
             if not self._is_lit(v, self.central_vertex):
                 if not l1b_is_lit:
@@ -186,22 +168,14 @@ class Canonicalizer:
             PauliString: Pauli string after reduce
         """
         if not self._is_lit(v, self.central_vertex):
-            if len(self.legs[-2]) == 1 and len(self.legs[-1]) > 4:
-                #self._debug(v)
-                if self._is_lit(v, self.legs[-1][-1]):
-                    is_append_to_end = True
-                    for i in range(len(self.legs[-1]) - 2, -1, -1):
-                        if self._is_lit(v, self.legs[-1][i]):
-                            is_append_to_end = False
-                            break
-                    if is_append_to_end:
-                        self.legs[-1].append(v)
-                        return v
             m = None
             for i in range(len(self.legs[-1])):
                 if self._is_lit(v, self.legs[-1][i]):
                     m = i
                     break
+            if m == len(self.legs[-1]) - 1 and self.type == 'A':
+                self.legs[-1].append(v)
+                return v
             for i in range(m, -1, -1):
                 v = self._tracked_multiply(v, self._representative(self.legs[-1][i]))
         # Now we need to reduce the lit vertices on the long leg to one position and
@@ -284,11 +258,6 @@ class Canonicalizer:
         independent_legs = []
         basis: dict[int, PauliString] = {}
 
-        if self.central_vertex is not None:
-            p_central = self._representative(self.central_vertex).copy()
-            if p_central.bits.find(1) != -1:
-                basis[p_central.bits.find(1)] = p_central
-
         for leg in length_1_legs:
             p = leg[0].copy()
             while True:
@@ -309,33 +278,27 @@ class Canonicalizer:
             vertex_stack (list[PauliString]): Generator stack
         """
         while vertex_stack:
-            confirmed_legs = [leg for leg in self.legs if len(leg) != 1]
-            length_1_legs = [leg for leg in self.legs if len(leg) == 1]
-            confirmed_legs.extend(self._dependency_check(length_1_legs))
-            self.legs = confirmed_legs
-            self.legs.sort(key=len)
-
-            PauliString.set_performance('all')
             v = vertex_stack.pop()
             # Don't forget to sort self.legs by length before accessing them!
             self.legs.sort(key=len)
+
+            # Step 1: Build the core
+            PauliString.set_performance('s1')
             if self.central_vertex is None:
                 self.central_vertex = v
                 continue
-            # Build the core
             if len(self.legs) < 2:
-                PauliString.set_performance('s1')
                 v = self._build_core(v)
                 continue
+
+            # Step 2: Handle legs of length 1
+            PauliString.set_performance('s2')
             # Check if there are legs of length 1 with different lit states
             lit_index, unlit_index = None, None
-            PauliString.set_performance('s2')
-            one_indexes = [i for i,leg in enumerate(self.legs) if len(leg) == 1]
+            one_indexes = [i for i, leg in enumerate(self.legs) if len(leg) == 1]
 
-            for i in reversed(one_indexes):#range(len(self.legs)):
+            for i in one_indexes:
                 if lit_index is not None and unlit_index is not None:
-                    break
-                if len(self.legs[i]) > 1:
                     break
                 if self._is_lit(v, self.legs[i][0]):
                     lit_index = i
@@ -345,52 +308,46 @@ class Canonicalizer:
                 PauliString.set_performance('s2.1')
                 self._convert_to_single_lit_state(lit_index, unlit_index, vertex_stack, v)
                 continue
+
+            # Step 3: Transfer lightning to long leg
+            PauliString.set_performance('s3')
             # From here on we work with self.legs[0] as the representative of length 1 legs WLOG
             # We need to handle a special case, if v is only connected to the central vertex then
             # we just connect it and exit
-            PauliString.set_performance('s3')
             if self._is_lit(v, self.legs[0][0]):
                 if not self._is_lit(v, self.central_vertex):
                     v = self._tracked_multiply(v, self._representative(self.legs[0][0]))
                 v = self._tracked_multiply(v, self._representative(self.central_vertex))
-            any_lit_leg = False
-            PauliString.set_performance('s3.1')
 
-#            lited = [w for w in leg for leg in self.legs if len(leg) != 1 and self._is_lit(v, w)]
-#            if not len(lited):
-#                self.legs.append([v])
-#                continue
-#            print(f"legs = {self.legs} center = {self._is_lit(v, self.central_vertex)}")
-            for leg in reversed(self.legs):
+            PauliString.set_performance('s3.1')
+            any_lit_leg = False
+            for leg in self.legs:
                 if len(leg) == 1:
                     continue
                 if any_lit_leg:
                     break
-                for w in reversed(leg):
+                for w in leg:
                     if self._is_lit(v, w):
                         any_lit_leg = True
                         break
             if not any_lit_leg:
                 self.legs.append([v])
                 continue
-            PauliString.set_performance('s3.2')
 
+            PauliString.set_performance('s3.2')
             if self.type == 'B':
                 # Check if there is a lit vertex in a leg
                 lit_2_leg_index = None
                 for i in range(len(self.legs) - 1):
                     if len(self.legs[i]) < 2:
                         continue
-                    is_lit = False
-                    for w in self.legs[i]:
-                        if self._is_lit(v, w):
-                            is_lit = True
-                            break
-                    if is_lit:
+                    if self._is_lit(v, self.legs[i][0]) or self._is_lit(v, self.legs[i][1]):
                         lit_2_leg_index = i
                         break
                 if lit_2_leg_index is not None:
                     v = self._transfer_lightning(lit_2_leg_index, v)
+
+            # Step 4: Reduce lightning
             PauliString.set_performance('s4')
             v = self._reduce_lightning(vertex_stack, v)
 
