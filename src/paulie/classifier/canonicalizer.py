@@ -173,13 +173,9 @@ class Canonicalizer:
                 if self._is_lit(v, self.legs[-1][i]):
                     m = i
                     break
-            if m == len(self.legs[-1]) - 1 and self.type == 'A':
-                self.legs[-1].append(v)
-                return v
             for i in range(m, -1, -1):
                 v = self._tracked_multiply(v, self._representative(self.legs[-1][i]))
-        # Now we need to reduce the lit vertices on the long leg to one position and
-        #a list of contractions
+        # Now we need to reduce the lit vertices on the long leg to one position
         f, s = None, None
         for i in range(len(self.legs[-1])):
             if self._is_lit(v, self.legs[-1][i]):
@@ -220,9 +216,8 @@ class Canonicalizer:
                     v = self._tracked_multiply(v, self._representative(w))
                 self.legs[-1].append(v)
         else:
-            # Now we have to do careful case handling based on the type of the graph
-            # Here f is either the middle or last vertex
-            # If it is an A type graph, it may or may not become B type after this
+            # Case 2: Some other vertex of long leg is lit
+            # If we have an A type graph, it may or may not become B type after this
             # First we break the legs
             self.legs[-1][f - 1] = self._tracked_multiply(
                 self.legs[-1][f - 1], self._representative(
