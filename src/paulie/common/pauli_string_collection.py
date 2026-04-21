@@ -337,6 +337,8 @@ class PauliStringCollection:
         Returns:
             float: Fraction of anticommuting pairs of generators.
         """
+        if len(self) < 2:
+            return 0.0
         anti_commute_count = 0
         pair = 0
         for x, y in combinations(self.generators, r=2):
