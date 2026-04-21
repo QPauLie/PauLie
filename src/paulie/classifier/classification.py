@@ -393,7 +393,7 @@ class Classification:
             bool: True if algebra has a corresponding canonical subgraph within this algebra.
         """
         _algebra = self.get_algebra()
-        algebra.replace(" ", "")
+        algebra = algebra.replace(" ", "")
         return _algebra.find(algebra) > -1
 
     def _parse_algebra(self, algebra:str) -> list[str]:
@@ -456,7 +456,7 @@ class Classification:
         if algebra is None:
             algebra = self.get_algebra()
         else:
-            algebra.replace(" ", "")
+            algebra = algebra.replace(" ", "")
         return algebra.split("+")
 
     def get_vertices(self) -> list[PauliString]:
