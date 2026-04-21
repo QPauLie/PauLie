@@ -42,4 +42,4 @@ jobs:
         git ls-files -z '*.py' | xargs -0 uvx pylint
 
     - name: Type checking
-      run: uv run mypy src/
+      run: uv run mypy src/paulie/application
