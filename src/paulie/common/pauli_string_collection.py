@@ -120,7 +120,7 @@ class PauliStringCollection:
         self.nextpos += 1
         return value
 
-    def __delitem__(self, key:int) -> PauliString:
+    def __delitem__(self, key:int) -> None:
         """
         Delete a Pauli string from the collection.
 
