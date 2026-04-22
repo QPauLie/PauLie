@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from collections.abc import Generator
-from typing import Self, Any
+from typing import Self
 import numpy as np
 from bitarray import bitarray
 from bitarray.util import count_and, count_or, ba2int
@@ -31,8 +31,6 @@ SZ = np.array([[1, 0], [0, -1]])
 
 class PauliString:
     """Representation of a Pauli string as a bitarray."""
-    performance: list[dict[str, Any]] = []
-    current_performance: dict[str, Any] | None = None
 
     def __init__(self, n: int | None = None, pauli_str: str | None = None,
                  bits: bitarray | None = None,
@@ -104,89 +102,6 @@ class PauliString:
         self._bits = value
         self.bits_even = value[::2]
         self.bits_odd = value[1::2]
-
-    @staticmethod
-    def reset_performance() -> None:
-        """
-        Reset of performance
-        """
-        PauliString.performance = []
-        PauliString.current_performance = None
-
-    @staticmethod
-    def get_performance(name: str | None = None) -> dict[str, Any] | list[dict[str, Any]] | None:
-        """
-        Get of performance
-        Args:
-            name(str|None): name of performance
-        Returns:
-            dict|list: performance by name or list all performances
-        """
-        if not name:
-            return PauliString.performance
-        for p in PauliString.performance:
-            if p['name'] == name:
-                return p
-        return None
-
-    @staticmethod
-    def create_performance(name: str) -> dict[str, Any]:
-        """
-         Create new performance
-         Args:
-             name(str): name of performance
-         Returns:
-             dict: new performance with name
-        """
-        p = {'name': name, 'count': 0}
-        PauliString.performance.append(p)
-        return p
-
-    @staticmethod
-    def set_performance(name:str) -> None:
-        """
-         Set current performance
-         Args:
-             name(str): name of performance
-        """
-        p = PauliString.get_performance(name)
-        if not p:
-            p = PauliString.create_performance(name)
-        PauliString.current_performance = p
-
-    @staticmethod
-    def inc_performance() -> None:
-        """
-         Increment current performance
-        """
-        if PauliString.current_performance:
-            PauliString.current_performance['count'] += 1
-
-    @staticmethod
-    def get_total_performance() -> int:
-        """
-         get total performance
-         Returns:
-             int: total count operations
-        """
-        total = 0
-        for p in PauliString.performance:
-            total += p['count']
-        return total
-
-    @staticmethod
-    def get_count_performance(name: str) -> int:
-        """
-         get count performance
-         Args:
-             name(str): name of performance
-         Returns:
-             int: count operations
-        """
-        p = PauliString.get_performance(name)
-        if isinstance(p, dict):
-            return int(p['count'])
-        return 0
 
     def get_index(self) -> int:
         """
@@ -458,7 +373,6 @@ class PauliString:
         Returns:
             bool: Result of commutes_with.
         """
-        PauliString.inc_performance()
         return self.commutes_with(other)
 
     def __xor__(self, other: object) -> PauliString | None:
@@ -470,7 +384,6 @@ class PauliString:
         Returns:
             PauliString|None: Result of adjoint_map.
         """
-        PauliString.inc_performance()
         return self.adjoint_map(other)
 
     def __matmul__(self, other: object) -> PauliString:
@@ -482,7 +395,6 @@ class PauliString:
         Returns:
             PauliString: Result of multiply.
         """
-        PauliString.inc_performance()
         return self.multiply(other)
 
     def sign(self, other: PauliString) -> complex:

@@ -267,14 +267,14 @@ class Canonicalizer:
         for leg in length_1_legs:
             p = leg[0].copy()
             while True:
-                if p.bits.find(1) == -1:
+                pos = p.bits.find(1)
+                if pos == -1:
                     break
-                x = basis.get(p.bits.find(1))
-                if x is None:
-                    basis[p.bits.find(1)] = p
+                if pos not in basis:
+                    basis[pos] = p
                     independent_legs.append(leg)
                     break
-                p = p @ x
+                p = p @ basis[pos]
         return independent_legs
 
     def _connected_canonical_graph(self, vertex_stack: list[PauliString]) -> None:
@@ -290,7 +290,6 @@ class Canonicalizer:
             self.legs = confirmed_legs
             self.legs.sort(key=len)
 
-            PauliString.set_performance('all')
             v = vertex_stack.pop()
             # Don't forget to sort self.legs by length before accessing them!
             self.legs.sort(key=len)
@@ -299,15 +298,13 @@ class Canonicalizer:
                 continue
             # Build the core
             if len(self.legs) < 2:
-                PauliString.set_performance('s1')
                 v = self._build_core(v)
                 continue
             # Check if there are legs of length 1 with different lit states
             lit_index, unlit_index = None, None
-            PauliString.set_performance('s2')
-            one_indexes = [i for i,leg in enumerate(self.legs) if len(leg) == 1]
+            one_indexes = [i for i, leg in enumerate(self.legs) if len(leg) == 1]
 
-            for i in reversed(one_indexes):#range(len(self.legs)):
+            for i in reversed(one_indexes):
                 if lit_index is not None and unlit_index is not None:
                     break
                 if len(self.legs[i]) > 1:
@@ -317,25 +314,17 @@ class Canonicalizer:
                 else:
                     unlit_index = i
             if lit_index is not None and unlit_index is not None:
-                PauliString.set_performance('s2.1')
                 self._convert_to_single_lit_state(lit_index, unlit_index, vertex_stack, v)
                 continue
             # From here on we work with self.legs[0] as the representative of length 1 legs WLOG
             # We need to handle a special case, if v is only connected to the central vertex then
             # we just connect it and exit
-            PauliString.set_performance('s3')
             if self._is_lit(v, self.legs[0][0]):
                 if not self._is_lit(v, self.central_vertex):
                     v = self._tracked_multiply(v, self._representative(self.legs[0][0]))
                 v = self._tracked_multiply(v, self._representative(self.central_vertex))
             any_lit_leg = False
-            PauliString.set_performance('s3.1')
 
-#            lited = [w for w in leg for leg in self.legs if len(leg) != 1 and self._is_lit(v, w)]
-#            if not len(lited):
-#                self.legs.append([v])
-#                continue
-#            print(f"legs = {self.legs} center = {self._is_lit(v, self.central_vertex)}")
             for leg in reversed(self.legs):
                 if len(leg) == 1:
                     continue
@@ -348,7 +337,6 @@ class Canonicalizer:
             if not any_lit_leg:
                 self.legs.append([v])
                 continue
-            PauliString.set_performance('s3.2')
 
             if self.type == 'B':
                 # Check if there is a lit vertex in a leg of length 2
@@ -363,10 +351,8 @@ class Canonicalizer:
                         break
                 if lit_2_leg_index is not None:
                     v = self._transfer_lightning(lit_2_leg_index, v)
-            PauliString.set_performance('s4')
             v = self._reduce_lightning(vertex_stack, v)
 
-        PauliString.set_performance('all')
         confirmed_legs = [leg for leg in self.legs if len(leg) != 1]
         length_1_legs = [leg for leg in self.legs if len(leg) == 1]
         confirmed_legs.extend(self._dependency_check(length_1_legs))
