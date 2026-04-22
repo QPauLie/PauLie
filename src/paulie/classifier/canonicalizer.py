@@ -289,10 +289,7 @@ class Canonicalizer:
             confirmed_legs.extend(self._dependency_check(length_1_legs))
             self.legs = confirmed_legs
             self.legs.sort(key=len)
-
             v = vertex_stack.pop()
-            # Don't forget to sort self.legs by length before accessing them!
-            self.legs.sort(key=len)
             if self.central_vertex is None:
                 self.central_vertex = v
                 continue
