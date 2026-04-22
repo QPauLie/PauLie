@@ -8,11 +8,6 @@ from paulie.common.pauli_string_bitarray import PauliString
 def test_central_dependency_dropping():
     """
     Test that a generator dependent on the central vertex and other legs is dropped.
-
-    Bug: 'Incomplete Dependency Check'
-    Previously, _dependency_check only performed Gaussian elimination on length-1 legs,
-    ignoring the central_vertex. This allowed generators dependent on {central, leg1, ...}
-    to be incorrectly retained.
     """
     # Central = XI
     # L1 = ZX

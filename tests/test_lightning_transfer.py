@@ -7,10 +7,6 @@ from paulie.common.pauli_string_bitarray import PauliString
 def test_lightning_transfer_from_internal_vertex():
     """
     Test that lightning can be transferred from a leg of length 2.
-
-    Bug: 'Limited Lightning Transfer'
-    Previously, _transfer_lightning was restricted to legs of length exactly 2
-    and only checked the first two vertices.
     """
     # Central: XII
     # Leg 1:   ZXI, IZX
