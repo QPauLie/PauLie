@@ -1,4 +1,0 @@
-﻿paulie.application.pauli_compiler.compile_target
-================================================
-
-.. autofunction:: paulie.application.pauli_compiler.compile_target
