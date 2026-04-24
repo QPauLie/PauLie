@@ -67,21 +67,3 @@ Utilities related to matrix decompositions.
 
    matrix_decomposition.matrix_decomposition
    matrix_decomposition.matrix_decomposition_diagonal
-
-Pauli compiler
---------------
-Utilities related to Pauli compilation.
-
-.. autosummary::
-   :toctree: generated/
-   
-   pauli_compiler.OptimalPauliCompiler
-   pauli_compiler.PauliCompilerConfig
-   pauli_compiler.SubsystemCompiler
-   pauli_compiler.SubsystemCompilerConfig
-   pauli_compiler.choose_u_for_b
-   pauli_compiler.compile_target
-   pauli_compiler.construct_universal_set
-   pauli_compiler.left_a_minimal
-   pauli_compiler.left_map_over_a
-

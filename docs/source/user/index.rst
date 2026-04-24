@@ -7,4 +7,3 @@ User Guide
    classification
    commutator_graph
    optimal_universal_generators
-   pauli_compiler

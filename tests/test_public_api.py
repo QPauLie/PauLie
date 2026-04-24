@@ -51,10 +51,6 @@ public_symbols = [
     "get_pauli_weights",
     "matrix_decomposition",
     "matrix_decomposition_diagonal",
-    "compile_target",
-    "OptimalPauliCompiler",
-    "PauliCompilerConfig",
-    "construct_universal_set",
 
     # Classification
     "Morph",
