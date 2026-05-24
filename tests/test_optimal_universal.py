@@ -7,7 +7,7 @@ import random
 
 import pytest
 
-from paulie import G_LIE, get_optimal_su_2_n_generators, get_pauli_string as p
+from paulie import G_LIE,  get_optimal_universal_generators, get_pauli_string as p
 from paulie.application.get_optimal_su2_n import get_optimal_edges_su_2_n
 
 
@@ -74,7 +74,7 @@ def test_get_optimal_edges_su_2_n_formula(ng: int, expected: int) -> None:
     assert get_optimal_edges_su_2_n(ng) == expected
 
 
-def test_get_optimal_su_2_n_generators_hits_target_edge_count(universal_a12) -> None:
+def test_get_optimal_universal_generators_hits_target_edge_count(universal_a12) -> None:
     """Optimal generators should achieve the target anticommutation edge count."""
     n, g = universal_a12
 
@@ -82,7 +82,7 @@ def test_get_optimal_su_2_n_generators_hits_target_edge_count(universal_a12) -> 
     target_edges = get_optimal_edges_su_2_n(len(g_ind))
 
     random.seed(target_edges)
-    g_opt = get_optimal_su_2_n_generators(g)
+    g_opt = get_optimal_universal_generators(n)
 
     assert g_opt is not None
     assert len(g_opt) == len(g_ind)
@@ -91,7 +91,7 @@ def test_get_optimal_su_2_n_generators_hits_target_edge_count(universal_a12) -> 
 
 
 @pytest.mark.slow
-def test_get_optimal_su_2_n_generators_is_locally_best_for_5_round_growth(
+def test_get_optimal_universal_generators_is_locally_best_for_5_round_growth(
     universal_a12,
 ) -> None:
     """
@@ -104,7 +104,7 @@ def test_get_optimal_su_2_n_generators_is_locally_best_for_5_round_growth(
     target_edges = get_optimal_edges_su_2_n(len(g_ind))
 
     random.seed(target_edges)
-    g_opt = get_optimal_su_2_n_generators(g)
+    g_opt = get_optimal_universal_generators(n)
 
     assert g_opt is not None
     assert g_opt.get_dla_dim() == su_dim(n)

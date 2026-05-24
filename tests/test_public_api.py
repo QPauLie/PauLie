@@ -43,7 +43,7 @@ public_symbols = [
     "pauli_instability",
     "fourpoint",
     "second_moment",
-    "get_optimal_su_2_n_generators",
+    "get_optimal_universal_generators",
     "average_graph_complexity",
     "plot_anti_commutation_graph",
     "quantum_fourier_entropy",

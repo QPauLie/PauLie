@@ -2,8 +2,10 @@
     Module to get the generator set with optimal generation rate for su(2^n).
 """
 import math
-from paulie.common.pauli_string_collection import PauliStringCollection
 
+from paulie.common.pauli_string_collection import PauliStringCollection
+from paulie.common.pauli_string_factory import get_pauli_string
+from paulie.common.two_local_generators import G_LIE
 
 def get_optimal_edges_su_2_n(ng:int) -> int:
     r"""
@@ -22,15 +24,23 @@ def get_optimal_edges_su_2_n(ng:int) -> int:
     n_pair = math.floor(n_pair)
     return n_pair
 
-def get_optimal_su_2_n_generators(generators:PauliStringCollection) -> PauliStringCollection|None:
-    r""" 
-    Get an optimal generator set for :math:`\mathfrak{su}(2^{n})`.
-    
+def get_optimal_universal_generators(n: int) -> PauliStringCollection | None:
+    r"""
+    Get an optimal universal generator set for :math:`\mathfrak{su}(2^{n})`.
+
     Args:
-        generators (PauliStringCollection): Any generating set of :math:`\mathfrak{su}(2^{n})`.
+        n (int): Number of qubits, i.e. the exponent in
+            :math:`\mathfrak{su}(2^{n})`.
+
     Returns:
-        PauliStringCollection|None: An optimal generator set for :math:`\mathfrak{su}(2^{n})`.
+        PauliStringCollection | None: An optimal universal generator set for
+        :math:`\mathfrak{su}(2^{n})`.
     """
+
+    if n < 2:
+        return None
+
+    generators = get_pauli_string(G_LIE["a12"], n=n)
     g = generators.copy().get_independents()
     n_pair = get_optimal_edges_su_2_n(len(g))
     return g.find_generators_with_connection(n_pair) if n_pair > -1 else None
