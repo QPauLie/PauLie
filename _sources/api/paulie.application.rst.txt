@@ -32,7 +32,7 @@ Utilities related to :math:`\mathfrak{su}(2^n)` generators.
    :toctree: generated/
 
    get_optimal_su2_n.get_optimal_edges_su_2_n
-   get_optimal_su2_n.get_optimal_su_2_n_generators
+   get_optimal_su2_n.get_optimal_universal_generators
 
 Chaos metrics
 -------------
