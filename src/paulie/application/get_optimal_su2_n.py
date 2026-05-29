@@ -30,7 +30,7 @@ def get_optimal_universal_generators(n: int) -> PauliStringCollection | None:
 
     Args:
         n (int): Number of qubits, i.e. the exponent in
-            :math:`\mathfrak{su}(2^{n})`.
+            :math:`\mathfrak{su}(2^{n})`
 
     Returns:
         PauliStringCollection | None: An optimal universal generator set for
