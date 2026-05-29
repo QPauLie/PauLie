@@ -391,10 +391,9 @@
 <span id="getting-started-reference-label"></span><h1>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h1>
 <section id="installing">
 <h2>Installing<a class="headerlink" href="#installing" title="Link to this heading">#</a></h2>
-<p>Make sure to have <cite>python &gt;= 3.12</cite> installed.</p>
-<p>Once you have <cite>uv</cite> installed, run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>sync<span class="w"> </span>--all-extras<span class="w"> </span>--dev
-uv<span class="w"> </span>shell
+<p><cite>PauLie</cite> package requires Python 3.12 or newer.
+To install <cite>PauLie</cite>, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>paulie
 </pre></div>
 </div>
 </section>
@@ -402,6 +401,11 @@ uv<span class="w"> </span>shell
 <h2>Development<a class="headerlink" href="#development" title="Link to this heading">#</a></h2>
 <section id="typing">
 <h3>Typing<a class="headerlink" href="#typing" title="Link to this heading">#</a></h3>
+<p>Once you have <cite>uv</cite> installed, set up the development environment by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>sync<span class="w"> </span>--all-extras<span class="w"> </span>--dev
+uv<span class="w"> </span>shell
+</pre></div>
+</div>
 <p>Check types and catch errors with mypy:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>mypy<span class="w"> </span>src/paulie/common<span class="w"> </span>src/paulie/classifier/classification.py
 </pre></div>

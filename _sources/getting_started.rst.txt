@@ -6,20 +6,25 @@ Getting started
 Installing
 ----------
 
-Make sure to have `python >= 3.12` installed.
-
-Once you have `uv` installed, run:
+`PauLie` package requires Python 3.12 or newer.
+To install `PauLie`, run:
 
 .. code-block:: bash
 
-   uv sync --all-extras --dev
-   uv shell
+   pip install paulie
 
 Development
 -----------
 
 Typing
 ~~~~~~
+
+Once you have `uv` installed, set up the development environment by running:
+
+.. code-block:: bash
+
+   uv sync --all-extras --dev
+   uv shell
 
 Check types and catch errors with mypy:
 
