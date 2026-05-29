@@ -11,13 +11,13 @@ first release focuses on the classification of the circuit's dynamical Lie algeb
 
 [![Unitary Fund](https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge)](https://unitary.fund)
 
-Make sure to have Python >= 3.12 installed.
-
 ### Installation
-Clone the repository. Once you have [`uv` installed](https://docs.astral.sh/uv/getting-started/installation/#pypi), run the following command to install all dependencies:
+
+`PauLie` package requires Python 3.12 or newer.
+To install `PauLie`, run:
 
 ```sh
-uv sync --all-extras --dev
+pip install paulie
 ```
 
 ### Getting started 
@@ -33,7 +33,15 @@ The following code gives an example of usage:
     print(f"number of qubits = {n_qubits}, algebra = {algebra}")
 ```
 
-Feel free to contribute and check out our open issues. We are also happy to chat with you via [Discord](https://discord.gg/unitary-fund-764231928676089909)
+### Contributing
+
+Feel free to contribute and check out our open issues. We are also happy to chat with you via [Discord](https://discord.gg/unitary-fund-764231928676089909).
+
+Clone the repository. Once you have [`uv` installed](https://docs.astral.sh/uv/getting-started/installation/#pypi), run the following command to install all dependencies:
+
+```sh
+uv sync --all-extras --dev
+```
 
 ### Testing
 
