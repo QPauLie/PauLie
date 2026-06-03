@@ -3,12 +3,18 @@ Canonicalizer of generators
 """
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.classifier.classification import Morph
+from paulie.classifier.observer import EventManager
 
 class Canonicalizer:
     """
-    Class of canonicalizer of generators
+    Class of canonicalizer of generators.
+
+    The canonicalizer is the *publisher* of the observer pattern: it owns an
+    :class:`~paulie.classifier.observer.EventManager` and emits events at every relevant step of
+    the algorithm through :meth:`_notify`. When no observer is subscribed, the notifications are
+    cheap no-ops, so the behaviour of the algorithm is unchanged.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initialize a Canonicalizer
         """
@@ -16,6 +22,37 @@ class Canonicalizer:
         self.central_vertex = None
         self.legs = []
         self.vertex_stack = []
+        self.events = EventManager()
+
+    def _current_collection(self) -> list[PauliString]:
+        """
+        Snapshot the vertices of the canonical graph being built.
+
+        The central vertex is placed first, followed by the vertices of each leg. Observers use
+        this to reconstruct the anticommutation graph of the current state.
+
+        Returns:
+            list[PauliString]: Current vertices, central vertex first.
+        """
+        collection: list[PauliString] = []
+        if self.central_vertex is not None:
+            collection.append(self.central_vertex)
+        for leg in self.legs:
+            collection.extend(leg)
+        return collection
+
+    def _notify(self, event: str, **data) -> None:
+        """
+        Emit an event to subscribed observers.
+
+        Args:
+            event (str): Name of the event (used as the frame title).
+            **data: Contextual data describing the event (node roles, explicit collection, ...).
+        Returns:
+            None
+        """
+        if self.events.has_subscribers():
+            self.events.notify(event, self, data)
 
     def _set_vertex_stack(self, vertex_stack: list[PauliString]) -> None:
         """
@@ -71,6 +108,7 @@ class Canonicalizer:
                     v = self._tracked_multiply(v, self._representative(self.legs[0][0]))
                 v = self._tracked_multiply(v, self._representative(self.central_vertex))
         self.legs.append([v])
+        self._notify("Attach to centre", appending=v)
         return v
 
     def _convert_to_single_lit_state(self, p_index: int, q_index: int,
@@ -83,21 +121,31 @@ class Canonicalizer:
             vertex_stack (list[PauliString]): Generator stack
             v (PauliString): Append Pauli string
         """
+        self._notify("Single legs in different states (p lit, q unlit)",
+            lighting=v, p=self.legs[p_index][0], q=self.legs[q_index][0])
         pq = (self._representative(self.legs[p_index][0]) @
             self._representative(self.legs[q_index][0]))
+        replaced: list[PauliString] = []
         if self._is_lit(v, self.central_vertex):
             self.central_vertex = self._tracked_multiply(self.central_vertex, pq)
+            replaced.append(self.central_vertex)
         for i in range(len(self.legs)):
             for j in range(len(self.legs[i])):
                 if i != p_index and self._is_lit(v, self.legs[i][j]):
                     self.legs[i][j] = self._tracked_multiply(self.legs[i][j], pq)
+                    replaced.append(self.legs[i][j])
         self.legs[p_index].append(v)
+        self._notify("Append to lit leg", appending=v, replacing=replaced)
         # Truncate longest leg if necessary, this happens at most once
         big_leg_cnt = sum(1 for leg in self.legs if len(leg) >= 2)
         if self.type == 'A' and big_leg_cnt >= 2:
             self.type = 'B'
+            removed: list[PauliString] = []
             while len(self.legs[-1]) > 4:
-                vertex_stack.append(self.legs[-1].pop())
+                removed.append(self.legs[-1].pop())
+                vertex_stack.append(removed[-1])
+            if removed:
+                self._notify("Type becomes B, trim longest leg", removing=removed)
 
     def _transfer_lightning(self, lit_2_leg_index: int, v: PauliString) -> PauliString:
         """
@@ -154,6 +202,7 @@ class Canonicalizer:
             v = self._tracked_multiply(v,
                 self._representative(self.legs[i][1]) @ self._representative(
                 self.legs[i][0]) @ self._representative(self.legs[0][0]))
+        self._notify("Transfer lightning to long leg", lighting=v)
         return v
 
     def _reduce_lightning(self, vertex_stack: list[PauliString],
@@ -177,6 +226,7 @@ class Canonicalizer:
                             break
                     if is_append_to_end:
                         self.legs[-1].append(v)
+                        self._notify("Append to leg end", appending=v)
                         return v
             m = None
             for i in range(len(self.legs[-1])):
@@ -198,9 +248,12 @@ class Canonicalizer:
         # Exit if no element of longest leg is lit
         if f is None and s is None:
             self.legs.append([v])
+            self._notify("Attach as new leg", appending=v)
             return v
         # Otherwise naively reduce until one element is left
         if s is not None:
+            self._notify("Reduce lightning on long leg", lighting=v,
+                contracting=self.legs[-1][f])
             # Compute prefix products on the leg to perform operations in O(1) and O(n) overall
             pref = self._representative(self.legs[-1][f])
             for i in range(f, s):
@@ -222,10 +275,12 @@ class Canonicalizer:
                     self._representative(self.legs[-1][1]) @ self._representative(
                     self.legs[-1][3]))
                 self.legs.append([v])
+                self._notify("First vertex lit, type B2 split", appending=v)
             else:
                 for w in self.legs[-1]:
                     v = self._tracked_multiply(v, self._representative(w))
                 self.legs[-1].append(v)
+                self._notify("First vertex lit, extend long leg", appending=v)
         else:
             # Now we have to do careful case handling based on the type of the graph
             # Here f is either the middle or last vertex
@@ -237,6 +292,8 @@ class Canonicalizer:
             subleg = self.legs[-1][f:]
             self.legs[-1] = self.legs[-1][:f]
             self.legs.append([v] + subleg)
+            self._notify("Break long leg at lit vertex", appending=v,
+                replacing=[self.legs[-2][f - 1]])
             # Now if the graph was type B, then nothing else has to be done
             # Let's order the legs in increasing size
             if len(self.legs[-1]) < len(self.legs[-2]):
@@ -247,10 +304,15 @@ class Canonicalizer:
             # This happens at most once
             if self.type == 'A' and len(self.legs[-1]) >= 2 and len(self.legs[-2]) >= 2:
                 self.type = 'B'
+                removed: list[PauliString] = []
                 while len(self.legs[-1]) > 4:
-                    vertex_stack.append(self.legs[-1].pop())
+                    removed.append(self.legs[-1].pop())
+                    vertex_stack.append(removed[-1])
                 while len(self.legs[-2]) > 2:
-                    vertex_stack.append(self.legs[-2].pop())
+                    removed.append(self.legs[-2].pop())
+                    vertex_stack.append(removed[-1])
+                if removed:
+                    self._notify("Type becomes B, trim legs", removing=removed)
         return v
 
     def _dependency_check(self, length_1_legs: list[list[PauliString]]) -> None:
@@ -286,13 +348,22 @@ class Canonicalizer:
         while vertex_stack:
             confirmed_legs = [leg for leg in self.legs if len(leg) != 1]
             length_1_legs = [leg for leg in self.legs if len(leg) == 1]
-            confirmed_legs.extend(self._dependency_check(length_1_legs))
+            independent_legs = self._dependency_check(length_1_legs)
+            if self.events.has_subscribers():
+                independent_set = {leg[0] for leg in independent_legs}
+                dropped = [leg[0] for leg in length_1_legs if leg[0] not in independent_set]
+                if dropped:
+                    self._notify("Remove dependent vertices",
+                        dependent=dropped[0], removing=dropped)
+            confirmed_legs.extend(independent_legs)
             self.legs = confirmed_legs
             self.legs.sort(key=len)
             v = vertex_stack.pop()
             if self.central_vertex is None:
                 self.central_vertex = v
+                self._notify("Central vertex")
                 continue
+            self._notify("Lighting vertex", lighting=v)
             # Build the core
             if len(self.legs) < 2:
                 v = self._build_core(v)
@@ -333,6 +404,7 @@ class Canonicalizer:
                         break
             if not any_lit_leg:
                 self.legs.append([v])
+                self._notify("Connect to centre only", appending=v)
                 continue
 
             if self.type == 'B':
@@ -352,7 +424,14 @@ class Canonicalizer:
 
         confirmed_legs = [leg for leg in self.legs if len(leg) != 1]
         length_1_legs = [leg for leg in self.legs if len(leg) == 1]
-        confirmed_legs.extend(self._dependency_check(length_1_legs))
+        independent_legs = self._dependency_check(length_1_legs)
+        if self.events.has_subscribers():
+            independent_set = {leg[0] for leg in independent_legs}
+            dropped = [leg[0] for leg in length_1_legs if leg[0] not in independent_set]
+            if dropped:
+                self._notify("Remove dependent vertices",
+                    dependent=dropped[0], removing=dropped)
+        confirmed_legs.extend(independent_legs)
         self.legs = confirmed_legs
         self.legs.sort(key=len)
 
@@ -376,5 +455,12 @@ class Canonicalizer:
             vertex_stack (list[PauliString]): Generator stack
         """
         self._set_vertex_stack(vertex_stack)
+        self._notify("Anticommutation graph", collection=vertex_stack.copy(), init=True)
         self._connected_canonical_graph(vertex_stack)
-        return self._get_morph()
+        morph = self._get_morph()
+        if self.events.has_subscribers():
+            try:
+                self._notify(f"Canonical graph of type {morph.get_type().name}")
+            except Exception:  # pylint: disable=broad-except
+                self._notify("Canonical graph")
+        return morph

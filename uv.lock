@@ -754,14 +754,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pauliarray"
-version = "0.0.1"
-source = { git = "https://github.com/algolab-quantique/pauliarray.git#e0e245aa8c9470324f3454c9624e3412018fb106" }
-dependencies = [
-    { name = "numpy" },
-]
-
-[[package]]
 name = "paulie"
 version = "0.0.1"
 source = { editable = "." }
@@ -772,7 +764,7 @@ dependencies = [
     { name = "memory-profiler" },
     { name = "networkx" },
     { name = "numpy" },
-    { name = "pauliarray" },
+    { name = "pillow" },
     { name = "scipy" },
     { name = "six" },
     { name = "tqdm" },
@@ -800,7 +792,7 @@ requires-dist = [
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.19.0" },
     { name = "networkx", specifier = ">=3.3" },
     { name = "numpy", specifier = ">=2.2.2" },
-    { name = "pauliarray", git = "https://github.com/algolab-quantique/pauliarray.git" },
+    { name = "pillow", specifier = ">=10.0.0" },
     { name = "pydata-sphinx-theme", marker = "extra == 'dev'", specifier = ">=0.16.1" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.5" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.5" },

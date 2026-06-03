@@ -1,10 +1,29 @@
 """
     Module with graph drawing utilities.
 """
+import math
 import networkx as nx
+import matplotlib.pyplot as plt
+import matplotlib.animation
+import numpy as np
 from paulie.common.pauli_string_collection import PauliStringCollection
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.get_graph import get_graph
+from paulie.helpers._recording import RecordGraph
+
+#: Colour convention for the node roles tracked by the recorder.
+NODE_ROLE_COLORS = {
+    "lighting": "red",        # vertex currently being added (lighting)
+    "dependent": "#2F4F4F",   # dependent vertex (dark slate gray)
+    "contracting": "#008080", # vertex currently being contracted (teal)
+    "appending": "#00FF00",   # attachment target / appended vertex (lime green)
+    "removing": "black",      # vertex being temporarily removed
+    "replacing": "#8B008B",   # vertex being replaced (dark magenta)
+    "p": "#6A5ACD",           # lit vertex in a leg of length one (slate blue)
+    "q": "#FF00FF",           # unlit vertex in a leg of length one (magenta)
+    "lit": "cyan",            # lit vertex
+    "unlit": "#cccccc",       # unlit vertex (light gray)
+}
 
 def plot_graph(vertices:list[str],
                edges:list[tuple[str,str]],
@@ -46,3 +65,282 @@ def plot_graph_by_nodes(nodes:PauliStringCollection,
         commutators = []
     vertices, edges, edge_labels = get_graph(nodes, commutators)
     return plot_graph(vertices, edges, edge_labels)
+
+def _node_color(frame, node: str, lighting: str | None) -> str:
+    """
+    Resolve the colour of a node for a frame from its role.
+
+    Roles are checked in priority order so that the most specific role wins.
+
+    Args:
+        frame (FrameRecord): Frame being rendered.
+        node (str): Vertex to colour.
+        lighting (str | None): The lighting vertex of the frame, if any.
+    Returns:
+        str: A matplotlib colour.
+    """
+    if lighting is not None and node == lighting:
+        if frame.get_is_dependent(node):
+            return NODE_ROLE_COLORS["dependent"]
+        return NODE_ROLE_COLORS["lighting"]
+    if frame.get_is_removing(node):
+        return NODE_ROLE_COLORS["removing"]
+    if frame.get_is_dependent(node):
+        return NODE_ROLE_COLORS["dependent"]
+    if frame.get_is_replacing(node):
+        return NODE_ROLE_COLORS["replacing"]
+    if frame.get_is_appending(node):
+        return NODE_ROLE_COLORS["appending"]
+    if frame.get_is_contracting(node):
+        return NODE_ROLE_COLORS["contracting"]
+    if frame.get_is_p(node):
+        return NODE_ROLE_COLORS["p"]
+    if frame.get_is_q(node):
+        return NODE_ROLE_COLORS["q"]
+    if frame.get_is_lits(node):
+        return NODE_ROLE_COLORS["lit"]
+    return NODE_ROLE_COLORS["unlit"]
+
+def _animation_graph(
+    record: RecordGraph,
+    interval: int = 1000,
+    repeat: bool = False,
+    storage: dict | None = None,
+    show: bool = True,
+) -> matplotlib.animation.Animation:
+    """
+    Animate the canonical graph construction from a recording.
+
+    Args:
+        record (RecordGraph): A recording of the canonical graph construction.
+        interval (int, optional): Interval between frames in milliseconds.
+        repeat (bool, optional): Whether to loop the animation.
+        storage (dict, optional): Output location and format. Expected keys:
+            - "filename": path to the output file
+            - "writer": matplotlib writer name or writer instance
+        show (bool, optional): Whether to display the animation window.
+
+    Returns:
+        matplotlib.animation.Animation
+    """
+    graph = nx.Graph()
+    fig, ax = plt.subplots(figsize=(6, 4))
+
+    def clear() -> None:
+        ax.clear()
+        graph.remove_nodes_from(list(graph.nodes))
+
+    def build_positions(
+        edges: list[tuple[str, str]],
+        center: str,
+    ) -> tuple[dict[str, np.ndarray], float]:
+        legs = []
+        positions: dict[str, np.ndarray] = {}
+
+        for edge in edges:
+            if center in edge:
+                v = edge[1] if center == edge[0] else edge[0]
+                legs.append([v])
+
+        for leg in legs:
+            current = leg[0]
+            while True:
+                is_found = False
+                for edge in edges:
+                    v = edge[1] if current == edge[0] else edge[0]
+                    if current in edge and v not in leg and v != center:
+                        leg.append(v)
+                        current = v
+                        is_found = True
+                        break
+                if not is_found:
+                    break
+
+        legs.sort(key=len)
+        n_legs_total = len(legs)
+
+        max_line = 7
+        y_dist = 0.25
+        pos_y = 0.0
+        y = pos_y
+        center_x = 0.0
+        x_position_lighting = 0.0
+        x_first = 0.0
+        x_last = 0.0
+
+        # Must be defined for all branches.
+        dist = 2.0 / (8 if n_legs_total > 7 else max(1, n_legs_total))
+
+        if n_legs_total > 1:
+            n = 0
+            x = 1.0 + dist / 2.0
+
+            for v in reversed(legs[-2]):
+                x -= dist
+                if x_first == 0:
+                    x_first = x
+                positions[v] = np.array([x, y])
+                n += 1
+
+            x -= dist
+            positions[center] = np.array([x, y])
+            center_x = x
+            n += 1
+            direction = -1
+
+            for v in legs[-1]:
+                if n > max_line:
+                    if x_last == 0:
+                        x_last = x
+                    x += direction * dist
+                    y -= y_dist
+                    n = 0
+                    max_line = 5
+                    direction *= -1
+                    if x_position_lighting == 0:
+                        x_position_lighting = (x + 1 - dist / 2) / 2
+
+                x += direction * dist
+                positions[v] = np.array([x, y])
+                n += 1
+                if x_last == 0:
+                    x_last = x
+
+            if x_position_lighting == 0:
+                x_position_lighting = (x_first + x_last) / 2
+
+            # Remove the two longest legs; they are already placed.
+            legs = legs[:-2]
+
+        if n_legs_total == 0:
+            positions[center] = np.array([0.0, pos_y])
+            x_position_lighting = 0.0
+
+        elif n_legs_total == 1:
+            positions[legs[0][0]] = np.array([0.0, pos_y])
+            positions[center] = np.array([0.25, pos_y])
+            x_position_lighting = 0.125
+
+        elif len(legs) > 0:
+            direction = 1
+            n = len(legs)
+            ang = 3 * math.pi / (2 * n)
+            if ang >= math.pi / 2:
+                ang = ang / 2
+            c_ang = ang
+
+            for leg in legs:
+                v = leg[0]
+                y = pos_y + dist * math.sin(c_ang)
+                x = center_x + dist * math.cos(c_ang)
+                positions[v] = np.array([x, y])
+
+                if len(leg) > 1:
+                    v = leg[1]
+                    y = pos_y + 2 * dist * math.sin(c_ang)
+                    x = center_x + 2 * dist * math.cos(c_ang)
+                    positions[v] = np.array([x, y])
+
+                c_ang += direction * ang
+                if c_ang > 3 * math.pi / 4:
+                    direction *= -1
+                    c_ang = direction * ang
+
+        return positions, x_position_lighting
+
+    def update(num: int):
+        clear()
+        frame = record.get_frame(num)
+        ax.set_title(f"{frame.get_title()}")
+
+        vertices, edges, edge_labels = record.get_graph(num)
+        vertices = list(vertices)
+        edges = list(edges)
+
+        center = None
+        with_labels = True
+
+        if len(vertices) > 0:
+            center = vertices[0]
+            if len(center) > 10:
+                edge_labels = None
+                with_labels = False
+
+        lighting = frame.get_lighting()
+        if lighting:
+            if len(lighting) > 10:
+                edge_labels = None
+                with_labels = False
+
+            if lighting not in vertices:
+                vertices.append(lighting)
+
+            for v in vertices:
+                if frame.get_is_lits(v):
+                    edges.append((lighting, v))
+
+            if frame.get_is_dependent(lighting):
+                dependent = lighting
+                lighting = f"dependent {lighting}"
+                edges.append((dependent, lighting))
+
+        graph.add_nodes_from(vertices)
+        graph.add_edges_from(edges)
+
+        if frame.get_init() or center is None:
+            positions = nx.spring_layout(graph)
+        else:
+            positions, x_position_lighting = build_positions(edges, center)
+            if lighting:
+                positions[lighting] = np.array([x_position_lighting, 1.0])
+
+        # Robustness: make sure every drawn node has a position.
+        missing = [node for node in graph if node not in positions]
+        if missing:
+            fallback = nx.spring_layout(graph, pos=positions, fixed=list(positions) or None)
+            for node in missing:
+                positions[node] = fallback[node]
+
+        color_map = [_node_color(frame, node, lighting) for node in graph]
+
+        ax.axis("off")
+
+        if edge_labels is not None:
+            nx.draw_networkx_edge_labels(
+                graph,
+                pos=positions,
+                edge_labels=edge_labels,
+                font_color="red",
+                hide_ticks=True,
+                node_size=60,
+                font_size=6,
+                ax=ax,
+            )
+
+        return nx.draw_networkx(
+            graph,
+            pos=positions,
+            node_color=color_map,
+            hide_ticks=True,
+            node_size=60,
+            font_size=6,
+            with_labels=with_labels,
+            edge_color="#aaaaaa",
+            ax=ax,
+        )
+
+    ani = matplotlib.animation.FuncAnimation(
+        fig,
+        update,
+        frames=record.get_size(),
+        interval=interval,
+        repeat=repeat,
+    )
+
+    if storage is not None:
+        ani.save(filename=storage["filename"], writer=storage["writer"])
+
+    if show:
+        plt.show()
+
+    return ani
