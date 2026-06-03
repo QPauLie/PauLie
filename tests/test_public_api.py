@@ -46,6 +46,7 @@ public_symbols = [
     "get_optimal_universal_generators",
     "average_graph_complexity",
     "plot_anti_commutation_graph",
+    "animation_anti_commutation_graph",
     "quantum_fourier_entropy",
     "average_pauli_weight",
     "get_pauli_weights",

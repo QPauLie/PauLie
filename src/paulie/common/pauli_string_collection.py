@@ -15,6 +15,7 @@ from paulie.common.get_graph import get_graph
 from paulie.classifier.classification import Classification
 from paulie.classifier.tracked_canonicalizer import TrackedCanonicalizer
 from paulie.classifier.canonicalizer import Canonicalizer
+from paulie.classifier.recording_canonicalizer import RecordingCanonicalizer
 from paulie.exceptions import PauliStringCollectionException
 
 class PauliStringCollection:
@@ -34,6 +35,7 @@ class PauliStringCollection:
         self.generators: list[PauliString] = []
         self.classification: Classification = None
         self._tracked: bool = False
+        self._record = None
         if not generators:
             return
 
@@ -523,6 +525,22 @@ class PauliStringCollection:
         return [self._convert(subgraph) for subgraph in
                 sorted(nx.connected_components(g), key=len, reverse=True)]
 
+    def set_record(self, record) -> None:
+        """
+        Attach a recording of the canonical graph construction.
+
+        When a record is set, :meth:`classify` drives a
+        :class:`~paulie.classifier.recording_canonicalizer.RecordingCanonicalizer`, which observes
+        the algorithm and appends a frame for every transformation step. Pass ``None`` to stop
+        recording.
+
+        Args:
+            record (RecordGraph | None): Record to append frames to, or None to disable recording.
+        Returns:
+            None
+        """
+        self._record = record
+
     def classify(self) -> Classification:
         """
         Build the canonical graph of the generators and therefore classify its Lie algebra.
@@ -541,7 +559,9 @@ class PauliStringCollection:
             vertex_stack = [self.create_instance(pauli_str=s)
                 for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
             vertex_stack.reverse()
-            if self._tracked:
+            if self._record is not None:
+                conn_canon = RecordingCanonicalizer(self._record)
+            elif self._tracked:
                 conn_canon = TrackedCanonicalizer()
             else:
                 conn_canon = Canonicalizer()
