@@ -8,6 +8,7 @@ from itertools import combinations
 from collections.abc import Generator
 from typing import Self
 import numpy as np
+import numpy.typing as npt
 import networkx as nx
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_linear import PauliStringLinear
@@ -569,6 +570,24 @@ class PauliStringCollection:
         """
         classification = self.get_class()
         return str(classification.get_algebra())
+
+    def get_algebra_basis(self) -> list[npt.NDArray[np.complex128]]:
+        r"""
+        Get the dynamical Lie algebra named by :meth:`get_algebra` as explicit
+        matrices in its defining representation, partitioned by direct summand.
+
+        The result is table-driven -- it depends only on the algebra label, not
+        on the particular generating Pauli strings.  Each summand is returned as
+        a stack of basis matrices following a fixed, documented convention (see
+        :meth:`paulie.Classification.get_algebra_basis`).  For a single-summand
+        algebra the returned list has length one.
+
+        Returns:
+            list[npt.NDArray[np.complex128]]: One entry per direct summand, each
+            of shape ``(dim, N, N)`` with ``N`` the defining-representation size.
+            The length of the list equals the number of summands.
+        """
+        return self.get_class().get_algebra_basis()
 
     def is_algebra(self, algebra: str) -> bool:
         """

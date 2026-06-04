@@ -4,6 +4,15 @@
 import enum
 from collections.abc import Generator
 
+import numpy as np
+import numpy.typing as npt
+
+from paulie.application.algebra_basis import (
+    orthogonal_basis,
+    special_unitary_basis,
+    symplectic_basis,
+    unitary_basis,
+)
 from paulie.common.pauli_string_bitarray import PauliString
 
 
@@ -382,6 +391,71 @@ class Classification:
             else:
                 algebras[algebra] = nc if nc == 1 else 2**(nc-1)
         return "+".join([key if v == 1 else str(v) + "*" + key for key, v in algebras.items()])
+
+    def get_algebra_basis(self) -> list[npt.NDArray[np.complex128]]:
+        r"""
+        Get the algebra named by :meth:`get_algebra` as explicit matrices in its
+        defining representation, partitioned by direct summand.
+
+        The result is table-driven: it depends only on the algebra label, not on
+        the Pauli strings that generated it.  Each summand is returned as a stack
+        of basis matrices following a fixed convention, so a direct sum
+
+        .. math::
+
+            \bigoplus_{i=1}^{s} \mathfrak{a}(m)
+
+        becomes a list of ``s`` arrays.  The summands are ordered deterministically
+        by ``(algebra family, size)`` regardless of the internal (unordered) graph
+        representation; identical copies appear consecutively.
+
+        Conventions (fixed for a stable downstream ordering, e.g. for the Cartan
+        decomposition pipeline of Wierichs et al., arXiv:2503.19014):
+
+        - ``so(N)``: real antisymmetric, basis :math:`E_{ij} - E_{ji}`
+          (:math:`i < j`); ``N x N``; dimension :math:`N(N-1)/2`.
+        - ``su(N)``: traceless anti-Hermitian (anti-Hermitian generalized
+          Gell-Mann); ``N x N``; dimension :math:`N^2 - 1`.
+        - ``sp(n)``: real ``2n x 2n`` with :math:`X^{T} J + J X = 0`,
+          :math:`J = \begin{bmatrix} 0 & I_n \\ -I_n & 0 \end{bmatrix}`;
+          dimension :math:`n(2n+1)`.
+        - ``u(N)``: anti-Hermitian, the ``su(N)`` basis plus :math:`i I_N`;
+          dimension :math:`N^2`.
+
+        The exact basis ordering and sign choices are documented in
+        :mod:`paulie.application.algebra_basis`.
+
+        Returns:
+            list[npt.NDArray[np.complex128]]: One entry per direct summand, each
+            of shape ``(dim, N, N)`` where ``dim`` is the summand dimension and
+            ``N`` the defining-representation matrix size.  The length of the list
+            equals the number of summands.
+        """
+        # Group by (family, size) so the output ordering is independent of the
+        # unordered ``self.morphs`` iteration order.
+        summands: dict[tuple[int, int], list[npt.NDArray[np.complex128]]] = {}
+        for morph in self.morphs:
+            type_algebra, nc, size = morph.get_algebra_properties()
+            multiplicity = nc if nc == 1 else 2 ** (nc - 1)
+            if type_algebra == TypeAlgebra.U:
+                basis = unitary_basis(size)
+            elif type_algebra == TypeAlgebra.SU:
+                basis = special_unitary_basis(size)
+            elif type_algebra == TypeAlgebra.SP:
+                basis = symplectic_basis(size)
+            elif type_algebra == TypeAlgebra.SO:
+                basis = orthogonal_basis(size)
+            else:
+                continue
+            key = (type_algebra.value, size)
+            bucket = summands.setdefault(key, [])
+            # Each copy is an independent array so consumers may mutate freely.
+            bucket.extend(basis.copy() for _ in range(multiplicity))
+
+        result: list[npt.NDArray[np.complex128]] = []
+        for key in sorted(summands):
+            result.extend(summands[key])
+        return result
 
     def contains_algebra(self, algebra:str) -> bool:
         """

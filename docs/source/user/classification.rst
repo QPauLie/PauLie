@@ -118,6 +118,52 @@ Also measures of operator spread complexity rely on this concept.
 Furthermore, determining moments of circuits can be significantly simplified when the Lie algebra is known.
 All these applications are functionalities of :code:`paulie`.
 
+From the label to concrete matrices
+------------------------------------
+The string returned by :code:`get_algebra` fixes the algebra only up to isomorphism. Many questions
+are already answered by the label alone -- the dimension, for instance, is available directly through
+:code:`get_dla_dim` without ever building an operator. Some tasks, however, genuinely need the algebra
+realised as concrete operators: numerically exponentiating its elements, or feeding a recursive
+Cartan-decomposition / unitary-synthesis pipeline such as :cite:t:`Wierichs_2025`.
+
+For those, :code:`get_algebra_basis` returns the named algebra as a list of matrices in its *defining*
+representation -- one stack of basis matrices per direct summand. The output is table-driven: it depends
+only on the label, not on the generating Pauli strings.
+
+Reusing the two examples above, :math:`\mathfrak{so}(3)` comes back as a single summand of
+:math:`3\times 3` real antisymmetric matrices,
+
+.. code-block:: python
+
+    generators = p(["XY"], n=3)
+    basis = generators.get_algebra_basis()
+    print(len(basis), basis[0].shape)   # (number of summands, (dim, N, N))
+
+outputs
+
+.. code-block:: bash
+
+    1 (3, 3, 3)
+
+while :math:`\mathfrak{sp}(4)` is a single summand of :math:`8\times 8` symplectic matrices
+(:math:`X^{T} J + J X = 0`),
+
+.. code-block:: python
+
+    generators = p(["XY", "XZ"], n=4)
+    basis = generators.get_algebra_basis()
+    print(len(basis), basis[0].shape)
+
+outputs
+
+.. code-block:: bash
+
+    1 (36, 8, 8)
+
+For a direct sum the list has one entry per summand, e.g. :math:`2\,\mathfrak{su}(8)` returns two
+stacks. The basis ordering and sign conventions are fixed and documented in the docstring of
+:code:`get_algebra_basis`, so downstream consumers always receive the same, stable basis.
+
 
 
 
