@@ -10,9 +10,6 @@
 """
 import os
 
-import matplotlib
-matplotlib.use("Agg")
-
 from paulie import get_pauli_string as p
 from paulie import animation_anti_commutation_graph
 
@@ -20,15 +17,15 @@ MEDIA_DIR = os.path.join(os.path.dirname(__file__), "source", "media")
 
 EXAMPLES = {
     # A-type canonical graph -> 4*so(5)
-    "classification_a_type.gif": dict(
-        generators=["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"],
-        n=None,
-    ),
+    "classification_a_type.gif": {
+        "generators": ["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"],
+        "n": None,
+    },
     # B-type canonical graph (a_9) -> sp(4)
-    "classification_b_type.gif": dict(
-        generators=["XY", "XZ"],
-        n=4,
-    ),
+    "classification_b_type.gif": {
+        "generators": ["XY", "XZ"],
+        "n": 4,
+    },
 }
 
 

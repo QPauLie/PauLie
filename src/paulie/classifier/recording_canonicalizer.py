@@ -16,7 +16,6 @@ from typing import Any
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.classifier.canonicalizer import Canonicalizer
 from paulie.classifier.observer import CanonicalizerObserver
-from paulie.classifier.classification import Morph
 from paulie.helpers._recording import RecordGraph, recording_graph
 
 
@@ -126,14 +125,3 @@ class RecordingCanonicalizer(Canonicalizer):
             RecordGraph: Recording of the transformation steps.
         """
         return self.record
-
-    def build_canonical_graph(self, vertex_stack: list[PauliString]) -> Morph:
-        """
-        Build a canonical graph from a stack of connected generators while recording.
-
-        Args:
-            vertex_stack (list[PauliString]): Generator stack.
-        Returns:
-            Morph: Canonical graph.
-        """
-        return super().build_canonical_graph(vertex_stack)
