@@ -116,11 +116,12 @@ outputs
 From the algebra to concrete matrices
 -------------------------------------
 The label returned by :code:`get_algebra` fixes the algebra up to isomorphism, but it is just a name.
-To do anything algebraic with the result — dimension checks, structure constants, or feeding a
-Cartan-decomposition pipeline — the algebra has to be instantiated as concrete operators.
-:code:`get_algebra_basis` returns the named algebra as a list of matrices in its defining
-representation, one stack of basis matrices per direct summand. The output is table-driven: it
-depends only on the label, not on the generating Pauli strings.
+:code:`get_algebra_basis` gives an explicit, standard-form realization of that algebra: it returns
+the named algebra as a list of matrices in its defining representation, one stack of basis matrices
+per direct summand. This is useful when you want concrete operators to compute *with* — for instance
+as the starting point of a Cartan-decomposition pipeline, which is naturally expressed in the
+defining representation. The output is table-driven: it depends only on the label, not on the
+generating Pauli strings.
 
 Reusing the two examples above, :math:`\mathfrak{so}(3)` is returned as a single summand of
 :math:`3\times 3` real antisymmetric matrices:
