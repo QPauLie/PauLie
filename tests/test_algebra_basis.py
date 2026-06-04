@@ -1,0 +1,144 @@
+"""
+Tests for the defining-representation basis of the classified Lie algebra
+(``get_algebra_basis``).
+
+Covers one input per canonical type (A / B1 / B2 / B3 of Theorem 1 in
+Aguilar et al. 2024) plus a direct-sum input with more than one summand.
+"""
+import numpy as np
+import pytest
+from paulie import (
+    get_pauli_string as p,
+    symplectic_form,
+)
+
+TOL = 1e-9
+
+
+# Helpers
+def _flatten_real(mat: np.ndarray) -> np.ndarray:
+    """Real-linear coordinates of a complex matrix."""
+    flat = mat.reshape(-1)
+    return np.concatenate([flat.real, flat.imag])
+
+
+def _span_matrix(basis: np.ndarray) -> np.ndarray:
+    """Stack the real coordinates of every basis matrix as rows."""
+    return np.vstack([_flatten_real(basis[i]) for i in range(basis.shape[0])])
+
+
+def _is_full_rank(basis: np.ndarray) -> bool:
+    span = _span_matrix(basis)
+    return np.linalg.matrix_rank(span, tol=TOL) == basis.shape[0]
+
+
+def _brackets_close(basis: np.ndarray) -> bool:
+    """Every commutator of basis elements stays in the span of the basis."""
+    span = _span_matrix(basis)
+    rank = np.linalg.matrix_rank(span, tol=TOL)
+    extra = [
+        _flatten_real(basis[i] @ basis[j] - basis[j] @ basis[i])
+        for i in range(basis.shape[0])
+        for j in range(i + 1, basis.shape[0])
+    ]
+    augmented = np.vstack([span, *extra])
+    return np.linalg.matrix_rank(augmented, tol=TOL) == rank
+
+
+# One input per canonical type (A / B1 / B2 / B3) plus a direct-sum input
+def test_so_summand():
+    basis = p(["XY"], n=3).get_algebra_basis()
+    assert len(basis) == 1
+    summand = basis[0]
+    assert summand.shape == (3, 3, 3)
+    # real antisymmetric
+    for mat in summand:
+        assert np.allclose(mat + mat.T, 0.0, atol=TOL)
+        assert np.allclose(mat.imag, 0.0, atol=TOL)
+    assert _is_full_rank(summand)
+    assert _brackets_close(summand)
+
+
+def test_sp_summand():
+    coll = p(["XY", "XZ"], n=4)
+    assert coll.get_algebra() == "sp(4)"
+    basis = coll.get_algebra_basis()
+    assert len(basis) == 1
+    summand = basis[0]
+    assert summand.shape == (36, 8, 8)
+    form = symplectic_form(4)
+    for mat in summand:
+        # defining condition X^T J + J X = 0
+        assert np.allclose(mat.T @ form + form @ mat, 0.0, atol=TOL)
+    assert _is_full_rank(summand)
+    assert _brackets_close(summand)
+
+
+def test_so_power_of_two_summand():
+    """B2 canonical type: so(2^k). a11 at n=4 -> so(16)."""
+    from paulie import G_LIE
+
+    coll = p(G_LIE["a11"], n=4)
+    assert coll.get_algebra() == "so(16)"
+    basis = coll.get_algebra_basis()
+    assert len(basis) == 1
+    summand = basis[0]
+    assert summand.shape == (120, 16, 16)
+    for mat in summand:
+        assert np.allclose(mat + mat.T, 0.0, atol=TOL)
+    assert _is_full_rank(summand)
+    assert _brackets_close(summand)
+
+
+def test_su_direct_sum():
+    """B3 with n_1 >= 1: direct sum 2*su(8)."""
+    coll = p(["XX", "YY", "ZZ", "ZY"], n=4)
+    assert coll.get_algebra() == "2*su(8)"
+    basis = coll.get_algebra_basis()
+    assert len(basis) == 2
+    for summand in basis:
+        assert summand.shape == (63, 8, 8)
+        for mat in summand:
+            # traceless anti-Hermitian
+            assert np.allclose(mat + mat.conj().T, 0.0, atol=TOL)
+            assert abs(np.trace(mat)) < TOL
+        assert _is_full_rank(summand)
+        assert _brackets_close(summand)
+
+
+def test_cross_summand_brackets_vanish():
+    """Block-embedding distinct summands gives commuting blocks."""
+    basis = p(["XX", "YY", "ZZ", "ZY"], n=4).get_algebra_basis()
+    assert len(basis) == 2
+    first, second = basis[0], basis[1]
+    size = first.shape[1]
+    # Embed summand 0 in the top-left block and summand 1 in the bottom-right.
+    top = np.zeros((2 * size, 2 * size), dtype=np.complex128)
+    top[:size, :size] = first[0]
+    bottom = np.zeros((2 * size, 2 * size), dtype=np.complex128)
+    bottom[size:, size:] = second[1]
+    assert np.allclose(top @ bottom - bottom @ top, 0.0, atol=TOL)
+
+
+# Consistency with the existing dimension count
+@pytest.mark.parametrize(
+    "generators, n",
+    [
+        (["XY", "XZ"], 4),
+        (["XY"], 3),
+        (["XY"], 2),  # u(1)
+        (["XX", "YY", "ZZ", "ZY"], 4),
+    ],
+)
+def test_total_dimension_matches_dla_dim(generators, n):
+    coll = p(generators, n=n)
+    basis = coll.get_algebra_basis()
+    total = sum(summand.shape[0] for summand in basis)
+    assert total == coll.get_dla_dim()
+
+
+def test_summand_count_matches_label():
+    # Single summand for n_1 = 0 ...
+    assert len(p(["XY"], n=3).get_algebra_basis()) == 1
+    # ... and one entry per copy for a multi-summand label.
+    assert len(p(["XX", "YY", "ZZ", "ZY"], n=4).get_algebra_basis()) == 2

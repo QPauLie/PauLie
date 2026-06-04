@@ -4,6 +4,14 @@
 import enum
 from collections.abc import Generator
 
+import numpy as np
+
+from paulie.application.algebra_basis import (
+    so_basis,
+    sp_basis,
+    su_basis,
+    u_basis,
+)
 from paulie.common.pauli_string_bitarray import PauliString
 
 
@@ -382,6 +390,67 @@ class Classification:
             else:
                 algebras[algebra] = nc if nc == 1 else 2**(nc-1)
         return "+".join([key if v == 1 else str(v) + "*" + key for key, v in algebras.items()])
+
+    def get_algebra_basis(self) -> list[np.ndarray]:
+        r"""
+        Get the algebra named by :meth:`get_algebra` as concrete matrices in its
+        defining representation, partitioned by direct summand.
+
+        The output is fully determined by the algebra label (it is table-driven);
+        it does not depend on the particular Pauli strings that generated the
+        algebra.  The full algebra
+
+        .. math::
+
+            \bigoplus_{i=1}^{s} \mathfrak{a}(m)
+
+        is returned as a list of ``s`` summands, each a stack of basis matrices.
+
+        Conventions (fixed for a stable downstream ordering):
+
+        - ``so(N)``: real antisymmetric, basis :math:`E_{ij} - E_{ji}`,
+          :math:`i < j`. Matrices are ``N x N``, dimension ``N(N-1)/2``.
+        - ``su(N)``: traceless anti-Hermitian, the generalized Gell-Mann basis
+          times :math:`i`. Matrices are ``N x N``, dimension ``N^2 - 1``.
+        - ``sp(n)``: real ``2n x 2n`` matrices :math:`X` with
+          :math:`X^{T} J + J X = 0`, :math:`J = [[0, I_n], [-I_n, 0]]`,
+          dimension ``n(2n+1)``.
+        - ``u(N)``: anti-Hermitian, the ``su(N)`` basis plus :math:`i I`,
+          dimension ``N^2``.
+
+        See :mod:`paulie.application.algebra_basis` for the full basis ordering.
+
+        Summands are ordered by ``(algebra type, size)``; identical copies of a
+        summand are returned consecutively.
+
+        Returns:
+            list[np.ndarray]: One entry per direct summand. Each entry has shape
+            ``(dim, N, N)``, where ``dim`` is the algebra dimension and ``N`` the
+            defining-representation matrix size. The length of the list equals
+            the number of summands.
+        """
+        summands: dict[tuple[int, int], list[np.ndarray]] = {}
+        for morph in self.morphs:
+            type_algebra, nc, size = morph.get_algebra_properties()
+            multiplicity = nc if nc == 1 else 2 ** (nc - 1)
+            if type_algebra == TypeAlgebra.U:
+                basis = u_basis(size)
+            elif type_algebra == TypeAlgebra.SU:
+                basis = su_basis(size)
+            elif type_algebra == TypeAlgebra.SP:
+                basis = sp_basis(size)
+            elif type_algebra == TypeAlgebra.SO:
+                basis = so_basis(size)
+            else:
+                continue
+            summands.setdefault((type_algebra.value, size), [])
+            summands[(type_algebra.value, size)].extend(
+                basis for _ in range(multiplicity)
+            )
+        result: list[np.ndarray] = []
+        for key in sorted(summands):
+            result.extend(summands[key])
+        return result
 
     def contains_algebra(self, algebra:str) -> bool:
         """

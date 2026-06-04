@@ -113,6 +113,49 @@ outputs
 
     algebra = sp(4)
 
+From the algebra to concrete matrices
+-------------------------------------
+The label returned by :code:`get_algebra` fixes the algebra up to isomorphism, but it is just a name.
+To do anything algebraic with the result — dimension checks, structure constants, or feeding a
+Cartan-decomposition pipeline — the algebra has to be instantiated as concrete operators.
+:code:`get_algebra_basis` returns the named algebra as a list of matrices in its defining
+representation, one stack of basis matrices per direct summand. The output is table-driven: it
+depends only on the label, not on the generating Pauli strings.
+
+Reusing the two examples above, :math:`\mathfrak{so}(3)` is returned as a single summand of
+:math:`3\times 3` real antisymmetric matrices:
+
+.. code-block:: python
+
+    generators = p(["XY"], n=3)
+    basis = generators.get_algebra_basis()
+    print(len(basis), basis[0].shape)   # number of summands, (dim, N, N)
+
+outputs
+
+.. code-block:: bash
+
+    1 (3, 3, 3)
+
+while :math:`\mathfrak{sp}(4)` is a single summand of :math:`8\times 8` symplectic matrices
+(:math:`X^{T} J + J X = 0`):
+
+.. code-block:: python
+
+    generators = p(["XY", "XZ"], n=4)
+    basis = generators.get_algebra_basis()
+    print(len(basis), basis[0].shape)
+
+outputs
+
+.. code-block:: bash
+
+    1 (36, 8, 8)
+
+For a direct sum such as :math:`2\,\mathfrak{su}(8)` the list has one entry per summand.
+The basis ordering and sign conventions are fixed and documented in the docstring of
+:code:`get_algebra_basis`, so downstream consumers get a stable basis.
+
 The Lie algebra plays a pivotal role in quantum control theory to understand the reachability of states.
 Also measures of operator spread complexity rely on this concept.
 Furthermore, determining moments of circuits can be significantly simplified when the Lie algebra is known.

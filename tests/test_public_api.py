@@ -51,6 +51,11 @@ public_symbols = [
     "get_pauli_weights",
     "matrix_decomposition",
     "matrix_decomposition_diagonal",
+    "so_basis",
+    "su_basis",
+    "sp_basis",
+    "u_basis",
+    "symplectic_form",
 
     # Classification
     "Morph",

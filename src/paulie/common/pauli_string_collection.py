@@ -570,6 +570,24 @@ class PauliStringCollection:
         classification = self.get_class()
         return str(classification.get_algebra())
 
+    def get_algebra_basis(self) -> list[np.ndarray]:
+        r"""
+        Get the dynamical Lie algebra named by :meth:`get_algebra` as concrete
+        matrices in its defining representation, partitioned by direct summand.
+
+        The result is table-driven: it depends only on the algebra label, not on
+        the particular Pauli strings. Each summand is returned as a stack of
+        basis matrices following a fixed, documented convention (see
+        :meth:`paulie.Classification.get_algebra_basis`).
+
+        Returns:
+            list[np.ndarray]: One entry per direct summand, each of shape
+            ``(dim, N, N)`` with ``N`` the defining-representation size. The
+            length of the list equals the number of summands.
+        """
+        classification = self.get_class()
+        return classification.get_algebra_basis()
+
     def is_algebra(self, algebra: str) -> bool:
         """
         Checks whether the classified algebra is equal to the given algebra.
