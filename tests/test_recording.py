@@ -1,6 +1,4 @@
 """Tests for the recording / animation machinery wrapping the canonicalizer."""
-import matplotlib
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pytest
 
