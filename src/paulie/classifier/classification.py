@@ -431,17 +431,30 @@ class Classification:
         Returns:
             bool: True if the algebra matches this algebra.
         """
-        _algebra = self.get_algebra()
-        algebras = self._parse_algebra(algebra)
-        _algebras = _algebra.split("+")
-        if len(algebras) != len(_algebras):
-            return False
-        algebras.sort()
-        _algebras.sort()
-        for i, a in enumerate(algebras):
-            if a != _algebras[i] and a != self.get_isomorphism(_algebras[i]):
-                return False
-        return True
+        return self._canonicalize_algebra(algebra) == self._canonicalize_algebra(
+            self.get_algebra()
+        )
+
+    def _canonicalize_algebra(self, algebra: str) -> dict[str, int]:
+        """Return an algebra decomposition after applying low-rank isomorphisms."""
+        canonical: dict[str, int] = {}
+        pending = self._parse_algebra(algebra)
+
+        while pending:
+            term = pending.pop()
+            isomorphism = self.get_isomorphism(term)
+            if isomorphism is not None:
+                pending.append(isomorphism)
+                continue
+
+            multiplicity = 1
+            core = term
+            if "*" in term:
+                raw_multiplicity, core = term.split("*")
+                multiplicity = int(raw_multiplicity)
+            canonical[core] = canonical.get(core, 0) + multiplicity
+
+        return canonical
 
     def get_subalgebras(self, algebra:str=None) -> list[str]:
         """
@@ -495,7 +508,10 @@ class Classification:
         """
         return {"2*so(2)":"2*su(2)",
                 "so(3)":"su(2)",
-                "so(4)":"2*su(2)"
+                "so(4)":"2*su(2)",
+                "sp(1)":"su(2)",
+                "so(5)":"sp(2)",
+                "so(6)":"su(4)"
                }
 
     def get_isomorphism(self, algebra:str)->str|None:
@@ -505,7 +521,7 @@ class Classification:
         Args:
             algebra (str): Name of algebra.
         Returns:
-            str: Isomorphic algebra.
+            str | None: Isomorphic algebra, or None if no isomorphism is known.
         """
         n = 1
         core_algebra = ""
@@ -525,7 +541,7 @@ class Classification:
                 isomorph_n *= n
                 return (f"{isomorph_core_algebra}" if isomorph_n == 1
                        else f"{isomorph_n}*{isomorph_core_algebra}")
-            return "None"
+            return None
         return self.get_isomorphisms()[algebra]
 
     def get_dla_dim(self) -> int:
