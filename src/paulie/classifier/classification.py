@@ -44,7 +44,7 @@ class Morph:
            legs (list[list[PauliString]]): The center of the graph followed by the list of legs.
            independents (list[PauliString]): List of independent vertices.
            generators (list[PauliString]): list of generators
-        Returns: 
+        Returns:
             None
         """
         self.legs = legs # center is zero leg
