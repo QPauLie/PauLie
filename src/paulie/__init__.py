@@ -34,6 +34,12 @@ from .application.matrix_decomposition import (
     matrix_decomposition,
     matrix_decomposition_diagonal
 )
+from .application.algebra_basis import (
+    so_basis,
+    su_basis,
+    sp_basis,
+    u1_basis,
+)
 
 # Classification
 from .classifier.classification import (
@@ -86,6 +92,10 @@ __all__ = [
     "get_pauli_weights",
     "matrix_decomposition",
     "matrix_decomposition_diagonal",
+    "so_basis",
+    "su_basis",
+    "sp_basis",
+    "u1_basis",
 
     # Classification
     "Morph",

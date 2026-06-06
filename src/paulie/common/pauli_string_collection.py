@@ -629,6 +629,17 @@ class PauliStringCollection:
         """
         return int(self.get_class().get_dla_dim())
 
+    def get_algebra_basis(self) -> list[np.ndarray]:
+        """
+        Return the defining-representation matrix basis for the classified DLA,
+        partitioned by direct summand.
+
+        Delegates to
+        :meth:`paulie.classifier.classification.Classification.get_algebra_basis`.
+        See that method's docstring for shape conventions.
+        """
+        return self.get_class().get_algebra_basis()
+
     def get_dependents(self) -> PauliStringCollection:
         """
         Get a list of dependent strings in the collection.

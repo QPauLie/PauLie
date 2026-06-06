@@ -162,3 +162,25 @@ All these applications are functionalities of :code:`paulie`.
 
 
 
+
+Obtaining a concrete matrix basis
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``get_algebra`` returns a label; ``get_algebra_basis`` returns the algebra as
+concrete matrices in its defining representation, partitioned by direct
+summand::
+
+    from paulie import get_pauli_string as p
+
+    # B1-type: sp(4), one summand, 36 generators in 8x8 matrices
+    basis = p(["XY", "XZ"], n=4).get_algebra_basis()
+    print(len(basis))          # 1
+    print(basis[0].shape)      # (36, 8, 8)
+
+    # A-type example
+    gens_a = ["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"]
+    basis_a = p(gens_a).get_algebra_basis()
+    print(len(basis_a))        # number of direct summands
+
+Basis conventions are documented in
+``src/paulie/application/algebra_basis.py``.
