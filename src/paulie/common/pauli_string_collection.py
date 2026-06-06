@@ -570,6 +570,30 @@ class PauliStringCollection:
         classification = self.get_class()
         return str(classification.get_algebra())
 
+    def get_algebra_basis(self) -> list:
+        r"""
+        Get the matrix-basis form of the dynamical Lie algebra named by
+        :meth:`get_algebra`.
+
+        See :meth:`paulie.classifier.classification.Classification.get_algebra_basis`
+        for the full specification. The returned list has one entry per direct
+        summand; each entry is a ``numpy`` array of shape ``(dim, M, M)``
+        containing the defining-representation generators of that summand.
+
+        Returns:
+            list[np.ndarray]: One matrix basis per summand of the algebra.
+
+        Examples:
+            >>> from paulie import get_pauli_string as p
+            >>> basis = p(["XY"], n=3).get_algebra_basis()
+            >>> len(basis)                       # so(3) has 1 summand
+            1
+            >>> basis[0].shape                   # dim so(3) = 3, 3x3 matrices
+            (3, 3, 3)
+        """
+        classification = self.get_class()
+        return classification.get_algebra_basis()
+
     def is_algebra(self, algebra: str) -> bool:
         """
         Checks whether the classified algebra is equal to the given algebra.

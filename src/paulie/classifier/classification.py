@@ -4,6 +4,14 @@
 import enum
 from collections.abc import Generator
 
+import numpy as np
+
+from paulie.application.algebra_basis import (
+    so_basis,
+    sp_basis,
+    su_basis,
+    u_basis,
+)
 from paulie.common.pauli_string_bitarray import PauliString
 
 
@@ -382,6 +390,64 @@ class Classification:
             else:
                 algebras[algebra] = nc if nc == 1 else 2**(nc-1)
         return "+".join([key if v == 1 else str(v) + "*" + key for key, v in algebras.items()])
+
+    def get_algebra_basis(self) -> list[np.ndarray]:
+        r"""
+        Get the dynamical Lie algebra as a list of matrix bases, one entry per
+        direct summand.
+
+        Whereas :meth:`get_algebra` returns the isomorphism *label* of the algebra
+        (e.g. ``"4*so(5)"``), this method returns the actual generators of each
+        summand in its defining representation, as ``numpy`` arrays. The list has
+        length equal to the total number of summands implied by the label:
+        ``len(basis)`` for ``"4*so(5)"`` is ``4``, and each entry is a stack of
+        shape ``(10, 5, 5)`` (since :math:`\dim \mathfrak{so}(5) = 10`).
+
+        Each summand's generators satisfy the defining property of its algebra:
+        anti-symmetry for :math:`\mathfrak{so}`, the symplectic relation
+        :math:`M^\top J + J M = 0` for :math:`\mathfrak{sp}`, and anti-Hermiticity
+        (plus tracelessness for :math:`\mathfrak{su}`) for
+        :math:`\mathfrak{su}` / :math:`\mathfrak{u}`.
+
+        Conventions (matching :func:`paulie.application.algebra_basis.so_basis`,
+        :func:`paulie.application.algebra_basis.sp_basis`,
+        :func:`paulie.application.algebra_basis.su_basis`,
+        :func:`paulie.application.algebra_basis.u_basis`):
+
+        - :math:`\mathfrak{so}(N)`: real antisymmetric :math:`N \times N` matrices
+          :math:`E_{ij} - E_{ji}` for :math:`i < j`. Dim :math:`N(N-1)/2`.
+        - :math:`\mathfrak{sp}(N)`: rank-:math:`N` symplectic, acting as
+          :math:`2N \times 2N` matrices satisfying :math:`M^\top J + JM = 0` with
+          :math:`J = \begin{pmatrix} 0 & I_N \\ -I_N & 0 \end{pmatrix}`. Dim
+          :math:`N(2N+1)`.
+        - :math:`\mathfrak{su}(N)`: traceless anti-Hermitian :math:`N \times N`.
+          Built from the generalised Gell-Mann matrices. Dim :math:`N^2 - 1`.
+        - :math:`\mathfrak{u}(N)`: :math:`\mathfrak{su}(N)` plus the central
+          generator :math:`i I_N`. Dim :math:`N^2`.
+
+        Returns:
+            list[np.ndarray]: One entry per summand. Each entry has shape
+            ``(dim, M, M)`` where ``dim`` is the algebra's dimension and ``M``
+            its defining-representation matrix size. Real dtype for
+            :math:`\mathfrak{so}` and :math:`\mathfrak{sp}`, complex for
+            :math:`\mathfrak{su}` and :math:`\mathfrak{u}`.
+        """
+        out: list[np.ndarray] = []
+        for morph in self.morphs:
+            type_algebra, nc, size = morph.get_algebra_properties()
+            multiplicity = nc if nc == 1 else 2**(nc - 1)
+            if type_algebra == TypeAlgebra.SO:
+                summand = so_basis(size)
+            elif type_algebra == TypeAlgebra.SP:
+                summand = sp_basis(size)
+            elif type_algebra == TypeAlgebra.SU:
+                summand = su_basis(size)
+            elif type_algebra == TypeAlgebra.U:
+                summand = u_basis(size)
+            else:
+                continue
+            out.extend(summand for _ in range(multiplicity))
+        return out
 
     def contains_algebra(self, algebra:str) -> bool:
         """

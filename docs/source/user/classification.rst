@@ -118,6 +118,48 @@ Also measures of operator spread complexity rely on this concept.
 Furthermore, determining moments of circuits can be significantly simplified when the Lie algebra is known.
 All these applications are functionalities of :code:`paulie`.
 
+From algebra label to matrix basis
+----------------------------------
+:code:`get_algebra` returns the isomorphism *label* of the dynamical Lie algebra,
+which is enough to tell apart algebras up to isomorphism but cannot be
+multiplied, exponentiated, or commuted with anything. The companion method
+:code:`get_algebra_basis` returns the algebra as a concrete set of matrix
+generators in the defining representation, partitioned by direct summand.
+
+Reusing the two examples above, the single-summand B-type case
+
+.. code-block:: python
+
+    n_qubits = 4
+    generators = p(["XY", "XZ"], n=n_qubits)
+    basis = generators.get_algebra_basis()
+    print(f"summands = {len(basis)}, shape per summand = {basis[0].shape}")
+
+outputs
+
+.. code-block:: bash
+
+    summands = 1, shape per summand = (36, 8, 8)
+
+reflecting that :math:`\mathfrak{sp}(4)` has dimension :math:`4 \cdot (2 \cdot 4 + 1) = 36`
+and acts on an :math:`8`-dimensional space. The direct-sum A-type example
+
+.. code-block:: python
+
+    generators = p(["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"])
+    basis = generators.get_algebra_basis()
+    print(f"summands = {len(basis)}, shape per summand = {basis[0].shape}")
+
+outputs
+
+.. code-block:: bash
+
+    summands = 4, shape per summand = (10, 5, 5)
+
+matching :math:`4 \cdot \mathfrak{so}(5)` with :math:`\dim \mathfrak{so}(5) = 10`.
+Each entry of the returned list is one full summand basis; the generators of
+different summands have disjoint supports when embedded in the full direct sum.
+
 
 
 
