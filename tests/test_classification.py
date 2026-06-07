@@ -18,8 +18,8 @@ N_FOR_EQUIVALENCE = [4, 5, 6, 7, 8]
 
 # System sizes used for the explicit `is_algebra` checks of every
 # tabulated algebra.  Starts at n = 5 so that the library's canonical
-# algebra string matches the tabulated formula without needing any
-# small-n Lie-algebra isomorphisms.
+# algebra string matches the tabulated formula for families whose
+# closed-form expression has additional small-n exceptions.
 N_FOR_EXPLICIT = [5, 6, 7, 8, 9, 10]
 
 A_TYPE_NAMES = [f"a{i}" for i in range(23)]
@@ -60,7 +60,6 @@ def test_multiple_algebra_equivalences(
 # ---------------------------------------------------------------------------
 # Explicit tabulated algebras: a-type
 # ---------------------------------------------------------------------------
-# Consider isomorphisms and improve is_algebra
 @pytest.mark.parametrize("n", N_FOR_EXPLICIT)
 @pytest.mark.parametrize("name", A_TYPE_NAMES)
 def test_a_type_explicit_algebras(name: str, n: int) -> None:
@@ -101,6 +100,33 @@ def test_explicit_algebras_small_n() -> None:
     assert p(["XX", "YY", "ZZ", "ZY"]).is_algebra("u(1)+2*su(2)")  # Example III.8
     assert p(["XY"]).is_algebra("u(1)")                            # Example I.4
     assert p(["XY"], n=3).is_algebra("so(3)")
-    # n = 3 is deliberately not swept in the parametrised tests above:
-    # e.g. a6(3) ~= su(4) ~= so(6), but is_algebra does not collapse
-    # that small-n isomorphism (see comment above A_TYPE tests).
+
+
+@pytest.mark.parametrize(
+    ("name", "n", "actual", "isomorphism", "accepted"),
+    [
+        ("a9", 2, "so(3)", "su(2)", "sp(1)"),
+        ("a3", 3, "so(5)", "sp(2)", "sp(2)"),
+        ("a6", 3, "so(6)", "su(4)", "su(4)"),
+        ("a13", 3, "2*so(6)", "2*su(4)", "2*su(4)"),
+    ],
+)
+def test_low_rank_isomorphisms(
+    name: str, n: int, actual: str, isomorphism: str, accepted: str
+) -> None:
+    """Small-rank Lie algebra isomorphisms match generated classifications."""
+    generators = p(G_LIE[name], n=n)
+    classification = generators.get_class()
+
+    assert generators.get_algebra() == actual
+    assert classification.get_isomorphism(actual) == isomorphism
+    assert generators.is_algebra(accepted)
+
+
+@pytest.mark.parametrize("name", ["a3", "a5", "a6", "a7", "a9", "a10"])
+def test_a_type_low_rank_isomorphic_algebras_at_n3(name: str) -> None:
+    """Selected n=3 a-type families match through low-rank isomorphisms."""
+    expected = two_local_algebras(3)[name]
+    assert p(G_LIE[name], n=3).is_algebra(expected), (
+        f"{name} at n=3: expected {expected}"
+    )

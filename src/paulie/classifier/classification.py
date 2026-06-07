@@ -439,7 +439,13 @@ class Classification:
         algebras.sort()
         _algebras.sort()
         for i, a in enumerate(algebras):
-            if a != _algebras[i] and a != self.get_isomorphism(_algebras[i]):
+            _a = _algebras[i]
+            a_isomorphism = self.get_isomorphism(a)
+            _a_isomorphism = self.get_isomorphism(_a)
+            if (a != _a
+                and a != _a_isomorphism
+                and _a != a_isomorphism
+                and not (a_isomorphism is not None and a_isomorphism == _a_isomorphism)):
                 return False
         return True
 
@@ -495,7 +501,10 @@ class Classification:
         """
         return {"2*so(2)":"2*su(2)",
                 "so(3)":"su(2)",
-                "so(4)":"2*su(2)"
+                "so(4)":"2*su(2)",
+                "sp(1)":"su(2)",
+                "so(5)":"sp(2)",
+                "so(6)":"su(4)"
                }
 
     def get_isomorphism(self, algebra:str)->str|None:
@@ -525,7 +534,7 @@ class Classification:
                 isomorph_n *= n
                 return (f"{isomorph_core_algebra}" if isomorph_n == 1
                        else f"{isomorph_n}*{isomorph_core_algebra}")
-            return "None"
+            return None
         return self.get_isomorphisms()[algebra]
 
     def get_dla_dim(self) -> int:
