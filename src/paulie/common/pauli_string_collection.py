@@ -1019,3 +1019,11 @@ class PauliStringCollection:
         if len(self.generators) == 0:
             return None
         return PauliStringCollection(self.generators[1:]).nested_adjoint(self.generators[0])
+
+    def get_algebra_basis(self) -> list:
+        """Baza algebry w rep definiujacej."""
+        from paulie.helpers._lie_bases import (
+            get_algebra_basis_from_label,
+        )
+        lbl = self.get_algebra()
+        return get_algebra_basis_from_label(lbl)
