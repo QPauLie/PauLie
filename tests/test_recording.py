@@ -4,6 +4,7 @@ import pytest
 
 from paulie import get_pauli_string as p
 from paulie.helpers._recording import RecordGraph
+from paulie.helpers.drawing import save_role_legend, NODE_ROLE_COLORS, NODE_ROLE_LABELS
 from paulie.classifier.recording_canonicalizer import RecordingCanonicalizer
 from paulie.application.animation import animation_anti_commutation_graph
 
@@ -72,6 +73,23 @@ def test_terminal_frame_is_canonical_type():
     last = record.get_frame(record.get_size() - 1)
     assert last.get_title().startswith("Canonical graph")
     assert last.get_lighting() is None
+
+
+def test_terminal_frame_title_has_algebra_name():
+    """The final frame title includes the algebra of the component (gksmail review)."""
+    generators, n, expected = B_TYPE
+    record, _ = _frames_via_collection(generators, n)
+    last = record.get_frame(record.get_size() - 1)
+    assert expected in last.get_title()  # e.g. "Canonical graph of type B1: sp(4)"
+
+
+def test_role_legend_renders(tmp_path):
+    """The colour legend renders to an image file."""
+    # Every labelled role must have a colour, so the legend is complete.
+    assert set(NODE_ROLE_LABELS) <= set(NODE_ROLE_COLORS)
+    out = tmp_path / "legend.png"
+    save_role_legend(str(out))
+    assert out.exists() and out.stat().st_size > 0
 
 
 def test_every_frame_graph_is_well_formed():

@@ -219,6 +219,22 @@ class Morph:
             return TypeAlgebra.SU, one_legs, 2**(two_legs + 2)
         return None, None, None
 
+    def get_algebra(self) -> str:
+        """
+        Get the Lie algebra of this single canonical graph as a string.
+
+        Returns:
+            str: The algebra, e.g. ``"sp(4)"`` or ``"4*so(5)"``.
+        """
+        type_algebra, nc, size = self.get_algebra_properties()
+        name = {TypeAlgebra.U: "u", TypeAlgebra.SU: "su",
+                TypeAlgebra.SP: "sp", TypeAlgebra.SO: "so"}.get(type_algebra)
+        if name is None:
+            return ""
+        algebra = f"{name}({size})"
+        multiplicity = nc if nc == 1 else 2**(nc - 1)
+        return algebra if multiplicity == 1 else f"{multiplicity}*{algebra}"
+
     def gen_independent_pair(self
         )-> Generator[list[list[PauliString]], None, None]:
         """

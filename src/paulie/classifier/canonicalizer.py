@@ -460,7 +460,8 @@ class Canonicalizer:
         morph = self._get_morph()
         if self.events.has_subscribers():
             try:
-                self._notify(f"Canonical graph of type {morph.get_type().name}")
+                self._notify(
+                    f"Canonical graph of type {morph.get_type().name}: {morph.get_algebra()}")
             except Exception:  # pylint: disable=broad-except
                 self._notify("Canonical graph")
         return morph
