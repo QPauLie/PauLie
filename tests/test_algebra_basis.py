@@ -3,17 +3,31 @@ import pytest
 from paulie import get_pauli_string as p
 
 
+def check_linear_independence(basis_tensor):
+    """Verify linear independence of basis."""
+    dim = basis_tensor.shape[0]
+    # Flatten matrices [dim, N, N] do [dim, N*N]
+    flat_shape = (dim, -1)
+    flat_mats = basis_tensor.reshape(flat_shape)
+    # Compute algebraic rank of vector set
+    rank = np.linalg.matrix_rank(flat_mats)
+    assert rank == dim
+
+
 def test_canonical_type_so():
     gens = p(["IX", "XI"], n=2)
     basis = gens.get_algebra_basis()
     assert len(basis) >= 1
     for summand in basis:
         dim, N, _ = summand.shape
-        # Dla u(1) wymiar to 1, dla reszty wzor so
+        # For u(1) dimension is 1, otherwise use so formula
         if N == 1:
             assert dim == 1
         else:
             assert dim == (N * (N - 1)) // 2
+
+        # Sprawdzenie liniowej niezaleznosci
+        check_linear_independence(summand)
 
 
 def test_canonical_type_sp():
@@ -35,9 +49,14 @@ def test_canonical_type_sp():
         cond = mat.T @ J + J @ mat
         assert np.allclose(cond, 0.0)
 
+    # Sprawdzenie liniowej niezaleznosci
+    check_linear_independence(summand)
+
 
 def test_canonical_type_su():
-    from paulie.helpers._lie_bases import get_su_basis
+    from paulie.helpers._lie_bases import (
+        get_su_basis,
+    )
 
     basis = get_su_basis(3)
     dim, N, _ = basis.shape
@@ -47,3 +66,6 @@ def test_canonical_type_su():
             mat, -mat.view(np.ndarray).conj().T
         )
         assert np.allclose(np.trace(mat), 0.0)
+
+    # Sprawdzenie liniowej niezaleznosci
+    check_linear_independence(basis)
