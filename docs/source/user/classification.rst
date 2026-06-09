@@ -93,35 +93,14 @@ captured frames into an animation:
         storage={"filename": "classification.gif", "writer": "pillow"},
     )
 
-Each frame highlights the role a vertex currently plays. The colour legend is:
+Each frame highlights the role a vertex currently plays, following this colour legend:
 
-.. table:: Colour legend for the node roles tracked while building the canonical graph.
+.. image:: ../media/classification_legend.png
+   :alt: Colour legend for the node roles tracked while building the canonical graph
+   :align: center
 
-   +-----------------------+--------------------------------------------------------------+
-   | Colour                | Node role                                                    |
-   +=======================+==============================================================+
-   | red                   | vertex currently being added (lighting)                      |
-   +-----------------------+--------------------------------------------------------------+
-   | dark slate gray       | dependent vertex                                             |
-   +-----------------------+--------------------------------------------------------------+
-   | cyan                  | lit vertex                                                   |
-   +-----------------------+--------------------------------------------------------------+
-   | light gray            | unlit vertex                                                 |
-   +-----------------------+--------------------------------------------------------------+
-   | teal                  | vertex currently being contracted                            |
-   +-----------------------+--------------------------------------------------------------+
-   | lime green            | attachment target (appending)                                |
-   +-----------------------+--------------------------------------------------------------+
-   | black                 | vertex being temporarily removed                             |
-   +-----------------------+--------------------------------------------------------------+
-   | dark magenta          | vertex being replaced                                        |
-   +-----------------------+--------------------------------------------------------------+
-   | slate blue            | lit vertex in a leg of length one (``p``)                    |
-   +-----------------------+--------------------------------------------------------------+
-   | magenta               | unlit vertex in a leg of length one (``q``)                  |
-   +-----------------------+--------------------------------------------------------------+
-
-The two worked examples below are illustrated with such animations.
+The two worked examples below are illustrated with interactive players. Use the controls to play,
+pause, or step through the construction frame by frame.
 
 Classification of A-type canonical graph
 ----------------------------------------
@@ -139,14 +118,13 @@ outputs
 
     algebra = 4*so(5)
 
-The animation below follows the construction of one of the four canonical components. Starting from
+The player below follows the construction of one of the four canonical components. Starting from
 the input anticommutation graph, each generator is added in turn (red), attached to the centre or to
-a leg (lime green), and length-one legs in different lit states are merged using the ``p`` (slate
-blue) and ``q`` (magenta) vertices, until the A-type star graph is obtained:
+a leg (green), and length-one legs in different lit states are merged using the ``p`` (blue) and
+``q`` (pink) vertices, until the A-type star graph is obtained:
 
-.. image:: ../media/classification_a_type.gif
-   :alt: Animation of the A-type canonical graph construction
-   :align: center
+.. raw:: html
+   :file: ../media/classification_a_type.html
 
 According to the table, the resultant graph corresponds to :math:`\mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)\oplus \mathfrak{so}(5)`. But it is worth noting that it also corresponds to :math:`\mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)\oplus \mathfrak{sp}(2)`. This shows that there is an exceptional isomorphism between :math:`\mathfrak{so}(5)` and :math:`\mathfrak{sp}(2)`.
 
@@ -170,9 +148,8 @@ outputs
 Here the contractions reduce the graph to a single long leg attached to the centre, the canonical
 form of type B1 corresponding to :math:`\mathfrak{sp}(4)`:
 
-.. image:: ../media/classification_b_type.gif
-   :alt: Animation of the B-type canonical graph construction
-   :align: center
+.. raw:: html
+   :file: ../media/classification_b_type.html
 
 The Lie algebra plays a pivotal role in quantum control theory to understand the reachability of states.
 Also measures of operator spread complexity rely on this concept.

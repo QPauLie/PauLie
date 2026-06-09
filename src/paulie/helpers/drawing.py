@@ -12,17 +12,33 @@ from paulie.common.get_graph import get_graph
 from paulie.helpers._recording import RecordGraph
 
 #: Colour convention for the node roles tracked by the recorder.
+#: The palette is a qualitative set chosen so the roles stay distinguishable from one another
+#: (no two near-identical blues or magentas), which the docs legend renders as colour swatches.
 NODE_ROLE_COLORS = {
-    "lighting": "red",        # vertex currently being added (lighting)
-    "dependent": "#2F4F4F",   # dependent vertex (dark slate gray)
-    "contracting": "#008080", # vertex currently being contracted (teal)
-    "appending": "#00FF00",   # attachment target / appended vertex (lime green)
-    "removing": "black",      # vertex being temporarily removed
-    "replacing": "#8B008B",   # vertex being replaced (dark magenta)
-    "p": "#6A5ACD",           # lit vertex in a leg of length one (slate blue)
-    "q": "#FF00FF",           # unlit vertex in a leg of length one (magenta)
-    "lit": "cyan",            # lit vertex
-    "unlit": "#cccccc",       # unlit vertex (light gray)
+    "lighting": "#e6194b",    # vertex currently being added (red)
+    "dependent": "#9a6324",   # dependent vertex (brown)
+    "contracting": "#f58231", # vertex currently being contracted (orange)
+    "appending": "#3cb44b",   # attachment target / appended vertex (green)
+    "removing": "#000000",    # vertex being temporarily removed (black)
+    "replacing": "#911eb4",   # vertex being replaced (purple)
+    "p": "#4363d8",           # lit vertex in a leg of length one (blue)
+    "q": "#f032e6",           # unlit vertex in a leg of length one (pink)
+    "lit": "#42d4f4",         # lit vertex (cyan)
+    "unlit": "#d3d3d3",       # unlit vertex (light gray)
+}
+
+#: Human readable label for each node role, used to build the legend.
+NODE_ROLE_LABELS = {
+    "lighting": "vertex being added (lighting)",
+    "dependent": "dependent vertex",
+    "lit": "lit vertex",
+    "unlit": "unlit vertex",
+    "contracting": "vertex being contracted",
+    "appending": "attachment target (appending)",
+    "removing": "vertex being temporarily removed",
+    "replacing": "vertex being replaced",
+    "p": "lit vertex in a length-one leg (p)",
+    "q": "unlit vertex in a length-one leg (q)",
 }
 
 def plot_graph(vertices:list[str],
@@ -65,6 +81,34 @@ def plot_graph_by_nodes(nodes:PauliStringCollection,
         commutators = []
     vertices, edges, edge_labels = get_graph(nodes, commutators)
     return plot_graph(vertices, edges, edge_labels)
+
+def save_role_legend(filename: str) -> None:
+    """
+    Render the node-role colour legend as a standalone image.
+
+    Each role is drawn as a filled colour swatch next to its description, so a reader can map the
+    colours in an animation to their meaning. Colours come from :data:`NODE_ROLE_COLORS` and labels
+    from :data:`NODE_ROLE_LABELS`.
+
+    Args:
+        filename (str): Path to write the legend image to.
+    Returns:
+        None
+    """
+    roles = list(NODE_ROLE_LABELS)
+    fig, ax = plt.subplots(figsize=(5, 0.4 * len(roles) + 0.3))
+    ax.axis("off")
+    # One row per role, top to bottom: a square swatch on the left, its label to the right.
+    for i, role in enumerate(roles):
+        y = len(roles) - i
+        ax.add_patch(plt.Rectangle((0, y - 0.4), 0.6, 0.6,
+            facecolor=NODE_ROLE_COLORS[role], edgecolor="#666666"))
+        ax.text(0.9, y - 0.1, NODE_ROLE_LABELS[role], va="center", fontsize=10)
+    ax.set_xlim(0, 6)
+    ax.set_ylim(0, len(roles) + 1)
+    fig.tight_layout()
+    fig.savefig(filename, dpi=150, bbox_inches="tight")
+    plt.close(fig)
 
 def _node_color(frame, node: str, lighting: str | None) -> str:
     """
@@ -134,6 +178,22 @@ def _animation_graph(
         edges: list[tuple[str, str]],
         center: str,
     ) -> tuple[dict[str, np.ndarray], float]:
+        """
+        Lay out a star-like canonical graph as 2D coordinates.
+
+        The canonical graph is a central vertex with several legs (chains) hanging off it. The two
+        longest legs are drawn as a single horizontal backbone through the centre, and the shorter
+        legs fan out radially. This keeps the long leg readable even when it wraps onto several
+        rows.
+
+        Args:
+            edges (list[tuple[str, str]]): Edges of the committed graph for this frame.
+            center (str): The central vertex (legs are reconstructed by walking out from it).
+        Returns:
+            tuple[dict[str, np.ndarray], float]: Vertex coordinates and the x coordinate at which
+            the incoming "lighting" vertex should be placed above the graph.
+        """
+        # Reconstruct the legs from the edge list. Each neighbour of the centre starts a leg...
         legs = []
         positions: dict[str, np.ndarray] = {}
 
@@ -142,6 +202,8 @@ def _animation_graph(
                 v = edge[1] if center == edge[0] else edge[0]
                 legs.append([v])
 
+        # ...and we extend every leg outwards, hopping to the next unused neighbour until the
+        # chain ends. This turns the edge set back into ordered chains of vertices.
         for leg in legs:
             current = leg[0]
             while True:
@@ -156,25 +218,29 @@ def _animation_graph(
                 if not is_found:
                     break
 
+        # Order legs shortest to longest so the two longest end up at the back of the list.
         legs.sort(key=len)
         n_legs_total = len(legs)
 
-        max_line = 7
-        y_dist = 0.25
-        pos_y = 0.0
+        max_line = 7          # vertices per row before the long leg wraps to a new row
+        y_dist = 0.25         # vertical gap between wrapped rows
+        pos_y = 0.0           # baseline y of the backbone
         y = pos_y
         center_x = 0.0
         x_position_lighting = 0.0
         x_first = 0.0
         x_last = 0.0
 
+        # Horizontal spacing between adjacent vertices; tighter when there are many legs.
         # Must be defined for all branches.
         dist = 2.0 / (8 if n_legs_total > 7 else max(1, n_legs_total))
 
         if n_legs_total > 1:
+            # Backbone: lay the two longest legs in one horizontal line through the centre.
             n = 0
             x = 1.0 + dist / 2.0
 
+            # Second-longest leg fills the right half, placed right-to-left up to the centre.
             for v in reversed(legs[-2]):
                 x -= dist
                 if x_first == 0:
@@ -182,12 +248,15 @@ def _animation_graph(
                 positions[v] = np.array([x, y])
                 n += 1
 
+            # The centre sits between the two backbone legs.
             x -= dist
             positions[center] = np.array([x, y])
             center_x = x
             n += 1
             direction = -1
 
+            # Longest leg continues to the left. When a row gets too long it wraps: drop down
+            # one row and reverse horizontal direction so it snakes back (boustrophedon).
             for v in legs[-1]:
                 if n > max_line:
                     if x_last == 0:
@@ -206,22 +275,27 @@ def _animation_graph(
                 if x_last == 0:
                     x_last = x
 
+            # Park the incoming lighting vertex above the middle of the backbone.
             if x_position_lighting == 0:
                 x_position_lighting = (x_first + x_last) / 2
 
-            # Remove the two longest legs; they are already placed.
+            # The two longest legs are placed; the rest are handled radially below.
             legs = legs[:-2]
 
         if n_legs_total == 0:
+            # Lone centre, nothing else to place.
             positions[center] = np.array([0.0, pos_y])
             x_position_lighting = 0.0
 
         elif n_legs_total == 1:
+            # Single leg: just the centre and its one neighbour side by side.
             positions[legs[0][0]] = np.array([0.0, pos_y])
             positions[center] = np.array([0.25, pos_y])
             x_position_lighting = 0.125
 
         elif len(legs) > 0:
+            # Remaining short legs fan out from the centre at evenly spaced angles, sweeping
+            # back and forth so they spread above and below the backbone instead of overlapping.
             direction = 1
             n = len(legs)
             ang = 3 * math.pi / (2 * n)
@@ -230,17 +304,20 @@ def _animation_graph(
             c_ang = ang
 
             for leg in legs:
+                # First vertex of the leg, one step out from the centre along the current angle.
                 v = leg[0]
                 y = pos_y + dist * math.sin(c_ang)
                 x = center_x + dist * math.cos(c_ang)
                 positions[v] = np.array([x, y])
 
+                # A length-2 leg gets its second vertex one more step out along the same ray.
                 if len(leg) > 1:
                     v = leg[1]
                     y = pos_y + 2 * dist * math.sin(c_ang)
                     x = center_x + 2 * dist * math.cos(c_ang)
                     positions[v] = np.array([x, y])
 
+                # Advance the angle; once it passes the top, flip the sweep to the other side.
                 c_ang += direction * ang
                 if c_ang > 3 * math.pi / 4:
                     direction *= -1
