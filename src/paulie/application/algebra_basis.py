@@ -21,7 +21,9 @@ and the choice of J for sp are documented per constructor.
 
   u(1)   shape (1, 1, 1)  dtype complex128  single generator [[i]]
 """
+
 from __future__ import annotations
+import re
 import numpy as np
 
 
@@ -32,7 +34,7 @@ def so_basis(N: int) -> np.ndarray:
     k = 0
     for i in range(N):
         for j in range(i + 1, N):
-            basis[k, i, j] =  1.0
+            basis[k, i, j] = 1.0
             basis[k, j, i] = -1.0
             k += 1
     return basis
@@ -54,17 +56,17 @@ def su_basis(N: int) -> np.ndarray:
     for i in range(N):
         for j in range(i + 1, N):
             m = np.zeros((N, N), dtype=np.complex128)
-            m[i, j] =  1.0
+            m[i, j] = 1.0
             m[j, i] = -1.0
             basis[k] = m / np.sqrt(2)
             k += 1
     # (c) diagonal:  i * diag(1,...,1,-l,0,...) / sqrt(l*(l+1)/2)
-    for l in range(1, N):
+    for ell in range(1, N):
         m = np.zeros((N, N), dtype=np.complex128)
-        for i in range(l):
+        for i in range(ell):
             m[i, i] = 1.0
-        m[l, l] = -l
-        basis[k] = 1j * m / np.sqrt(l * (l + 1) / 2)
+        m[ell, ell] = -ell
+        basis[k] = 1j * m / np.sqrt(ell * (ell + 1) / 2)
         k += 1
     return basis
 
@@ -76,13 +78,13 @@ def sp_basis(N: int) -> np.ndarray:
     N is the half-dimension: matrices are 2N x 2N.
     """
     size = 2 * N
-    dim  = N * (2 * N + 1)
+    dim = N * (2 * N + 1)
     basis = np.zeros((dim, size, size), dtype=np.float64)
     k = 0
     # (i) E_ij - E_{j+N, i+N}
     for i in range(N):
         for j in range(N):
-            basis[k, i,     j    ] =  1.0
+            basis[k, i, j] = 1.0
             basis[k, j + N, i + N] = -1.0
             k += 1
     # (ii) E_{i, j+N} + E_{j, i+N}  -- upper-right symmetric block
@@ -94,8 +96,8 @@ def sp_basis(N: int) -> np.ndarray:
     # (iii) E_{i+N, j} + E_{j+N, i}  -- lower-left symmetric block
     for i in range(N):
         for j in range(i, N):
-            basis[k, i + N, j    ] = 1.0
-            basis[k, j + N, i    ] = 1.0
+            basis[k, i + N, j] = 1.0
+            basis[k, j + N, i] = 1.0
             k += 1
     return basis
 
@@ -103,3 +105,54 @@ def sp_basis(N: int) -> np.ndarray:
 def u1_basis() -> np.ndarray:
     """Basis for u(1): single generator i in the 1 x 1 defining rep."""
     return np.array([[[1j]]], dtype=np.complex128)
+
+
+def algebra_basis_from_label(label: str) -> list[np.ndarray]:
+    """Return the defining-representation basis for the algebra named by *label*.
+
+    Convenience wrapper over the primitive constructors for use in tests and
+    external tooling.  Parses labels as returned by
+    ``PauliStringCollection.get_algebra()``.
+
+    Parameters
+    ----------
+    label : str
+        e.g. ``"sp(4)"``, ``"so(5)"``, ``"su(8)"``, or ``"2*su(8)"`` for a
+        two-summand direct sum.
+
+    Returns
+    -------
+    list[np.ndarray]
+        One array per direct summand.  Shapes follow the module-level
+        convention (so, su, sp, u1).
+
+    Raises
+    ------
+    ValueError
+        If *label* cannot be parsed or uses an unknown family.
+    """
+
+    s = label.strip()
+    m = re.match(r"^(so|sp|su|u)\((\d+)\)$", s)
+    if m:
+        family, N, k = m.group(1), int(m.group(2)), 1
+    else:
+        m = re.match(r"^(\d+)\*(so|sp|su|u)\((\d+)\)$", s)
+        if m:
+            family, N, k = m.group(2), int(m.group(3)), int(m.group(1))
+        else:
+            raise ValueError(
+                f"Cannot parse algebra label {label!r}. "
+                "Expected 'family(N)' or 'k*family(N)' where family is so/sp/su/u."
+            )
+    if family == "so":
+        base = so_basis(N)
+    elif family == "su":
+        base = su_basis(N)
+    elif family == "sp":
+        base = sp_basis(N)
+    elif family == "u":
+        base = u1_basis()
+    else:
+        raise ValueError(f"Unknown Lie algebra family {family!r}")
+    return [base.copy() for _ in range(k)]

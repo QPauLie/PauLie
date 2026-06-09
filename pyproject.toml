@@ -116,3 +116,6 @@ disallow_incomplete_defs = true
 module = ["paulie.classifier.classification"]
 check_untyped_defs = true
 disallow_incomplete_defs = true
+
+[tool.pylint.FORMAT]
+max-line-length = 120
