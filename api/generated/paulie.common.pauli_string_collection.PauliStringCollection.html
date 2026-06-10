@@ -1135,6 +1135,24 @@ collections.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.set_record">
+<span class="sig-name descname"><span class="pre">set_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.set_record" title="Link to this definition">#</a></dt>
+<dd><p>Attach a recording of the canonical graph construction.</p>
+<p>When a record is set, <a class="reference internal" href="#paulie.common.pauli_string_collection.PauliStringCollection.classify" title="paulie.common.pauli_string_collection.PauliStringCollection.classify"><code class="xref py py-meth docutils literal notranslate"><span class="pre">classify()</span></code></a> drives a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">RecordingCanonicalizer</span></code>, which observes
+the algorithm and appends a frame for every transformation step. Pass <code class="docutils literal notranslate"><span class="pre">None</span></code> to stop
+recording.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>record</strong> (<em>RecordGraph</em><em> | </em><em>None</em>) – Record to append frames to, or None to disable recording.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_collection.PauliStringCollection.set_tracked">
 <span class="sig-name descname"><span class="pre">set_tracked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tracked</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_collection.PauliStringCollection.set_tracked" title="Link to this definition">#</a></dt>
 <dd><p>Set up tracking of independent Pauli strings when constructing a canonical graph
@@ -1249,6 +1267,7 @@ representation.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.nested_adjoint"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.nested_adjoint()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.remove"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.remove()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.replace"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.replace()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.set_record"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.set_record()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.set_tracked"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.set_tracked()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.common.pauli_string_collection.PauliStringCollection.sort"><code class="docutils literal notranslate"><span class="pre">PauliStringCollection.sort()</span></code></a></li>
 </ul>
