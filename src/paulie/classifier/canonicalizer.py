@@ -3,12 +3,13 @@ Canonicalizer of generators
 """
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.classifier.classification import Morph
+from paulie.classifier.observer import CanonicalizerEvent, EventManager
 
 class Canonicalizer:
     """
     Class of canonicalizer of generators
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initialize a Canonicalizer
         """
@@ -16,6 +17,45 @@ class Canonicalizer:
         self.central_vertex = None
         self.legs = []
         self.vertex_stack = []
+        self.events = EventManager()
+
+    def _notify(self, event: CanonicalizerEvent, **data: object) -> None:
+        """
+        Notify subscribed observers of a transformation event.
+
+        Args:
+            event (CanonicalizerEvent): Type of event emitted.
+            data: Contextual data associated with the event.
+        Returns:
+            None
+        """
+        if self.events.has_subscribers():
+            self.events.notify(event, data)
+
+    def _current_vertices(self) -> list[PauliString]:
+        """
+        Get the vertices of the canonical graph built so far.
+
+        Returns:
+            list[PauliString]: Central vertex followed by the vertices of each leg.
+        """
+        vertices = []
+        if self.central_vertex is not None:
+            vertices.append(self.central_vertex)
+        for leg in self.legs:
+            vertices.extend(leg)
+        return vertices
+
+    def _lit_neighbours(self, v: PauliString) -> list[PauliString]:
+        """
+        Get the vertices of the current graph that are lit by `v`.
+
+        Args:
+            v (PauliString): Pauli string generating the lighting.
+        Returns:
+            list[PauliString]: Vertices that anticommute with `v`.
+        """
+        return [w for w in self._current_vertices() if self._is_lit(v, w)]
 
     def _set_vertex_stack(self, vertex_stack: list[PauliString]) -> None:
         """
@@ -65,6 +105,8 @@ class Canonicalizer:
         Returns:
             PauliString: Append Pauli string after core installation
         """
+        self._notify(CanonicalizerEvent.BUILD_CORE,
+            collection=self._current_vertices(), lighting=v, lits=self._lit_neighbours(v))
         if len(self.legs) == 1:
             if self._is_lit(v, self.legs[0][0]):
                 if not self._is_lit(v, self.central_vertex):
@@ -83,6 +125,9 @@ class Canonicalizer:
             vertex_stack (list[PauliString]): Generator stack
             v (PauliString): Append Pauli string
         """
+        self._notify(CanonicalizerEvent.CONVERT_SINGLE_LIT_STATE,
+            collection=self._current_vertices(), lighting=v, lits=self._lit_neighbours(v),
+            p=self.legs[p_index][0], q=self.legs[q_index][0])
         pq = (self._representative(self.legs[p_index][0]) @
             self._representative(self.legs[q_index][0]))
         if self._is_lit(v, self.central_vertex):
@@ -108,6 +153,8 @@ class Canonicalizer:
         Returns:
             PauliString: Pauli string after transferring
         """
+        self._notify(CanonicalizerEvent.TRANSFER_LIGHTNING,
+            collection=self._current_vertices(), lighting=v, lits=self._lit_neighbours(v))
         # We need to make self.legs[-1][1] lit
         if not self._is_lit(v, self.legs[-1][1]):
             m = None
@@ -166,6 +213,8 @@ class Canonicalizer:
         Returns:
             PauliString: Pauli string after reduce
         """
+        self._notify(CanonicalizerEvent.REDUCE_LIGHTNING,
+            collection=self._current_vertices(), lighting=v, lits=self._lit_neighbours(v))
         if not self._is_lit(v, self.central_vertex):
             if len(self.legs[-2]) == 1 and len(self.legs[-1]) > 4:
                 #self._debug(v)
@@ -286,12 +335,20 @@ class Canonicalizer:
         while vertex_stack:
             confirmed_legs = [leg for leg in self.legs if len(leg) != 1]
             length_1_legs = [leg for leg in self.legs if len(leg) == 1]
-            confirmed_legs.extend(self._dependency_check(length_1_legs))
+            independent_legs = self._dependency_check(length_1_legs)
+            if self.events.has_subscribers():
+                dropped = [leg[0] for leg in length_1_legs if leg not in independent_legs]
+                if dropped:
+                    self._notify(CanonicalizerEvent.REMOVE_DEPENDENT,
+                        collection=self._current_vertices(), removing=dropped)
+            confirmed_legs.extend(independent_legs)
             self.legs = confirmed_legs
             self.legs.sort(key=len)
             v = vertex_stack.pop()
             if self.central_vertex is None:
                 self.central_vertex = v
+                self._notify(CanonicalizerEvent.CENTRAL_VERTEX,
+                    collection=self._current_vertices())
                 continue
             # Build the core
             if len(self.legs) < 2:
@@ -332,6 +389,9 @@ class Canonicalizer:
                         any_lit_leg = True
                         break
             if not any_lit_leg:
+                self._notify(CanonicalizerEvent.LIGHTING,
+                    collection=self._current_vertices(), lighting=v,
+                    lits=self._lit_neighbours(v))
                 self.legs.append([v])
                 continue
 

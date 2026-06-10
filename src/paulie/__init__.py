@@ -33,12 +33,14 @@ from .application.matrix_decomposition import (
     matrix_decomposition,
     matrix_decomposition_diagonal
 )
+from .application.animation import animation_anti_commutation_graph
 
 # Classification
 from .classifier.classification import (
     Morph,
     Classification
 )
+from .classifier.recording_canonicalizer import RecordingCanonicalizer
 
 # Common
 from .common.pauli_string_bitarray import PauliString
@@ -84,10 +86,12 @@ __all__ = [
     "get_pauli_weights",
     "matrix_decomposition",
     "matrix_decomposition_diagonal",
+    "animation_anti_commutation_graph",
 
     # Classification
     "Morph",
     "Classification",
+    "RecordingCanonicalizer",
 
     # Common
     "PauliString",

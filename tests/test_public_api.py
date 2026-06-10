@@ -51,10 +51,12 @@ public_symbols = [
     "get_pauli_weights",
     "matrix_decomposition",
     "matrix_decomposition_diagonal",
+    "animation_anti_commutation_graph",
 
     # Classification
     "Morph",
     "Classification",
+    "RecordingCanonicalizer",
 
     # Common
     "PauliString",

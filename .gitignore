@@ -52,6 +52,9 @@ xcuserdata/
 # Doc-build generated files
 docs/_build/
 docs/source/**/generated/
+docs/source/media/example_c.html
+docs/source/media/example_d.html
+docs/preview/
 
 #Python modules
 MANIFEST

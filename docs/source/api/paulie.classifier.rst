@@ -14,6 +14,7 @@ Utilities for classifying the DLA of a set of Pauli strings.
    classification.Morph
    classification.TypeAlgebra
    classification.TypeGraph
+   recording_canonicalizer.RecordingCanonicalizer
 
 Exceptions
 ----------
