@@ -37,8 +37,8 @@ def get_optimal_universal_generators(n: int) -> PauliStringCollection | None:
         :math:`\mathfrak{su}(2^{n})`.
     """
 
-    if n < 2:
-        return None
+    if n < 4:
+        raise ValueError("Optimal generators are calculated for n > 3")
 
     generators = get_pauli_string(G_LIE["a12"], n=n)
     g = generators.copy().get_independents()

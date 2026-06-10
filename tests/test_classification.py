@@ -4,26 +4,25 @@ interactions on open spin chains.
 """
 from operator import itemgetter
 from typing import Any
+from unittest.mock import patch
 import pytest
 from paulie import (
     G_LIE,
     two_local_algebras,
     get_pauli_string as p,
 )
+from paulie.classifier.classification import Classification
 
-# System sizes at which the a-type / mixed equivalences of Theorem I.1 all
-# agree through `get_algebra` string comparison.  (n = 3 is excluded
-# because a11 = a16 and the ak = su(2^n) family only kick in at n >= 4.)
-N_FOR_EQUIVALENCE = [4, 5, 6, 7, 8]
+# System sizes at which the low-rank-compatible a-type / mixed equivalences
+# of Theorem I.1 agree through `is_algebra`.
+N_FOR_EQUIVALENCE = [3, 4, 5, 6, 7, 8]
 
-# System sizes used for the explicit `is_algebra` checks of every
-# tabulated algebra.  Starts at n = 5 so that the library's canonical
-# algebra string matches the tabulated formula without needing any
-# small-n Lie-algebra isomorphisms.
-N_FOR_EXPLICIT = [5, 6, 7, 8, 9, 10]
+# System sizes used for the explicit `is_algebra` checks of every algebra.
+N_FOR_EXPLICIT = [3, 4, 5, 6, 7, 8, 9, 10]
 
 A_TYPE_NAMES = [f"a{i}" for i in range(23)]
 B_TYPE_NAMES = ["b0", "b1", "b2", "b3", "b4"]
+SMALL_N_ALGEBRA_OVERRIDES = {"a11": "so(7)", "a12": "sp(4)", "a17": "sp(4)"}
 
 
 # ---------------------------------------------------------------------------
@@ -41,26 +40,40 @@ B_TYPE_NAMES = ["b0", "b1", "b2", "b3", "b4"]
           ["YY", "ZX", "XZ"]]),                                    # Example III.5
         # Isomorphism classes from Theorem I.1 (open boundary)
         (itemgetter("a2", "a4")(G_LIE)),                           # so(n) + so(n)
-        (itemgetter("a11", "a16")(G_LIE)),                         # so(2^n), n >= 4
         (itemgetter("a6", "a7", "a10")(G_LIE)),                    # n-parity dependent
         (itemgetter("a13", "a20", "a15")(G_LIE)),                  # su(2^(n-1)) + su(2^(n-1))
-        (itemgetter("a12", "a17", "a18", "a19", "a21", "a22")(G_LIE)),  # su(2^n), n >= 4
     ],
 )
 def test_multiple_algebra_equivalences(
     generators_to_compare: Any, n: int
 ) -> None:
     """Each inner list should generate the same Lie algebra at dimension n."""
-    algebra = [p(gen_set, n=n).get_algebra() for gen_set in generators_to_compare]
-    assert all(a == algebra[0] for a in algebra), (
-        f"Expected identical algebras at n={n}, got {algebra}"
+    algebras = [p(gen_set, n=n) for gen_set in generators_to_compare]
+    algebra_names = [algebra.get_algebra() for algebra in algebras]
+    assert all(algebra.is_algebra(algebra_names[0]) for algebra in algebras), (
+        f"Expected isomorphic algebras at n={n}, got {algebra_names}"
     )
+
+
+@pytest.mark.parametrize("n", [4, 5, 6, 7, 8])
+@pytest.mark.parametrize(
+    "generators_to_compare",
+    [
+        itemgetter("a11", "a16")(G_LIE),
+        itemgetter("a12", "a17", "a18", "a19", "a21", "a22")(G_LIE),
+    ],
+)
+def test_large_system_algebra_equivalences(
+    generators_to_compare: Any, n: int
+) -> None:
+    """Families with finite-size exceptions agree from n = 4 onward."""
+    algebra = [p(gen_set, n=n).get_algebra() for gen_set in generators_to_compare]
+    assert all(a == algebra[0] for a in algebra)
 
 
 # ---------------------------------------------------------------------------
 # Explicit tabulated algebras: a-type
 # ---------------------------------------------------------------------------
-# Consider isomorphisms and improve is_algebra
 @pytest.mark.parametrize("n", N_FOR_EXPLICIT)
 @pytest.mark.parametrize("name", A_TYPE_NAMES)
 def test_a_type_explicit_algebras(name: str, n: int) -> None:
@@ -69,7 +82,11 @@ def test_a_type_explicit_algebras(name: str, n: int) -> None:
     Covers the period-dependent families a3 (n mod 8), a5 (n mod 6)
     and a6/a7/a10 (n parity) across the range of n.
     """
-    expected = two_local_algebras(n)[name]
+    expected = (
+        SMALL_N_ALGEBRA_OVERRIDES[name]
+        if n == 3 and name in SMALL_N_ALGEBRA_OVERRIDES
+        else two_local_algebras(n)[name]
+    )
     assert p(G_LIE[name], n=n).is_algebra(expected), (
         f"{name} at n={n}: expected {expected}"
     )
@@ -101,6 +118,32 @@ def test_explicit_algebras_small_n() -> None:
     assert p(["XX", "YY", "ZZ", "ZY"]).is_algebra("u(1)+2*su(2)")  # Example III.8
     assert p(["XY"]).is_algebra("u(1)")                            # Example I.4
     assert p(["XY"], n=3).is_algebra("so(3)")
-    # n = 3 is deliberately not swept in the parametrised tests above:
-    # e.g. a6(3) ~= su(4) ~= so(6), but is_algebra does not collapse
-    # that small-n isomorphism (see comment above A_TYPE tests).
+
+
+@pytest.mark.parametrize(
+    ("algebra", "isomorphism"),
+    [
+        ("sp(1)", "su(2)"),
+        ("so(5)", "sp(2)"),
+        ("so(6)", "su(4)"),
+        ("2*sp(1)", "2*su(2)"),
+        ("3*so(5)", "3*sp(2)"),
+        ("4*so(6)", "4*su(4)"),
+    ],
+)
+def test_get_isomorphism(algebra: str, isomorphism: str) -> None:
+    """Low-rank isomorphisms also preserve algebra multiplicity."""
+    assert Classification().get_isomorphism(algebra) == isomorphism
+
+
+@pytest.mark.parametrize(
+    ("canonical", "isomorphic"),
+    [("su(2)", "sp(1)"), ("sp(2)", "so(5)"), ("su(4)", "so(6)"), ("2*su(2)", "so(4)")],
+)
+def test_is_algebra_isomorphism_is_symmetric(canonical: str, isomorphic: str) -> None:
+    """Comparison accepts either side of each low-rank isomorphism."""
+    classification = Classification()
+    with patch.object(classification, "get_algebra", return_value=canonical):
+        assert classification.is_algebra(isomorphic)
+    with patch.object(classification, "get_algebra", return_value=isomorphic):
+        assert classification.is_algebra(canonical)
