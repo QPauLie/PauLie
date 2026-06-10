@@ -145,6 +145,30 @@ def _node_color(frame, node: str, lighting: str | None) -> str:
         return NODE_ROLE_COLORS["lit"]
     return NODE_ROLE_COLORS["unlit"]
 
+def _staggered_label_positions(positions: dict) -> dict:
+    """
+    Offset node labels alternately above and below their nodes.
+
+    Within a horizontal row, neighbouring labels overlap once the Pauli strings are about as
+    wide as the node spacing; alternating the side doubles the horizontal room per label and
+    keeps the labels off the coloured nodes.
+
+    Args:
+        positions (dict): Node coordinates.
+    Returns:
+        dict: Coordinates to draw each node label at.
+    """
+    rows: dict[float, list] = {}
+    for node, xy in positions.items():
+        rows.setdefault(round(float(xy[1]), 2), []).append(node)
+    label_positions = {}
+    for row_nodes in rows.values():
+        row_nodes.sort(key=lambda node: float(positions[node][0]))
+        for i, node in enumerate(row_nodes):
+            dy = 0.06 if i % 2 == 0 else -0.06
+            label_positions[node] = positions[node] + np.array([0.0, dy])
+    return label_positions
+
 def _animation_graph(
     record: RecordGraph,
     interval: int = 1000,
@@ -167,16 +191,15 @@ def _animation_graph(
     Returns:
         matplotlib.animation.Animation
     """
-    graph = nx.Graph()
     fig, ax = plt.subplots(figsize=(6, 4))
 
-    def clear() -> None:
-        ax.clear()
-        graph.remove_nodes_from(list(graph.nodes))
+    # Largest number of legs seen in any frame; used to fix one spacing for all frames.
+    max_legs_seen = [0]
 
     def build_positions(
         edges: list[tuple[str, str]],
         center: str,
+        dist: float | None = None,
     ) -> tuple[dict[str, np.ndarray], float]:
         """
         Lay out a star-like canonical graph as 2D coordinates.
@@ -189,6 +212,9 @@ def _animation_graph(
         Args:
             edges (list[tuple[str, str]]): Edges of the committed graph for this frame.
             center (str): The central vertex (legs are reconstructed by walking out from it).
+            dist (float, optional): Spacing between adjacent vertices. Defaults to a value
+                derived from this frame's leg count; pass an explicit value to keep the
+                spacing identical across all frames of an animation.
         Returns:
             tuple[dict[str, np.ndarray], float]: Vertex coordinates and the x coordinate at which
             the incoming "lighting" vertex should be placed above the graph.
@@ -221,6 +247,7 @@ def _animation_graph(
         # Order legs shortest to longest so the two longest end up at the back of the list.
         legs.sort(key=len)
         n_legs_total = len(legs)
+        max_legs_seen[0] = max(max_legs_seen[0], n_legs_total)
 
         max_line = 7          # vertices per row before the long leg wraps to a new row
         y_dist = 0.25         # vertical gap between wrapped rows
@@ -233,7 +260,8 @@ def _animation_graph(
 
         # Horizontal spacing between adjacent vertices; tighter when there are many legs.
         # Must be defined for all branches.
-        dist = 2.0 / (8 if n_legs_total > 7 else max(1, n_legs_total))
+        if dist is None:
+            dist = 2.0 / (8 if n_legs_total > 7 else max(1, n_legs_total))
 
         if n_legs_total > 1:
             # Backbone: lay the two longest legs in one horizontal line through the centre.
@@ -325,10 +353,18 @@ def _animation_graph(
 
         return positions, x_position_lighting
 
-    def update(num: int):
-        clear()
+    def compute_frame(num: int, dist: float | None = None) -> dict:
+        """
+        Build the graph and its layout for one frame.
+
+        Args:
+            num (int): Index of the frame.
+            dist (float, optional): Fixed vertex spacing shared by all frames.
+        Returns:
+            dict: Frame, graph, positions, edge labels, lighting vertex, label flag, and
+            whether a spring layout was used (init frame).
+        """
         frame = record.get_frame(num)
-        ax.set_title(f"{frame.get_title()}")
 
         vertices, edges, edge_labels = record.get_graph(num)
         vertices = list(vertices)
@@ -339,14 +375,18 @@ def _animation_graph(
 
         if len(vertices) > 0:
             center = vertices[0]
-            if len(center) > 10:
+            # Long Pauli strings: the mid-edge labels collide with the node labels on the
+            # same baseline, so drop them first; past 10 qubits node labels no longer fit.
+            if len(center) > 6:
                 edge_labels = None
+            if len(center) > 10:
                 with_labels = False
 
         lighting = frame.get_lighting()
         if lighting:
-            if len(lighting) > 10:
+            if len(lighting) > 6:
                 edge_labels = None
+            if len(lighting) > 10:
                 with_labels = False
 
             if lighting not in vertices:
@@ -361,15 +401,24 @@ def _animation_graph(
                 lighting = f"dependent {lighting}"
                 edges.append((dependent, lighting))
 
+        graph = nx.Graph()
         graph.add_nodes_from(vertices)
         graph.add_edges_from(edges)
 
-        if frame.get_init() or center is None:
+        spring = frame.get_init() or center is None
+        if spring:
             positions = nx.spring_layout(graph)
         else:
-            positions, x_position_lighting = build_positions(edges, center)
+            positions, x_position_lighting = build_positions(edges, center, dist)
             if lighting:
                 positions[lighting] = np.array([x_position_lighting, 1.0])
+            # Centre each frame's content horizontally. build_positions anchors the backbone
+            # at an arbitrary x and the long leg grows sideways, so without this the graph
+            # drifts towards one edge of the canvas as it is built up.
+            xs = [xy[0] for xy in positions.values()]
+            offset = np.array([(min(xs) + max(xs)) / 2, 0.0])
+            for node in positions:
+                positions[node] = positions[node] - offset
 
         # Robustness: make sure every drawn node has a position.
         missing = [node for node in graph if node not in positions]
@@ -377,6 +426,54 @@ def _animation_graph(
             fallback = nx.spring_layout(graph, pos=positions, fixed=list(positions) or None)
             for node in missing:
                 positions[node] = fallback[node]
+
+        return {"frame": frame, "graph": graph, "positions": positions,
+                "edge_labels": edge_labels, "lighting": lighting,
+                "with_labels": with_labels, "spring": spring}
+
+    # Precompute every frame so the whole animation can share one geometry and one viewport.
+    # Without this, matplotlib autoscales each frame to its own data and the per-frame vertex
+    # spacing varies with the leg count, which makes the graph and the gaps between wrapped
+    # rows jump from frame to frame.
+    # First pass discovers the largest leg count of any frame; the second pass lays every
+    # frame out again with the spacing that count dictates, so coordinates are comparable.
+    for num in range(record.get_size()):
+        compute_frame(num)
+    shared_dist = 2.0 / (8 if max_legs_seen[0] > 7 else max(1, max_legs_seen[0]))
+    frames_data = [compute_frame(num, shared_dist) for num in range(record.get_size())]
+
+    # Fix the axis limits from the canonical-layout frames only. The x range is symmetric
+    # around the hub (anchored at x = 0 above) so the graph stays horizontally centred.
+    all_x = [xy[0] for fd in frames_data if not fd["spring"] for xy in fd["positions"].values()]
+    all_y = [xy[1] for fd in frames_data if not fd["spring"] for xy in fd["positions"].values()]
+    if not all_x:
+        all_x = [xy[0] for fd in frames_data for xy in fd["positions"].values()]
+        all_y = [xy[1] for fd in frames_data for xy in fd["positions"].values()]
+    margin = 0.1
+    if all_x:
+        half_width = max(abs(x) for x in all_x) + margin
+        xlim = (-half_width, half_width)
+        ylim = (min(all_y) - margin, max(all_y) + margin)
+    else:
+        xlim = (-1.0, 1.0)
+        ylim = (-1.0, 1.0)
+
+    # Spring-layout frames (the initial anticommutation graph) use their own coordinate
+    # system; rescale them into the shared viewport so they do not distort the limits.
+    for fd in frames_data:
+        if fd["spring"] and fd["graph"].number_of_nodes() > 0:
+            fd["positions"] = nx.spring_layout(
+                fd["graph"],
+                center=((xlim[0] + xlim[1]) / 2, (ylim[0] + ylim[1]) / 2),
+                scale=0.45 * min(xlim[1] - xlim[0], ylim[1] - ylim[0]),
+            )
+
+    def update(num: int):
+        ax.clear()
+        fd = frames_data[num]
+        frame, graph, positions = fd["frame"], fd["graph"], fd["positions"]
+        edge_labels, lighting, with_labels = fd["edge_labels"], fd["lighting"], fd["with_labels"]
+        ax.set_title(f"{frame.get_title()}")
 
         color_map = [_node_color(frame, node, lighting) for node in graph]
 
@@ -394,17 +491,31 @@ def _animation_graph(
                 ax=ax,
             )
 
-        return nx.draw_networkx(
+        result = nx.draw_networkx(
             graph,
             pos=positions,
             node_color=color_map,
             hide_ticks=True,
             node_size=60,
             font_size=6,
-            with_labels=with_labels,
+            with_labels=False,
             edge_color="#aaaaaa",
             ax=ax,
         )
+
+        if with_labels:
+            nx.draw_networkx_labels(
+                graph,
+                pos=_staggered_label_positions(positions),
+                font_size=6,
+                hide_ticks=True,
+                ax=ax,
+            )
+
+        # Same viewport for every frame so the layout does not jump during the animation.
+        ax.set_xlim(*xlim)
+        ax.set_ylim(*ylim)
+        return result
 
     ani = matplotlib.animation.FuncAnimation(
         fig,
