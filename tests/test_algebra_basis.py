@@ -198,7 +198,7 @@ class TestGetAlgebraBasis:
             (["XY", "YX"], 4),
         ],
     )
-    def test_total_dim_matches_get_dla_dim(self, gens, n):  # noqa: unused
+    def test_total_dim_matches_get_dla_dim(self, gens, n):
         """Total basis dim matches get_dla_dim()."""
         ps = p(gens, n=n)
         basis = ps.get_algebra_basis()

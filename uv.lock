@@ -764,7 +764,10 @@ dependencies = [
     { name = "memory-profiler" },
     { name = "networkx" },
     { name = "numpy" },
+<<<<<<< HEAD
     { name = "pillow" },
+=======
+>>>>>>> 8a10fe2 (test: add type A element-wise reachability via Majorana bilinear isomorphism)
     { name = "scipy" },
     { name = "six" },
     { name = "tqdm" },
@@ -792,7 +795,10 @@ requires-dist = [
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.19.0" },
     { name = "networkx", specifier = ">=3.3" },
     { name = "numpy", specifier = ">=2.2.2" },
+<<<<<<< HEAD
     { name = "pillow", specifier = ">=10.0.0" },
+=======
+>>>>>>> 8a10fe2 (test: add type A element-wise reachability via Majorana bilinear isomorphism)
     { name = "pydata-sphinx-theme", marker = "extra == 'dev'", specifier = ">=0.16.1" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.5" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.5" },
