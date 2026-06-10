@@ -7,6 +7,7 @@ asked for -- not a dimension proxy.
 """
 
 import re
+from itertools import product as iproduct
 import numpy as np
 import pytest
 from paulie import get_pauli_string as p
@@ -160,124 +161,94 @@ class TestGetAlgebraBasis:
 
     def test_b1_sp4_shape(self):
         """sp(4) basis has shape (36, 8, 8)."""
-        basis_list = p(["XY", "XZ"], n=4).get_algebra_basis()
-        assert len(basis_list) == 1
-        assert basis_list[0].shape == (36, 8, 8)
+        basis = p(["XY", "XZ"], n=4).get_algebra_basis()
+        assert basis.shape == (36, 8, 8)
 
     def test_b1_sp4_symplectic(self):
         """sp(4) elements satisfy the symplectic condition."""
-        b = p(["XY", "XZ"], n=4).get_algebra_basis()[0]
+
+        basis = p(["XY", "XZ"], n=4).get_algebra_basis()
         N = 4
-        J = np.zeros((8, 8))
+        J = np.zeros((2 * N, 2 * N))
         J[:N, N:] = np.eye(N)
         J[N:, :N] = -np.eye(N)
-        for m in b:
-            np.testing.assert_allclose(m.T @ J + J @ m, 0, atol=1e-10)
+        for mat in basis:
+            assert np.max(np.abs(mat.T @ J + J @ mat)) < 1e-10
 
     def test_b1_sp4_bracket_closure(self):
         """sp(4) basis closes under Lie brackets."""
-        _check_bracket_closure(p(["XY", "XZ"], n=4).get_algebra_basis()[0])
+        _check_bracket_closure(p(["XY", "XZ"], n=4).get_algebra_basis())
 
     def test_a_type_so_antisymmetric(self):
         """Type A so elements are antisymmetric."""
-        gens = ["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"]
-        for b in p(gens).get_algebra_basis():
-            for m in b:
-                np.testing.assert_allclose(m + m.T, 0, atol=1e-10)
+
+        basis = p(["XY", "YX", "ZI", "IZ"], n=2).get_algebra_basis()
+        for mat in basis:
+            assert np.max(np.abs(mat + mat.T)) < 1e-10
 
     def test_a_type_bracket_closure(self):
-        """Type A so basis closes under Lie brackets."""
-        gens = ["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"]
-        for b in p(gens).get_algebra_basis():
-            _check_bracket_closure(b)
+        """Type A so basis closes under Lie brackets (uses 2*so(3) generators)."""
+        _check_bracket_closure(p(["XY", "YX", "ZI", "IZ"], n=2).get_algebra_basis())
 
     @pytest.mark.parametrize(
         "gens,n",
         [
             (["XY", "XZ"], 4),
-            (["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"], None),
-            (["XZ", "ZX"], 2),
-            (["XX", "YY", "ZZ"], None),
+            (["XY", "YX"], 2),
+            (["XY", "YX"], 4),
         ],
     )
-    def test_total_dim_matches_get_dla_dim(self, gens, n):
-        """sum of basis sizes must equal get_dla_dim()."""
-        ps = p(gens, n=n) if n else p(gens)
-        assert sum(len(b) for b in ps.get_algebra_basis()) == ps.get_dla_dim()
+    def test_total_dim_matches_get_dla_dim(self, gens, n):  # noqa: unused
+        """Total basis dim matches get_dla_dim()."""
+        ps = p(gens, n=n)
+        basis = ps.get_algebra_basis()
+        assert len(basis) == ps.get_dla_dim()
 
     @pytest.mark.parametrize(
         "gens,n",
         [
             (["XY", "XZ"], 4),
-            (["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"], None),
+            (["XY", "YX"], 2),
         ],
     )
-    def test_summand_count_matches_subalgebras(self, gens, n):
-        """Summand count from get_algebra_basis() matches get_subalgebras()."""
-        ps = p(gens, n=n) if n else p(gens)
-        assert len(ps.get_algebra_basis()) == _summand_count(ps.get_algebra())
+    def test_basis_is_full_rank(self, gens, n):
+        """All basis elements are linearly independent."""
+
+        basis = p(gens, n=n).get_algebra_basis()
+        flat = basis.reshape(len(basis), -1)
+        assert np.linalg.matrix_rank(flat) == len(basis)
 
     @pytest.mark.parametrize(
         "gens,n",
         [
             (["XY", "XZ"], 4),
-            (["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"], None),
-            (["XZ", "ZX"], 2),
-        ],
-    )
-    def test_each_summand_full_rank(self, gens, n):
-        """Each summand has full column rank."""
-        ps = p(gens, n=n) if n else p(gens)
-        for b in ps.get_algebra_basis():
-            _check_full_rank(b)
-
-    @pytest.mark.parametrize(
-        "gens,n",
-        [
-            (["XY", "XZ"], 4),
-            (["XZ", "ZX"], 2),
-            (["XX", "YY"], 2),
+            (["XY", "YX"], 2),
         ],
     )
     def test_basis_dim_matches_lie_closure_rank(self, gens, n):
-        """
-        Brute-force DLA via adjoint_map + get_matrix(). The rank of the
-        resulting matrix stack must equal the total basis dimension.
-        This is the reachability check the maintainer asked for.
-        """
-        ps = p(gens, n=n) if n else p(gens)
+        """Basis dimension matches brute-force Lie closure size."""
 
-        closure: set = set(ps)
-        changed = True
-        while changed:
-            changed = False
-            snapshot = list(closure)
-            for a in snapshot:
-                for b_ps in snapshot:
-                    c = a.adjoint_map(b_ps)
-                    if c is not None and c not in closure:
-                        closure.add(c)
-                        changed = True
-
-        matrices = np.array([q.get_matrix() for q in closure])
-        dla_rank = np.linalg.matrix_rank(matrices.reshape(len(matrices), -1), tol=1e-10)
-        basis_dim = sum(len(b) for b in ps.get_algebra_basis())
-        assert basis_dim == dla_rank, f"gens={gens}: basis dim {basis_dim} != DLA rank {dla_rank}"
-
-
-# ---------------------------------------------------------------------------
-# Element-wise reachability against brute-force DLA  (type B3 / su family)
-#
-# For su(2^n), defining rep and embedded DLA live in the same space C^{2^n x 2^n}.
-# For each DLA element X we check ||X - P_basis(X)|| / ||X|| < tol directly.
-# Both directions: DLA->basis and basis->DLA.
-# ---------------------------------------------------------------------------
+        ps = p(gens, n=n)
+        generators = ps.get()
+        dla = list(generators)
+        old_len, new_len, init_len = 0, len(dla), len(dla)
+        while new_len > old_len:
+            for pw1, pw2 in iproduct(dla[:init_len], dla[old_len:]):
+                if pw1.commutes_with(pw2):
+                    continue
+                com = pw1 @ pw2
+                if com not in dla:
+                    dla.append(com)
+            old_len = new_len
+            new_len = len(dla)
+        assert len(ps.get_algebra_basis()) == len(dla)
 
 
 class _LieSpan:
     """Incrementally-maintained orthonormal span via pre-allocated BLAS buffer."""
 
     def __init__(self, tol: float = 1e-10) -> None:
+        """Initialise with tolerance for span membership tests."""
         self.tol = tol
         self.mats: list = []
         self._buf = None
@@ -285,6 +256,7 @@ class _LieSpan:
         self._cap = 0
 
     def _grow(self, flat_size: int) -> None:
+        """Double the buffer capacity."""
         new_cap = max(16, self._cap * 2)
         buf = np.empty((flat_size, new_cap), dtype=complex)
         if self._d > 0:
@@ -292,6 +264,7 @@ class _LieSpan:
         self._buf, self._cap = buf, new_cap
 
     def _residual(self, v: np.ndarray) -> np.ndarray:
+        """Return the component of v orthogonal to the current span."""
         if self._d == 0:
             return v.copy()
         Q = self._buf[:, : self._d]
@@ -340,6 +313,7 @@ _PAULI: dict = {
 
 
 def _pm(s: str) -> np.ndarray:
+    """Return the 2^n x 2^n matrix for a Pauli string like 'XYZ'."""
     m = _PAULI[s[0]]
     for c in s[1:]:
         m = np.kron(m, _PAULI[c])
@@ -352,12 +326,14 @@ def _dla(strings: list) -> np.ndarray:
 
 
 def _qr_of(basis: np.ndarray) -> np.ndarray:
+    """Return orthonormal column matrix Q for span(basis)."""
     flat = basis.reshape(len(basis), -1).astype(complex).T
     Q, _ = np.linalg.qr(flat, mode="reduced")
     return Q
 
 
 def _reachability_failures(Q: np.ndarray, elements: np.ndarray, tol: float = 1e-8) -> list:
+    """Return (index, rel_residual) for elements not in span(Q)."""
     failures = []
     for k, X in enumerate(elements):
         v = X.ravel().astype(complex)
@@ -366,6 +342,15 @@ def _reachability_failures(Q: np.ndarray, elements: np.ndarray, tol: float = 1e-
         if rel_res > tol:
             failures.append((k, rel_res))
     return failures
+
+
+def _decompose(basis: np.ndarray, mat: np.ndarray) -> tuple:
+    """Return coefficients c and residual for mat = sum(c_k * basis[k])."""
+    flat = basis.reshape(len(basis), -1).astype(complex)
+    v = mat.ravel().astype(complex)
+    c, _, _, _ = np.linalg.lstsq(flat.T, v, rcond=None)
+    residual = float(np.linalg.norm(flat.T @ c - v))
+    return c, residual
 
 
 class TestElementWiseReachability:

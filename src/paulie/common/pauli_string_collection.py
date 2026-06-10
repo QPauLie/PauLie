@@ -629,7 +629,7 @@ class PauliStringCollection:
         """
         return int(self.get_class().get_dla_dim())
 
-    def get_algebra_basis(self) -> list[np.ndarray]:
+    def get_algebra_basis(self) -> np.ndarray:
         """
         Return the defining-representation matrix basis for the classified DLA,
         partitioned by direct summand.

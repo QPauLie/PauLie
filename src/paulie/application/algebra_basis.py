@@ -107,7 +107,7 @@ def u1_basis() -> np.ndarray:
     return np.array([[[1j]]], dtype=np.complex128)
 
 
-def algebra_basis_from_label(label: str) -> list[np.ndarray]:
+def algebra_basis_from_label(label: str) -> np.ndarray:
     """Return the defining-representation basis for the algebra named by *label*.
 
     Convenience wrapper over the primitive constructors for use in tests and
@@ -123,8 +123,11 @@ def algebra_basis_from_label(label: str) -> list[np.ndarray]:
     Returns
     -------
     list[np.ndarray]
-        One array per direct summand.  Shapes follow the module-level
-        convention (so, su, sp, u1).
+        Single array of shape ``(k*dim, k*M, k*M)`` where k is the number
+        of direct summands, dim is the per-summand dimension, and M is the
+        per-summand matrix size.  For a single summand (k=1) this reduces to
+        the primitive constructor output.  For k>1 the i-th block of dim
+        matrices is embedded on the i-th diagonal block of size M.
 
     Raises
     ------
@@ -155,4 +158,12 @@ def algebra_basis_from_label(label: str) -> list[np.ndarray]:
         base = u1_basis()
     else:
         raise ValueError(f"Unknown Lie algebra family {family!r}")
-    return [base.copy() for _ in range(k)]
+    if k == 1:
+        return base.copy()
+    # Block-diagonal embedding for the complete direct-sum operator.
+    # Summand i occupies the i-th M x M diagonal block.
+    dim, M = base.shape[0], base.shape[1]
+    out = np.zeros((k * dim, k * M, k * M), dtype=base.dtype)
+    for i in range(k):
+        out[i * dim : (i + 1) * dim, i * M : (i + 1) * M, i * M : (i + 1) * M] = base
+    return out
