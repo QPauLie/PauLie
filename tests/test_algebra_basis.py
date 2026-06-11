@@ -131,6 +131,13 @@ class TestSpBasis:
         assert sp_basis(N).shape == (N * (2 * N + 1), 2 * N, 2 * N)
 
     @pytest.mark.parametrize("N", [1, 2, 3, 4])
+    def test_anti_hermitian(self, N):
+        """Each element satisfies X + X† == 0."""
+        b = sp_basis(N)
+        for mat in b:
+            assert np.max(np.abs(mat + mat.conj().T)) < 1e-10
+
+    @pytest.mark.parametrize("N", [1, 2, 3, 4])
     def test_symplectic_condition(self, N):
         """Each element satisfies X^T J + J X == 0."""
         size = 2 * N

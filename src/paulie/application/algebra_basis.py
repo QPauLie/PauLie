@@ -72,34 +72,63 @@ def su_basis(N: int) -> np.ndarray:
 
 
 def sp_basis(N: int) -> np.ndarray:
-    """
-    Basis for sp(N) in the 2N x 2N defining representation.
-    J = [[0, I_N], [-I_N, 0]];  X in sp(N)  iff  X^T J + J X = 0.
-    N is the half-dimension: matrices are 2N x 2N.
+    """Basis for the compact symplectic algebra sp(N) in the 2N x 2N representation.
+
+    Elements satisfy X + X† = 0 and X^T J + J X = 0, i.e. X = [[A, B], [-B̄, Ā]]
+    with A anti-Hermitian N x N and B complex symmetric N x N.
+
+    J = [[0, I_N], [-I_N, 0]]   dim = N(2N+1)   dtype complex128
     """
     size = 2 * N
     dim = N * (2 * N + 1)
-    basis = np.zeros((dim, size, size), dtype=np.float64)
+    out = np.zeros((dim, size, size), dtype=np.complex128)
     k = 0
-    # (i) E_ij - E_{j+N, i+N}
+
+    # A block — anti-Hermitian N x N, embedded as [[A, 0], [0, Ā]]
+    for j in range(N):                          # diagonal: i e_jj
+        out[k, j, j] = 1j
+        out[k, j + N, j + N] = -1j
+        k += 1
     for i in range(N):
-        for j in range(N):
-            basis[k, i, j] = 1.0
-            basis[k, j + N, i + N] = -1.0
+        for j in range(i + 1, N):              # real antisymmetric
+            out[k, i, j] = 1.0
+            out[k, j, i] = -1.0
+            out[k, i + N, j + N] = 1.0
+            out[k, j + N, i + N] = -1.0
             k += 1
-    # (ii) E_{i, j+N} + E_{j, i+N}  -- upper-right symmetric block
     for i in range(N):
-        for j in range(i, N):
-            basis[k, i, j + N] = 1.0
-            basis[k, j, i + N] = 1.0
+        for j in range(i + 1, N):              # imaginary symmetric
+            out[k, i, j] = 1j
+            out[k, j, i] = 1j
+            out[k, i + N, j + N] = -1j
+            out[k, j + N, i + N] = -1j
             k += 1
-    # (iii) E_{i+N, j} + E_{j+N, i}  -- lower-left symmetric block
+
+    # B block — complex symmetric N x N, embedded as [[0, B], [-B̄, 0]]
+    for j in range(N):                          # real diagonal
+        out[k, j, j + N] = 1.0
+        out[k, j + N, j] = -1.0
+        k += 1
+    for j in range(N):                          # imaginary diagonal
+        out[k, j, j + N] = 1j
+        out[k, j + N, j] = 1j
+        k += 1
     for i in range(N):
-        for j in range(i, N):
-            basis[k, i + N, j] = 1.0
-            basis[k, j + N, i] = 1.0
+        for j in range(i + 1, N):              # real off-diagonal
+            out[k, i, j + N] = 1.0
+            out[k, j, i + N] = 1.0
+            out[k, i + N, j] = -1.0
+            out[k, j + N, i] = -1.0
             k += 1
-    return basis
+    for i in range(N):
+        for j in range(i + 1, N):              # imaginary off-diagonal
+            out[k, i, j + N] = 1j
+            out[k, j, i + N] = 1j
+            out[k, i + N, j] = 1j
+            out[k, j + N, i] = 1j
+            k += 1
+
+    return out
 
 
 def u1_basis() -> np.ndarray:
