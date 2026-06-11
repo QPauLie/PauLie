@@ -398,6 +398,127 @@ class Classification:
             else:
                 algebras[algebra] = nc if nc == 1 else 2**(nc-1)
         return "+".join([key if v == 1 else str(v) + "*" + key for key, v in algebras.items()])
+    
+    def get_algebra_basis(self) -> list['numpy.ndarray']:
+        """
+        Return the basis of the algebra as a list of matrices in its defining representation,
+        partitioned by direct summand. Currently implemented for Types B1, B2, B3.
+        """
+        import numpy as np
+        
+        basis_list = []
+        for morph in self.morphs:
+            one_legs, two_legs, _ = morph.counts()
+            canonical_type = morph.get_type().name
+            
+            if canonical_type not in ("B1", "B2", "B3"):
+                continue
+                
+            n_c = max(0, one_legs - 1)
+            num_summands = 2**n_c
+            
+            if canonical_type == "B1":
+                N = 2**two_legs
+                dim_rep = 2 * N
+                sp_basis = []
+                
+                # Block A
+                for i in range(N):
+                    X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
+                    X[i, i] = 1j
+                    X[N+i, N+i] = -1j
+                    sp_basis.append(X)
+                    
+                for i in range(N):
+                    for j in range(i+1, N):
+                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
+                        X[i, j] = 1.0
+                        X[j, i] = -1.0
+                        X[N+i, N+j] = 1.0
+                        X[N+j, N+i] = -1.0
+                        sp_basis.append(X)
+                        
+                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
+                        X[i, j] = 1j
+                        X[j, i] = 1j
+                        X[N+i, N+j] = -1j
+                        X[N+j, N+i] = -1j
+                        sp_basis.append(X)
+                        
+                # Blocks B and C
+                for i in range(N):
+                    X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
+                    X[i, N+i] = 1.0
+                    X[N+i, i] = -1.0
+                    sp_basis.append(X)
+                    
+                    X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
+                    X[i, N+i] = 1j
+                    X[N+i, i] = 1j
+                    sp_basis.append(X)
+                    
+                for i in range(N):
+                    for j in range(i+1, N):
+                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
+                        X[i, N+j] = 1.0
+                        X[j, N+i] = 1.0
+                        X[N+i, j] = -1.0
+                        X[N+j, i] = -1.0
+                        sp_basis.append(X)
+                        
+                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
+                        X[i, N+j] = 1j
+                        X[j, N+i] = 1j
+                        X[N+i, j] = 1j
+                        X[N+j, i] = 1j
+                        sp_basis.append(X)
+                
+                basis_arr = np.array(sp_basis)
+                for _ in range(num_summands):
+                    basis_list.append(basis_arr)
+                    
+            elif canonical_type == "B2":
+                dim_rep = 2**(two_legs + 3)
+                so_basis = []
+                for i in range(dim_rep):
+                    for j in range(i+1, dim_rep):
+                        X = np.zeros((dim_rep, dim_rep), dtype=np.float64)
+                        X[i, j] = 1.0
+                        X[j, i] = -1.0
+                        so_basis.append(X)
+                        
+                basis_arr = np.array(so_basis)
+                for _ in range(num_summands):
+                    basis_list.append(basis_arr)
+                    
+            elif canonical_type == "B3":
+                dim_rep = 2**(two_legs + 2)
+                su_basis = []
+                for i in range(dim_rep):
+                    for j in range(i+1, dim_rep):
+                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
+                        X[i, j] = 1j
+                        X[j, i] = 1j
+                        su_basis.append(X)
+                        
+                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
+                        X[i, j] = 1.0
+                        X[j, i] = -1.0
+                        su_basis.append(X)
+                        
+                for k in range(1, dim_rep):
+                    X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
+                    factor = 1j * np.sqrt(2.0 / (k * (k + 1)))
+                    for m in range(k):
+                        X[m, m] = factor
+                    X[k, k] = -k * factor
+                    su_basis.append(X)
+                    
+                basis_arr = np.array(su_basis)
+                for _ in range(num_summands):
+                    basis_list.append(basis_arr)
+                    
+        return basis_list
 
     def contains_algebra(self, algebra:str) -> bool:
         """
