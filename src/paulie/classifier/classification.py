@@ -5,6 +5,7 @@ import enum
 from collections.abc import Generator
 
 from paulie.common.pauli_string_bitarray import PauliString
+from paulie.application.algebra_basis import algebra_basis_from_label
 
 
 class ClassificationException(Exception):
@@ -598,7 +599,6 @@ class Classification:
         Returns a single ndarray of shape (k*dim, k*M, k*M) where k is the
         number of direct summands. Summand i occupies the i-th M x M diagonal block.
         """
-        from paulie.application.algebra_basis import algebra_basis_from_label  # noqa: PLC0415
         return algebra_basis_from_label(self.get_algebra())
 
     def _inc_morph_generator(self, ms:int, morphs:list[Morph], morph_generators:list[PauliString],
