@@ -436,19 +436,53 @@ class TestTypeAReachability:
     """Element-wise reachability for type A (so family) via Majorana bilinear isomorphism.
 
     For n=2 qubits, so(4) ≅ so(3)⊕so(3) via the Jordan-Wigner representation.
-    Majorana operators γ_0=XI, γ_1=YI, γ_2=ZX, γ_3=ZY give bilinears G_ab=γ_aγ_b
-    that span the embedded DLA.  The self-dual/anti-self-dual split (G_ab ± G_cd)/2
-    recovers the two so(3) summands of the defining-rep block-diagonal basis.
+    The test maps each element of get_algebra_basis() (6x6 block-diagonal) into
+    the embedded 4x4 DLA space via the so(3)→su(2) correspondence and verifies
+    span equality with the brute-force Lie closure.
     """
 
     def test_2so3_span_via_majorana_isomorphism(self):
-        """2*so(3) defining-rep basis spans the embedded 2-qubit DLA.
+        """get_algebra_basis() output spans the embedded 2-qubit DLA (2*so(3)).
 
-        Verifies that the image of the 6x6 block-diagonal basis under the
-        so(4)≅so(3)+so(3) Majorana isomorphism equals the span of the DLA.
+        Maps each 6x6 block-diagonal basis element to a 4x4 DLA matrix via the
+        so(4)≅so(3)⊕so(3) Majorana isomorphism, then checks span equality with
+        the brute-force Lie closure computed using PauLie-native operations.
         """
         g = p(["XY", "YX", "ZI", "IZ"], n=2)
         assert g.get_algebra() == "2*so(3)", f"got {g.get_algebra()}"
+
+        # Defining-rep basis — this is the output under test
+        basis = g.get_algebra_basis()
+        assert basis.shape == (6, 6, 6), f"expected (6,6,6) got {basis.shape}"
+
+        # Majorana bilinears G_ab = γ_a γ_b  (Jordan-Wigner, n=2 qubits)
+        g01 = 1j * _pm("ZI")
+        g02 = -1j * _pm("YX")
+        g03 = -1j * _pm("YY")
+        g12 = 1j * _pm("XX")
+        g13 = 1j * _pm("XY")
+        g23 = 1j * _pm("IZ")
+
+        # so(4) ≅ so(3)⊕so(3): self-dual / anti-self-dual generators in DLA space
+        summand_i = [(g01 + g23) / 2, (g02 - g13) / 2, (g03 + g12) / 2]
+        summand_ii = [(g01 - g23) / 2, (g02 + g13) / 2, (g03 - g12) / 2]
+
+        # so(3) defining-rep basis — same ordering used by so_basis(3)
+        so3 = so_basis(3)  # shape (3, 3, 3)
+        flat_so3 = so3.reshape(3, -1)  # (3, 9) — columns are basis vectors
+
+        # Map each 6x6 basis element → 4x4 DLA matrix via the isomorphism
+        dla_images = []
+        for mat in basis:
+            b0 = mat[:3, :3].real  # first so(3) block
+            b1 = mat[3:, 3:].real  # second so(3) block
+            c0, *_ = np.linalg.lstsq(flat_so3.T, b0.ravel(), rcond=None)
+            c1, *_ = np.linalg.lstsq(flat_so3.T, b1.ravel(), rcond=None)
+            img = sum(float(c) * gen for c, gen in zip(c0, summand_i)) + sum(
+                float(c) * gen for c, gen in zip(c1, summand_ii)
+            )
+            dla_images.append(img)
+        dla_images_arr = np.array(dla_images)
 
         # Brute-force Lie closure using PauLie-native PauliString operations
         dla_paulis = list(g.get())
@@ -465,31 +499,14 @@ class TestTypeAReachability:
         assert len(dla_paulis) == 6
         dla_mats = np.array([1j * _pm(str(el)) for el in dla_paulis])
 
-        # Majorana bilinears G_ab = γ_a γ_b  (Jordan-Wigner, n=2)
-        g01 = 1j * _pm("ZI")
-        g02 = -1j * _pm("YX")
-        g03 = -1j * _pm("YY")
-        g12 = 1j * _pm("XX")
-        g13 = 1j * _pm("XY")
-        g23 = 1j * _pm("IZ")
-
-        # so(4) ≅ so(3)⊕so(3): self-dual and anti-self-dual decomposition
-        iso_imgs = np.array(
-            [
-                (g01 + g23) / 2,
-                (g02 - g13) / 2,
-                (g03 + g12) / 2,  # summand I
-                (g01 - g23) / 2,
-                (g02 + g13) / 2,
-                (g03 - g12) / 2,  # summand II
-            ]
-        )
-
+        # span(images of get_algebra_basis()) == span(embedded DLA)
+        flat_img = dla_images_arr.reshape(len(dla_images_arr), -1)
         flat_dla = dla_mats.reshape(len(dla_mats), -1)
-        flat_iso = iso_imgs.reshape(len(iso_imgs), -1)
-        combined = np.vstack([flat_dla, flat_iso])
+        combined = np.vstack([flat_img, flat_dla])
         tol = 1e-8
+        r_img = int(np.linalg.matrix_rank(flat_img, tol=tol))
         r_dla = int(np.linalg.matrix_rank(flat_dla, tol=tol))
-        r_iso = int(np.linalg.matrix_rank(flat_iso, tol=tol))
         r_all = int(np.linalg.matrix_rank(combined, tol=tol))
-        assert r_dla == r_iso == r_all == 6, f"Span mismatch: r_dla={r_dla}, r_iso={r_iso}, r_combined={r_all}"
+        assert r_img == r_dla == r_all == 6, (
+            f"get_algebra_basis() image does not span DLA: r_img={r_img}, r_dla={r_dla}, r_combined={r_all}"
+        )

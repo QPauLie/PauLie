@@ -110,60 +110,75 @@ def u1_basis() -> np.ndarray:
 def algebra_basis_from_label(label: str) -> np.ndarray:
     """Return the defining-representation basis for the algebra named by *label*.
 
-    Convenience wrapper over the primitive constructors for use in tests and
-    external tooling.  Parses labels as returned by
-    ``PauliStringCollection.get_algebra()``.
+    Handles homogeneous direct sums (``"4*so(3)"``), heterogeneous direct sums
+    (``"so(3)+u(1)"``), and single summands (``"sp(4)"``).  The result is a
+    single ndarray with block-diagonal embedding; summand i occupies the i-th
+    diagonal block.
 
     Parameters
     ----------
     label : str
-        e.g. ``"sp(4)"``, ``"so(5)"``, ``"su(8)"``, or ``"2*su(8)"`` for a
-        two-summand direct sum.
+        Label as returned by ``PauliStringCollection.get_algebra()``.
 
     Returns
     -------
-    list[np.ndarray]
-        Single array of shape ``(k*dim, k*M, k*M)`` where k is the number
-        of direct summands, dim is the per-summand dimension, and M is the
-        per-summand matrix size.  For a single summand (k=1) this reduces to
-        the primitive constructor output.  For k>1 the i-th block of dim
-        matrices is embedded on the i-th diagonal block of size M.
+    np.ndarray
+        Shape ``(total_dim, total_M, total_M)`` where ``total_M`` is the sum
+        of per-summand matrix sizes and ``total_dim`` is the sum of per-summand
+        basis dimensions.
 
     Raises
     ------
     ValueError
-        If *label* cannot be parsed or uses an unknown family.
+        If a term cannot be parsed or uses an unknown family.
+    NotImplementedError
+        If ``u(N)`` with ``N > 1`` is requested.
     """
 
-    s = label.strip()
-    m = re.match(r"^(so|sp|su|u)\((\d+)\)$", s)
-    if m:
-        family, N, k = m.group(1), int(m.group(2)), 1
-    else:
-        m = re.match(r"^(\d+)\*(so|sp|su|u)\((\d+)\)$", s)
-        if m:
-            family, N, k = m.group(2), int(m.group(3)), int(m.group(1))
-        else:
-            raise ValueError(
-                f"Cannot parse algebra label {label!r}. "
-                "Expected 'family(N)' or 'k*family(N)' where family is so/sp/su/u."
-            )
-    if family == "so":
-        base = so_basis(N)
-    elif family == "su":
-        base = su_basis(N)
-    elif family == "sp":
-        base = sp_basis(N)
-    elif family == "u":
-        base = u1_basis()
-    else:
+    def _primitive(family: str, N: int) -> np.ndarray:
+        if family == "so":
+            return so_basis(N)
+        if family == "su":
+            return su_basis(N)
+        if family == "sp":
+            return sp_basis(N)
+        if family == "u":
+            if N != 1:
+                raise NotImplementedError(f"u({N}) is not implemented; only u(1) is supported.")
+            return u1_basis()
         raise ValueError(f"Unknown Lie algebra family {family!r}")
-    if k == 1:
-        return base.copy()
-    # Block-diagonal embedding for the complete direct-sum operator.
-    # Summand i occupies the i-th M x M diagonal block.
-    dim, M = base.shape[0], base.shape[1]
-    out = np.zeros((k * dim, k * M, k * M), dtype=base.dtype)
-    for i in range(k):
-        out[i * dim : (i + 1) * dim, i * M : (i + 1) * M, i * M : (i + 1) * M] = base
-    return out
+
+    summands: list[np.ndarray] = []
+    for term in label.split("+"):
+        term = term.strip()
+        m = re.match(r"^(so|sp|su|u)\((\d+)\)$", term)
+        if m:
+            summands.append(_primitive(m.group(1), int(m.group(2))))
+            continue
+        m = re.match(r"^(\d+)\*(so|sp|su|u)\((\d+)\)$", term)
+        if m:
+            k_rep, fam, N = int(m.group(1)), m.group(2), int(m.group(3))
+            base = _primitive(fam, N)
+            summands.extend([base] * k_rep)
+            continue
+        raise ValueError(f"Cannot parse term {term!r} in label {label!r}.")
+
+    if not summands:
+        raise ValueError(f"Empty label: {label!r}")
+
+    if len(summands) == 1:
+        return summands[0].copy()
+
+    # Block-diagonal embedding — supports heterogeneous summand sizes.
+    Ms = [b.shape[1] for b in summands]
+    total_M = sum(Ms)
+    dtype = np.result_type(*[b.dtype for b in summands])
+    mats: list[np.ndarray] = []
+    offset = 0
+    for b, M in zip(summands, Ms):
+        for mat in b:
+            block = np.zeros((total_M, total_M), dtype=dtype)
+            block[offset : offset + M, offset : offset + M] = mat
+            mats.append(block)
+        offset += M
+    return np.array(mats, dtype=dtype)
