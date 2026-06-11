@@ -156,6 +156,52 @@ Also measures of operator spread complexity rely on this concept.
 Furthermore, determining moments of circuits can be significantly simplified when the Lie algebra is known.
 All these applications are functionalities of :code:`paulie`.
 
+From the label to a matrix basis
+--------------------------------
+:code:`get_algebra` returns the name of the algebra. To do anything algebraic with the result, for
+example feeding it into a Cartan-decomposition pipeline, the algebra has to be instantiated as a
+concrete basis of operators. :code:`get_algebra_basis` returns the named algebra in its defining
+representation as a list of arrays, one per direct summand. Reusing the B-type example above:
+
+.. code-block:: python
+
+    generators = p(["XY", "XZ"], n=4)
+    basis = generators.get_algebra_basis()
+    print(f"summands = {len(basis)}, shape = {basis[0].shape}")
+
+outputs
+
+.. code-block:: bash
+
+    summands = 1, shape = (36, 8, 8)
+
+The single summand is :math:`\mathfrak{sp}(4)`, returned as the compact real form :math:`\mathfrak{usp}(8)`:
+36 anti-Hermitian :math:`8\times 8` matrices :math:`X` obeying :math:`X^{T} J + J X = 0` with
+:math:`J = \begin{psmallmatrix} 0 & I \\ -I & 0 \end{psmallmatrix}`.
+
+A direct sum acts on the direct sum of the per-summand spaces, so each matrix is an operator on the
+whole space with its summand's block embedded block-diagonally. The A-type example is a sum of four
+:math:`\mathfrak{so}(5)` copies, so the common space is :math:`20\times 20` and each of the four
+summands is returned at that size:
+
+.. code-block:: python
+
+    generators = p(["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"])
+    basis = generators.get_algebra_basis()
+    print(f"summands = {len(basis)}, shape = {basis[0].shape}")
+
+outputs
+
+.. code-block:: bash
+
+    summands = 4, shape = (10, 20, 20)
+
+The union of all summands is a genuine basis of the complete operator: its total dimension equals
+:code:`get_dla_dim`, every matrix is anti-Hermitian, the union is linearly independent and closes
+under the commutator, and it reaches every element of the algebra. The basis ordering, sign and
+normalization choices, the choice of :math:`J`, and the block embedding are fixed and documented in
+:code:`paulie.application.algebra_basis`.
+
 
 
 

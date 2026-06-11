@@ -4,6 +4,13 @@
 import enum
 from collections.abc import Generator
 
+import numpy as np
+
+from paulie.application.algebra_basis import (
+    FAMILY_ORDER,
+    block_size,
+    embed_summand_basis,
+)
 from paulie.common.pauli_string_bitarray import PauliString
 
 
@@ -590,6 +597,64 @@ class Classification:
             elif type_algebra == TypeAlgebra.SO:
                 dim += multiplicity * dim_so(n)
         return dim
+
+    def get_algebra_basis(self) -> list[np.ndarray]:
+        r"""
+        Get the classified dynamical Lie algebra as a basis of matrices in its
+        defining representation, partitioned by direct summand.
+
+        ``get_algebra`` names the algebra; this returns the named algebra as a
+        concrete operator basis. The construction is table-driven: each canonical
+        summand contributes a fixed defining-representation basis for its family
+        (``so``, ``su``, ``sp`` as the compact form usp, or ``u(1)``), repeated
+        once per copy in the direct sum.
+
+        A direct sum :math:`\bigoplus_s \mathfrak g_s` acts on the direct sum of
+        the per-summand spaces, so each returned matrix is an operator on the
+        WHOLE space: the summand's block is embedded block-diagonally and the rest
+        is zero. The union of all returned matrices is therefore a genuine basis
+        of the complete operator (anti-Hermitian, independent, bracket-closed,
+        reaching every algebra element), not a stack of unrelated native blocks.
+        The summands stay separated as a list and are ordered deterministically by
+        ``(family, size)`` so the partition is recoverable and the output is
+        reproducible (the canonical subgraphs are stored in a set). Conventions
+        (basis ordering, sign and normalization choices, the symplectic form
+        ``J``, the block embedding) are documented in
+        :mod:`paulie.application.algebra_basis`.
+
+        Returns:
+            list[np.ndarray]: One array per direct summand. Each has shape
+            ``(dim, D, D)`` where ``D`` is the side length of the common
+            direct-sum space (the sum of the per-summand block sizes) and ``dim``
+            is that summand's Lie-algebra dimension. For a single-summand algebra
+            ``D`` is the native block size. ``len(result)`` equals the number of
+            copies summed over all canonical families.
+        """
+        family_name = {
+            TypeAlgebra.U: "u",
+            TypeAlgebra.SU: "su",
+            TypeAlgebra.SO: "so",
+            TypeAlgebra.SP: "sp",
+        }
+
+        summands: list[tuple[int, int, str, int]] = []
+        for morph in self.morphs:
+            type_algebra, nc, size = morph.get_algebra_properties()
+            family = family_name[type_algebra]
+            multiplicity = nc if nc == 1 else 2 ** (nc - 1)
+            for _ in range(multiplicity):
+                summands.append((FAMILY_ORDER[family], size, family, size))
+
+        summands.sort(key=lambda item: (item[0], item[1]))
+
+        block_sizes = [block_size(family, size) for _, _, family, size in summands]
+        total = sum(block_sizes)
+        offsets = [sum(block_sizes[:i]) for i in range(len(block_sizes))]
+
+        return [
+            embed_summand_basis(family, size, total, offset)
+            for (_, _, family, size), offset in zip(summands, offsets)
+        ]
 
     def _inc_morph_generator(self, ms:int, morphs:list[Morph], morph_generators:list[PauliString],
                              current_morph_generators:list[PauliString]) -> bool:

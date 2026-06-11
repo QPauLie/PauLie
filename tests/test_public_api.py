@@ -53,6 +53,12 @@ public_symbols = [
     "matrix_decomposition",
     "matrix_decomposition_diagonal",
 
+    # Algebra basis
+    "so_basis",
+    "su_basis",
+    "usp_basis",
+    "u1_basis",
+
     # Classification
     "Morph",
     "Classification",
