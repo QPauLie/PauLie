@@ -3,9 +3,11 @@
 """
 import enum
 from collections.abc import Generator
-
+import re
+import math
+import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
-
+from paulie.common.standard_basis_generator import generate_soN_basis, generate_su2N_pauli_basis, generate_u2N_pauli_basis, generate_spN_basis
 
 class ClassificationException(Exception):
     """
@@ -399,126 +401,103 @@ class Classification:
                 algebras[algebra] = nc if nc == 1 else 2**(nc-1)
         return "+".join([key if v == 1 else str(v) + "*" + key for key, v in algebras.items()])
     
-    def get_algebra_basis(self) -> list['numpy.ndarray']:
+
+
+    def get_algebra_basis(self) -> list[np.ndarray]:
         """
-        Return the basis of the algebra as a list of matrices in its defining representation,
-        partitioned by direct summand. Currently implemented for Types B1, B2, B3.
-        """
-        import numpy as np
+        Parses the full algebra string and generates the basis for the direct sum.
         
-        basis_list = []
-        for morph in self.morphs:
-            one_legs, two_legs, _ = morph.counts()
-            canonical_type = morph.get_type().name
-            
-            if canonical_type not in ("B1", "B2", "B3"):
+        The direct sum of matrix Lie algebras is formed by placing the basis 
+        matrices of each constituent algebra into blocks along the main diagonal 
+        of a larger zero matrix.
+        
+        Parameter Mapping Convention:
+        -----------------------------
+        - su(size) and u(size): 'size' represents the matrix dimension 2^N. 
+          The subroutine requires N = log2(size).
+        - so(size): 'size' represents N. The subroutine requires N = size.
+        - sp(size): 'size' is treated as the block parameter N, resulting in 
+          a 2N x 2N matrix representation.
+          
+        Returns:
+        --------
+        list of numpy.ndarray
+            A list of block diagonal matrices spanning the direct sum algebra.
+        """
+        algebra_str = self.get_algebra()
+        
+        if not algebra_str:
+            return []
+
+        # 1. Parse the string into components: (multiplier, alg_type, parameter)
+        components = []
+        for part in algebra_str.split('+'):
+            # Regex extracts the optional multiplier, the algebra type, and the size
+            # e.g., "4*su(8)" -> ('4', 'su', '8'), "u(2)" -> (None, 'u', '2')
+            match = re.match(r'(?:(\d+)\*)?([a-z]+)\((\d+)\)', part.strip())
+            if not match:
                 continue
                 
-            n_c = max(0, one_legs - 1)
-            num_summands = 2**n_c
-            
-            if canonical_type == "B1":
-                N = 2**two_legs
-                dim_rep = 2 * N
-                sp_basis = []
+            mult_str, alg_type, param_str = match.groups()
+            mult = int(mult_str) if mult_str else 1
+            param = int(param_str)
+            components.append((mult, alg_type, param))
+
+        # 2. Calculate the total dimension of the final block-diagonal matrices
+        total_dim = 0
+        for mult, alg_type, param in components:
+            if alg_type in ['su', 'u']:
+                total_dim += param * mult
+            elif alg_type == 'so':
+                total_dim += param * mult
+            elif alg_type == 'sp':
+                # The sp generator takes N and returns a 2N x 2N matrix
+                total_dim += (2 * param) * mult 
+
+        # 3. Generate the direct sum basis
+        full_basis = []
+        current_idx = 0
+        
+        for mult, alg_type, param in components:
+            for _ in range(mult):
                 
-                # Block A
-                for i in range(N):
-                    X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
-                    X[i, i] = 1j
-                    X[N+i, N+i] = -1j
-                    sp_basis.append(X)
+                # a) Generate the sub-basis for this specific block
+                if alg_type == 'su':
+                    N = int(math.log2(param))
+                    sub_basis = generate_su2N_pauli_basis(N)
+                    rep_dim = param
                     
-                for i in range(N):
-                    for j in range(i+1, N):
-                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
-                        X[i, j] = 1.0
-                        X[j, i] = -1.0
-                        X[N+i, N+j] = 1.0
-                        X[N+j, N+i] = -1.0
-                        sp_basis.append(X)
-                        
-                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
-                        X[i, j] = 1j
-                        X[j, i] = 1j
-                        X[N+i, N+j] = -1j
-                        X[N+j, N+i] = -1j
-                        sp_basis.append(X)
-                        
-                # Blocks B and C
-                for i in range(N):
-                    X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
-                    X[i, N+i] = 1.0
-                    X[N+i, i] = -1.0
-                    sp_basis.append(X)
+                elif alg_type == 'u':
+                    N = int(math.log2(param))
+                    sub_basis = generate_u2N_pauli_basis(N)
+                    rep_dim = param
                     
-                    X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
-                    X[i, N+i] = 1j
-                    X[N+i, i] = 1j
-                    sp_basis.append(X)
+                elif alg_type == 'so':
+                    sub_basis = generate_soN_basis(param)
+                    rep_dim = param
                     
-                for i in range(N):
-                    for j in range(i+1, N):
-                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
-                        X[i, N+j] = 1.0
-                        X[j, N+i] = 1.0
-                        X[N+i, j] = -1.0
-                        X[N+j, i] = -1.0
-                        sp_basis.append(X)
-                        
-                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
-                        X[i, N+j] = 1j
-                        X[j, N+i] = 1j
-                        X[N+i, j] = 1j
-                        X[N+j, i] = 1j
-                        sp_basis.append(X)
+                elif alg_type == 'sp':
+                    sub_basis = generate_spN_basis(param)
+                    rep_dim = 2 * param
+                    
+                else:
+                    continue # Skip unrecognized algebras
+                    
+                # b) Embed each sub-basis matrix into the larger dimensional space
+                for sub_mat in sub_basis:
+                    # We use complex dtype universally because su, u, and sp 
+                    # contain imaginary numbers (anti-Hermitian)
+                    block_mat = np.zeros((total_dim, total_dim), dtype=complex)
+                    
+                    # Insert the sub_mat into the diagonal block
+                    block_mat[current_idx:current_idx+rep_dim, current_idx:current_idx+rep_dim] = sub_mat
+                    
+                    full_basis.append(block_mat)
+                    
+                # Advance the diagonal index for the next algebra block
+                current_idx += rep_dim
                 
-                basis_arr = np.array(sp_basis)
-                for _ in range(num_summands):
-                    basis_list.append(basis_arr)
-                    
-            elif canonical_type == "B2":
-                dim_rep = 2**(two_legs + 3)
-                so_basis = []
-                for i in range(dim_rep):
-                    for j in range(i+1, dim_rep):
-                        X = np.zeros((dim_rep, dim_rep), dtype=np.float64)
-                        X[i, j] = 1.0
-                        X[j, i] = -1.0
-                        so_basis.append(X)
-                        
-                basis_arr = np.array(so_basis)
-                for _ in range(num_summands):
-                    basis_list.append(basis_arr)
-                    
-            elif canonical_type == "B3":
-                dim_rep = 2**(two_legs + 2)
-                su_basis = []
-                for i in range(dim_rep):
-                    for j in range(i+1, dim_rep):
-                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
-                        X[i, j] = 1j
-                        X[j, i] = 1j
-                        su_basis.append(X)
-                        
-                        X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
-                        X[i, j] = 1.0
-                        X[j, i] = -1.0
-                        su_basis.append(X)
-                        
-                for k in range(1, dim_rep):
-                    X = np.zeros((dim_rep, dim_rep), dtype=np.complex128)
-                    factor = 1j * np.sqrt(2.0 / (k * (k + 1)))
-                    for m in range(k):
-                        X[m, m] = factor
-                    X[k, k] = -k * factor
-                    su_basis.append(X)
-                    
-                basis_arr = np.array(su_basis)
-                for _ in range(num_summands):
-                    basis_list.append(basis_arr)
-                    
-        return basis_list
+        return full_basis
 
     def contains_algebra(self, algebra:str) -> bool:
         """
