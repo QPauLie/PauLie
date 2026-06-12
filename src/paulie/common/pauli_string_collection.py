@@ -1030,7 +1030,7 @@ class PauliStringCollection:
 
     def evaluate_commutator_sequence(self) -> PauliString | None:
         """
-        Evaluate the nested commutator between the first element of the collections and all others.
+        Evaluate the nested commutator between the last element of the collections and all others.
 
         Returns:
             PauliString|None:
@@ -1038,4 +1038,4 @@ class PauliStringCollection:
         """
         if len(self.generators) == 0:
             return None
-        return PauliStringCollection(self.generators[1:]).nested_adjoint(self.generators[0])
+        return PauliStringCollection(self.generators[0:-1]).nested_adjoint(self.generators[-1])
