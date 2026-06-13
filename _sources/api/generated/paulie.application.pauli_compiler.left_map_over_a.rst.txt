@@ -1,0 +1,4 @@
+﻿paulie.application.pauli_compiler.left_map_over_a
+=================================================
+
+.. autofunction:: paulie.application.pauli_compiler.left_map_over_a

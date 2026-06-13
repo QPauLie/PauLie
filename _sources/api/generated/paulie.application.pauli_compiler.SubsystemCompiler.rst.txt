@@ -1,0 +1,6 @@
+﻿paulie.application.pauli_compiler.SubsystemCompiler
+===================================================
+
+.. autoclass:: paulie.application.pauli_compiler.SubsystemCompiler
+    :members:
+    :show-inheritance:

@@ -1,0 +1,6 @@
+﻿paulie.application.pauli_compiler.OptimalPauliCompiler
+======================================================
+
+.. autoclass:: paulie.application.pauli_compiler.OptimalPauliCompiler
+    :members:
+    :show-inheritance:
