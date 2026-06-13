@@ -29,12 +29,13 @@ def generate_so_basis(N) -> list[np.ndarray]:
         returned will be exactly N * (N - 1) / 2.
 
     Parameters:
-    -----------
-    N : int
-        The dimension of the space (must be >= 2).
+        N : int
 
     Returns:
         list[np.ndarray]
+
+    Raises:
+        ValueError: If N is less than 2, since so(N) is trivial.
     """
     if N < 2:
         raise ValueError("Dimension N must be at least 2.")
@@ -114,7 +115,7 @@ def generate_su_basis(N) -> list[np.ndarray]:
     for pauli_string in all_pauli_strings:
         basis.append(1j * pauli_string.get_matrix())  # Multiply by 1j to ensure anti-Hermiticity
     
-    # 2. Slice off the first element (i * Identity) to enforce Tr(X) = 0
+    # 2. Slice off the first element (i * Identity) 
     return basis[1:]    
 
 
@@ -151,15 +152,15 @@ def generate_sp_basis(N) -> list[np.ndarray]:
       Subset 5: Imaginary symmetric elements (C = i * (E_jk + E_kj))
       
     Parameters:
-    -----------
-    N : int
+
+        N : int
         The block dimension. The resulting matrices will be 2N x 2N.
         
     Returns:
-    --------
-    list of numpy.ndarray
-        A list containing the basis matrices. The total number of matrices
-        will be exactly N * (2N + 1).
+        list[np.ndarray]
+    
+    Raises:
+        ValueError: If N is less than 1, since sp(N) is trivial.
     """
     if N < 1:
         raise ValueError("Block dimension N must be at least 1.")

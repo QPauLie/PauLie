@@ -4,14 +4,15 @@ interactions on open spin chains.
 """
 from operator import itemgetter
 from typing import Any
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import pytest
+import numpy as np
 from paulie import (
     G_LIE,
     two_local_algebras,
     get_pauli_string as p,
 )
-from paulie.classifier.classification import Classification
+from paulie.classifier.classification import Classification, TypeAlgebra
 
 # System sizes at which the low-rank-compatible a-type / mixed equivalences
 # of Theorem I.1 agree through `is_algebra`.
@@ -147,3 +148,96 @@ def test_is_algebra_isomorphism_is_symmetric(canonical: str, isomorphic: str) ->
         assert classification.is_algebra(isomorphic)
     with patch.object(classification, "get_algebra", return_value=isomorphic):
         assert classification.is_algebra(canonical)
+
+
+# ---------------------------------------------------------------------------
+# Basis generation: get_algebra_basis and helpers
+# ---------------------------------------------------------------------------
+def test_aggregate_components() -> None:
+    """Helper _aggregate_components groups identical morphs correctly."""
+    classification = Classification()
+    
+    morph1 = MagicMock()
+    morph1.get_algebra_properties.return_value = (TypeAlgebra.SU, 1, 4) # su(4)
+    morph2 = MagicMock()
+    morph2.get_algebra_properties.return_value = (TypeAlgebra.SU, 2, 4) # 2*su(4), multiplicity 2
+    morph3 = MagicMock()
+    morph3.get_algebra_properties.return_value = (TypeAlgebra.U, 1, 1) # u(1)
+
+    classification.add(morph1)
+    classification.add(morph2)
+    classification.add(morph3)
+
+    components = classification._aggregate_components()
+    
+    # We expect total multiplicity of 3 for su(4), and 1 for u(1)
+    expected = {(3, 'su', 4), (1, 'u', 1)}
+    assert set(components) == expected
+
+
+@pytest.mark.parametrize(
+    ("alg_type", "param", "expected_rep_dim"),
+    [
+        ("su", 4, 4), # N=2
+        ("so", 3, 3), 
+        ("sp", 2, 4), # rep_dim is 2*param
+        ("u", 1, 1), 
+    ],
+)
+def test_generate_sub_basis(alg_type: str, param: int, expected_rep_dim: int) -> None:
+    """Helper _generate_sub_basis routes to the correct generator."""
+    classification = Classification()
+    basis, rep_dim = classification._generate_sub_basis(alg_type, param)
+    
+    assert rep_dim == expected_rep_dim
+    assert isinstance(basis, list)
+    if alg_type == "u":
+        assert len(basis) == 1
+        assert np.array_equal(basis[0], np.array([[1j]], dtype=complex))
+    else:
+        for mat in basis:
+            assert isinstance(mat, np.ndarray)
+            assert mat.shape == (rep_dim, rep_dim)
+
+
+def test_generate_sub_basis_invalid_type() -> None:
+    """Helper _generate_sub_basis raises ValueError on unknown algebra type."""
+    classification = Classification()
+    with pytest.raises(ValueError, match="Unknown algebra type: invalid"):
+        classification._generate_sub_basis("invalid", 1)
+
+
+def test_get_algebra_basis() -> None:
+    """Main function get_algebra_basis assembles block-diagonal matrices."""
+    classification = Classification()
+    
+    mock_components = [(2, "su", 2), (1, "u", 1)]
+    mock_su_basis = [np.ones((2, 2))]
+    mock_u_basis = [np.ones((1, 1))]
+    
+    with patch.object(
+        classification, "_aggregate_components", return_value=mock_components
+    ), patch.object(
+        classification, "_generate_sub_basis", side_effect=[(mock_su_basis, 2), (mock_u_basis, 1)]
+    ):
+        basis = classification.get_algebra_basis()
+        
+        # total_dim = 2 * 2 (for su) + 1 * 1 (for u) = 5
+        # The basis should have 3 matrices total (2 from su copies, 1 from u copy)
+        assert len(basis) == 3
+        
+        for mat in basis:
+            assert mat.shape == (5, 5)
+            assert mat.dtype == complex
+            
+        # First matrix: ones at block [0:2, 0:2]
+        assert np.array_equal(basis[0][0:2, 0:2], np.ones((2, 2)))
+        assert np.count_nonzero(basis[0]) == 4
+        
+        # Second matrix: ones at block [2:4, 2:4]
+        assert np.array_equal(basis[1][2:4, 2:4], np.ones((2, 2)))
+        assert np.count_nonzero(basis[1]) == 4
+        
+        # Third matrix: ones at block [4:5, 4:5]
+        assert np.array_equal(basis[2][4:5, 4:5], np.ones((1, 1)))
+        assert np.count_nonzero(basis[2]) == 1

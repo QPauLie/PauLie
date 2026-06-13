@@ -265,3 +265,92 @@ def test_spN_linear_independence(N):
     
     assert rank == len(basis), \
         f"sp({N}) basis is not linearly independent over the reals! Expected rank {len(basis)}, got {rank}"
+
+
+def get_structure_constants(basis, is_complex=False):
+    """
+    Computes the 3D tensor of structure constants C_{ij}^k for a given basis.
+    [B_i, B_j] = sum_k (C_{ij}^k * B_k)
+    """
+    n = len(basis)
+    
+    # Flatten the basis to use a linear solver
+    if is_complex:
+        # For complex real-algebras like su(N), split real and imag
+        real_parts = np.array([mat.real.flatten() for mat in basis])
+        imag_parts = np.array([mat.imag.flatten() for mat in basis])
+        basis_flat = np.hstack([real_parts, imag_parts]).T
+    else:
+        # For purely real algebras like so(N)
+        basis_flat = np.array([mat.flatten() for mat in basis]).T
+
+    # Initialize the 3D tensor for structure constants
+    C = np.zeros((n, n, n))
+    
+    for i in range(n):
+        for j in range(n):
+            A = basis[i]
+            B = basis[j]
+            
+            # Compute commutator
+            comm = A @ B - B @ A
+            
+            if is_complex:
+                flat_comm = np.hstack([comm.real.flatten(), comm.imag.flatten()])
+            else:
+                flat_comm = comm.flatten()
+                
+            # Solve for the coefficients: basis_flat * coeffs = flat_comm
+            coeffs, _, _, _ = np.linalg.lstsq(basis_flat, flat_comm, rcond=None)
+            
+            # Store the coefficients in the tensor
+            C[i, j, :] = coeffs
+            
+    return C
+
+def test_su2_so3_exact_equivalence():
+    """
+    Proves the exact isomorphism su(2) == so(3) by showing their 
+    structure constants are identical.
+    """
+    # 1. Generate the bases
+    # su(2) corresponds to N=1 (1 qubit)
+    # so(3) corresponds to N=3 (3D space)
+    su2_basis = generate_su_basis(1) 
+    so3_basis = generate_so_basis(3)
+    
+    # 2. Normalize the su(2) basis
+    # Pauli matrices have an inherent factor of 2 in their commutation 
+    # relations ([X, Y] = 2iZ). Standard elementary matrices do not. 
+    # We scale the su(2) basis by 1/2 to align the geometries perfectly.
+    su2_basis_normalized = [mat / 2.0 for mat in su2_basis]
+    
+    # 3. Compute structure constants
+    C_su2 = get_structure_constants(su2_basis_normalized, is_complex=True)
+    C_so3 = get_structure_constants(so3_basis, is_complex=False)
+    
+    # 4. Assert exact algebraic equivalence
+    # Remarkably, because of the binary counting order of your su() generator 
+    # and the upper-triangular loop of your so() generator, the bases are 
+    # generated in the exact same matching sequence. No sorting is required!
+    assert np.allclose(C_su2, C_so3, atol=1e-10), \
+        "The structure constants of su(2) and so(3) do not match! They are not equivalent."
+    
+def test_su2_sp1_exact_equivalence():
+    """
+    Proves the exact isomorphism su(2) == sp(1) by showing their 
+    structure constants are identical.
+    """
+    # 1. Generate the bases
+    # su(2) corresponds to N=1
+    # sp(1) corresponds to N=1
+    su2_basis = generate_su_basis(1) 
+    sp1_basis = generate_sp_basis(1)
+    
+    # 2. Compute structure constants (both contain complex matrices)
+    C_su2 = get_structure_constants(su2_basis, is_complex=True)
+    C_sp1 = get_structure_constants(sp1_basis, is_complex=True)
+    
+    # 3. Assert exact algebraic equivalence
+    assert np.allclose(C_su2, C_sp1, atol=1e-10), \
+        "The structure constants of su(2) and sp(1) do not match! They are not equivalent."
