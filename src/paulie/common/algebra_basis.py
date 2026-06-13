@@ -1,3 +1,7 @@
+"""
+Basis matrix generators for u(1), so(n), su(n), sp(n) and their direct sums.
+"""
+
 import numpy as np
 
 from paulie.classifier.classification import TypeAlgebra
@@ -116,7 +120,7 @@ def get_su_basis(n: int) -> np.array:
     for i in range(n_diagonal):
         target_dim = n_symmetric * 2 + i
         dim_inds = [target_dim] * (i + 1)
-        diag_inds = [j for j in range(i + 1)]
+        diag_inds = list(range(i + 1))
         basis[dim_inds, diag_inds, diag_inds] = 1 * factors[i]
         basis[n_symmetric * 2 + i, i + 1, i + 1] = (-1 * (i + 1)) * factors[i]
 
@@ -285,7 +289,7 @@ def get_algebras_basis(multipliers: list[int], groups: list[TypeAlgebra], sizes:
         ValueError: If the input lists have inconsistent lengths.
     """
     n_pairs = len(multipliers)
-    if not (n_pairs == len(groups) == len(sizes)):
+    if not n_pairs == len(groups) == len(sizes):
         raise ValueError("Each input params should have same length")
 
     block_sizes = []
