@@ -413,11 +413,11 @@ class Classification:
         components = self._aggregate_components()
 
         # 2. Calculate the total dimension of the final block-diagonal matrices
-        total_dim = 0
+        basis_element_size = 0
         for mult, alg_type, param in components:
             # A quick mapping to find the block size for each type
             block_sizes = {'su': param, 'so': param, 'sp': 2 * param, 'u': 1}
-            total_dim += block_sizes[alg_type] * mult
+            basis_element_size += block_sizes[alg_type] * mult
 
         # 3. Generate the direct sum basis
         full_basis = []
@@ -430,7 +430,7 @@ class Classification:
             for _ in range(mult):
                 for mat in sub_basis:
                     # Initialize the massive zero matrix
-                    block_mat = np.zeros((total_dim, total_dim), dtype=complex)
+                    block_mat = np.zeros((basis_element_size, basis_element_size), dtype=complex)
                     
                     # Insert the sub-matrix onto the diagonal
                     block_mat[current_idx:current_idx+rep_dim, current_idx:current_idx+rep_dim] = mat
