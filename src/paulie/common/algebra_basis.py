@@ -4,7 +4,7 @@ Basis matrix generators for u(1), so(n), su(n), sp(n) and their direct sums.
 
 import numpy as np
 
-from paulie.classifier.classification import TypeAlgebra
+from paulie.classifier.types import TypeAlgebra
 
 
 def get_u_basis(n: int) -> np.ndarray:
@@ -236,7 +236,7 @@ def get_sp_basis(n: int) -> np.ndarray:
     return basis
 
 
-def get_group_basis(algebra_type: TypeAlgebra, n: int) -> np.ndarray:
+def get_group_basis(algebra_type: 'TypeAlgebra', n: int) -> np.ndarray:
     """Dispatcher to generate basis based on algebra type.
 
     Args:
@@ -262,7 +262,7 @@ def get_group_basis(algebra_type: TypeAlgebra, n: int) -> np.ndarray:
     raise ValueError(err_msg)
 
 
-def get_n_basis(algebra_type: TypeAlgebra, n: int) -> int:
+def get_n_basis(algebra_type: 'TypeAlgebra', n: int) -> int:
     """Calculates total dimension (number of generators) for a given algebra.
 
     Args:
@@ -287,7 +287,7 @@ def get_n_basis(algebra_type: TypeAlgebra, n: int) -> int:
 
 def get_algebras_basis(
         multipliers: list[int],
-        groups: list[TypeAlgebra],
+        groups: list['TypeAlgebra'],
         sizes: list[int]
     ) -> np.ndarray:
     """Constructs the block-diagonal basis for a direct sum of Lie algebras.

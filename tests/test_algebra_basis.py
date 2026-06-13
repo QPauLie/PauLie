@@ -7,9 +7,9 @@ import pytest
 import numpy as np
 
 # Adjust this import to match your actual module structure
-from paulie.classifier.classification import TypeAlgebra
 from paulie import get_pauli_string as p
 from paulie.common.algebra_basis import (
+    TypeAlgebra,
     get_u_basis,
     get_n_so_basis,
     get_so_basis,
