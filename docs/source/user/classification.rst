@@ -15,7 +15,8 @@ In :cite:t:`Aguilar_2024`, an efficient algorithm for classifying which Lie alge
 a modified version of this algorithm.
 The function :code:`get_algebra` returns exactly which algebra is generated when
 given the generator set which can be extended with identities to arbitrary qubit numbers
-specified.
+specified. Furthermore, the function :code:`get_algebra_basis()` can be used to explicitly construct the standard matrix representation basis for the corresponding algebra.
+
 We can reproduce Example I.5 in :cite:t:`Wiersema_2024`:
 
 .. code-block:: python
@@ -24,13 +25,17 @@ We can reproduce Example I.5 in :cite:t:`Wiersema_2024`:
 
     generators = p(["XY"])
     algebra = generators.get_algebra()
+    basis = generators.get_algebra_basis()
+    
     print(f"algebra = {algebra}")
+    print(f"basis = {basis}")
 
 outputs
 
 .. code-block:: bash
 
     algebra = u(1)
+    basis = [array([[0.+1.j]])]
 
 whereas changing to a three qubit system, results in another algebra:
 
@@ -39,13 +44,23 @@ whereas changing to a three qubit system, results in another algebra:
     size = 3
     generators = p(["XY"], n=size)
     algebra = generators.get_algebra()
+    basis = generators.get_algebra_basis()
+    
     print(f"algebra = {algebra}")
+    print(f"basis = {basis}")
 
 outputs
 
 .. code-block:: bash
 
     algebra = so(3)
+    basis = [array([[ 0.+0.j,  1.+0.j,  0.+0.j],
+           [-1.+0.j,  0.+0.j,  0.+0.j],
+           [ 0.+0.j,  0.+0.j,  0.+0.j]]), array([[ 0.+0.j,  0.+0.j,  1.+0.j],
+           [ 0.+0.j,  0.+0.j,  0.+0.j],
+           [-1.+0.j,  0.+0.j,  0.+0.j]]), array([[ 0.+0.j,  0.+0.j,  0.+0.j],
+           [ 0.+0.j,  0.+0.j,  1.+0.j],
+           [ 0.+0.j, -1.+0.j,  0.+0.j]])]
 
 The algorithm is based on the concept of an anticommutation graph. Given a set of n-qubit Pauli strings
 :math:`\mathcal{G} = \{P_1,\dots ,P_{n_G}\}`, the anticommutation graph has as a vertex set :math:`\mathcal{G}`
@@ -155,10 +170,3 @@ The Lie algebra plays a pivotal role in quantum control theory to understand the
 Also measures of operator spread complexity rely on this concept.
 Furthermore, determining moments of circuits can be significantly simplified when the Lie algebra is known.
 All these applications are functionalities of :code:`paulie`.
-
-
-
-
-
-
-

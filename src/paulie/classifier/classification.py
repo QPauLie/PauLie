@@ -3,9 +3,10 @@
 """
 import enum
 from collections.abc import Generator
-
+import math
+import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
-
+from paulie.common.standard_basis_generator import generate_so_basis, generate_su_basis, generate_sp_basis
 
 class ClassificationException(Exception):
     """
@@ -398,6 +399,89 @@ class Classification:
             else:
                 algebras[algebra] = nc if nc == 1 else 2**(nc-1)
         return "+".join([key if v == 1 else str(v) + "*" + key for key, v in algebras.items()])
+    
+
+
+    def get_algebra_basis(self) -> list[np.ndarray]:
+        """
+        Get the basis of the algebra as a list of matrices in its defining representation.
+
+        Returns:
+            list[np.ndarray]: The basis of the algebra as a list of matrices in its defining representation.
+        """
+        # 1. Aggregate components into a list of tuples: [(mult, alg_type, param), ...]
+        components = self._aggregate_components()
+
+        # 2. Calculate the total dimension of the final block-diagonal matrices
+        basis_element_size = 0
+        for mult, alg_type, param in components:
+            # A quick mapping to find the block size for each type
+            block_sizes = {'su': param, 'so': param, 'sp': 2 * param, 'u': 1}
+            basis_element_size += block_sizes[alg_type] * mult
+
+        # 3. Generate the direct sum basis
+        full_basis = []
+        current_idx = 0
+        
+        for mult, alg_type, param in components:
+            # Use a dispatch dictionary to cleanly call the right generator
+            sub_basis, rep_dim = self._generate_sub_basis(alg_type, param)
+            
+            for _ in range(mult):
+                for mat in sub_basis:
+                    # Initialize the massive zero matrix
+                    block_mat = np.zeros((basis_element_size, basis_element_size), dtype=complex)
+                    
+                    # Insert the sub-matrix onto the diagonal
+                    block_mat[current_idx:current_idx+rep_dim, current_idx:current_idx+rep_dim] = mat
+                    
+                    full_basis.append(block_mat)
+                
+                # Advance the diagonal index after placing the block
+                current_idx += rep_dim
+                
+        return full_basis
+
+    # ---------------------------------------------------------
+    # Helper Methods to keep the main function clean
+    # ---------------------------------------------------------
+
+    def _aggregate_components(self) -> list[tuple[str, int, int]]:
+        """Extracts and groups identical morphs into (mult, alg_type, param)."""
+        component_dict = {}
+        
+        # Map enum to string
+        type_map = {
+            TypeAlgebra.U: 'u', 
+            TypeAlgebra.SO: 'so', 
+            TypeAlgebra.SP: 'sp', 
+            TypeAlgebra.SU: 'su'
+        }
+        
+        for morph in self.morphs:
+            type_alg, nc, param = morph.get_algebra_properties()
+            alg_str = type_map[type_alg]
+            
+            mult = nc if nc == 1 else 2**(nc - 1)
+            
+            key = (alg_str, param)
+            component_dict[key] = component_dict.get(key, 0) + mult
+
+        return [(mult, alg, param) for (alg, param), mult in component_dict.items()]
+
+    def _generate_sub_basis(self, alg_type: str, param: int) -> tuple[list[np.ndarray], int]:
+        """Routes the parameters to the correct generator function."""
+        if alg_type == 'su':
+            N = int(math.log2(param))
+            return generate_su_basis(N), param
+        elif alg_type == 'so':
+            return generate_so_basis(param), param
+        elif alg_type == 'sp':
+            return generate_sp_basis(param), 2 * param
+        elif alg_type == 'u':
+            return [np.array([[1j]], dtype=complex)], 1
+        else:
+            raise ValueError(f"Unknown algebra type: {alg_type}")
 
     def contains_algebra(self, algebra:str) -> bool:
         """

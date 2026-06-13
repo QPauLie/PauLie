@@ -12,7 +12,7 @@ import networkx as nx
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.get_graph import get_graph
-from paulie.classifier.classification import Classification
+from paulie.classifier.classification import Classification, Morph
 from paulie.classifier.tracked_canonicalizer import TrackedCanonicalizer
 from paulie.classifier.canonicalizer import Canonicalizer
 from paulie.classifier.recording_canonicalizer import RecordingCanonicalizer
@@ -36,6 +36,7 @@ class PauliStringCollection:
         self.classification: Classification = None
         self._tracked: bool = False
         self._record = None
+        self.morph: Morph = None
         if not generators:
             return
 
@@ -579,6 +580,17 @@ class PauliStringCollection:
         if self.classification is None:
             self.classification = self.classify()
         return self.classification
+    
+    def get_morph(self) -> Morph:
+        """
+        Get the morphism of the generator set.
+
+        Returns:
+            Morph: Morphism of the generator set.
+        """
+        if self.morph is None:
+            self.morph = self.morph()
+        return self.morph
 
     def get_algebra(self) -> str:
         """
@@ -589,6 +601,13 @@ class PauliStringCollection:
         """
         classification = self.get_class()
         return str(classification.get_algebra())
+
+    def get_algebra_basis(self) -> list['np.ndarray']:
+        """
+        Return the basis of the algebra as a list of matrices in its defining representation,
+        partitioned by direct summand. Currently implemented for Types B1, B2, B3.
+        """
+        return self.get_class().get_algebra_basis()
 
     def is_algebra(self, algebra: str) -> bool:
         """
