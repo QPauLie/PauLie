@@ -94,7 +94,7 @@ def get_su_basis(n: int) -> np.ndarray:
 
     Returns:
         np.ndarray: A 3D array of shape (dim, n, n) containing the basis matrices:
-            Symmetric Real -> Anti-symmetric Imaginary -> Diagonal
+            Symmetric Imaginary -> Anti-symmetric Real -> Diagonal Imaginary
     """
     dim: int = get_n_su_basis(n)
     basis = np.zeros((dim, n, n), dtype=np.complex128)
@@ -104,17 +104,17 @@ def get_su_basis(n: int) -> np.ndarray:
     n_diagonal: int = n - 1
     rows, cols = np.triu_indices(n, k=1)
 
-    # Symmetric Real Generators
+    # Symmetric Imaginary Generators
     k = np.arange(n_symmetric)
     basis[k, rows, cols] = 1j
     basis[k, cols, rows] = 1j
 
-    # Anti-symmetric imaginary generator
+    # Anti-symmetric Real Generator
     k = np.arange(n_symmetric, n_symmetric * 2)
     basis[k, rows, cols] = 1.0
     basis[k, cols, rows] = -1.0
 
-    # Diagonal Generator
+    # Diagonal Imaginary Generator
     factors = [np.sqrt(2 / (f * (f + 1))) for f in range(1, n_diagonal + 1)]
 
     for i in range(n_diagonal):
