@@ -72,7 +72,7 @@ class PauliStringLinear(PauliString):
             String representation of a linear combination.
         """
         if self.is_zero():
-            return f"0*{"I"*self.get_size()}"
+            return f'0*{"I"*self.get_size()}'
 
         simplified_self = self.simplify()
         # Sort by the Pauli string part for a canonical, consistent output

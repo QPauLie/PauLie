@@ -9,7 +9,7 @@ from paulie.helpers._lie_bases import (
 
 def parse_algebra_label(label: str):
     """Parsuje etykiety typu '2^n1 family(N)'."""
-    # Wyciągamy liczbe skladnikow prostych (n1)
+    # Extract number of simple components (n1)
     n1 = 0
     if "^" in label:
         match_n1 = re.match(r"2\^(\d+)", label)
@@ -42,5 +42,5 @@ def get_algebra_basis_impl(label: str) -> list:
     else:
         raise ValueError(f"Unsupported family: {family}")
 
-    # Zwracamy podział po składnikach prostych
+    # Return partition by simple components
     return [single_basis.copy() for _ in range(num_summands)]

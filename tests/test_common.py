@@ -139,7 +139,7 @@ def test_PauliStringLinear_str_repr(
         coeff = coeff1 + coeff2
 
         if coeff == 0:
-            expected_str = f"0*{"".ljust(len(pauli_string1), "I")}"
+            expected_str = f'0*{"".ljust(len(pauli_string1), "I")}'
         else:
             expected_str = _pauli_str_sign(coeff, pauli_string1)
 
