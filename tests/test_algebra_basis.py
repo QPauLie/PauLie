@@ -26,7 +26,7 @@ def test_canonical_type_so():
         else:
             assert dim == (N * (N - 1)) // 2
 
-        # Sprawdzenie liniowej niezaleznosci
+        # Verify linear independence
         check_linear_independence(summand)
 
 
@@ -49,7 +49,7 @@ def test_canonical_type_sp():
         cond = mat.T @ J + J @ mat
         assert np.allclose(cond, 0.0)
 
-    # Sprawdzenie liniowej niezaleznosci
+    # Verify linear independence
     check_linear_independence(summand)
 
 
@@ -67,5 +67,5 @@ def test_canonical_type_su():
         )
         assert np.allclose(np.trace(mat), 0.0)
 
-    # Sprawdzenie liniowej niezaleznosci
+    # Verify linear independence
     check_linear_independence(basis)
