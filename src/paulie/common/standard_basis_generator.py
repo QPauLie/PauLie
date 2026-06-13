@@ -127,14 +127,27 @@ def generate_sp_basis(N) -> list[np.ndarray]:
     The Lie algebra sp(N) consists of 2N x 2N complex matrices that satisfy 
     two independent constraints simultaneously:
     1. Symplectic: X^T * J + J * X = 0  (where J is the standard symplectic matrix)
-    2. Anti-Hermitian: X^dagger + X = 0
+    J = [[0, I_N],[-I_N, 0]] where I_N is the N x N identity matrix.
     
+    2. Anti-Hermitian: X^dagger + X = 0
+
     Convention Used:
     ----------------
     These constraints force the 2N x 2N matrix to have the rigid block structure:
         X = [[ A,  -conj(C) ],
              [ C,   conj(A) ]]
-             
+
+    Basis Generation Order:
+    -----------------------
+    The basis is returned as a flat list, ordered by the following subsets:
+    1. Imaginary Diagonals of A: [i*E_kk] (N matrices)
+    2. Real Skew-Symmetric Off-diagonals of A: [E_jk - E_kj] (N(N-1)/2 matrices)
+    3. Imaginary Symmetric Off-diagonals of A: [i*(E_jk + E_kj)] (N(N-1)/2 matrices)
+    4. Real Symmetric elements of C: [E_jk + E_kj] (N(N+1)/2 matrices)
+    5. Imaginary Symmetric elements of C: [i*(E_jk + E_kj)] (N(N+1)/2 matrices)
+    
+    Total basis size: N * (2N + 1).
+                 
     Where A and C are N x N blocks:
     - A is an anti-Hermitian matrix.
     - C is a complex symmetric matrix.

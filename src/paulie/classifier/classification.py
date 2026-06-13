@@ -405,6 +405,9 @@ class Classification:
     def get_algebra_basis(self) -> list[np.ndarray]:
         """
         Get the basis of the algebra as a list of matrices in its defining representation.
+
+        Returns:
+            list[np.ndarray]: The basis of the algebra as a list of matrices in its defining representation.
         """
         # 1. Aggregate components into a list of tuples: [(mult, alg_type, param), ...]
         components = self._aggregate_components()
