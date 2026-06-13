@@ -1,6 +1,7 @@
 """
-    Class for a set/collection of Pauli strings with various features
+Class for a set/collection of Pauli strings with various features
 """
+
 from __future__ import annotations
 
 from random import randint
@@ -12,11 +13,13 @@ import networkx as nx
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.get_graph import get_graph
+from paulie.common.algebra_basis import get_algebras_basis
 from paulie.classifier.classification import Classification
 from paulie.classifier.tracked_canonicalizer import TrackedCanonicalizer
 from paulie.classifier.canonicalizer import Canonicalizer
 from paulie.classifier.recording_canonicalizer import RecordingCanonicalizer
 from paulie.exceptions import PauliStringCollectionException
+
 
 class PauliStringCollection:
     """
@@ -122,7 +125,7 @@ class PauliStringCollection:
         self.nextpos += 1
         return value
 
-    def __delitem__(self, key:int) -> None:
+    def __delitem__(self, key: int) -> None:
         """
         Delete a Pauli string from the collection.
 
@@ -395,9 +398,7 @@ class PauliStringCollection:
         # For each generator in our system, filter the candidate list.
         for g in self.generators:
             # Keep only the candidates that commute with the current generator g.
-            candidate_symmetries = [
-                p for p in candidate_symmetries if g.commutes_with(p)
-            ]
+            candidate_symmetries = [p for p in candidate_symmetries if g.commutes_with(p)]
 
         # Return the final filtered list as a new collection.
         return PauliStringCollection(candidate_symmetries)
@@ -415,9 +416,7 @@ class PauliStringCollection:
         if len(self) == 0:
             return PauliStringCollection([])
         for p in self:
-            generators = PauliStringCollection(
-                p.get_anti_commutants(generators=generators)
-            )
+            generators = PauliStringCollection(p.get_anti_commutants(generators=generators))
         return generators
 
     def get_graph(
@@ -465,8 +464,8 @@ class PauliStringCollection:
         return n_comp * n_iso
 
     def _convert(
-            self,
-            generators: set[PauliString] | list[PauliString] | set[str] | list[str],
+        self,
+        generators: set[PauliString] | list[PauliString] | set[str] | list[str],
     ) -> PauliStringCollection:
         """
         Convert a set of Pauli strings or strings to a Pauli string collection.
@@ -519,11 +518,10 @@ class PauliStringCollection:
                             candidates.add(j)
             for j in candidates:
                 b = self.generators[j]
-                if not a | b: # Anticommuting
+                if not a | b:  # Anticommuting
                     g.add_edge(a, b)
 
-        return [self._convert(subgraph) for subgraph in
-                sorted(nx.connected_components(g), key=len, reverse=True)]
+        return [self._convert(subgraph) for subgraph in sorted(nx.connected_components(g), key=len, reverse=True)]
 
     def set_record(self, record) -> None:
         """
@@ -556,8 +554,7 @@ class PauliStringCollection:
         ccs = nx.connected_components(g)
         self.classification = Classification()
         for cc in ccs:
-            vertex_stack = [self.create_instance(pauli_str=s)
-                for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
+            vertex_stack = [self.create_instance(pauli_str=s) for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
             vertex_stack.reverse()
             if self._record is not None:
                 conn_canon = RecordingCanonicalizer(self._record)
@@ -601,6 +598,43 @@ class PauliStringCollection:
         """
         classification = self.get_class()
         return bool(classification.is_algebra(algebra))
+
+    def get_algebra_basis(self) -> np.ndarray:
+        """Constructs and returns the basis matrices for the algebras present in the classification.
+
+        Aggregates algebra properties (type, size, and multiplicity) from the
+        morphological classification and generates a combined basis representation.
+
+        Returns:
+            np.ndarray: A 3D array of shape (dim, n, n) containing the concatenated
+            basis matrices for all identified subalgebras.
+
+        Raises:
+            ValueError: If the identified algebra size is invalid for basis generation.
+            TypeError: If the classification properties are not properly initialized.
+        """
+        classification = self.get_class()
+        morphs = classification.get_morphs()
+
+        # Key: Tuple of (TypeAlgebra, size), Value: Total multiplier/dimension count
+        algebra_map = {}
+        for morph in morphs:
+            type_alg, nc, size = morph.get_algebra_properties()
+            multiplier = nc if nc == 1 else 2 ** (nc - 1)
+            key = (type_alg, size)
+            algebra_map[key] = algebra_map.get(key, 0) + multiplier
+
+        # Prepare the input lists for basis generator
+        multipliers = []
+        groups = []
+        sizes = []
+
+        for (type_alg, size), count in algebra_map.items():
+            multipliers.append(count)
+            groups.append(type_alg)
+            sizes.append(size)
+
+        return get_algebras_basis(multipliers, groups, sizes)
 
     def gen_generators(self) -> Generator[PauliStringCollection, None, None]:
         """
@@ -682,7 +716,7 @@ class PauliStringCollection:
         return PauliStringCollection(self.get_class().get_vertices())
 
     def get_canonic_graph(
-            self,
+        self,
     ) -> tuple[list[str], list[tuple[str, str]], dict[tuple[str, str], str]]:
         """
         Get the canonical graph of the collection.
@@ -695,7 +729,7 @@ class PauliStringCollection:
         return generators.get_graph()
 
     def get_anti_commutates(
-            self, pauli_string: PauliString, generators: PauliStringCollection=None
+        self, pauli_string: PauliString, generators: PauliStringCollection = None
     ) -> PauliStringCollection:
         """
         Get a collection of Pauli strings which anticommute with the given Pauli string.
@@ -710,11 +744,9 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = self.generators
-        return PauliStringCollection([g for g in generators
-                                      if g != pauli_string and not pauli_string | g])
+        return PauliStringCollection([g for g in generators if g != pauli_string and not pauli_string | g])
 
-    def get_commutates(self, pauli_string: PauliString,
-                       generators: PauliStringCollection) -> PauliStringCollection:
+    def get_commutates(self, pauli_string: PauliString, generators: PauliStringCollection) -> PauliStringCollection:
         """
         Get a collection of Pauli strings which commute with the given Pauli string.
 
@@ -728,9 +760,7 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = self.generators
-        return PauliStringCollection(
-            [g for g in generators if g != pauli_string and g | pauli_string]
-        )
+        return PauliStringCollection([g for g in generators if g != pauli_string and g | pauli_string])
 
     def get_non_commuting_charges(self) -> PauliStringCollection:
         """
@@ -752,9 +782,7 @@ class PauliStringCollection:
 
         return non_commuting_charges
 
-    def get_graph_components(self,
-                             graph_type: str = 'anticommutator'
-                             ) -> list[PauliStringCollection]:
+    def get_graph_components(self, graph_type: str = "anticommutator") -> list[PauliStringCollection]:
         """
         Computes the connected components of the specified graph (anticommutator
         or commutator) constructed from the Pauli strings in the collection.
@@ -770,18 +798,16 @@ class PauliStringCollection:
         Raises:
             ValueError: If graph_type is not "anticommutator" or "commutator".
         """
-        if graph_type == 'anticommutator':
+        if graph_type == "anticommutator":
             nodes, edges, _edge_labels = self.get_graph(self)  # The anti-commutation graph
-        elif graph_type == 'commutator':
+        elif graph_type == "commutator":
             nodes, edges = self.get_commutator_graph()  # The commutator graph
         else:
             raise ValueError("graph_type must be 'anticommutator' or 'commutator'")
 
         return self._get_connected_components(nodes, edges)
 
-    def _get_connected_components(self, nodes: list[str],
-                                  edges: list[tuple[str, str]]
-                                  ) -> list[PauliStringCollection]:
+    def _get_connected_components(self, nodes: list[str], edges: list[tuple[str, str]]) -> list[PauliStringCollection]:
         """
         Helper method to compute connected components from nodes and edges.
 
@@ -803,9 +829,7 @@ class PauliStringCollection:
         # Convert sets of node strings back into PauliStringCollection objects
         return [self._convert(subgraph) for subgraph in connected_components]
 
-    def get_symmetries_for_component(
-            self, linear_symmetries: Self
-    ) -> list[PauliStringLinear]:
+    def get_symmetries_for_component(self, linear_symmetries: Self) -> list[PauliStringLinear]:
         """
         Private helper: Computes the quadratic symmetries for THIS collection,
         assuming THIS collection is a single connected component :math:`(C_{k})`
@@ -850,7 +874,7 @@ class PauliStringCollection:
         linear_symmetries = self.get_commutants()
 
         # Step 2: Find the connected components of the commutator graph
-        connected_components = self.get_graph_components(graph_type='commutator')
+        connected_components = self.get_graph_components(graph_type="commutator")
 
         # Step 3: Loop through components and get symmetries for each
         full_basis = []
@@ -927,8 +951,11 @@ class PauliStringCollection:
             list[tuple[PauliString, PauliString, int, int]]:
             List of pairs of connected vertices in the anticommutation graph.
         """
-        return [(x, y, len(x.get_anti_commutants(self)), len(y.get_anti_commutants(self)))
-                for x, y in combinations(self.generators, r=2) if not x | y]
+        return [
+            (x, y, len(x.get_anti_commutants(self)), len(y.get_anti_commutants(self)))
+            for x, y in combinations(self.generators, r=2)
+            if not x | y
+        ]
 
     def _get_delta(self, generators: PauliStringCollection, number_connections: int) -> int:
         """
