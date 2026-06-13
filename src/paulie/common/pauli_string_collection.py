@@ -521,7 +521,9 @@ class PauliStringCollection:
                 if not a | b:  # Anticommuting
                     g.add_edge(a, b)
 
-        return [self._convert(subgraph) for subgraph in sorted(nx.connected_components(g), key=len, reverse=True)]
+        return [self._convert(subgraph)
+                for subgraph in sorted(nx.connected_components(g), key=len, reverse=True)
+            ]
 
     def set_record(self, record) -> None:
         """
@@ -554,7 +556,9 @@ class PauliStringCollection:
         ccs = nx.connected_components(g)
         self.classification = Classification()
         for cc in ccs:
-            vertex_stack = [self.create_instance(pauli_str=s) for s in nx.dfs_preorder_nodes(g.subgraph(cc))]
+            vertex_stack = [self.create_instance(pauli_str=s)
+                            for s in nx.dfs_preorder_nodes(g.subgraph(cc))
+                    ]
             vertex_stack.reverse()
             if self._record is not None:
                 conn_canon = RecordingCanonicalizer(self._record)
@@ -744,9 +748,11 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = self.generators
-        return PauliStringCollection([g for g in generators if g != pauli_string and not pauli_string | g])
+        return PauliStringCollection([g for g in generators
+                                      if g != pauli_string and not pauli_string | g])
 
-    def get_commutates(self, pauli_string: PauliString, generators: PauliStringCollection) -> PauliStringCollection:
+    def get_commutates(self, pauli_string: PauliString, generators: PauliStringCollection
+                       ) -> PauliStringCollection:
         """
         Get a collection of Pauli strings which commute with the given Pauli string.
 
@@ -760,7 +766,8 @@ class PauliStringCollection:
         """
         if generators is None:
             generators = self.generators
-        return PauliStringCollection([g for g in generators if g != pauli_string and g | pauli_string])
+        return PauliStringCollection([g for g in generators
+                                      if g != pauli_string and g | pauli_string])
 
     def get_non_commuting_charges(self) -> PauliStringCollection:
         """
@@ -782,7 +789,8 @@ class PauliStringCollection:
 
         return non_commuting_charges
 
-    def get_graph_components(self, graph_type: str = "anticommutator") -> list[PauliStringCollection]:
+    def get_graph_components(self, graph_type: str = "anticommutator"
+                             ) -> list[PauliStringCollection]:
         """
         Computes the connected components of the specified graph (anticommutator
         or commutator) constructed from the Pauli strings in the collection.
@@ -807,7 +815,8 @@ class PauliStringCollection:
 
         return self._get_connected_components(nodes, edges)
 
-    def _get_connected_components(self, nodes: list[str], edges: list[tuple[str, str]]) -> list[PauliStringCollection]:
+    def _get_connected_components(self, nodes: list[str], edges: list[tuple[str, str]]
+                                  ) -> list[PauliStringCollection]:
         """
         Helper method to compute connected components from nodes and edges.
 

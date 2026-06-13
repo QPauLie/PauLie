@@ -236,7 +236,7 @@ def test_pauli_string_algebra_basis_interface() -> None:
 
     # 4. Verify mathematical consistency (Lie algebra generators must be skew-Hermitian)
     for mat in basis:
-        assert np.allclose(mat.conj().T, -mat), "All generated basis matrices must be skew-Hermitian."
+        assert np.allclose(mat.conj().T, -mat), "Basis matrices must be skew-Hermitian"
 
 
 # ---------------------------------------------------------------------------

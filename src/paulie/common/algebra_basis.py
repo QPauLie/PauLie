@@ -93,7 +93,7 @@ def get_su_basis(n: int) -> np.ndarray:
         n (int): The dimension of the special unitary algebra.
 
     Returns:
-        np.ndarray: A 3D array of shape (dim, n, n) containing the basis matrices with the following order:
+        np.ndarray: A 3D array of shape (dim, n, n) containing the basis matrices:
             Symmetric Real -> Anti-symmetric Imaginary -> Diagonal
     """
     dim: int = get_n_su_basis(n)
@@ -162,9 +162,12 @@ def get_sp_basis(n: int) -> np.ndarray:
         n (int): The dimension parameter of the symplectic algebra.
 
     Returns:
-        np.ndarray: A 3D array of shape (dim, 2n, 2n) containing the basis matrices with the following order:
-            k (Unitary Subgroup) {Block A: Real Anti-symmetric -> Block A: Imaginary Symmetric -> Block A: Imaginary Diagonal}
-            p or a a Off-diagonal Symplectic {Block B: Real Symmetric -> Block B: Imaginary Symmetric -> Block B: Imaginary Diagonal}
+        np.ndarray: A 3D array of shape (dim, 2n, 2n) containing the basis matrices:
+            k (Unitary Subgroup) {Block A: Real Anti-symmetric -> Block A: Imaginary Symmetric 
+            -> Block A: Imaginary Diagonal}
+            p or a a Off-diagonal Symplectic {Block B: Real Symmetric 
+            -> Block B: Imaginary Symmetric 
+            -> Block B: Imaginary Diagonal}
             a (Cartan Subgroup) {Block B: Real Diagonal}
     """
     dim: int = get_n_sp_basis(n)
@@ -204,19 +207,31 @@ def get_sp_basis(n: int) -> np.ndarray:
         basis[n_Sym + i] = np.block([[1j * E2[i], zeros_block], [zeros_block, -1j * E2[i]]])
 
         # Block B: Real Symmetric => p \ a Off-diagonal Symplectic
-        basis[n_Sym * 2 + n_Diag + i] = np.block([[zeros_block, E2[i]], [-1 * E2[i], zeros_block]])
+        basis[n_Sym * 2 + n_Diag + i] = np.block([
+                    [zeros_block, E2[i]],
+                    [-1 * E2[i], zeros_block]
+            ])
         # Block B: Imaginary Symmetric => p \ a Off-diagonal Symplectic
-        basis[n_Sym * 3 + n_Diag + i] = np.block([[zeros_block, 1j * E2[i]], [1j * E2[i], zeros_block]])
+        basis[n_Sym * 3 + n_Diag + i] = np.block([
+                [zeros_block, 1j * E2[i]],
+                [1j * E2[i], zeros_block]
+            ])
 
     for i in range(n_Diag):
         # Block A: Imaginary Diagonal
         basis[n_Sym * 2 + i] = np.block([[1j * E3[i], zeros_block], [zeros_block, -1j * E3[i]]])
 
         # Block B: Imaginary Diagonal => p \ a Off-diagonal Symplectic
-        basis[n_Sym * 4 + n_Diag + i] = np.block([[zeros_block, 1j * E3[i]], [1j * E3[i], zeros_block]])
+        basis[n_Sym * 4 + n_Diag + i] = np.block([
+                [zeros_block, 1j * E3[i]],
+                [1j * E3[i], zeros_block]
+            ])
 
         # Block B: Real Diagonal => a (Cartan Subalgebra)
-        basis[n_Sym * 4 + n_Diag * 2 + i] = np.block([[zeros_block, E3[i]], [-1 * E3[i], zeros_block]])
+        basis[n_Sym * 4 + n_Diag * 2 + i] = np.block([
+                [zeros_block, E3[i]],
+                [-1 * E3[i], zeros_block]
+            ])
 
     return basis
 
@@ -270,7 +285,11 @@ def get_n_basis(algebra_type: TypeAlgebra, n: int) -> int:
     raise ValueError(err_msg)
 
 
-def get_algebras_basis(multipliers: list[int], groups: list[TypeAlgebra], sizes: list[int]) -> np.ndarray:
+def get_algebras_basis(
+        multipliers: list[int],
+        groups: list[TypeAlgebra],
+        sizes: list[int]
+    ) -> np.ndarray:
     """Constructs the block-diagonal basis for a direct sum of Lie algebras.
 
     This function pre-allocates a 3D array of shape (total_dim, total_n, total_n)
@@ -323,7 +342,9 @@ def get_algebras_basis(multipliers: list[int], groups: list[TypeAlgebra], sizes:
 
             # Vectorized assignment: Drop the entire chunk of matrices into the correct slice
             basis[
-                gen_offset : gen_offset + n_gen, diag_offset : diag_offset + b_size, diag_offset : diag_offset + b_size
+                gen_offset : gen_offset + n_gen,
+                diag_offset : diag_offset + b_size,
+                diag_offset : diag_offset + b_size
             ] = base_matrices
 
             gen_offset += n_gen
