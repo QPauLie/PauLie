@@ -59,3 +59,7 @@ Check for type errors, improve readability, and assist IDEs, run:
 uv run mypy src/paulie/common src/paulie/classifier/classification.py
 ```
 
+### Citation 
+
+You can cite the package as 
+@software{paulie2026, author = {Shaya, Oxana and Golovkin, Konstantin and Roy, Mainak and Russo, Vincent and {The PauLie Contributors}}, title = {{PauLie}}, year = {2026}, url = {https://github.com/QPauLie/PauLie} }.
