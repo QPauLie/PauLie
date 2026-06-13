@@ -113,6 +113,40 @@ outputs
 
     algebra = sp(4)
 
+From an algebra label to a matrix basis
+---------------------------------------
+The label returned by :code:`get_algebra` names the dynamical Lie algebra, but algebraic tasks
+such as Cartan decomposition need it as concrete operators. :code:`get_algebra_basis` returns a
+matrix basis of the algebra in its defining representation, in the compact real form so that every
+generator is anti-Hermitian. Reusing the B-type example above:
+
+.. code-block:: python
+
+    generators = p(["XY", "XZ"], n=4)
+    basis = generators.get_algebra_basis()
+    print(f"sp(4): {basis.shape}")
+
+outputs
+
+.. code-block:: bash
+
+    sp(4): (36, 8, 8)
+
+For a direct sum the summands are embedded into distinct diagonal blocks, so the result is a basis
+of the complete operator rather than a stack of per-summand bases. Reusing the A-type example:
+
+.. code-block:: python
+
+    generators = p(["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"])
+    basis = generators.get_algebra_basis()
+    print(f"4*so(5): {basis.shape}")
+
+outputs
+
+.. code-block:: bash
+
+    4*so(5): (40, 20, 20)
+
 The Lie algebra plays a pivotal role in quantum control theory to understand the reachability of states.
 Also measures of operator spread complexity rely on this concept.
 Furthermore, determining moments of circuits can be significantly simplified when the Lie algebra is known.

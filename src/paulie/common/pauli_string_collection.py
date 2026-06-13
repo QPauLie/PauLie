@@ -609,6 +609,17 @@ class PauliStringCollection:
         """
         return int(self.get_class().get_dla_dim())
 
+    def get_algebra_basis(self) -> np.ndarray:
+        """
+        Get a matrix basis of the dynamical Lie algebra in its defining representation.
+
+        Returns:
+            numpy.ndarray:
+            Stack of anti-Hermitian matrices forming a basis of the complete operator. See
+            :meth:`paulie.classifier.classification.Classification.get_algebra_basis`.
+        """
+        return self.get_class().get_algebra_basis()
+
     def get_dependents(self) -> PauliStringCollection:
         """
         Get a list of dependent strings in the collection.

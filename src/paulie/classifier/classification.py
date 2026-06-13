@@ -4,7 +4,16 @@
 import enum
 from collections.abc import Generator
 
+import numpy as np
+
 from paulie.common.pauli_string_bitarray import PauliString
+from paulie.common.algebra_basis import (
+    block_diagonal_basis,
+    so_basis,
+    sp_basis,
+    su_basis,
+    u1_basis,
+)
 
 
 class ClassificationException(Exception):
@@ -574,6 +583,46 @@ class Classification:
             elif type_algebra == TypeAlgebra.SO:
                 dim += multiplicity * dim_so(n)
         return dim
+
+    def get_algebra_basis(self) -> np.ndarray:
+        """
+        Get a matrix basis of the dynamical Lie algebra in its defining representation.
+
+        Each summand is built in its compact real form, with anti-Hermitian generators (see
+        :mod:`paulie.common.algebra_basis`), and the summands are embedded block-diagonally into a
+        single basis of the complete operator. Summands are ordered by algebra family and then by
+        size, and within a summand by the constructor ordering, so the basis is stable. The number
+        of generators equals :meth:`get_dla_dim`, and they are mutually orthogonal because distinct
+        summands occupy distinct diagonal blocks.
+
+        Returns:
+            numpy.ndarray:
+            Stack of shape ``(get_dla_dim(), size, size)`` of anti-Hermitian matrices, where
+            ``size`` is the summed dimension of the defining representations of the summands.
+
+        Raises:
+            ClassificationException: If a morph has an unsupported algebra type.
+        """
+        constructors = {
+            TypeAlgebra.SO: so_basis,
+            TypeAlgebra.SU: su_basis,
+            TypeAlgebra.SP: sp_basis,
+        }
+        properties = sorted(
+            (morph.get_algebra_properties() for morph in self.morphs),
+            key=lambda algebra_property: (algebra_property[0].value, algebra_property[2]),
+        )
+        summands: list[np.ndarray] = []
+        for type_algebra, nc, n in properties:
+            multiplicity = nc if nc == 1 else 2**(nc - 1)
+            if type_algebra == TypeAlgebra.U:
+                summand = u1_basis()
+            elif type_algebra in constructors:
+                summand = constructors[type_algebra](n)
+            else:
+                raise ClassificationException("Unsupported algebra type")
+            summands.extend([summand] * multiplicity)
+        return block_diagonal_basis(summands)
 
     def _inc_morph_generator(self, ms:int, morphs:list[Morph], morph_generators:list[PauliString],
                              current_morph_generators:list[PauliString]) -> bool:
