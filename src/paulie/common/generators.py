@@ -8,7 +8,7 @@ from paulie.helpers._lie_bases import (
 
 
 def parse_algebra_label(label: str):
-    """Parsuje etykiety typu '2^n1 family(N)'."""
+    """Parse algebra labels of type '2^n1 family(N)'."""
     # Extract number of simple components (n1)
     n1 = 0
     if "^" in label:
@@ -28,7 +28,7 @@ def parse_algebra_label(label: str):
 
 
 def get_algebra_basis_impl(label: str) -> list:
-    """Implementacja podzialu na skladniki proste."""
+    """"Implementation of partition into simple components."""
     n1, family, N = parse_algebra_label(label)
     num_summands = 2**n1
 
