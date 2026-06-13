@@ -7,7 +7,7 @@ import re
 import math
 import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
-from paulie.common.standard_basis_generator import generate_soN_basis, generate_su2N_pauli_basis, generate_u2N_pauli_basis, generate_spN_basis
+from paulie.common.standard_basis_generator import generate_soN_basis, generate_su2N_pauli_basis, generate_spN_basis
 
 class ClassificationException(Exception):
     """
@@ -424,71 +424,97 @@ class Classification:
         list of numpy.ndarray
             A list of block diagonal matrices spanning the direct sum algebra.
         """
-        algebra_str = self.get_algebra()
+        # 1. Aggregate the components directly from morphs
+        # We use a dictionary with (alg_type, size) as the key so identical 
+        # algebras combine their multipliers, exactly as get_algebra() does.
+        component_dict: dict[tuple[str, int], int] = {}
         
-        if not algebra_str:
-            return []
-
-        # 1. Parse the string into components: (multiplier, alg_type, parameter)
-        components = []
-        for part in algebra_str.split('+'):
-            # Regex extracts the optional multiplier, the algebra type, and the size
-            # e.g., "4*su(8)" -> ('4', 'su', '8'), "u(2)" -> (None, 'u', '2')
-            match = re.match(r'(?:(\d+)\*)?([a-z]+)\((\d+)\)', part.strip())
-            if not match:
-                continue
+        for morph in self.morphs:
+            type_algebra, nc, size = morph.get_algebra_properties()
+            
+            # Convert TypeAlgebra enum to string string to match the logic below
+            alg_type = ""
+            if type_algebra == TypeAlgebra.U:
+                alg_type = 'u'
+            elif type_algebra == TypeAlgebra.SO:
+                alg_type = 'so'
+            elif type_algebra == TypeAlgebra.SP:
+                alg_type = 'sp'
+            elif type_algebra == TypeAlgebra.SU:
+                alg_type = 'su'
                 
-            mult_str, alg_type, param_str = match.groups()
-            mult = int(mult_str) if mult_str else 1
-            param = int(param_str)
-            components.append((mult, alg_type, param))
+            # Calculate the multiplier
+            mult = nc if nc == 1 else 2**(nc - 1)
+            
+            # Aggregate in dictionary
+            key = (alg_type, size)
+            if key in component_dict:
+                component_dict[key] += mult
+            else:
+                component_dict[key] = mult
+
+        # Convert dictionary to the expected list of tuples
+        components = [(mult, alg_type, param) for (alg_type, param), mult in component_dict.items()]
 
         # 2. Calculate the total dimension of the final block-diagonal matrices
-        total_dim = self.get_dla_dim()
+        
 
         # 3. Generate the direct sum basis
         full_basis = []
         current_idx = 0
+
+        # the size of each basis element would given by
+        size_of_basis_element = 0
+        for mult, alg_type, param in components:
+            if alg_type == 'su':
+                size_of_basis_element += param * mult
+            elif alg_type == 'u':
+                size_of_basis_element += 1 * mult
+            elif alg_type == 'so':
+                size_of_basis_element += param * mult
+            elif alg_type == 'sp':
+                size_of_basis_element += 2 * param * mult
+            else:
+                raise ValueError(f"Unknown algebra type: {alg_type}")
         
         for mult, alg_type, param in components:
-            for _ in range(mult):
+            if alg_type == 'su':
+                N = int(math.log2(param))
+                sub_basis = generate_su2N_pauli_basis(N)
+                rep_dim = param
                 
-                # a) Generate the sub-basis for this specific block
-                if alg_type == 'su':
-                    N = int(math.log2(param))
-                    sub_basis = generate_su2N_pauli_basis(N)
-                    rep_dim = param
-                    
-                elif alg_type == 'u':
-                    N = int(math.log2(param))
-                    sub_basis = generate_u2N_pauli_basis(N)
-                    rep_dim = param
-                    
-                elif alg_type == 'so':
-                    sub_basis = generate_soN_basis(param)
-                    rep_dim = param
-                    
-                elif alg_type == 'sp':
-                    sub_basis = generate_spN_basis(param)
-                    rep_dim = 2 * param
-                    
-                else:
-                    continue # Skip unrecognized algebras
-                    
-                # b) Embed each sub-basis matrix into the larger dimensional space
-                for sub_mat in sub_basis:
+            elif alg_type == 'u':
+                sub_basis = [1j]
+                rep_dim = 1
+                
+            elif alg_type == 'so':
+                print(param)
+                sub_basis = generate_soN_basis(param)
+                print(len(sub_basis))
+                print(sub_basis[0])
+                rep_dim = param
+                
+            elif alg_type == 'sp':
+                sub_basis = generate_spN_basis(param)
+                rep_dim = 2 * param
+                
+            else:
+                raise ValueError(f"Unknown algebra type: {alg_type}")
+            
+            for _ in range(mult):
+                for mat in sub_basis:
                     # We use complex dtype universally because su, u, and sp 
                     # contain imaginary numbers (anti-Hermitian)
-                    block_mat = np.zeros((total_dim, total_dim), dtype=complex)
+                    block_mat = np.zeros((size_of_basis_element, size_of_basis_element), dtype=complex)
                     
                     # Insert the sub_mat into the diagonal block
-                    block_mat[current_idx:current_idx+rep_dim, current_idx:current_idx+rep_dim] = sub_mat
+                    block_mat[current_idx:current_idx+rep_dim, current_idx:current_idx+rep_dim] = mat
                     
                     full_basis.append(block_mat)
-                    
-                # Advance the diagonal index for the next algebra block
+                #advance along the diagonal. 
                 current_idx += rep_dim
-                
+            
+
         return full_basis
 
     def contains_algebra(self, algebra:str) -> bool:

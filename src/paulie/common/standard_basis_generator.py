@@ -117,26 +117,14 @@ def generate_su2N_pauli_basis(N):
         A list containing the exactly (4^N - 1) basis matrices for su(2^N).
     """
     # 1. Generate the full u(2^N) basis
-    full_basis = generate_u2N_pauli_basis(N)
-    
-    # 2. Slice off the first element (i * Identity) to enforce Tr(X) = 0
-    return full_basis[1:]    
-
-def generate_u2N_pauli_basis(N):
-    """
-    Generates the standard basis for the unitary Lie algebra u(2^N).
-    
-    We construct the basis by generating all possible N-fold tensor products of the Pauli matrices (I, X, Y, Z).
-    The resulting matrices are then multiplied by the imaginary unit '
-    
-    The dimension returned will be exactly 4^N.
-    """
     from paulie.common.pauli_string_factory  import gen_all_pauli_strings 
     all_pauli_strings = gen_all_pauli_strings(N)  # This generates all 4^N Pauli strings as PauliString objects
     basis = []
     for pauli_string in all_pauli_strings:
         basis.append(1j * pauli_string.get_matrix())  # Multiply by 1j to ensure anti-Hermiticity
-    return basis
+    
+    # 2. Slice off the first element (i * Identity) to enforce Tr(X) = 0
+    return basis[1:]    
 
 
 
