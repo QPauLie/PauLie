@@ -7,6 +7,7 @@ import numpy as np
 
 # Adjust this import to match your actual module structure
 from paulie.classifier.classification import TypeAlgebra
+from paulie import get_pauli_string as p
 from paulie.common.algebra_basis import (
     get_u_basis,
     get_n_so_basis,
@@ -211,3 +212,27 @@ def test_get_algebras_basis_errors() -> None:
     """Test error handling for mismatched list inputs in direct sums."""
     with pytest.raises(ValueError, match="same length"):
         get_algebras_basis([1, 2], [TypeAlgebra.U], [1])
+
+
+# ---------------------------------------------------------------------------
+# Pauli String Interface Tests
+# ---------------------------------------------------------------------------
+
+
+def test_pauli_string_algebra_basis_interface() -> None:
+    """Test the interface for generating an algebra basis directly from Pauli strings."""
+    generators = p(["XY", "XZ"], n=4)
+    basis = generators.get_algebra_basis()
+
+    # 3. Verify the output type and structure
+    assert basis is not None, "Basis generation should not return None."
+    assert isinstance(basis, np.ndarray), "Basis should be returned as a NumPy array."
+    assert basis.ndim == 3, "Basis should be a 3D array of matrices (num_matrices, n, n)."
+
+    num_matrices, rows, cols = basis.shape
+    assert rows == cols, f"Basis matrices must be square, but got {rows}x{cols}."
+    assert num_matrices > 0, "Basis should contain at least one matrix."
+
+    # 4. Verify mathematical consistency (Lie algebra generators must be skew-Hermitian)
+    for mat in basis:
+        assert np.allclose(mat.conj().T, -mat), "All generated basis matrices must be skew-Hermitian."
