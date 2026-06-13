@@ -248,33 +248,32 @@ def test_basis_spans_lie_closure() -> None:
     """Test that the generated basis is strictly closed under the Lie bracket
     (commutator) across all possible generator pairs.
     """
-    # 1. Generate the basis
     generators = p(["XY", "XZ"], n=4)
     basis = generators.get_algebra_basis()
 
-    num_matrices, dim, _ = basis.shape
+    num_matrices, _, _ = basis.shape
 
     # If the algebra is 0 or 1-dimensional, closure is trivially true
     if num_matrices < 2:
         return
 
-    # 2. Flatten each basis matrix into a 1D vector
+    # Flatten each basis matrix into a 1D vector
     vectorized_basis = basis.reshape(num_matrices, -1)
 
-    # 3. Calculate the true dimension (rank) of our current algebra basis
+    # Calculate the true dimension (rank) of our current algebra basis
     base_rank = np.linalg.matrix_rank(vectorized_basis)
 
-    # 4. Loop over every unique pair to compute their commutators [A, B] = AB - BA
+    # Loop over every unique pair to compute their commutators [A, B] = AB - BA
     vectorized_commutators = []
     for mat_a, mat_b in itertools.combinations(basis, 2):
         commutator = mat_a @ mat_b - mat_b @ mat_a
         vectorized_commutators.append(commutator.reshape(-1))
 
-    # 5. Stack all commutators together with the original basis elements
+    # Stack all commutators together with the original basis elements
     all_commutators = np.array(vectorized_commutators)
     augmented_basis = np.vstack([vectorized_basis, all_commutators])
 
-    # 6. Verify that adding the commutators did not expand the vector space dimension
+    # Verify that adding the commutators did not expand the vector space dimension
     augmented_rank = np.linalg.matrix_rank(augmented_basis)
 
     assert augmented_rank == base_rank, (
