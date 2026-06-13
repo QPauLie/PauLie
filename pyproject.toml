@@ -1,11 +1,12 @@
 [project]
 name = "paulie"
-version = "0.0.1"
+version = "0.0.2"
 description = "Classification of Pauli Lie algebras"
 authors = [
-    {name = "Oxana Shaya", email = "shayaoxana@gmail.com"},
+    {name = "Oxana Shaya",
     {name = "Konstantin Golovkin"},
-    {name = "Mainak Roy"}
+    {name = "Mainak Roy"},
+    {name = "Vincent Russo"}
 ]
 
 keywords = ["quantum-simulation", "lie-algebra", "quantum-control"]
