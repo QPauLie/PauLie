@@ -86,8 +86,8 @@ def get_n_su_basis(n: int) -> int:
     return n**2 - 1
 
 
-def get_su_basis(n: int) -> np.array:
-    """Generates the basis for su(n).
+def get_su_basis(n: int) -> np.ndarray:
+    """Generates the skew-Hermitian basis for su(n).
 
     Args:
         n (int): The dimension of the special unitary algebra.
@@ -106,13 +106,13 @@ def get_su_basis(n: int) -> np.array:
 
     # Symmetric Real Generators
     k = np.arange(n_symmetric)
-    basis[k, rows, cols] = 1.0
-    basis[k, cols, rows] = 1.0
+    basis[k, rows, cols] = 1j
+    basis[k, cols, rows] = 1j
 
     # Anti-symmetric imaginary generator
     k = np.arange(n_symmetric, n_symmetric * 2)
-    basis[k, rows, cols] = 0 - 1j
-    basis[k, cols, rows] = 0 + 1j
+    basis[k, rows, cols] = 1.0
+    basis[k, cols, rows] = -1.0
 
     # Diagonal Generator
     factors = [np.sqrt(2 / (f * (f + 1))) for f in range(1, n_diagonal + 1)]
@@ -121,8 +121,8 @@ def get_su_basis(n: int) -> np.array:
         target_dim = n_symmetric * 2 + i
         dim_inds = [target_dim] * (i + 1)
         diag_inds = list(range(i + 1))
-        basis[dim_inds, diag_inds, diag_inds] = 1 * factors[i]
-        basis[n_symmetric * 2 + i, i + 1, i + 1] = (-1 * (i + 1)) * factors[i]
+        basis[dim_inds, diag_inds, diag_inds] = 1j * factors[i]
+        basis[n_symmetric * 2 + i, i + 1, i + 1] = (-1j * (i + 1)) * factors[i]
 
     return basis
 
