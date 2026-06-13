@@ -2,6 +2,8 @@ import numpy as np
 import itertools
 from functools import reduce
 
+
+
 def generate_soN_basis(N):
     """
     Generates the standard basis for the Lie algebra so(N).
@@ -66,37 +68,43 @@ def generate_su2N_pauli_basis(N):
     Generates the standard basis for the Lie algebra su(2^N) using the 
     Tensor Product (Pauli String) construction.
 
-    This approach is foundational in quantum error correction and the 
-    stabilizer formalism. Rather than building massive generalized 
-    Gell-Mann matrices, it constructs the algebra's generators as 
-    N-fold Kronecker products of the fundamental SU(2) Pauli matrices.
+    Convention Used:
+    he returned list of basis generators follows a strict lexicographical 
+    ordering based on the binary symplectic representation of Pauli matrices.
+    
+    Each single-qubit Pauli operator is mapped to a 2-bit binary number:
+        00 (0) -> Identity (I)
+        01 (1) -> Pauli-Z (Z)
+        10 (2) -> Pauli-X (X)
+        11 (3) -> Pauli-Y (Y)
 
-    Mathematical Convention:
-    ------------------------
-    1. Base Matrices:
-       We use the standard Hermitian Pauli matrices, plus the Identity.
-       I = [[1, 0], [0,  1]]
-       X = [[0, 1], [1,  0]]
-       Y = [[0, -1j], [1j, 0]]
-       Z = [[1, 0], [0, -1]]
+    An N-qubit Pauli string can therefore be interpreted as a 2N-bit integer. 
+    Because we generate the basis by counting upwards in binary (from 1 to 
+    4^N - 1), the basis is returned in the exact order of these growing 
+    binary integers. (The integer 0 is exactly the all-Identity string, 
+    which is sliced off to enforce the traceless condition of su).
 
-    2. Tensor Construction:
-       A raw basis element is formed by taking the Kronecker product of N 
-       Pauli matrices: P_1 (kron) P_2 (kron) ... (kron) P_N.
-       We generate all 4^N possible strings using a Cartesian product.
+    Example Sequence for N = 1:
+    ---------------------------
+    The 4^2 - 1 = 15 matrices will be returned in the following order 
+    (where each string is implicitly multiplied by the imaginary unit 'i' 
+    to enforce anti-Hermiticity):
 
-    3. Lie Algebra Constraints for su(d):
-       - Anti-Hermitian (X^dagger = -X): 
-         The standard Pauli matrices (and their real tensor products) are 
-         Hermitian. To map them to the compact Lie algebra su(2^N), we 
-         multiply the final tensor product by the imaginary unit '1j'.
-       - Traceless (Tr(X) = 0): 
-         The trace of a tensor product is the product of the individual traces. 
-         Because Tr(X) = Tr(Y) = Tr(Z) = 0, any string containing at least one 
-         X, Y, or Z will have a trace of exactly 0. We must explicitly filter 
-         out the all-Identity string (I (kron) I ... (kron) I), which has a 
-         trace of 2^N.
-
+        1.  IZ  (00 01)
+        2.  IX  (00 10)
+        3.  IY  (00 11)
+        4.  ZI  (01 00)
+        5.  ZZ  (01 01)
+        6.  ZX  (01 10)
+        7.  ZY  (01 11)
+        8.  XI  (10 00)
+        9.  XZ  (10 01)
+        10. XX  (10 10)
+        11. XY  (10 11)
+        12. YI  (11 00)
+        13. YZ  (11 01)
+        14. YX  (11 10)
+        15. YY  (11 11)
     Parameters:
     -----------
     N : int
@@ -118,39 +126,16 @@ def generate_u2N_pauli_basis(N):
     """
     Generates the standard basis for the unitary Lie algebra u(2^N).
     
-    Convention Used:
-    ----------------
-    This uses the same tensor product construction as su(2^N), mapping 
-    to N-fold Pauli strings. 
-    
-    Because u(2^N) does NOT require generators to be traceless, we simply 
-    include all 4^N combinations of {I, X, Y, Z}, including the all-Identity 
-    string. Multiplying the all-Identity string by 1j provides the i*I 
-    matrix, which mathematically satisfies the u(1) direct sum component.
+    We construct the basis by generating all possible N-fold tensor products of the Pauli matrices (I, X, Y, Z).
+    The resulting matrices are then multiplied by the imaginary unit '
     
     The dimension returned will be exactly 4^N.
     """
-    if N < 1:
-        raise ValueError("Dimension exponent N must be at least 1.")
-
-    I = np.array([[1, 0], [0, 1]], dtype=complex)
-    X = np.array([[0, 1], [1, 0]], dtype=complex)
-    Y = np.array([[0, -1j], [1j, 0]], dtype=complex)
-    Z = np.array([[1, 0], [0, -1]], dtype=complex)
-
-    paulis = [I, X, Y, Z]
+    from paulie.common.pauli_string_factory  import gen_all_pauli_strings 
+    all_pauli_strings = gen_all_pauli_strings(N)  # This generates all 4^N Pauli strings as PauliString objects
     basis = []
-
-    # Iterate through ALL 4^N possible Pauli strings
-    for string in itertools.product(paulis, repeat=N):
-        
-        tensor_product = reduce(np.kron, string)
-        
-        # Enforce Anti-Hermiticity
-        basis_matrix = 1j * tensor_product
-        
-        basis.append(basis_matrix)
-        
+    for pauli_string in all_pauli_strings:
+        basis.append(1j * pauli_string.get_matrix())  # Multiply by 1j to ensure anti-Hermiticity
     return basis
 
 
