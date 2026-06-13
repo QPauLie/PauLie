@@ -602,7 +602,7 @@ class PauliStringCollection:
         classification = self.get_class()
         return str(classification.get_algebra())
 
-    def get_algebra_basis(self) -> list['numpy.ndarray']:
+    def get_algebra_basis(self) -> list['np.ndarray']:
         """
         Return the basis of the algebra as a list of matrices in its defining representation,
         partitioned by direct summand. Currently implemented for Types B1, B2, B3.

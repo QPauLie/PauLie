@@ -3,11 +3,10 @@
 """
 import enum
 from collections.abc import Generator
-import re
 import math
 import numpy as np
 from paulie.common.pauli_string_bitarray import PauliString
-from paulie.common.standard_basis_generator import generate_soN_basis, generate_su2N_pauli_basis, generate_spN_basis
+from paulie.common.standard_basis_generator import generate_so_basis, generate_su_basis, generate_sp_basis
 
 class ClassificationException(Exception):
     """
@@ -405,24 +404,10 @@ class Classification:
 
     def get_algebra_basis(self) -> list[np.ndarray]:
         """
-        Parses the full algebra string and generates the basis for the direct sum.
-        
-        The direct sum of matrix Lie algebras is formed by placing the basis 
-        matrices of each constituent algebra into blocks along the main diagonal 
-        of a larger zero matrix.
-        
-        Parameter Mapping Convention:
-        -----------------------------
-        - su(size) and u(size): 'size' represents the matrix dimension 2^N. 
-          The subroutine requires N = log2(size).
-        - so(size): 'size' represents N. The subroutine requires N = size.
-        - sp(size): 'size' is treated as the block parameter N, resulting in 
-          a 2N x 2N matrix representation.
-          
+        Get the basis of the algebra as a list of matrices in its defining representation.
+
         Returns:
-        --------
-        list of numpy.ndarray
-            A list of block diagonal matrices spanning the direct sum algebra.
+            list[np.ndarray]
         """
         # 1. Aggregate the components directly from morphs
         # We use a dictionary with (alg_type, size) as the key so identical 
@@ -480,7 +465,7 @@ class Classification:
         for mult, alg_type, param in components:
             if alg_type == 'su':
                 N = int(math.log2(param))
-                sub_basis = generate_su2N_pauli_basis(N)
+                sub_basis = generate_su_basis(N)
                 rep_dim = param
                 
             elif alg_type == 'u':
@@ -488,14 +473,11 @@ class Classification:
                 rep_dim = 1
                 
             elif alg_type == 'so':
-                print(param)
-                sub_basis = generate_soN_basis(param)
-                print(len(sub_basis))
-                print(sub_basis[0])
+                sub_basis = generate_so_basis(param)
                 rep_dim = param
                 
             elif alg_type == 'sp':
-                sub_basis = generate_spN_basis(param)
+                sub_basis = generate_sp_basis(param)
                 rep_dim = 2 * param
                 
             else:

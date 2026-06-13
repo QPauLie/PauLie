@@ -1,10 +1,6 @@
 import numpy as np
-import itertools
-from functools import reduce
 
-
-
-def generate_soN_basis(N):
+def generate_so_basis(N) -> list[np.ndarray]:
     """
     Generates the standard basis for the Lie algebra so(N).
 
@@ -29,16 +25,16 @@ def generate_soN_basis(N):
       2. Sets the (i, j) element to 1.
       3. Sets the (j, i) element to -1 to satisfy skew-symmetry.
 
+    A list containing the basis matrices each of size N * N. The total number of matrices
+        returned will be exactly N * (N - 1) / 2.
+
     Parameters:
     -----------
     N : int
         The dimension of the space (must be >= 2).
 
     Returns:
-    --------
-    list of numpy.ndarray
-        A list containing the basis matrices. The total number of matrices
-        returned will be exactly N * (N - 1) // 2.
+        list[np.ndarray]
     """
     if N < 2:
         raise ValueError("Dimension N must be at least 2.")
@@ -60,10 +56,7 @@ def generate_soN_basis(N):
             
     return basis
 
-# Example usage:
-
-
-def generate_su2N_pauli_basis(N):
+def generate_su_basis(N) -> list[np.ndarray]:
     """
     Generates the standard basis for the Lie algebra su(2^N) using the 
     Tensor Product (Pauli String) construction.
@@ -84,7 +77,7 @@ def generate_su2N_pauli_basis(N):
     binary integers. (The integer 0 is exactly the all-Identity string, 
     which is sliced off to enforce the traceless condition of su).
 
-    Example Sequence for N = 1:
+    Example Sequence for N = 2:
     ---------------------------
     The 4^2 - 1 = 15 matrices will be returned in the following order 
     (where each string is implicitly multiplied by the imaginary unit 'i' 
@@ -106,15 +99,13 @@ def generate_su2N_pauli_basis(N):
         14. YX  (11 10)
         15. YY  (11 11)
     Parameters:
-    -----------
-    N : int
+        N (int): The number of subsyste
         The number of subsystems (e.g., qubits). The resulting matrices will 
         be of dimension 2^N x 2^N.
 
     Returns:
-    --------
-    list of numpy.ndarray
-        A list containing the exactly (4^N - 1) basis matrices for su(2^N).
+        list[np.ndarray]
+        
     """
     # 1. Generate the full u(2^N) basis
     from paulie.common.pauli_string_factory  import gen_all_pauli_strings 
@@ -128,7 +119,7 @@ def generate_su2N_pauli_basis(N):
 
 
 
-def generate_spN_basis(N):
+def generate_sp_basis(N) -> list[np.ndarray]:
     """
     Generates the standard basis for the compact symplectic Lie algebra sp(N).
     
