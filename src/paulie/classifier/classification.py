@@ -444,15 +444,7 @@ class Classification:
             components.append((mult, alg_type, param))
 
         # 2. Calculate the total dimension of the final block-diagonal matrices
-        total_dim = 0
-        for mult, alg_type, param in components:
-            if alg_type in ['su', 'u']:
-                total_dim += param * mult
-            elif alg_type == 'so':
-                total_dim += param * mult
-            elif alg_type == 'sp':
-                # The sp generator takes N and returns a 2N x 2N matrix
-                total_dim += (2 * param) * mult 
+        total_dim = self.get_dla_dim()
 
         # 3. Generate the direct sum basis
         full_basis = []
