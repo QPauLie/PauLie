@@ -151,6 +151,52 @@ form of type B1 corresponding to :math:`\mathfrak{sp}(4)`:
 .. raw:: html
    :file: ../media/classification_b_type.html
 
+
+Extracting the Underlying Matrix Basis
+--------------------------------------
+This section shows how to extract its explicit matrix representation using the ``get_algebra_basis()`` method.
+Note that we are reusing previous examples.
+
+**Example 1**
+
+.. code-block:: python
+
+    from paulie import get_pauli_string as p
+
+    # Generates a 3D array of shape (3, 3, 3)
+    basis = p(["XY"], n=3).get_algebra_basis()
+    print(f"Basis contains {len(basis)} matrices of shape {basis[0].shape}")
+
+outputs
+
+.. code-block:: bash
+
+    Basis contains 3 matrices of shape (3, 3)
+
+|
+
+**Example 2**
+
+.. code-block:: python
+
+    from paulie import get_pauli_string as p
+
+    # This system compiles to a direct sum of four so(5) algebras
+    generators = p(["IYZI", "IIXX", "IIYZ", "IXXI", "XXII", "YZII"])
+    basis = generators.get_algebra_basis()
+
+    # Total elements: 4 summands * 10 generators each = 40
+    # Matrix size: 4 summands * 5x5 blocks = 20x20
+    print(f"Total basis elements: {len(basis)}")
+    print(f"Matrix dimensions: {basis[0].shape}")
+
+outputs
+
+.. code-block:: bash
+
+    Total basis elements: 40
+    Matrix dimensions: (20, 20)
+
 The Lie algebra plays a pivotal role in quantum control theory to understand the reachability of states.
 Also measures of operator spread complexity rely on this concept.
 Furthermore, determining moments of circuits can be significantly simplified when the Lie algebra is known.

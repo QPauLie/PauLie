@@ -4,7 +4,11 @@
 import enum
 from collections.abc import Generator
 
+import numpy as np
+
+from paulie.classifier.types import TypeAlgebra
 from paulie.common.pauli_string_bitarray import PauliString
+from paulie.common.algebra_basis import get_algebras_basis
 
 
 class ClassificationException(Exception):
@@ -21,15 +25,6 @@ class TypeGraph(enum.Enum):
     B2 = 2
     B3 = 3
     NONE = 4
-
-class TypeAlgebra(enum.Enum):
-    """
-    Lie algebra type.
-    """
-    U = 0
-    SU = 1
-    SP = 2
-    SO = 3
 
 class Morph:
     """
@@ -450,6 +445,42 @@ class Classification:
         return self._canonicalize_algebra(algebra) == self._canonicalize_algebra(
             self.get_algebra()
         )
+
+    def get_algebra_basis(self) -> np.ndarray:
+        """Constructs and returns the basis matrices for the algebras present in the classification.
+
+        Aggregates algebra properties (type, size, and multiplicity) from the
+        morphological classification and generates a combined basis representation.
+
+        Returns:
+            np.ndarray: A 3D array of shape (dim, n, n) containing the concatenated
+            basis matrices for all identified subalgebras.
+
+        Raises:
+            ValueError: If the identified algebra size is invalid for basis generation.
+            TypeError: If the classification properties are not properly initialized.
+        """
+        morphs = self.get_morphs()
+
+        # Key: Tuple of (TypeAlgebra, size), Value: Total multiplier/dimension count
+        algebra_map = {}
+        for morph in morphs:
+            type_alg, nc, size = morph.get_algebra_properties()
+            multiplier = nc if nc == 1 else 2 ** (nc - 1)
+            key = (type_alg, size)
+            algebra_map[key] = algebra_map.get(key, 0) + multiplier
+
+        # Prepare the input lists for basis generator
+        multipliers = []
+        groups = []
+        sizes = []
+
+        for (type_alg, size), count in algebra_map.items():
+            multipliers.append(count)
+            groups.append(type_alg)
+            sizes.append(size)
+
+        return get_algebras_basis(multipliers, groups, sizes)
 
     def _canonicalize_algebra(self, algebra: str) -> dict[str, int]:
         """Return an algebra decomposition after applying low-rank isomorphisms."""
