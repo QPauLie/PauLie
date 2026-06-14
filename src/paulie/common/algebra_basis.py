@@ -115,7 +115,7 @@ def get_su_basis(n: int) -> np.ndarray:
     basis[k, cols, rows] = -1.0
 
     # Diagonal Imaginary Generator
-    factors = np.asarray([np.sqrt(2 / (f * (f + 1))) 
+    factors = np.asarray([np.sqrt(2 / (f * (f + 1)))
                           for f in range(1, n_diagonal + 1)
                         ])
 
