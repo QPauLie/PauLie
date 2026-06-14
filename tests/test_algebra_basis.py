@@ -104,7 +104,7 @@ def test_so_basis_errors() -> None:
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("n, expected_dim", [(5, 24), (6, 35)])
+@pytest.mark.parametrize("n, expected_dim", [(8, 63), (16, 255)])
 def test_su_basis_properties(n: int, expected_dim: int) -> None:
     """Test dimension calculation and matrix properties for su(n)."""
     assert get_n_su_basis(n) == expected_dim
@@ -160,7 +160,7 @@ def test_sp_basis_errors() -> None:
     [
         (TypeAlgebra.U, 1, 1),
         (TypeAlgebra.SO, 3, 3),  # n*(n-1)/2 -> 3*(2)/2 = 3
-        (TypeAlgebra.SU, 5, 24),  # n^2 - 1 -> 25 - 1 = 24
+        (TypeAlgebra.SU, 8, 63),  # n^2 - 1 -> 25 - 1 = 24
         (TypeAlgebra.SP, 2, 10),  # n*(2n+1) -> 2*(5) = 10
     ],
 )
@@ -179,7 +179,7 @@ def test_get_group_basis_dispatch() -> None:
     """Test that the dispatcher correctly routes to the right generator."""
     assert get_group_basis(TypeAlgebra.U, 1).shape == (1, 1, 1)
     assert get_group_basis(TypeAlgebra.SO, 3).shape == (3, 3, 3)
-    assert get_group_basis(TypeAlgebra.SU, 5).shape == (24, 5, 5)
+    assert get_group_basis(TypeAlgebra.SU, 8).shape == (63, 8, 8)
     assert get_group_basis(TypeAlgebra.SP, 2).shape == (10, 4, 4)
 
     # Use a dummy invalid string to test the default fallback
