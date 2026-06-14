@@ -78,10 +78,10 @@ def get_n_su_basis(n: int) -> int:
         TypeError: If n is not an integer.
         ValueError: If n <= 2^2.
     """
-    err_msg = "su(n) basis: n must be integer greater than 2^2"
+    err_msg = "su(n) basis: n must be integer(2^x) and greater than 2^2"
     if not isinstance(n, int):
         raise TypeError(err_msg)
-    if n <= 2**2:
+    if n <= 2**2 or n.bit_count()!=1:
         raise ValueError(err_msg)
     return n**2 - 1
 
@@ -115,14 +115,19 @@ def get_su_basis(n: int) -> np.ndarray:
     basis[k, cols, rows] = -1.0
 
     # Diagonal Imaginary Generator
-    factors = [np.sqrt(2 / (f * (f + 1))) for f in range(1, n_diagonal + 1)]
+    factors = np.asarray([np.sqrt(2 / (f * (f + 1))) 
+                          for f in range(1, n_diagonal + 1)
+                        ])
 
-    for i in range(n_diagonal):
-        target_dim = n_symmetric * 2 + i
-        dim_inds = [target_dim] * (i + 1)
-        diag_inds = list(range(i + 1))
-        basis[dim_inds, diag_inds, diag_inds] = 1j * factors[i]
-        basis[n_symmetric * 2 + i, i + 1, i + 1] = (-1j * (i + 1)) * factors[i]
+    i_inds, j_inds = np.tril_indices(n_diagonal)
+    dim_inds = (n_symmetric*2) + i_inds
+    basis[dim_inds, j_inds, j_inds] = 1j * factors[i_inds]
+
+
+    i_arr = np.arange(n_diagonal)
+    dim_inds = (n_symmetric *2) + i_arr
+    diag_tails = i_arr + 1
+    basis[dim_inds, diag_tails, diag_tails] = -1j * diag_tails * factors[i_arr]
 
     return basis
 
@@ -203,6 +208,7 @@ def get_sp_basis(n: int) -> np.ndarray:
     for i in range(n_Sym):
         # Block A: Real Anti-symmetric => k (Unitary Subgroup)
         basis[i] = np.block([[E1[i], zeros_block], [zeros_block, E1[i]]])
+
         # Block A: Imaginary Symmetric => k (Unitary Subgroup)
         basis[n_Sym + i] = np.block([[1j * E2[i], zeros_block], [zeros_block, -1j * E2[i]]])
 
