@@ -522,6 +522,29 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.classification.Classification.get_algebra_basis">
+<span class="sig-name descname"><span class="pre">get_algebra_basis</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Classification.get_algebra_basis" title="Link to this definition">#</a></dt>
+<dd><p>Constructs and returns the basis matrices for the algebras present in the classification.</p>
+<p>Aggregates algebra properties (type, size, and multiplicity) from the
+morphological classification and generates a combined basis representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A 3D array of shape (dim, n, n) containing the concatenated
+basis matrices for all identified subalgebras.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the identified algebra size is invalid for basis generation.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.14)"><strong>TypeError</strong></a> – If the classification properties are not properly initialized.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Classification.get_dependents">
 <span class="sig-name descname"><span class="pre">get_dependents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Classification.get_dependents" title="Link to this definition">#</a></dt>
 <dd><p>Get a list of dependent strings of Pauli algebra.</p>
@@ -713,6 +736,7 @@ subalgebras of this algebra are returned.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.contains_algebra"><code class="docutils literal notranslate"><span class="pre">Classification.contains_algebra()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.gen_generators"><code class="docutils literal notranslate"><span class="pre">Classification.gen_generators()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_algebra"><code class="docutils literal notranslate"><span class="pre">Classification.get_algebra()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_algebra_basis"><code class="docutils literal notranslate"><span class="pre">Classification.get_algebra_basis()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_dependents"><code class="docutils literal notranslate"><span class="pre">Classification.get_dependents()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_dla_dim"><code class="docutils literal notranslate"><span class="pre">Classification.get_dla_dim()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_independents"><code class="docutils literal notranslate"><span class="pre">Classification.get_independents()</span></code></a></li>

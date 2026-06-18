@@ -6675,6 +6675,44 @@ AAAAnhGwAAAAPCNgAQAAeEbAAgAAML/+H9Tn9oYAKZAaAAAAAElFTkSuQmCC\
     }, 0);
   })()
 </script>
+</section>
+<section id="extracting-the-underlying-matrix-basis">
+<h2>Extracting the Underlying Matrix Basis<a class="headerlink" href="#extracting-the-underlying-matrix-basis" title="Link to this heading">#</a></h2>
+<p>This section shows how to extract its explicit matrix representation using the <code class="docutils literal notranslate"><span class="pre">get_algebra_basis()</span></code> method.
+Note that we are reusing previous examples.</p>
+<p><strong>Example 1</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">paulie</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_pauli_string</span> <span class="k">as</span> <span class="n">p</span>
+
+<span class="c1"># Generates a 3D array of shape (3, 3, 3)</span>
+<span class="n">basis</span> <span class="o">=</span> <span class="n">p</span><span class="p">([</span><span class="s2">&quot;XY&quot;</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">get_algebra_basis</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Basis contains </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">basis</span><span class="p">)</span><span class="si">}</span><span class="s2"> matrices of shape </span><span class="si">{</span><span class="n">basis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>outputs</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Basis<span class="w"> </span>contains<span class="w"> </span><span class="m">3</span><span class="w"> </span>matrices<span class="w"> </span>of<span class="w"> </span>shape<span class="w"> </span><span class="o">(</span><span class="m">3</span>,<span class="w"> </span><span class="m">3</span><span class="o">)</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Example 2</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">paulie</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_pauli_string</span> <span class="k">as</span> <span class="n">p</span>
+
+<span class="c1"># This system compiles to a direct sum of four so(5) algebras</span>
+<span class="n">generators</span> <span class="o">=</span> <span class="n">p</span><span class="p">([</span><span class="s2">&quot;IYZI&quot;</span><span class="p">,</span> <span class="s2">&quot;IIXX&quot;</span><span class="p">,</span> <span class="s2">&quot;IIYZ&quot;</span><span class="p">,</span> <span class="s2">&quot;IXXI&quot;</span><span class="p">,</span> <span class="s2">&quot;XXII&quot;</span><span class="p">,</span> <span class="s2">&quot;YZII&quot;</span><span class="p">])</span>
+<span class="n">basis</span> <span class="o">=</span> <span class="n">generators</span><span class="o">.</span><span class="n">get_algebra_basis</span><span class="p">()</span>
+
+<span class="c1"># Total elements: 4 summands * 10 generators each = 40</span>
+<span class="c1"># Matrix size: 4 summands * 5x5 blocks = 20x20</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total basis elements: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">basis</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Matrix dimensions: </span><span class="si">{</span><span class="n">basis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>outputs</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Total<span class="w"> </span>basis<span class="w"> </span>elements:<span class="w"> </span><span class="m">40</span>
+Matrix<span class="w"> </span>dimensions:<span class="w"> </span><span class="o">(</span><span class="m">20</span>,<span class="w"> </span><span class="m">20</span><span class="o">)</span>
+</pre></div>
+</div>
 <p>The Lie algebra plays a pivotal role in quantum control theory to understand the reachability of states.
 Also measures of operator spread complexity rely on this concept.
 Furthermore, determining moments of circuits can be significantly simplified when the Lie algebra is known.
@@ -6732,6 +6770,7 @@ All these applications are functionalities of <code class="code docutils literal
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-transformation">Visualizing the transformation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-of-a-type-canonical-graph">Classification of A-type canonical graph</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-of-b-type-canonical-graph">Classification of B-type canonical graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-the-underlying-matrix-basis">Extracting the Underlying Matrix Basis</a></li>
 </ul>
   </nav></div>
 
