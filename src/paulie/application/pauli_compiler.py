@@ -577,6 +577,12 @@ class OptimalPauliCompiler:
                 f"got {len(v_left)} and {len(w_right)}."
             )
 
+        sequence: list[PauliString] | None
+
+        if w_right.is_identity() and v_left.is_identity():
+            sequence = [v_left+w_right]
+            return sequence
+
         if w_right.is_identity():
             for a_s in self.a_left:
                 try:
@@ -584,7 +590,7 @@ class OptimalPauliCompiler:
                     seq_a.append(a_s)
                 except RuntimeError:
                     continue
-                sequence: list[PauliString] | None = [self.extend_left(a) for a in seq_a]
+                sequence = [self.extend_left(a) for a in seq_a]
                 return sequence
             raise RuntimeError("Left-only mapping failed.")
 
@@ -606,7 +612,6 @@ class OptimalPauliCompiler:
             seq_a = left_map_over_a(v_prime, v_left, self.a_left)
             ext_a = [self.extend_left(a) for a in seq_a]
             sequence = [*ext_a,*g_right]
-
             return sequence
 
         return None
