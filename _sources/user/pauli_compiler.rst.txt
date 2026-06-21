@@ -1,14 +1,33 @@
-In quantum computing, a target gate :math:`P` is considered reachable if it can be generated from the
-available system operators :math:`A_m`. The Pauli compiler searches for a sequence
-:math:`(A_{i_1}, A_{i_2}, \dots, A_{i_k})` such that :math:`P` can be expressed
-(up to proportionality) as a nested commutator,
+Pauli compiler
+==============
+
+In quantum computing, direct access to a target operation is usually not
+available due to a fixed set of native gates determined by the physical
+architecture of the device. This requires decomposing the target operation
+in terms of those available operators before it can be executed.
+
+Constructing such decompositions manually is often non-trivial, especially for systems with many qubits.
+The Pauli compiler addresses this problem by automatically finding a **constructive decomposition**
+of a target Pauli string into a sequence of available generators. This removes the need for manual
+algebraic derivations and provides a direct route from high-level targets to executable quantum circuits.
+
+Core idea
+---------
+
+A target operation :math:`P` is considered reachable if it can be generated from the available system
+operators :math:`A_m` via nested commutators. The compiler searches for a sequence
+
+.. math::
+
+    (A_{i_1}, A_{i_2}, \dots, A_{i_k})
+
+such that :math:`P` can be expressed (up to proportionality) as
 
 .. math::
 
     [A_{i_1}, [A_{i_2}, [\dots, [A_{i_{k-1}}, A_{i_k}] \dots ]]] \propto P
 
-This identifies a sequence of generators whose nested commutator reproduces the target,
-which can then be translated into a quantum circuit.
+This provides a constructive synthesis of the target operator from the available algebra.
 
 Algorithm
 ---------

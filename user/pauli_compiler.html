@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Algorithm &#8212; PauLie</title>
+    <title>Pauli compiler &#8212; PauLie</title>
   
   
   
@@ -336,8 +336,7 @@
 <li class="toctree-l1"><a class="reference internal" href="classification.html">Classification of Pauli DLAs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="commutator_graph.html">Commutator graph</a></li>
 <li class="toctree-l1"><a class="reference internal" href="optimal_universal_generators.html">Optimal universal generator sets</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Algorithm</a></li>
-
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Pauli compiler</a></li>
 </ul>
 </div>
 </nav></div>
@@ -381,7 +380,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Algorithm</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Pauli compiler</span></li>
   </ul>
 </nav>
 </div>
@@ -398,16 +397,29 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p>In quantum computing, a target gate <span class="math notranslate nohighlight">\(P\)</span> is considered reachable if it can be generated from the
-available system operators <span class="math notranslate nohighlight">\(A_m\)</span>. The Pauli compiler searches for a sequence
-<span class="math notranslate nohighlight">\((A_{i_1}, A_{i_2}, \dots, A_{i_k})\)</span> such that <span class="math notranslate nohighlight">\(P\)</span> can be expressed
-(up to proportionality) as a nested commutator,</p>
+  <section id="pauli-compiler">
+<h1>Pauli compiler<a class="headerlink" href="#pauli-compiler" title="Link to this heading">#</a></h1>
+<p>In quantum computing, direct access to a target operation is usually not
+available due to a fixed set of native gates determined by the physical
+architecture of the device. This requires decomposing the target operation
+in terms of those available operators before it can be executed.</p>
+<p>Constructing such decompositions manually is often non-trivial, especially for systems with many qubits.
+The Pauli compiler addresses this problem by automatically finding a <strong>constructive decomposition</strong>
+of a target Pauli string into a sequence of available generators. This removes the need for manual
+algebraic derivations and provides a direct route from high-level targets to executable quantum circuits.</p>
+<section id="core-idea">
+<h2>Core idea<a class="headerlink" href="#core-idea" title="Link to this heading">#</a></h2>
+<p>A target operation <span class="math notranslate nohighlight">\(P\)</span> is considered reachable if it can be generated from the available system
+operators <span class="math notranslate nohighlight">\(A_m\)</span> via nested commutators. The compiler searches for a sequence</p>
+<div class="math notranslate nohighlight">
+\[(A_{i_1}, A_{i_2}, \dots, A_{i_k})\]</div>
+<p>such that <span class="math notranslate nohighlight">\(P\)</span> can be expressed (up to proportionality) as</p>
 <div class="math notranslate nohighlight">
 \[[A_{i_1}, [A_{i_2}, [\dots, [A_{i_{k-1}}, A_{i_k}] \dots ]]] \propto P\]</div>
-<p>This identifies a sequence of generators whose nested commutator reproduces the target,
-which can then be translated into a quantum circuit.</p>
+<p>This provides a constructive synthesis of the target operator from the available algebra.</p>
+</section>
 <section id="algorithm">
-<h1>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h1>
+<h2>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h2>
 <p>To compile a target Pauli string <span class="math notranslate nohighlight">\(P\)</span>, the string is partitioned into left and right subsystem components.
 Depending on this structure, the compiler applies one of three cases:</p>
 <ol class="arabic simple">
@@ -427,7 +439,7 @@ yields a nonzero adjoint chain is selected, giving the desired compilation.</p><
 <p>In all cases, the resulting sequence has <span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span> length.</p>
 </section>
 <section id="quick-start">
-<h1>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h1>
+<h2>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
 <p>For 4-qubits system, if the target Pauli string is IZXI, the simplest way to use the compiler is through the
 <a class="reference internal" href="../api/generated/paulie.application.pauli_compiler.compile_target.html#paulie.application.pauli_compiler.compile_target" title="paulie.application.pauli_compiler.compile_target"><code class="xref py py-func docutils literal notranslate"><span class="pre">compile_target()</span></code></a> function:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">paulie</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_target</span><span class="p">,</span> <span class="n">get_pauli_string</span> <span class="k">as</span> <span class="n">p</span>
@@ -451,6 +463,7 @@ a sequence that reconstructs the target operator.</p>
 <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">target</span>
 </pre></div>
 </div>
+</section>
 </section>
 
 
@@ -500,10 +513,10 @@ a sequence that reconstructs the target operator.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Algorithm</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-idea">Core idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick start</a></li>
 </ul>
-
   </nav></div>
 
   <div class="sidebar-secondary-item">
