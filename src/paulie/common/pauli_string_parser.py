@@ -1,12 +1,15 @@
 """
     Module to parse Pauli strings.
 """
+import re
+
 LOWCASE = "_"
 SIZE = "s"
 GATES = {"I", "X", "Y", "Z"}
 TOKENS = GATES.copy()
 TOKENS.add(LOWCASE)
 TOKENS.add(SIZE)
+pattern = re.compile(r'^[IXYZ]+$')
 
 
 def _is_token(char: str) -> bool:
@@ -58,6 +61,15 @@ def _to_int(position: str) -> int:
         raise ValueError("Invalid pauli string: position must be a number") from e
 
 
+def _is_valid(pauli_string: str) -> bool:
+    """
+    Verify that the string is a pure Pauli string.
+    Args:
+        pauli_string (str): Compact string representation of the Pauli string.
+    Returns: bool: Check result
+    """
+    return bool(pattern.match(pauli_string))
+
 def pauli_string_parser(pauli_string: str) -> str:
     """
     Parse a compact Pauli string representation and return the expanded form.
@@ -72,6 +84,8 @@ def pauli_string_parser(pauli_string: str) -> str:
     Raises:
         ValueError: If the input string format is invalid.
     """
+    if _is_valid(pauli_string):
+        return pauli_string
     new_pauli_string = ""
     i = 0
     size = None
