@@ -24,7 +24,6 @@ def test_compile_target(input_arg) -> None:
     """
     target = PauliString(pauli_str=input_arg)
     n = len(input_arg)
-
     for k in range(1, n):
 
         if k < 2 or k == n:

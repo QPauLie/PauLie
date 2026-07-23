@@ -120,7 +120,6 @@ def k3_case(N: int) -> list[PauliString]:
     drop = {4 * j - 1 for j in range(1, k)}
     def tilde(s: list[str]) -> str:
         return "".join(c for i, c in enumerate(s) if i not in drop)
-
     return [get_pauli_string(tilde(orbit[ell])) for ell in I_M]
 
 def choose_u_for_b(k: int) -> PauliString:

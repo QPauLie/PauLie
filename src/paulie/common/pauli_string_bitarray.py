@@ -461,7 +461,7 @@ class PauliString:
         Returns:
             PauliString: Substring of the Pauli string.
         """
-        return PauliString(bits=self._bits[start:start+2*length])
+        return PauliString(bits=self._bits[start *2 :start *2 +2*length])
 
     def set_substring(self, start: int, pauli_string:str|PauliString) -> None:
         """
@@ -476,7 +476,7 @@ class PauliString:
         pauli_string = self._ensure_pauli_string(pauli_string)
 
         for i in range(0, 2*len(pauli_string)):
-            self._bits[start  + i] = pauli_string.bits[i]
+            self._bits[start * 2  + i] = pauli_string.bits[i]
         # Invalidate cached bits
         #self._bits = None
 
