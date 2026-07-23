@@ -24,7 +24,6 @@ classifiers = [
 dependencies = [
     "numpy>=2.2.2",
     "networkx>=3.3",
-    "bitarray>=3.0.0",
     "memory-profiler>=0.61.0",
     "matplotlib>=3.10.0",
     "pillow>=10.0.0",
@@ -32,6 +31,7 @@ dependencies = [
     "tqdm>=4.67.1",
     "scipy>=1.17.0",
     "intersphinx-registry>=0.2602.2",
+    "bitarray",
 ]
 
 [project.optional-dependencies]
@@ -117,3 +117,6 @@ disallow_incomplete_defs = true
 module = ["paulie.classifier.classification"]
 check_untyped_defs = true
 disallow_incomplete_defs = true
+
+[tool.uv.sources]
+bitarray = { git = "https://github.com/QPauLie/bitarray.git" }

@@ -62,7 +62,8 @@ class PauliString:
         elif pauli_str is not None:
             pauli_str = pauli_string_parser(pauli_str)
             temp_bits = bitarray()
-            temp_bits.encode(CODEC, pauli_str)
+            #temp_bits.encode(CODEC, pauli_str)
+            temp_bits.encode_ixyz(pauli_str)
             if n is not None and n > len(temp_bits) // 2:
                 # Padding with identity
                 pad_n = n - len(temp_bits) // 2
@@ -458,8 +459,9 @@ class PauliString:
 
         if len(self) != len(other):
             raise ValueError("Pauli arrays must be of equal length")
-        return (count_and(self.bits_even, other.bits_odd) % 2 ==
-               count_and(other.bits_even, self.bits_odd) % 2)
+        return self.bits.commutes_with(other.bits)
+        # return (count_and(self.bits_even, other.bits_odd) % 2 ==
+        #       count_and(other.bits_even, self.bits_odd) % 2)
 
     def get_substring(self, start: int, length: int = 1) -> PauliString:
         """
