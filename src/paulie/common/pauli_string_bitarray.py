@@ -290,7 +290,7 @@ class PauliString:
             # we are done
             raise StopIteration
         value = PauliString(bits=self.bits[self.nextpos:self.nextpos+2])
-        self.nextpos += 1
+        self.nextpos += 2
         return value
 
     def __setitem__(self, position: int, pauli_string: str | Self) -> None:
