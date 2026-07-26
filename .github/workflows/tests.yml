@@ -38,7 +38,7 @@ jobs:
 
     - name: Lint
       run: |
-        uvx ruff check@0.15.22 .
+        uvx --from ruff@0.15.22 ruff check .
         git ls-files -z '*.py' | xargs -0 uvx pylint
 
     - name: Type checking
