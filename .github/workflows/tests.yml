@@ -36,6 +36,9 @@ jobs:
     - name: Run tests
       run: uv run pytest -q
 
+    - name: ruff version
+      run: uvx ruff --version
+
     - name: Lint
       run: |
         uvx ruff check .
