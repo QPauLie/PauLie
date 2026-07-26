@@ -346,17 +346,6 @@ class Canonicalizer:
             vertex_stack (list[PauliString]): Generator stack
         """
         while vertex_stack:
-            confirmed_legs = [leg for leg in self.legs if len(leg) != 1]
-            length_1_legs = [leg for leg in self.legs if len(leg) == 1]
-            independent_legs = self._dependency_check(length_1_legs)
-            if self.events.has_subscribers():
-                independent_set = {leg[0] for leg in independent_legs}
-                dropped = [leg[0] for leg in length_1_legs if leg[0] not in independent_set]
-                if dropped:
-                    self._notify("Remove dependent vertices",
-                        dependent=dropped[0], removing=dropped)
-            confirmed_legs.extend(independent_legs)
-            self.legs = confirmed_legs
             self.legs.sort(key=len)
             v = vertex_stack.pop()
             if self.central_vertex is None:
