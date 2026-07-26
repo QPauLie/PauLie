@@ -36,12 +36,9 @@ jobs:
     - name: Run tests
       run: uv run pytest -q
 
-    - name: ruff version
-      run: uvx ruff --version
-
     - name: Lint
       run: |
-        uvx ruff check .
+        uvx ruff check@0.15.22 .
         git ls-files -z '*.py' | xargs -0 uvx pylint
 
     - name: Type checking
