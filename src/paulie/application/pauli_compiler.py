@@ -12,7 +12,6 @@ from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
 from paulie.common.pauli_string_factory import get_identity, get_single
 from paulie.application.get_optimal_su2_n import get_optimal_universal_generators
-
 def _evaluate_sequence(sequence: list[PauliString]) -> PauliString | None:
     """Evaluate a sequence stored as ``[base, A1, ..., Am]``."""
     return PauliStringCollection(sequence).evaluate_commutator_sequence()
@@ -35,9 +34,9 @@ def left_a_minimal(k: int) -> list[PauliString]:
     Delegates to :func:`k_universal` for every ``k``.
     """
 
-    return list(get_optimal_universal_generators(k))
+    return list(k_universal(k))
 
-def k_universal(k: int) -> list[PauliString]:
+def k_universal(k: int) -> PauliStringCollection:
     """Return the minimal left universal set at the optimal generation rate.
 
     Cached per ``k``: the first call costs a few milliseconds, later calls are

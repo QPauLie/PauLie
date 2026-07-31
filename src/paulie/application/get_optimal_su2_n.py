@@ -136,7 +136,12 @@ def _candidate_deltas(a: np.ndarray, delta: int) -> tuple[np.ndarray, np.ndarray
     return delta - deg[None, :] + 2 * c + 1, delta - deg[:, None] + 2 * c + 1
 
 
-def _pick_move(a, iu, delta, rng) -> tuple[int, int] | None:
+def _pick_move(
+    a: np.ndarray,
+    iu: tuple[np.ndarray, np.ndarray],
+    delta: int,
+    rng: np.random.Generator,
+) -> tuple[int, int] | None:
     """Pick the next replacement: the move that gets strictly closer to the
     target (ties broken at random, overshoot allowed if it lands closer), or a
     random edge if none helps.  Returns ``(src, dst)``, or ``None``
