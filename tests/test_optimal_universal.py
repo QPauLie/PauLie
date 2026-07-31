@@ -3,29 +3,16 @@
 from __future__ import annotations
 
 import math
-import random
 
 import pytest
 
-from paulie import G_LIE,  get_optimal_universal_generators, get_pauli_string as p
+from paulie import get_optimal_universal_generators
 from paulie.application.get_optimal_su2_n import get_optimal_edges_su_2_n
 
 
 def su_dim(n: int) -> int:
     """Return the dimension of su(2^n)."""
     return 4**n - 1
-
-
-@pytest.fixture(params=list(range(2, 16)))
-def universal_a12(request):
-    """
-    Universal fixture from the public API:
-        p(G_LIE["a12"], n=n)
-    """
-    n = request.param
-    g = p(G_LIE["a12"], n=n)
-    assert g.get_dla_dim() == su_dim(n)
-    return n, g
 
 
 @pytest.mark.parametrize(
@@ -44,17 +31,19 @@ def test_get_optimal_edges_su_2_n_formula(ng: int, expected: int) -> None:
     assert get_optimal_edges_su_2_n(ng) == expected
 
 
-def test_get_optimal_universal_generators_hits_target_edge_count(universal_a12) -> None:
-    """Optimal generators should achieve the target anticommutation edge count."""
-    n, g = universal_a12
+@pytest.mark.parametrize("n", list(range(2, 16)))
+def test_get_optimal_universal_generators(n: int) -> None:
+    """The generated set is minimal, universal, and hits the target fraction.
 
-    g_ind = g.copy().get_independents()
-    target_edges = get_optimal_edges_su_2_n(len(g_ind))
+    These three are the function's contract, checked directly rather than
+    against the a12 construction (which is only universal for n >= 4).
+    """
+    g = get_optimal_universal_generators(n)
 
-    random.seed(target_edges)
-    g_opt = get_optimal_universal_generators(n)
-
-    assert g_opt is not None
-    assert len(g_opt) == len(g_ind)
-    assert g_opt.get_dla_dim() == su_dim(n)
-    assert g_opt.get_anticommutation_pair() == target_edges
+    assert g is not None
+    # minimal: 2n+1 generators (n=1 is the special {X, Z} case, not tested here)
+    assert len(g) == 2 * n + 1
+    # universal: the dynamical Lie algebra is all of su(2^n)
+    assert g.get_dla_dim() == su_dim(n)
+    # optimal fraction: hits the target anticommuting-pair count
+    assert g.get_anticommutation_pair() == get_optimal_edges_su_2_n(len(g))
