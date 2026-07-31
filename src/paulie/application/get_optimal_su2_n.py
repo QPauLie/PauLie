@@ -36,29 +36,40 @@ OPTIMAL_FRACTION = 0.706
 """Anticommutation fraction that maximises the generation rate."""
 
 def _to_symplectic(generators: Iterable[PauliString]) -> np.ndarray:
-    """Pack m Pauli strings on n qubits into an (m, 2n) array of 0/1, ``[X | Z]``."""
+    """Pack m Pauli strings on n qubits into an (m, 2n) array of 0/1, ``[X | Z]``.
+
+    ``PauliString.bits`` is interleaved per qubit as ``[x_0, z_0, x_1, z_1, ...]``,
+    so ``bits[::2]`` are the X parts and ``bits[1::2]`` the Z parts.
+    """
     gens = list(generators)
     if not gens:
         return np.zeros((0, 0), dtype=np.uint8)
     n = len(gens[0])
     v = np.empty((len(gens), 2 * n), dtype=np.uint8)
     for i, p in enumerate(gens):
-        v[i, :n] = np.frombuffer(p.bits_even.unpack(), dtype=np.uint8) & 1
-        v[i, n:] = np.frombuffer(p.bits_odd.unpack(), dtype=np.uint8) & 1
+        bits = p.bits
+        v[i, :n] = np.frombuffer(bits[::2].unpack(), dtype=np.uint8) & 1
+        v[i, n:] = np.frombuffer(bits[1::2].unpack(), dtype=np.uint8) & 1
     return v
 
+
 def _from_symplectic(v: np.ndarray) -> list[PauliString]:
-    """Inverse of :func:`_to_symplectic`."""
+    """Inverse of :func:`_to_symplectic`; re-interleaves X and Z into ``bits``."""
     n = v.shape[1] // 2
     strings = []
     for row in v:
-        halves = []
-        for half in (row[:n], row[n:]):
-            bits = bitarray()
-            bits.pack(np.ascontiguousarray(half, dtype=np.uint8).tobytes())
-            halves.append(bits)
-        strings.append(PauliString(bits_even=halves[0], bits_odd=halves[1]))
+        x = bitarray()
+        x.pack(np.ascontiguousarray(row[:n], dtype=np.uint8).tobytes())
+        z = bitarray()
+        z.pack(np.ascontiguousarray(row[n:], dtype=np.uint8).tobytes())
+        interleaved = bitarray(2 * n)
+        interleaved[::2] = x
+        interleaved[1::2] = z
+        p = PauliString(n=n)
+        p.bits = interleaved
+        strings.append(p)
     return strings
+
 
 def _symplectic_gram(v: np.ndarray) -> np.ndarray:
     """Anticommutation graph: ``a[i, j] = 1`` iff P_i and P_j anticommute."""
@@ -68,6 +79,7 @@ def _symplectic_gram(v: np.ndarray) -> np.ndarray:
     a = (x @ z.T + z @ x.T) & 1
     np.fill_diagonal(a, 0)
     return a.astype(np.int32)
+
 
 def _contract(v: np.ndarray, a: np.ndarray, src: int, dst: int) -> int:
     """Replace P_src by P_src * P_dst in place; return the new edge count.
@@ -81,6 +93,7 @@ def _contract(v: np.ndarray, a: np.ndarray, src: int, dst: int) -> int:
     a[src] = row
     a[:, src] = row
     return int(a.sum()) // 2
+
 
 def _minimal_universal_seed(n: int) -> list[PauliString]:
     r"""Example 1 of arXiv:2408.03294: 2n+1 Pauli strings generating su(2^n).
@@ -109,6 +122,7 @@ def _minimal_universal_seed(n: int) -> list[PauliString]:
             ops.append(get_pauli_string("".join(label)))
     return ops
 
+
 def _candidate_deltas(a: np.ndarray, delta: int) -> tuple[np.ndarray, np.ndarray]:
     """Leftover gap after every possible replacement, from one matrix product.
 
@@ -121,12 +135,8 @@ def _candidate_deltas(a: np.ndarray, delta: int) -> tuple[np.ndarray, np.ndarray
     c = a @ a.T
     return delta - deg[None, :] + 2 * c + 1, delta - deg[:, None] + 2 * c + 1
 
-def _pick_move(
-    a: np.ndarray,
-    iu: tuple[np.ndarray, np.ndarray],
-    delta: int,
-    rng: np.random.Generator,
-) -> tuple[int, int] | None:
+
+def _pick_move(a, iu, delta, rng) -> tuple[int, int] | None:
     """Pick the next replacement: the move that gets strictly closer to the
     target (ties broken at random, overshoot allowed if it lands closer), or a
     random edge if none helps.  Returns ``(src, dst)``, or ``None``
@@ -153,6 +163,7 @@ def _pick_move(
 
     i, j = int(iu[0][k]), int(iu[1][k])
     return (i, j) if which == 0 else (j, i)
+
 
 def _search(v: np.ndarray, target: int, seed: int | None = 0) -> np.ndarray:
     """Replace generators until the graph has ``target`` edges, returning the
@@ -186,6 +197,7 @@ def _search(v: np.ndarray, target: int, seed: int | None = 0) -> np.ndarray:
 
     return best_v
 
+
 @lru_cache(maxsize=None)
 def _cached(n: int, fraction: float, seed: int | None) -> np.ndarray:
     """Build the set for ``n`` once (seed -> search); returned read-only."""
@@ -195,6 +207,7 @@ def _cached(n: int, fraction: float, seed: int | None) -> np.ndarray:
         v = _search(v, get_optimal_edges_su_2_n(len(base), fraction), seed)
     v.flags.writeable = False
     return v
+
 
 def get_optimal_edges_su_2_n(ng: int, fraction: float = OPTIMAL_FRACTION) -> int:
     r"""
@@ -209,6 +222,7 @@ def get_optimal_edges_su_2_n(ng: int, fraction: float = OPTIMAL_FRACTION) -> int
     if ng < 2:
         return -1
     return math.floor(fraction * ng * (ng - 1) / 2)
+
 
 def get_optimal_universal_generators(
     n: int, fraction: float = OPTIMAL_FRACTION, seed: int | None = 0
