@@ -10,8 +10,8 @@ from typing import Iterable
 
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
-from paulie.common.pauli_string_factory import get_identity, get_pauli_string, get_single
-
+from paulie.common.pauli_string_factory import get_identity, get_single
+from paulie.application.get_optimal_su2_n import get_optimal_universal_generators
 def _evaluate_sequence(sequence: list[PauliString]) -> PauliString | None:
     """Evaluate a sequence stored as ``[base, A1, ..., Am]``."""
     return PauliStringCollection(sequence).evaluate_commutator_sequence()
@@ -29,98 +29,21 @@ def _sequence_to_paulie_orientation(sequence: list[PauliString]) -> list[PauliSt
     return list(reversed(sequence[1:])) + [sequence[0]]
 
 def left_a_minimal(k: int) -> list[PauliString]:
-    r"""Return the minimal left universal set ``{X_i, Z_i}_i \cup {Z^{\otimes k}}``."""
+    r"""Return the minimal left universal set on ``k`` qubits.
 
-    if k % 3 != 0:
-        a_ops = kn_case(k)
-    else:
-        a_ops = k3_case(k)
+    Delegates to :func:`k_universal` for every ``k``.
+    """
 
-    return a_ops
+    return list(k_universal(k))
 
-def kn_case(k: int) -> list[PauliString]:
-    """Return the minimal left universal set for k equal 3."""
+def k_universal(k: int) -> PauliStringCollection:
+    """Return the minimal left universal set at the optimal generation rate.
 
-    if k == 1:
-        return [get_single(1, 0, "X"), get_single(1, 0, "Z")]
+    Cached per ``k``: the first call costs a few milliseconds, later calls are
+    a dictionary lookup.
+    """
 
-    a_ops: list[PauliString] = [
-        get_single(k, 0, "X"),
-        get_single(k, 0, "Z"),
-        get_single(k, 1, "X"),
-        get_single(k, 1, "Z"),
-        get_pauli_string("ZZ" + "I" * (k - 2)),
-    ]
-
-    for i in range(1, k - 1):
-        xz = ["I"] * k
-        xz[i] = "X"
-        xz[i + 1] = "Z"
-        zx = ["I"] * k
-        zx[i] = "Z"
-        zx[i + 1] = "X"
-        a_ops.append(get_pauli_string("".join(xz)))
-        a_ops.append(get_pauli_string("".join(zx)))
-
-    return a_ops
-
-def k3_case(N: int) -> list[PauliString]:
-    """Return the minimal left universal set for k not equal 3."""
-
-    if N % 3 != 0:
-        raise ValueError(
-            f"Example 3 requires N divisible by 3; got N={N}. "
-            "Use Example 1 or 2 for general N."
-        )
-    k = N // 3
-    M = 4 * k - 1
-
-    HS_HEIS = {"I": "I", "X": "Z", "Y": "X", "Z": "Y"}
-    HS_SCHR = {"I": "I", "X": "Y", "Y": "Z", "Z": "X"}
-
-    PMUL = {(a, b): c for a, b, c in [
-        ("I","I","I"),("I","X","X"),("I","Y","Y"),("I","Z","Z"),
-        ("X","I","X"),("X","X","I"),("X","Y","Z"),("X","Z","Y"),
-        ("Y","I","Y"),("Y","X","Z"),("Y","Y","I"),("Y","Z","X"),
-        ("Z","I","Z"),("Z","X","Y"),("Z","Y","X"),("Z","Z","I"),
-    ]}
-
-    def cz_pair(c1: str, c2: str) -> tuple[str, str]:
-        z1 = "Z" if c1 in ("X", "Y") else "I"
-        z2 = "Z" if c2 in ("X", "Y") else "I"
-        return PMUL[(c1, z2)], PMUL[(z1, c2)]
-
-    def step_heis(p: list[str]) -> list[str]:
-        q = [HS_HEIS[c] for c in p]
-        for i in range(len(q) - 1):
-            q[i], q[i + 1] = cz_pair(q[i], q[i + 1])
-        return q
-
-    def step_schr(p: list[str]) -> list[str]:
-        q = p[:]
-        for i in range(len(q) - 1):
-            q[i], q[i + 1] = cz_pair(q[i], q[i + 1])
-        return [HS_SCHR[c] for c in q]
-
-    I_M: list[int] = [-1]
-    for j in range(k):
-        I_M.extend([4*j, 4*j + 1, 4*j + 2, -4*j - 2, -4*j - 3, -4*j - 4])
-    assert len(I_M) == 2 * N + 1
-
-    orbit: dict[int, list[str]] = {0: ["Z"] + ["I"] * (M - 1)}
-    p = orbit[0][:]
-    for ell in range(1, max(I_M) + 1):
-        p = step_heis(p)
-        orbit[ell] = p[:]
-    p = orbit[0][:]
-    for ell in range(-1, min(I_M) - 1, -1):
-        p = step_schr(p)
-        orbit[ell] = p[:]
-
-    drop = {4 * j - 1 for j in range(1, k)}
-    def tilde(s: list[str]) -> str:
-        return "".join(c for i, c in enumerate(s) if i not in drop)
-    return [get_pauli_string(tilde(orbit[ell])) for ell in I_M]
+    return get_optimal_universal_generators(k)
 
 def choose_u_for_b(k: int) -> PauliString:
     """Choose the fixed left tag used when coupling to right-side generators."""
