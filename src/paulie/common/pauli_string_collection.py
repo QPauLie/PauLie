@@ -810,7 +810,9 @@ class PauliStringCollection:
             ValueError: If graph_type is not "anticommutator" or "commutator".
         """
         if graph_type == "anticommutator":
-            nodes, edges, _edge_labels = self.get_graph(self)  # The anti-commutation graph
+            # Passing a set to get_graph keeps only those edges whose commutator lies in
+            # that set. Here every anticommuting pair is an edge, so no set is passed.
+            nodes, edges, _edge_labels = self.get_graph()  # The anti-commutation graph
         elif graph_type == "commutator":
             nodes, edges = self.get_commutator_graph()  # The commutator graph
         else:
