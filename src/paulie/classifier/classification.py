@@ -2,6 +2,7 @@
     Canonical graph classification
 """
 import enum
+import math
 from collections.abc import Generator
 
 import numpy as np
@@ -518,6 +519,59 @@ class Classification:
         else:
             algebra = algebra.replace(" ", "")
         return algebra.split("+")
+
+    def is_simple(self) -> bool:
+        """
+        Check whether the algebra is a single simple factor.
+
+        Returns:
+            bool: True if the algebra has one summand with multiplicity one.
+        """
+        subalgebras = self.get_subalgebras()
+        return len(subalgebras) == 1 and "*" not in subalgebras[0]
+
+    def get_simple_component(self) -> str:
+        """
+        Get the unique simple summand of the algebra.
+
+        Returns:
+            str: The summand, e.g. ``"so(8)"``.
+
+        Raises:
+            ClassificationException: If the algebra is not simple.
+        """
+        if not self.is_simple():
+            raise ClassificationException(
+                f"The algebra {self.get_algebra()} is not simple; it has summands "
+                f"{self.get_subalgebras()}. Decompose the summands separately."
+            )
+        return self.get_subalgebras()[0]
+
+    def get_orthogonal_size(self) -> int | None:
+        r"""
+        Get the :math:`m` for which this algebra is (isomorphic to) :math:`so(m)`.
+
+        :math:`so(m)` has dimension :math:`m(m-1)/2`, so :math:`m` is fixed by the
+        dimension; the verdict is then :meth:`is_algebra`, which canonicalises both sides
+        through the low-rank isomorphisms. An algebra reported as ``2*so(3)`` is therefore
+        recognised as ``so(4)``.
+
+        Returns:
+            int | None: The size :math:`m`, or None if the algebra has no :math:`so(m)`
+            presentation.
+        """
+        dim = self.get_dla_dim()
+        discriminant = 8 * dim + 1
+        root = math.isqrt(discriminant)
+        if root * root != discriminant:
+            return None
+        size = (root + 1) // 2
+        if (root + 1) % 2 or size * (size - 1) // 2 != dim:
+            return None
+        if size == 2:
+            # so(2) = u(1) is not in the isomorphism table, so check it by name.
+            return 2 if self.get_algebra() == "u(1)" else None
+        return size if self.is_algebra(f"so({size})") else None
 
     def get_vertices(self) -> list[PauliString]:
         """
