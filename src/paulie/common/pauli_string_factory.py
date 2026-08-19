@@ -4,7 +4,7 @@ Module for creating instances of Pauli strings of various implementations.
 
 from collections.abc import Generator
 from typing import overload
-from bitarray import bitarray
+from pauliebits import pauliebits
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
@@ -47,7 +47,7 @@ def get_last(n: int) -> PauliString:
     Returns:
         PauliString: Pauli string of given length with `Y` at every position.
     """
-    return PauliString(bits=bitarray([1] * (2 * n)))
+    return PauliString(bits=pauliebits([1] * (2 * n)))
 
 
 @overload
