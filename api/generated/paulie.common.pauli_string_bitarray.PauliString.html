@@ -465,7 +465,7 @@
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">paulie.common.pauli_string_bitarray.</span></span><span class="sig-name descname"><span class="pre">PauliString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Representation of a Pauli string as a bitarray.</p>
+<p>Representation of a Pauli string as a pauliebits.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.adjoint_map">
 <span class="sig-name descname"><span class="pre">adjoint_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.adjoint_map" title="Link to this definition">#</a></dt>
@@ -492,7 +492,7 @@
 <dt class="sig sig-object py" id="paulie.common.pauli_string_bitarray.PauliString.bits">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">bits</span></span><a class="headerlink" href="#paulie.common.pauli_string_bitarray.PauliString.bits" title="Link to this definition">#</a></dt>
 <dd><p>Return the interleaved bit representation.</p>
-<p>The bitarray is constructed by interleaving <code class="docutils literal notranslate"><span class="pre">bits_even</span></code> and
+<p>The pauliebits is constructed by interleaving <code class="docutils literal notranslate"><span class="pre">bits_even</span></code> and
 <code class="docutils literal notranslate"><span class="pre">bits_odd</span></code> such that even indices correspond to <code class="docutils literal notranslate"><span class="pre">bits_even</span></code>
 and odd indices correspond to <code class="docutils literal notranslate"><span class="pre">bits_odd</span></code>. The result is cached
 after the first construction.</p>
