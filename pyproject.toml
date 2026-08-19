@@ -31,7 +31,7 @@ dependencies = [
     "tqdm>=4.67.1",
     "scipy>=1.17.0",
     "intersphinx-registry>=0.2602.2",
-    "bitarray",
+    "pauliebits",
 ]
 
 [project.optional-dependencies]
@@ -67,6 +67,11 @@ line-length = 120
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]
 
 [tool.pylint.'MESSAGES CONTROL']
 disable=[
@@ -119,4 +124,4 @@ check_untyped_defs = true
 disallow_incomplete_defs = true
 
 [tool.uv.sources]
-bitarray = { git = "https://github.com/QPauLie/bitarray.git" }
+pauliebits = { git = "https://github.com/QPauLie/pauliebits.git", branch = "master" }
