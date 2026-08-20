@@ -9,20 +9,6 @@ from pauliebits.util import count_and, count_or, ba2int
 
 from paulie.common.pauli_string_parser import pauli_string_parser
 
-CODEC = {
-    "I": pauliebits([0, 0]),
-    "X": pauliebits([1, 0]),
-    "Y": pauliebits([1, 1]),
-    "Z": pauliebits([0, 1]),
-}
-
-DECODEC = {
-    (0, 0): "I",
-    (1, 0): "X",
-    (1, 1): "Y",
-    (0, 1): "Z",
-}
-
 SI = np.array([[1, 0], [0, 1]])
 SX = np.array([[0, 1], [1, 0]])
 SY = np.array([[0, -1j], [1j, 0]])
@@ -50,7 +36,7 @@ class PauliString:
         elif pauli_str is not None:
             pauli_str = pauli_string_parser(pauli_str)
             temp_bits = pauliebits()
-            temp_bits.encode(CODEC, pauli_str)
+            temp_bits.encode_ixyz(pauli_str)
             if n is not None and n > len(temp_bits) // 2:
                 # Padding with identity
                 pad_n = n - len(temp_bits) // 2
@@ -97,12 +83,7 @@ class PauliString:
         Returns:
             int: Index in diagonal matrix decomposition vector.
         """
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-
-        if ba2int(self_bits_even) == 0:
-            return ba2int(self_bits_odd)
-        return -1
+        return self._bits.diagonal_index()
 
     def get_weight_in_matrix(self, b_matrix: np.ndarray) -> np.complex128:
         """
@@ -153,10 +134,7 @@ class PauliString:
         Returns:
             str: String representation.
         """
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-
-        return "".join(DECODEC[(self_bits_even[i], self_bits_odd[i])] for i in range(len(self)))
+        return self._bits.decode_ixyz()
 
     def _ensure_pauli_string(self, other: object) -> PauliString:
         """
@@ -402,19 +380,7 @@ class PauliString:
 
         # This is the full, correct formula for the exponent f in phase = i^f.
         # It is based on the bit-array representations of the two Pauli strings.
-        # self.bits_even corresponds to the X part, self.bits_odd to the Z part.
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-        other_bits_even = other.bits[::2]
-        other_bits_odd = other.bits[1::2]
-
-
-        f = 2 * count_and(self_bits_even, other_bits_odd) + \
-            count_and(self_bits_odd, self_bits_even) + \
-            count_and(other_bits_odd, other_bits_even) - \
-            count_and(self_bits_even ^ other_bits_even,
-                      self_bits_odd ^ other_bits_odd)
-
+        f = self._bits.phase(other.bits)
         # The final phase is (-1j)^f mod 4.
         return (-1j) ** (f % 4)
 
@@ -425,10 +391,7 @@ class PauliString:
         Returns:
             tuple[complex, Self]: Complex conjugate of the Pauli string.
         """
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-
-        ys = count_and(self_bits_odd, self_bits_even)
+        ys = self._bits.complex_conjugate()
         return ((-1)**(ys), self)
 
     def commutes_with(self, other:object) -> bool:
@@ -691,10 +654,7 @@ class PauliString:
         Returns:
             int: Count of non-identity operators.
         """
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-
-        return count_or(self_bits_even, self_bits_odd)
+        return self._bits.count_non_trivially()
 
     def get_support(self) -> list[int]:
         """
@@ -703,7 +663,5 @@ class PauliString:
         Returns:
             list[int]: List of indices where the Pauli operator is not the identity.
         """
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-        support_bits = self_bits_even | self_bits_odd
+        support_bits = self._bits.not_identity_mask()
         return [i for i, bit in enumerate(support_bits) if bit]
