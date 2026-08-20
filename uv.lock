@@ -758,7 +758,7 @@ dev = [{ name = "pytest", specifier = ">=9.0.2" }]
 [[package]]
 name = "pauliebits"
 version = "0.0.1"
-source = { git = "https://github.com/QPauLie/pauliebits.git?branch=master#71d0a0f08e2a32bf910d81adb3d1b75d80f04b33" }
+source = { git = "https://github.com/QPauLie/pauliebits.git?branch=master#858334bf26b89236a56b69b84ddedb2cd7e92c66" }
 
 [[package]]
 name = "pillow"
