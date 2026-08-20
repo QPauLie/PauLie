@@ -1,27 +1,11 @@
 """Representation of a Pauli string as a bitarray."""
 from __future__ import annotations
-
 from collections.abc import Generator
 from typing import Self
 import numpy as np
 from pauliebits import pauliebits
-from pauliebits.util import count_and, count_or, ba2int
-
+from pauliebits.util import ba2int
 from paulie.common.pauli_string_parser import pauli_string_parser
-
-CODEC = {
-    "I": pauliebits([0, 0]),
-    "X": pauliebits([1, 0]),
-    "Y": pauliebits([1, 1]),
-    "Z": pauliebits([0, 1]),
-}
-
-DECODEC = {
-    (0, 0): "I",
-    (1, 0): "X",
-    (1, 1): "Y",
-    (0, 1): "Z",
-}
 
 SI = np.array([[1, 0], [0, 1]])
 SX = np.array([[0, 1], [1, 0]])
@@ -425,9 +409,10 @@ class PauliString:
 
         if len(self) != len(other):
             raise ValueError("Pauli arrays must be of equal length")
-        px, pz = self.bits[::2], self.bits[1::2]
-        qx, qz = other.bits[::2], other.bits[1::2]
-        return (count_and(px, qz) + count_and(pz, qx)) % 2 == 0
+        return self.bits.commutes_with(other.bits)
+        #px, pz = self.bits[::2], self.bits[1::2]
+        #qx, qz = other.bits[::2], other.bits[1::2]
+        #return (count_and(px, qz) + count_and(pz, qx)) % 2 == 0
 
     def get_substring(self, start: int, length: int = 1) -> PauliString:
         """
