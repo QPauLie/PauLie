@@ -4,9 +4,30 @@ from collections.abc import Generator
 from typing import Self
 import numpy as np
 from pauliebits import pauliebits
+<<<<<<< HEAD
 from pauliebits.util import ba2int
 from paulie.common.pauli_string_parser import pauli_string_parser
 
+=======
+from pauliebits.util import count_and, count_or, ba2int
+
+from paulie.common.pauli_string_parser import pauli_string_parser
+
+CODEC = {
+    "I": pauliebits([0, 0]),
+    "X": pauliebits([1, 0]),
+    "Y": pauliebits([1, 1]),
+    "Z": pauliebits([0, 1]),
+}
+
+DECODEC = {
+    (0, 0): "I",
+    (1, 0): "X",
+    (1, 1): "Y",
+    (0, 1): "Z",
+}
+
+>>>>>>> 1915684 (replacing bitarray with pauliebits)
 SI = np.array([[1, 0], [0, 1]])
 SX = np.array([[0, 1], [1, 0]])
 SY = np.array([[0, -1j], [1j, 0]])
@@ -34,7 +55,11 @@ class PauliString:
         elif pauli_str is not None:
             pauli_str = pauli_string_parser(pauli_str)
             temp_bits = pauliebits()
+<<<<<<< HEAD
             temp_bits.encode_ixyz(pauli_str)
+=======
+            temp_bits.encode(CODEC, pauli_str)
+>>>>>>> 1915684 (replacing bitarray with pauliebits)
             if n is not None and n > len(temp_bits) // 2:
                 # Padding with identity
                 pad_n = n - len(temp_bits) // 2
