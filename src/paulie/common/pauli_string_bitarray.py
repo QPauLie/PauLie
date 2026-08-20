@@ -9,6 +9,20 @@ from pauliebits.util import count_and, count_or, ba2int
 
 from paulie.common.pauli_string_parser import pauli_string_parser
 
+CODEC = {
+    "I": pauliebits([0, 0]),
+    "X": pauliebits([1, 0]),
+    "Y": pauliebits([1, 1]),
+    "Z": pauliebits([0, 1]),
+}
+
+DECODEC = {
+    (0, 0): "I",
+    (1, 0): "X",
+    (1, 1): "Y",
+    (0, 1): "Z",
+}
+
 SI = np.array([[1, 0], [0, 1]])
 SX = np.array([[0, 1], [1, 0]])
 SY = np.array([[0, -1j], [1j, 0]])
