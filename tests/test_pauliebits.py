@@ -1,13 +1,9 @@
 """
-Test pauliebits
-"""
-"""
 Test pauliebits methods
 """
-import pytest
 from pauliebits import pauliebits
-from paulie.common.random_pauli_strings import get_random_list
 from pauliebits.util import count_and, count_or, ba2int
+from paulie.common.random_pauli_strings import get_random_list
 
 
 CODEC = {
@@ -50,4 +46,6 @@ def test_pauliebits_new_methods() -> None:
                 count_and(bits_even ^ other_bits_even,
                 bits_odd ^ other_bits_odd)
             assert temp_bits.phase(temp_other_bits) == f
-        
+            old_commute_with = ((count_and(bits_even, other_bits_odd)
+                + count_and(bits_odd, other_bits_even)) %2 == 0)
+            assert temp_bits.commutes_with(temp_other_bits) == old_commute_with
