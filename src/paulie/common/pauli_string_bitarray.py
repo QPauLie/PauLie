@@ -5,6 +5,7 @@ from typing import Self
 import numpy as np
 from pauliebits import pauliebits
 <<<<<<< HEAD
+<<<<<<< HEAD
 from pauliebits.util import ba2int
 from paulie.common.pauli_string_parser import pauli_string_parser
 
@@ -28,6 +29,11 @@ DECODEC = {
 }
 
 >>>>>>> 1915684 (replacing bitarray with pauliebits)
+=======
+from pauliebits.util import ba2int
+from paulie.common.pauli_string_parser import pauli_string_parser
+
+>>>>>>> df1ca74 (fix pylint)
 SI = np.array([[1, 0], [0, 1]])
 SX = np.array([[0, 1], [1, 0]])
 SY = np.array([[0, -1j], [1j, 0]])
