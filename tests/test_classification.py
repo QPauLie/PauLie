@@ -11,7 +11,7 @@ from paulie import (
     two_local_algebras,
     get_pauli_string as p,
 )
-from paulie.classifier.classification import Classification
+from paulie.classifier.classification import Classification, ClassificationException
 
 # System sizes at which the low-rank-compatible a-type / mixed equivalences
 # of Theorem I.1 agree through `is_algebra`.
@@ -147,3 +147,51 @@ def test_is_algebra_isomorphism_is_symmetric(canonical: str, isomorphic: str) ->
         assert classification.is_algebra(isomorphic)
     with patch.object(classification, "get_algebra", return_value=isomorphic):
         assert classification.is_algebra(canonical)
+
+
+@pytest.mark.parametrize(
+    ("generators", "n", "algebra", "size"),
+    [
+        (["XX", "Z"], 4, "so(7)", 7),
+        (["XX", "Z"], 5, "so(9)", 9),
+        (["XX", "YY", "Z"], 4, "so(8)", 8),
+        (["XY"], 5, "so(5)", 5),
+        (["XY"], 4, "2*so(3)", 4),
+        (["XX", "YY", "ZZ"], 5, "su(16)", None),
+        (["XX", "YY"], 4, "4*so(3)", None),
+        (["XX"], 4, "3*u(1)", None),
+    ],
+)
+def test_get_orthogonal_size(generators: list[str], n: int, algebra: str,
+                             size: int | None) -> None:
+    """The so(m) presentation is found through the low-rank isomorphisms.
+
+    `2*so(3)` is so(4), so it has an orthogonal size even though it is not named
+    `so(...)`; `4*so(3)` has dimension 12, which is no so(m) dimension at all.
+    """
+    classification = p(generators, n=n).get_class()
+    assert classification.get_algebra() == algebra
+    assert classification.get_orthogonal_size() == size
+
+
+@pytest.mark.parametrize(
+    ("generators", "n", "simple"),
+    [
+        (["XX", "Z"], 4, True),
+        (["XX", "YY", "Z"], 4, True),
+        (["XX", "YY", "ZZ"], 5, True),
+        (["XY"], 4, False),
+        (["XX", "YY"], 4, False),
+        (["XY", "X"], 5, False),
+    ],
+)
+def test_is_simple(generators: list[str], n: int, simple: bool) -> None:
+    """An algebra is simple when it is a single summand of multiplicity one."""
+    classification = p(generators, n=n).get_class()
+    assert classification.is_simple() is simple
+
+    if simple:
+        assert classification.get_simple_component() == classification.get_algebra()
+    else:
+        with pytest.raises(ClassificationException):
+            classification.get_simple_component()

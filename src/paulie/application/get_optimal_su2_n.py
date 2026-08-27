@@ -12,74 +12,27 @@
     algebra fixed ([P, Q] = 2 P*Q puts P*Q in it, [P*Q, Q] ~ P puts P back);
     only the anticommutation pattern moves.
 
-    Speed comes from working on bit vectors.  With v = (x | z) over GF(2)
-    (``bits_even`` = x, ``bits_odd`` = z), P_i and P_j anticommute iff
-    x_i.z_j + x_j.z_i = 1, and P_i P_j is v_i XOR v_j.  So the graph is one
-    matrix product, a replacement is one row XOR, and every candidate move is
-    scored in closed form (``_candidate_deltas``).
+    Speed comes from working on the bit vectors of
+    :mod:`paulie.common.symplectic`.  With v = (x | z) over GF(2), P_i and P_j
+    anticommute iff x_i.z_j + x_j.z_i = 1, and P_i P_j is v_i XOR v_j.  So the
+    graph is one matrix product, a replacement is one row XOR, and every
+    candidate move is scored in closed form (``_candidate_deltas``).
 """
 
 from __future__ import annotations
 
 import math
-from collections.abc import Iterable
 from functools import lru_cache
 
 import numpy as np
-from pauliebits import pauliebits
 
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_collection import PauliStringCollection
 from paulie.common.pauli_string_factory import get_pauli_string, get_single
+from paulie.common.symplectic import from_symplectic, symplectic_gram, to_symplectic
 
 OPTIMAL_FRACTION = 0.706
 """Anticommutation fraction that maximises the generation rate."""
-
-def _to_symplectic(generators: Iterable[PauliString]) -> np.ndarray:
-    """Pack m Pauli strings on n qubits into an (m, 2n) array of 0/1, ``[X | Z]``.
-
-    ``PauliString.bits`` is interleaved per qubit as ``[x_0, z_0, x_1, z_1, ...]``,
-    so ``bits[::2]`` are the X parts and ``bits[1::2]`` the Z parts.
-    """
-    gens = list(generators)
-    if not gens:
-        return np.zeros((0, 0), dtype=np.uint8)
-    n = len(gens[0])
-    v = np.empty((len(gens), 2 * n), dtype=np.uint8)
-    for i, p in enumerate(gens):
-        bits = p.bits
-        v[i, :n] = np.frombuffer(bits[::2].unpack(), dtype=np.uint8) & 1
-        v[i, n:] = np.frombuffer(bits[1::2].unpack(), dtype=np.uint8) & 1
-    return v
-
-
-def _from_symplectic(v: np.ndarray) -> list[PauliString]:
-    """Inverse of :func:`_to_symplectic`; re-interleaves X and Z into ``bits``."""
-    n = v.shape[1] // 2
-    strings = []
-    for row in v:
-        x = pauliebits()
-        x.pack(np.ascontiguousarray(row[:n], dtype=np.uint8).tobytes())
-        z = pauliebits()
-        z.pack(np.ascontiguousarray(row[n:], dtype=np.uint8).tobytes())
-        interleaved = pauliebits(2 * n)
-        interleaved[::2] = x
-        interleaved[1::2] = z
-        p = PauliString(n=n)
-        p.bits = interleaved
-        strings.append(p)
-    return strings
-
-
-def _symplectic_gram(v: np.ndarray) -> np.ndarray:
-    """Anticommutation graph: ``a[i, j] = 1`` iff P_i and P_j anticommute."""
-    n = v.shape[1] // 2
-    x = v[:, :n].astype(np.int32)
-    z = v[:, n:].astype(np.int32)
-    a = (x @ z.T + z @ x.T) & 1
-    np.fill_diagonal(a, 0)
-    return a.astype(np.int32)
-
 
 def _contract(v: np.ndarray, a: np.ndarray, src: int, dst: int) -> int:
     """Replace P_src by P_src * P_dst in place; return the new edge count.
@@ -180,7 +133,7 @@ def _search(v: np.ndarray, target: int, seed: int | None = 0) -> np.ndarray:
     """
     rng = np.random.default_rng(seed)
     v = v.copy()
-    a = _symplectic_gram(v)
+    a = symplectic_gram(v)
     m = a.shape[0]
     iu = np.triu_indices(m, k=1)
     max_sweeps = max(1000, 40 * m)
@@ -207,7 +160,7 @@ def _search(v: np.ndarray, target: int, seed: int | None = 0) -> np.ndarray:
 def _cached(n: int, fraction: float, seed: int | None) -> np.ndarray:
     """Build the set for ``n`` once (seed -> search); returned read-only."""
     base = _minimal_universal_seed(n)
-    v = _to_symplectic(base)
+    v = to_symplectic(base)
     if len(base) >= 3:  # a single anticommuting pair is already rigid
         v = _search(v, get_optimal_edges_su_2_n(len(base), fraction), seed)
     v.flags.writeable = False
@@ -257,4 +210,4 @@ def get_optimal_universal_generators(
         raise ValueError(f"Number of qubits must be >= 1; got n={n}")
     if not 0.0 <= fraction <= 1.0:
         raise ValueError(f"fraction must be between 0 and 1; got {fraction}")
-    return PauliStringCollection(_from_symplectic(_cached(n, fraction, seed)))
+    return PauliStringCollection(from_symplectic(_cached(n, fraction, seed)))

@@ -13,6 +13,7 @@ import networkx as nx
 from paulie.common.pauli_string_bitarray import PauliString
 from paulie.common.pauli_string_linear import PauliStringLinear
 from paulie.common.get_graph import get_graph
+from paulie.common.symplectic import from_symplectic, null_space, span, to_symplectic
 from paulie.classifier.classification import Classification
 from paulie.classifier.tracked_canonicalizer import TrackedCanonicalizer
 from paulie.classifier.canonicalizer import Canonicalizer
@@ -373,10 +374,44 @@ class PauliStringCollection:
                 anti_commute_count += 1
         return anti_commute_count
 
+    def get_commutant_basis(self) -> list[PauliString]:
+        r"""
+        Get an independent generating set of the commutant.
+
+        A Pauli string :math:`P` commutes with a generator :math:`G` exactly when the
+        symplectic form of their :math:`[X|Z]` vectors vanishes over GF(2), so the
+        commutant is the null space of the generators' symplectic form. Its basis has
+        :math:`2n - \text{rank}` elements and is found by Gaussian elimination, in
+        :math:`O(n^{2}m)` time.
+
+        The commutant itself is a group of :math:`2^{2n-\text{rank}}` elements, so it is
+        exponentially larger than this basis. Prefer the basis wherever a generating set
+        suffices, such as when identifying :math:`\mathbb{Z}_{2}` symmetries.
+
+        Returns:
+            list[PauliString]: Independent Pauli strings generating the commutant. The
+            identity, which is in every commutant, is not included.
+        """
+        num_qubits = self.get_size()
+        generators = to_symplectic(self.generators) if self.generators else None
+        if generators is None or generators.size == 0:
+            # Nothing to commute with, so every Pauli string qualifies.
+            constraints = np.zeros((0, 2 * num_qubits), dtype=np.uint8)
+        else:
+            # <v, g> = x_v . z_g + z_v . x_g, i.e. g with its halves swapped.
+            constraints = np.hstack([generators[:, num_qubits:], generators[:, :num_qubits]])
+
+        basis = null_space(constraints, width=2 * num_qubits)
+        return from_symplectic(basis)
+
     def get_commutants(self) -> PauliStringCollection:
         """
         Get the set of Pauli strings that commute with all generators in the collection.
         This finds the linear symmetries :math:`L_{j}` of the system.
+
+        The commutant is the span of :meth:`get_commutant_basis`, so it has
+        :math:`2^{2n-\\text{rank}}` elements and this method costs time proportional to
+        its own output rather than to the :math:`4^{n}` Pauli strings on ``n`` qubits.
 
         Returns:
             PauliStringCollection:
@@ -387,20 +422,11 @@ class PauliStringCollection:
             # However, a group with no generators is trivial, so we can return empty.
             return PauliStringCollection([])
 
-        num_qubits = self.get_size()
-
-        # Start with a list of all possible Pauli strings.
-        # Note: gen_all_pauli_strings is a method on the PauliString object.
-        identity = self.create_instance(n=num_qubits)
-        candidate_symmetries = list(identity.gen_all_pauli_strings())
-
-        # For each generator in our system, filter the candidate list.
-        for g in self.generators:
-            # Keep only the candidates that commute with the current generator g.
-            candidate_symmetries = [p for p in candidate_symmetries if g.commutes_with(p)]
-
-        # Return the final filtered list as a new collection.
-        return PauliStringCollection(candidate_symmetries)
+        basis = to_symplectic(self.get_commutant_basis())
+        if basis.size == 0:
+            # Only the identity commutes with everything.
+            return PauliStringCollection([self.create_instance(n=self.get_size())])
+        return PauliStringCollection(from_symplectic(span(basis)))
 
     def get_anti_commutants(self, generators: PauliStringCollection) -> PauliStringCollection:
         """
@@ -784,7 +810,9 @@ class PauliStringCollection:
             ValueError: If graph_type is not "anticommutator" or "commutator".
         """
         if graph_type == "anticommutator":
-            nodes, edges, _edge_labels = self.get_graph(self)  # The anti-commutation graph
+            # Passing a set to get_graph keeps only those edges whose commutator lies in
+            # that set. Here every anticommuting pair is an edge, so no set is passed.
+            nodes, edges, _edge_labels = self.get_graph()  # The anti-commutation graph
         elif graph_type == "commutator":
             nodes, edges = self.get_commutator_graph()  # The commutator graph
         else:
