@@ -1,5 +1,5 @@
 """
-Representation of a Pauli string as a bitarray.
+Representation of a linear combination of Pauli strings.
 """
 from __future__ import annotations
 

@@ -326,8 +326,8 @@ class PauliStringCollection:
 
     def sort(self) -> Self:
         """
-        Sort the Pauli strings in the collection according to their bit value given by the bitarray
-        representation.
+        Sort the Pauli strings in the collection according to their bit value given by the
+        bit vector representation.
 
         Returns:
             Self
