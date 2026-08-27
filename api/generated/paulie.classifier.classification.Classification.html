@@ -42,6 +42,7 @@
     <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/paulie.classifier.classification.Classification';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -632,6 +633,42 @@ basis matrices for all identified subalgebras.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.classification.Classification.get_orthogonal_size">
+<span class="sig-name descname"><span class="pre">get_orthogonal_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Classification.get_orthogonal_size" title="Link to this definition">#</a></dt>
+<dd><p>Get the <span class="math notranslate nohighlight">\(m\)</span> for which this algebra is (isomorphic to) <span class="math notranslate nohighlight">\(so(m)\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(so(m)\)</span> has dimension <span class="math notranslate nohighlight">\(m(m-1)/2\)</span>, so <span class="math notranslate nohighlight">\(m\)</span> is fixed by the
+dimension; the verdict is then <a class="reference internal" href="#paulie.classifier.classification.Classification.is_algebra" title="paulie.classifier.classification.Classification.is_algebra"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_algebra()</span></code></a>, which canonicalises both sides
+through the low-rank isomorphisms. An algebra reported as <code class="docutils literal notranslate"><span class="pre">2*so(3)</span></code> is therefore
+recognised as <code class="docutils literal notranslate"><span class="pre">so(4)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The size <span class="math notranslate nohighlight">\(m\)</span>, or None if the algebra has no <span class="math notranslate nohighlight">\(so(m)\)</span>
+presentation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.classification.Classification.get_simple_component">
+<span class="sig-name descname"><span class="pre">get_simple_component</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Classification.get_simple_component" title="Link to this definition">#</a></dt>
+<dd><p>Get the unique simple summand of the algebra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The summand, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;so(8)&quot;</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="paulie.classifier.classification.ClassificationException.html#paulie.classifier.classification.ClassificationException" title="paulie.classifier.classification.ClassificationException"><strong>ClassificationException</strong></a> – If the algebra is not simple.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="paulie.classifier.classification.Classification.get_subalgebras">
 <span class="sig-name descname"><span class="pre">get_subalgebras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algebra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Classification.get_subalgebras" title="Link to this definition">#</a></dt>
 <dd><p>Get the subalgebras of an algebra.</p>
@@ -676,6 +713,20 @@ subalgebras of this algebra are returned.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paulie.classifier.classification.Classification.is_simple">
+<span class="sig-name descname"><span class="pre">is_simple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paulie.classifier.classification.Classification.is_simple" title="Link to this definition">#</a></dt>
+<dd><p>Check whether the algebra is a single simple factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the algebra has one summand with multiplicity one.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -743,9 +794,12 @@ subalgebras of this algebra are returned.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_isomorphism"><code class="docutils literal notranslate"><span class="pre">Classification.get_isomorphism()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_isomorphisms"><code class="docutils literal notranslate"><span class="pre">Classification.get_isomorphisms()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_morphs"><code class="docutils literal notranslate"><span class="pre">Classification.get_morphs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_orthogonal_size"><code class="docutils literal notranslate"><span class="pre">Classification.get_orthogonal_size()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_simple_component"><code class="docutils literal notranslate"><span class="pre">Classification.get_simple_component()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_subalgebras"><code class="docutils literal notranslate"><span class="pre">Classification.get_subalgebras()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.get_vertices"><code class="docutils literal notranslate"><span class="pre">Classification.get_vertices()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.is_algebra"><code class="docutils literal notranslate"><span class="pre">Classification.is_algebra()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paulie.classifier.classification.Classification.is_simple"><code class="docutils literal notranslate"><span class="pre">Classification.is_simple()</span></code></a></li>
 </ul>
 </li>
 </ul>
