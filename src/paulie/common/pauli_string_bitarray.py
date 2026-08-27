@@ -1,4 +1,4 @@
-"""Representation of a Pauli string as a bitarray."""
+"""Representation of a Pauli string as a bit vector."""
 from __future__ import annotations
 from collections.abc import Generator
 from typing import Self
@@ -411,9 +411,6 @@ class PauliString:
         if len(self) != len(other):
             raise ValueError("Pauli arrays must be of equal length")
         return self.bits.commutes_with(other.bits)
-        #px, pz = self.bits[::2], self.bits[1::2]
-        #qx, qz = other.bits[::2], other.bits[1::2]
-        #return (count_and(px, qz) + count_and(pz, qx)) % 2 == 0
 
     def get_substring(self, start: int, length: int = 1) -> PauliString:
         """
@@ -441,8 +438,6 @@ class PauliString:
 
         for i in range(0, 2*len(pauli_string)):
             self._bits[start * 2  + i] = pauli_string.bits[i]
-        # Invalidate cached bits
-        #self._bits = None
 
     def is_identity(self) -> bool:
         """
