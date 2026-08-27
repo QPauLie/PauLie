@@ -19,7 +19,7 @@
 from collections.abc import Iterable
 
 import numpy as np
-from bitarray import bitarray
+from pauliebits import pauliebits
 
 from paulie.common.pauli_string_bitarray import PauliString
 
@@ -60,11 +60,11 @@ def from_symplectic(v: np.ndarray) -> list[PauliString]:
     n = v.shape[1] // 2
     strings = []
     for row in v:
-        x = bitarray()
+        x = pauliebits()
         x.pack(np.ascontiguousarray(row[:n], dtype=np.uint8).tobytes())
-        z = bitarray()
+        z = pauliebits()
         z.pack(np.ascontiguousarray(row[n:], dtype=np.uint8).tobytes())
-        interleaved = bitarray(2 * n)
+        interleaved = pauliebits(2 * n)
         interleaved[::2] = x
         interleaved[1::2] = z
         p = PauliString(n=n)

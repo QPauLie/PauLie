@@ -46,11 +46,6 @@ wheels = [
 ]
 
 [[package]]
-name = "bitarray"
-version = "0.0.1"
-source = { git = "https://github.com/QPauLie/bitarray.git#1c89af7ebcaca2a3242a237d6a6ec063a62f192b" }
-
-[[package]]
 name = "certifi"
 version = "2026.1.4"
 source = { registry = "https://pypi.org/simple" }
@@ -703,12 +698,12 @@ name = "paulie"
 version = "0.0.2"
 source = { editable = "." }
 dependencies = [
-    { name = "bitarray" },
     { name = "intersphinx-registry" },
     { name = "matplotlib" },
     { name = "memory-profiler" },
     { name = "networkx" },
     { name = "numpy" },
+    { name = "pauliebits" },
     { name = "pillow" },
     { name = "scipy" },
     { name = "six" },
@@ -728,15 +723,20 @@ dev = [
     { name = "types-six" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
 [package.metadata]
 requires-dist = [
-    { name = "bitarray", git = "https://github.com/QPauLie/bitarray.git" },
     { name = "intersphinx-registry", specifier = ">=0.2602.2" },
     { name = "matplotlib", specifier = ">=3.10.0" },
     { name = "memory-profiler", specifier = ">=0.61.0" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.19.0" },
     { name = "networkx", specifier = ">=3.3" },
     { name = "numpy", specifier = ">=2.2.2" },
+    { name = "pauliebits", git = "https://github.com/QPauLie/pauliebits.git?branch=master" },
     { name = "pillow", specifier = ">=10.0.0" },
     { name = "pydata-sphinx-theme", marker = "extra == 'dev'", specifier = ">=0.16.1" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.5" },
@@ -751,6 +751,14 @@ requires-dist = [
     { name = "types-six", marker = "extra == 'dev'", specifier = ">=1.17.0.20251009" },
 ]
 provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=9.0.2" }]
+
+[[package]]
+name = "pauliebits"
+version = "0.0.1"
+source = { git = "https://github.com/QPauLie/pauliebits.git?branch=master#e2f0a1b411ec8aace01a0205129f0f9284fd4235" }
 
 [[package]]
 name = "pillow"

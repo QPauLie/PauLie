@@ -3,7 +3,7 @@ Test common
 """
 import itertools
 import pytest
-from bitarray import bitarray
+from pauliebits import pauliebits
 from paulie import (
     PauliString,
     PauliStringCollection,
@@ -15,7 +15,7 @@ test_cases = [
     ({"pauli_str": ""}, "", "PauliString()"),
     ({"n": 4}, "IIII", "PauliString(IIII)"),
     ({"pauli_str": "IXYZ"}, "IXYZ", "PauliString(IXYZ)"),
-    ({"bits": bitarray("00101101")}, "IXYZ", "PauliString(IXYZ)"),
+    ({"bits": pauliebits("00101101")}, "IXYZ", "PauliString(IXYZ)"),
     ({"n": 5, "pauli_str": "IXYZ"}, "IXYZI", "PauliString(IXYZI)"),
 ]
 

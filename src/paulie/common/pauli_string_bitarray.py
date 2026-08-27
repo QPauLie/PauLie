@@ -1,27 +1,12 @@
 """Representation of a Pauli string as a bitarray."""
 from __future__ import annotations
-
 from collections.abc import Generator
 from typing import Self
 import numpy as np
-from bitarray import bitarray
-from bitarray.util import count_and, count_or, ba2int
-
+from pauliebits import pauliebits
+from pauliebits.util import ba2int
 from paulie.common.pauli_string_parser import pauli_string_parser
 
-CODEC = {
-    "I": bitarray([0, 0]),
-    "X": bitarray([1, 0]),
-    "Y": bitarray([1, 1]),
-    "Z": bitarray([0, 1]),
-}
-
-DECODEC = {
-    (0, 0): "I",
-    (1, 0): "X",
-    (1, 1): "Y",
-    (0, 1): "Z",
-}
 
 SI = np.array([[1, 0], [0, 1]])
 SX = np.array([[0, 1], [1, 0]])
@@ -30,41 +15,41 @@ SZ = np.array([[1, 0], [0, -1]])
 
 
 class PauliString:
-    """Representation of a Pauli string as a bitarray."""
+    """Representation of a Pauli string as a pauliebits."""
 
     def __init__(self, n: int | None = None, pauli_str: str | None = None,
-                 bits: bitarray | None = None) -> None:
+                 bits: pauliebits | None = None) -> None:
         """Initialize a Pauli string.
 
         Args:
             n (int, optional): Length of the Pauli string.
             pauli_str (str, optional): String representation of a Pauli string.
-            bits (bitarray, optional): Bits representation of a Pauli string.
+            bits (pauliebits, optional): Bits representation of a Pauli string.
         """
         self.nextpos = 0
         self._bits = None
         if bits is not None:
             self._bits = bits.copy()
         elif n is not None and pauli_str is None:
-            self._bits = bitarray(2*n)
+            self._bits = pauliebits(2*n)
         elif pauli_str is not None:
             pauli_str = pauli_string_parser(pauli_str)
-            temp_bits = bitarray()
-            temp_bits.encode(CODEC, pauli_str)
+            temp_bits = pauliebits()
+            temp_bits.encode_ixyz(pauli_str)
             if n is not None and n > len(temp_bits) // 2:
                 # Padding with identity
                 pad_n = n - len(temp_bits) // 2
-                temp_bits.extend(bitarray([0, 0] * pad_n))
+                temp_bits.extend(pauliebits([0, 0] * pad_n))
             self._bits = temp_bits
         else:
-            self._bits = bitarray(2*n)
+            self._bits = pauliebits(2*n)
 
     @property
-    def bits(self) -> bitarray:
+    def bits(self) -> pauliebits:
         """
         Return the interleaved bit representation.
 
-        The bitarray is constructed by interleaving ``bits_even`` and
+        The pauliebits is constructed by interleaving ``bits_even`` and
         ``bits_odd`` such that even indices correspond to ``bits_even``
         and odd indices correspond to ``bits_odd``. The result is cached
         after the first construction.
@@ -72,11 +57,11 @@ class PauliString:
         return self._bits
 
     @bits.setter
-    def bits(self, value: bitarray) -> None:
+    def bits(self, value: pauliebits) -> None:
         """
         Set the interleaved bit representation.
 
-        Updates the cached bitarray and reconstructs ``bits_even`` and
+        Updates the cached pauliebits and reconstructs ``bits_even`` and
         ``bits_odd`` by splitting the input into even and odd indices.
         """
         self._bits = value
@@ -97,12 +82,7 @@ class PauliString:
         Returns:
             int: Index in diagonal matrix decomposition vector.
         """
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-
-        if ba2int(self_bits_even) == 0:
-            return ba2int(self_bits_odd)
-        return -1
+        return self._bits.diagonal_index()
 
     def get_weight_in_matrix(self, b_matrix: np.ndarray) -> np.complex128:
         """
@@ -153,10 +133,7 @@ class PauliString:
         Returns:
             str: String representation.
         """
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-
-        return "".join(DECODEC[(self_bits_even[i], self_bits_odd[i])] for i in range(len(self)))
+        return self._bits.decode_ixyz()
 
     def _ensure_pauli_string(self, other: object) -> PauliString:
         """
@@ -402,19 +379,7 @@ class PauliString:
 
         # This is the full, correct formula for the exponent f in phase = i^f.
         # It is based on the bit-array representations of the two Pauli strings.
-        # self.bits_even corresponds to the X part, self.bits_odd to the Z part.
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-        other_bits_even = other.bits[::2]
-        other_bits_odd = other.bits[1::2]
-
-
-        f = 2 * count_and(self_bits_even, other_bits_odd) + \
-            count_and(self_bits_odd, self_bits_even) + \
-            count_and(other_bits_odd, other_bits_even) - \
-            count_and(self_bits_even ^ other_bits_even,
-                      self_bits_odd ^ other_bits_odd)
-
+        f = self._bits.phase(other.bits)
         # The final phase is (-1j)^f mod 4.
         return (-1j) ** (f % 4)
 
@@ -425,10 +390,7 @@ class PauliString:
         Returns:
             tuple[complex, Self]: Complex conjugate of the Pauli string.
         """
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-
-        ys = count_and(self_bits_odd, self_bits_even)
+        ys = self._bits.complex_conjugate()
         return ((-1)**(ys), self)
 
     def commutes_with(self, other:object) -> bool:
@@ -448,9 +410,10 @@ class PauliString:
 
         if len(self) != len(other):
             raise ValueError("Pauli arrays must be of equal length")
-        px, pz = self.bits[::2], self.bits[1::2]
-        qx, qz = other.bits[::2], other.bits[1::2]
-        return (count_and(px, qz) + count_and(pz, qx)) % 2 == 0
+        return self.bits.commutes_with(other.bits)
+        #px, pz = self.bits[::2], self.bits[1::2]
+        #qx, qz = other.bits[::2], other.bits[1::2]
+        #return (count_and(px, qz) + count_and(pz, qx)) % 2 == 0
 
     def get_substring(self, start: int, length: int = 1) -> PauliString:
         """
@@ -584,7 +547,7 @@ class PauliString:
         n = len(self)
         pauli_string = PauliString(n=n)
 
-        last = PauliString(bits = bitarray([1] * (2 * n)))
+        last = PauliString(bits = pauliebits([1] * (2 * n)))
 
         while pauli_string !=last:
             yield pauli_string.copy()
@@ -691,10 +654,7 @@ class PauliString:
         Returns:
             int: Count of non-identity operators.
         """
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-
-        return count_or(self_bits_even, self_bits_odd)
+        return self._bits.count_non_trivially()
 
     def get_support(self) -> list[int]:
         """
@@ -703,7 +663,5 @@ class PauliString:
         Returns:
             list[int]: List of indices where the Pauli operator is not the identity.
         """
-        self_bits_even = self._bits[::2]
-        self_bits_odd = self._bits[1::2]
-        support_bits = self_bits_even | self_bits_odd
+        support_bits = self._bits.not_identity_mask()
         return [i for i, bit in enumerate(support_bits) if bit]
