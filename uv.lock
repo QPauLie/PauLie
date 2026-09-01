@@ -695,7 +695,7 @@ wheels = [
 
 [[package]]
 name = "paulie"
-version = "0.2.2"
+version = "0.2.3"
 source = { editable = "." }
 dependencies = [
     { name = "intersphinx-registry" },
@@ -736,7 +736,7 @@ requires-dist = [
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.19.0" },
     { name = "networkx", specifier = ">=3.3" },
     { name = "numpy", specifier = ">=2.2.2" },
-    { name = "pauliebits", specifier = ">=0.0.1" },
+    { name = "pauliebits", specifier = ">=0.1.1" },
     { name = "pillow", specifier = ">=10.0.0" },
     { name = "pydata-sphinx-theme", marker = "extra == 'dev'", specifier = ">=0.16.1" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.5" },
@@ -757,20 +757,20 @@ dev = [{ name = "pytest", specifier = ">=9.0.2" }]
 
 [[package]]
 name = "pauliebits"
-version = "0.0.1"
+version = "0.1.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/19/83/ab268b3d35cb8d3e177621a569ba88d8f463c764de2149134bae1dd1222d/pauliebits-0.0.1.tar.gz", hash = "sha256:cc6688cd60129de81fb30393d14cf771d63ec9de33c6c07b6a1f4a108cb0e4a9", size = 168921, upload-time = "2026-09-01T10:00:01.353Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/24/fd/bd860999e13450a7f0d33024d5b0b26ef3107d2c6e73895270295a9913a3/pauliebits-0.1.1.tar.gz", hash = "sha256:574582ed9a3f36e20b133492643b35ec25e529e3ee7aa573624834e0d1cb1058", size = 168931, upload-time = "2026-09-01T10:44:50.308Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/61/a9/536b17374975a2fc13e36ad07fd4bad3b363320d9ef9861c7f57b231aa3c/pauliebits-0.0.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:7dbbea4bf66b3bbe22d84d7b407728312ad07e69dd662a79f918578fdc97c05b", size = 216888, upload-time = "2026-09-01T09:59:37.068Z" },
-    { url = "https://files.pythonhosted.org/packages/c6/14/54dcf5814c007e3a81ee3e6f994c21ba3ec5878a61a2f1f5d76e88bb66e8/pauliebits-0.0.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:230a564ebc6251f09d76d902317b5a40eb9f5b1d24f1453172c626e55cce5f9b", size = 215714, upload-time = "2026-09-01T09:59:38.54Z" },
-    { url = "https://files.pythonhosted.org/packages/a0/a4/ae39543d27fb594c1ffbb4debd3a7f0b311f81c1758925676d8bfa11342e/pauliebits-0.0.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:0d3977ea3f3b4426f292af5b9a384bb3e2a72d2f812593380f6d6b41b0344a12", size = 430713, upload-time = "2026-09-01T09:59:39.994Z" },
-    { url = "https://files.pythonhosted.org/packages/ff/da/071c157b29a5c43336349f21aeff29c04bd8fb63beab16bca1beccd5734e/pauliebits-0.0.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:082e3823a648b41055965ca0fdf16431f62eea1465beb833d64cf0a15d45e16b", size = 434873, upload-time = "2026-09-01T09:59:41.888Z" },
-    { url = "https://files.pythonhosted.org/packages/4c/2b/b620fdfbf7b3ee4ed2ee754850f28bc6923b832ca0c6f99ee9c139540724/pauliebits-0.0.1-cp312-cp312-win_amd64.whl", hash = "sha256:aff56cea9e56fa097a5f0bbf804ecac0eefd78f394ef796929aee8c48d0d3948", size = 216257, upload-time = "2026-09-01T09:59:43.543Z" },
-    { url = "https://files.pythonhosted.org/packages/d5/6b/a9808f4e4392eb164146942b902ebc7437ad1ca35715c6066b8bf9982632/pauliebits-0.0.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:a35d50726c76b8967ed7064d6f2315a7aefa92a223e79e2de786e798afc42020", size = 216654, upload-time = "2026-09-01T09:59:45.099Z" },
-    { url = "https://files.pythonhosted.org/packages/9f/6a/aca3ea86048423ef7ed882c356eed764a2c4a4140c365b95a5c57dbc5db7/pauliebits-0.0.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:cff708022553d39dc3d34327421e9d74eb820771ff3271c06d296958a5d1cee1", size = 215441, upload-time = "2026-09-01T09:59:46.558Z" },
-    { url = "https://files.pythonhosted.org/packages/96/d0/02c0c0bad981db0c9782e4aea2a934eddf601f06706987d70d98cd862d42/pauliebits-0.0.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:637110a59bcbb5d25e7d7c5a6b699dc5919e20d8d6b20d4fc56a8855be5c2010", size = 428725, upload-time = "2026-09-01T09:59:48.381Z" },
-    { url = "https://files.pythonhosted.org/packages/46/3e/1882b276347a366f940fb098a8d0f08d532e59f41686e8b9bce12afcce20/pauliebits-0.0.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:dcfeed3b9ad156a93cf92a1c0691b1fdce490b2e24709f50284ecd02d881907b", size = 433154, upload-time = "2026-09-01T09:59:50.188Z" },
-    { url = "https://files.pythonhosted.org/packages/89/79/59f33eceb34c2061a65896b5f41dbe94a881fa9e9b3023d1fb56c66e294e/pauliebits-0.0.1-cp313-cp313-win_amd64.whl", hash = "sha256:b7d871d6baec93a9e338e6978f8970beecfbfc608d72bf4a2c0240dea50b973c", size = 216080, upload-time = "2026-09-01T09:59:51.841Z" },
+    { url = "https://files.pythonhosted.org/packages/16/c5/354d4847824523e9f29352520bc86a7629004b37cc667370088bcd29f764/pauliebits-0.1.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:5fdda44a665f2e2b60ad06681069be2db6c011b7a471e8097a522fa6dffd095a", size = 216896, upload-time = "2026-09-01T10:44:26.736Z" },
+    { url = "https://files.pythonhosted.org/packages/ba/65/90e2d6e717b52d3196e5b5e9c1860d8b1421b0013568642e66dfc8f56ae2/pauliebits-0.1.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:4cbaf8fc47e54a68ec9a825d66bcc76e4c5f12534f2cffdda34e6017fe516513", size = 215711, upload-time = "2026-09-01T10:44:28.183Z" },
+    { url = "https://files.pythonhosted.org/packages/0e/a6/3fbe5733ce9c4eecf4dfd1c314349e43519852502d1940bb38e50cc12e3c/pauliebits-0.1.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:d6d8950f4c8f144603437b752ce67c9413b4732d81c94799ec32fe89ebbd0270", size = 430714, upload-time = "2026-09-01T10:44:29.912Z" },
+    { url = "https://files.pythonhosted.org/packages/e2/d8/c3b3c490287da22ae568c1d076c2b62710d2017c3ee4084bead58488f1f9/pauliebits-0.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:6aababd0b5dadca0e873c5573e54ee9897a680bfc3125f3c196031f4363a212c", size = 434873, upload-time = "2026-09-01T10:44:31.403Z" },
+    { url = "https://files.pythonhosted.org/packages/9d/07/d379c7910d441260f8952036ed447fef2725d6a488f938f09899b6de5840/pauliebits-0.1.1-cp312-cp312-win_amd64.whl", hash = "sha256:fb835a28e8ceb12799597ab8d0bc85d5888a9e48aa9a3c99adba56bc5bc50cf6", size = 216260, upload-time = "2026-09-01T10:44:32.981Z" },
+    { url = "https://files.pythonhosted.org/packages/e5/d4/519d87e8aa9fb2495efef20aba03ab380b834070d26ad7a83af7fcebd034/pauliebits-0.1.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:aeae8e167e12e411a647745b204f8ae9bada1e913a9d8f69540e311b3c62ee17", size = 216653, upload-time = "2026-09-01T10:44:34.672Z" },
+    { url = "https://files.pythonhosted.org/packages/4b/84/3575a8dd72f1969844ecba0da4a494140cb9b40a4881c6bb5fc86afd70a7/pauliebits-0.1.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:f935800ef196d1a00905c8ac680d1190a920ef0545b512061ed09460c3ee9946", size = 215442, upload-time = "2026-09-01T10:44:36.232Z" },
+    { url = "https://files.pythonhosted.org/packages/be/a0/9732d1e7876de642f9f90979bb98344cdb517fb690da251f6080f1c8a400/pauliebits-0.1.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:b667f1add247cd83bc76a235c7f98dce8a1b80a9e9a94cc6b491429a2ee9e9d0", size = 428730, upload-time = "2026-09-01T10:44:37.689Z" },
+    { url = "https://files.pythonhosted.org/packages/db/17/0ac314104aeff3b9d435001d815e102fe6a0eb02ad98cde596102b0b08e6/pauliebits-0.1.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:e0d74855e5f6b5d1accffc309419dda63310258c8d7b1e7c9ba18c8e023a124c", size = 433158, upload-time = "2026-09-01T10:44:39.112Z" },
+    { url = "https://files.pythonhosted.org/packages/1e/5b/820b7bf4f503534a36550d3908ec607e68d77bb66bbc03d8b69efea380f7/pauliebits-0.1.1-cp313-cp313-win_amd64.whl", hash = "sha256:c65be38a2d72aac8908ce6cafbdb98e46c8f6f8aadad83ee94fadea66e624d25", size = 216082, upload-time = "2026-09-01T10:44:40.681Z" },
 ]
 
 [[package]]

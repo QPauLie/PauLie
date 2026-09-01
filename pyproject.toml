@@ -1,6 +1,6 @@
 [project]
 name = "paulie"
-version = "0.2.2"
+version = "0.2.3"
 description = "Classification of Pauli Lie algebras"
 authors = [
     {name = "Oxana Shaya"},
@@ -31,7 +31,7 @@ dependencies = [
     "tqdm>=4.67.1",
     "scipy>=1.17.0",
     "intersphinx-registry>=0.2602.2",
-    "pauliebits>=0.0.1",
+    "pauliebits>=0.1.1",
 ]
 
 [project.optional-dependencies]
