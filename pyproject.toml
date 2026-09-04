@@ -38,6 +38,7 @@ dependencies = [
 dev = [
     "ruff>=0.9.5",
     "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
     "sphinx>=9.1.0",
     "sphinxcontrib-bibtex>=2.6.1",
     "mypy>=1.19.0",
@@ -122,3 +123,23 @@ disallow_incomplete_defs = true
 module = ["paulie.classifier.classification"]
 check_untyped_defs = true
 disallow_incomplete_defs = true
+
+[tool.coverage.run]
+source = ["paulie"]
+branch = true
+omit = [
+    "*/animation.py",
+    "*/drawing.py",
+    "*/plot.py",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
