@@ -24,12 +24,6 @@ commutators,
     \mathfrak{g}_\mathrm{free} = \langle\, i\,\mathcal{G}_\mathrm{free} \,\rangle_\mathrm{Lie}
     \subseteq \mathfrak{su}(2^n).
 
-Building :math:`\mathfrak{g}_\mathrm{free}` by brute-force Lie closure costs time and memory that
-are exponential in :math:`n`. :code:`paulie` avoids this by contracting the anticommutation graph of
-the generators (which preserves the Lie algebra) into a canonical form. The algebra and its
-dimension are then determined from that form. It does not require generating the exponentially
-large set of elements.
-
 The six connected graph families and their Lie algebras
 -------------------------------------------------------
 
