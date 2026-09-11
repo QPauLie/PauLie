@@ -2,10 +2,9 @@ Multi-angle MaxCut QAOA
 =======================
 
 This tutorial illustrates how to use :code:`paulie` to classify the dynamical Lie algebra (DLA)
-of the *multi-angle* MaxCut Quantum Approximate Optimization Algorithm (QAOA) ansatz, and how the
-resulting classification reproduces the six-family result of :cite:t:`Kazi_2025`. The accompanying
-example (:code:`docs/examples/kazi_reproduction.py`) runs the full check across graph families and
-regenerates the scaling figure reported in :cite:t:`Shaya_2025`.
+of the *multi-angle* MaxCut Quantum Approximate Optimization Algorithm (QAOA) ansatz, reproducing the
+six-family result of :cite:t:`Kazi_2025` and the classification shown in Figure 8 of
+:cite:t:`Shaya_2025`.
 
 The ansatz and its Lie algebra
 ------------------------------
@@ -31,44 +30,21 @@ the generators (which preserves the Lie algebra) into a canonical form. The alge
 dimension are then determined from that form. It does not require generating the exponentially
 large set of elements.
 
-Example: classifying the DLA of a graph
----------------------------------------
-
-Take the path graph :math:`P_3` on vertices :math:`0\text{--}1\text{--}2`. Its generators are
-:math:`X_0, X_1, X_2` and :math:`Z_0 Z_1, Z_1 Z_2`:
-
-.. code-block:: python
-
-    from paulie import get_pauli_string as p
-
-    generators = p([
-        "XII", "IXI", "IIX",   # X_v on each vertex
-        "ZZI", "IZZ",          # Z_u Z_v on each edge
-    ])
-    print(f"algebra   = {generators.get_algebra()}")
-    print(f"dimension = {generators.get_dla_dim()}")
-
-outputs
-
-.. code-block:: bash
-
-    algebra   = so(6)
-    dimension = 15
-
-This matches the closed form for path graphs, :math:`\mathfrak{g}_\mathrm{free} \cong
-\mathfrak{so}(2n)` of dimension :math:`2n^2 - n = 15` at :math:`n = 3`.
-
-.. seealso::
-   For the algorithm behind :code:`get_algebra`, see :doc:`classification`.
-
 The six connected graph families and their Lie algebras
 -------------------------------------------------------
 
-:cite:t:`Kazi_2025` prove that, for *any* connected graph, the multi-angle DLA falls into exactly
-one of six families, fixed by simple combinatorial properties of the graph. A graph is called
-*archetypal* when it is connected but neither bipartite nor a cycle graph; the even--even,
-odd--odd and even--odd labels refer to the parities of the two parts of a connected bipartite
-graph's bipartition.
+The six families are distinguished by standard properties of the graph. A graph is *bipartite* if its
+vertices split into two sets, its two *parts*, so that every edge joins one part to the other
+(equivalently, it contains no odd-length cycle). Among the graphs used below, a *path* :math:`P_n`
+joins :math:`n` vertices in a line, a *cycle* :math:`C_n` joins them in a closed loop, the *complete
+bipartite* graph :math:`K_{a,b}` joins every vertex of one part of size :math:`a` to every vertex of
+the other of size :math:`b`, and the *complete* graph :math:`K_n` joins every pair of its :math:`n`
+vertices.
+
+:cite:t:`Kazi_2025` prove that, for *any* connected graph, the multi-angle DLA falls into exactly one
+of six families, determined by these properties. A graph is called *archetypal* when it is connected
+but neither bipartite nor a cycle graph; the even--even, odd--odd and even--odd labels refer to the
+parities of the sizes of the two parts of a connected bipartite graph.
 
 .. table:: The six multi-angle (free) DLA families (:cite:t:`Kazi_2025`, Table II). The path and cycle rows grow polynomially in :math:`n`; the remaining four grow exponentially.
 
@@ -104,19 +80,52 @@ so those circuits are extremely prone to barren plateaus even at a single layer,
 polynomially small path and cycle families may instead be classically simulable. Classifying the DLA
 therefore diagnoses in advance whether the variational circuit is trainable.
 
-Running the reproduction
-------------------------
+Reproducing the classification
+------------------------------
 
-The reproduction is provided as the example script :code:`docs/examples/kazi_reproduction.py`. Run it
-with :code:`paulie` installed (Python 3.12 or newer):
+The six-family result can be reproduced with :code:`paulie` alone, by giving it the generators of a
+small representative of each family as Pauli strings:
+
+.. code-block:: python
+
+    from paulie import get_pauli_string as p
+
+    families = {
+        "path P3":        ["XII", "IXI", "IIX", "ZZI", "IZZ"],
+        "cycle C4":       ["XIII", "IXII", "IIXI", "IIIX", "ZZII", "IZZI", "IIZZ", "ZIIZ"],
+        "even-odd K1,4":  ["XIIII", "IXIII", "IIXII", "IIIXI", "IIIIX",
+                           "ZZIII", "ZIZII", "ZIIZI", "ZIIIZ"],
+        "odd-odd K1,3":   ["XIII", "IXII", "IIXI", "IIIX", "ZZII", "ZIZI", "ZIIZ"],
+        "archetypal K4":  ["XIII", "IXII", "IIXI", "IIIX",
+                           "ZZII", "ZIZI", "ZIIZ", "IZZI", "IZIZ", "IIZZ"],
+        "even-even K2,4": ["XIIIII", "IXIIII", "IIXIII", "IIIXII", "IIIIXI", "IIIIIX",
+                           "ZIZIII", "ZIIZII", "ZIIIZI", "ZIIIIZ", "IZZIII", "IZIZII", "IZIIZI", "IZIIIZ"],
+    }
+    for name, gens in families.items():
+        g = p(gens)
+        print(f"{name}: {g.get_algebra()}, dim {g.get_dla_dim()}")
+
+outputs
 
 .. code-block:: bash
 
-    pip install paulie          # networkx and matplotlib are also used by this example
+    path P3: so(6), dim 15
+    cycle C4: 2*so(8), dim 56
+    even-odd K1,4: su(16), dim 255
+    odd-odd K1,3: 2*sp(4), dim 72
+    archetypal K4: 2*su(8), dim 126
+    even-even K2,4: 2*so(32), dim 992
 
-    python docs/examples/kazi_reproduction.py   # sweeps n = 4,6,...,24
+Each line reproduces the corresponding row of the table above. The path gives a single
+:math:`\mathfrak{so}` algebra and the cycle a sum of two, both of polynomial dimension; the even-odd
+graph gives :math:`\mathfrak{su}`, the odd-odd graph :math:`\mathfrak{sp}`, and the even-even and
+archetypal graphs sums of :math:`\mathfrak{so}` and :math:`\mathfrak{su}`, all of exponential
+dimension. The smallest case is checkable by hand: the path :math:`P_3` gives :math:`\mathfrak{so}(6)`
+of dimension :math:`2n^2 - n = 15` at :math:`n = 3`. (:code:`paulie` writes a direct sum of two
+identical factors with a numeric prefix, so ``2*so(8)`` is :math:`\mathfrak{so}(8) \oplus
+\mathfrak{so}(8)`.) For each family, :code:`paulie` returns the algebra and dimension predicted by
+:cite:t:`Kazi_2025`; Figure 8 of :cite:t:`Shaya_2025` shows this agreement across :math:`n = 4` to
+:math:`24`.
 
-It checks one representative of each family (:math:`P_8`, :math:`C_8`, :math:`K_{2,4}`,
-:math:`K_{3,3}`, :math:`K_{2,3}`, :math:`K_5`), sweeps :math:`n` to show how the dimension scales, and writes
-:code:`kazi_reproduction.csv` together with the log-scale figure :code:`kazi_reproduction.pdf`
-(the plot reported in :cite:t:`Shaya_2025`).
+.. seealso::
+   For the algorithm behind :code:`get_algebra`, see :doc:`classification`.
