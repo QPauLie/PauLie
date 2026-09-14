@@ -40,6 +40,13 @@ of six families, determined by these properties. A graph is called *archetypal* 
 but neither bipartite nor a cycle graph; the even--even, odd--odd and even--odd labels refer to the
 parities of the sizes of the two parts of a connected bipartite graph.
 
+The animation below shows the maximum cut for a representative of different graph families: a red cut line
+separates the two vertex groups and crosses the cut edges. A bipartite graph has a cut that crosses
+every edge, whereas a non-bipartite graph always leaves some edges uncut.
+
+.. raw:: html
+   :file: ../media/maxcut_cutting.html
+
 .. table:: The six multi-angle (free) DLA families (:cite:t:`Kazi_2025`, Table II). The path and cycle rows grow polynomially in :math:`n`; the remaining four grow exponentially.
 
    +--------------+-------------------+------------------------------------------+--------------------------------------------------------------+
@@ -73,6 +80,15 @@ ansatz, every family except the path and cycle has an exponentially large DLA (s
 so those circuits are extremely prone to barren plateaus even at a single layer, whereas the
 polynomially small path and cycle families may instead be classically simulable. Classifying the DLA
 therefore diagnoses in advance whether the variational circuit is trainable.
+
+As an illustration, the animation below shows schematically how the loss landscape flattens as the
+number of qubits increases for the exponentially large families (even--even, odd--odd, even--odd, and
+archetypal): the gradients shrink until the landscape becomes an almost flat barren plateau.
+
+.. image:: ../media/barren_landscape.gif
+   :alt: A schematic loss landscape over two circuit angles flattening into a barren plateau as the
+         number of qubits increases
+   :align: center
 
 Reproducing the classification
 ------------------------------
