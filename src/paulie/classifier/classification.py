@@ -142,11 +142,12 @@ class Morph:
             long_vertices = 2
         if long_vertices > 0 and two_legs == 0:
             long_vertices += 1
-        if long_vertices == 0 and two_legs == 0 and one_legs == 1:
+        if long_vertices == 0 and two_legs == 0 and one_legs >= 1:
+            # Only legs of length 1: the line is the core plus one of them
+            # (n_L = 2, so(3)); the remaining one_legs - 1 legs are the
+            # single vertices at the penultimate vertex (n_c = one_legs - 1).
+            # Applies to any number of legs, not only one or two.
             long_vertices = 1
-        if long_vertices == 0 and two_legs == 0 and one_legs == 2:
-            long_vertices = 1
-            one_legs = 2
         return one_legs, two_legs, long_vertices
 
     def get_properties(self) -> tuple[TypeGraph,int,int,int]:
