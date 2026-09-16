@@ -8,3 +8,4 @@ User Guide
    commutator_graph
    optimal_universal_generators
    pauli_compiler
+   kazi_reproduction
