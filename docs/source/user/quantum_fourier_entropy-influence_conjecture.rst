@@ -2,8 +2,8 @@ Quantum Fourier entropy-influence conjecture
 ============================================
 
 This tutorial shows how to use :code:`paulie` to compute the quantum Fourier entropy and the
-influence of an operator, and to test the quantum Fourier entropy-influence (QFEI) conjecture
-numerically.
+influence of an operator, and to test numerically the quantum Fourier entropy-influence (QFEI)
+conjecture that was proposed by :cite:t:`Bu_2024`.
 
 Entropy and influence
 ---------------------
