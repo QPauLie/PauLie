@@ -18,12 +18,12 @@ The *weight* :math:`|P|` of a Pauli string is the number of non-identity terms, 
 :math:`|XIZ| = 2` and :math:`|YII| = 1`. For a Hermitian :math:`O` with :math:`O^2 = I` the
 coefficients satisfy :math:`\sum_P |c_P|^2 = 1`. Two quantities are defined from them:
 
-* the **quantum Fourier entropy**, which measures how many Pauli strings the operator is spread over,
+* **Quantum Fourier entropy**, which measures how many Pauli strings the operator is spread over,
 
   .. math::
       H(O) = -\sum_P |c_P|^2 \log_2 |c_P|^2 ,
 
-* the **influence** (average Pauli weight), which measures how non-local the operator is,
+* **Influence** (average Pauli weight), which measures how non-local the operator is,
 
   .. math::
       I(O) = \sum_P |P|\, |c_P|^2 .
