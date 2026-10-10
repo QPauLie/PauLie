@@ -24,6 +24,10 @@ __pycache__/
 .pytest_cache/
 debugging/
 debugging/*
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
 
 # Mac OS X
 *.DS_Store

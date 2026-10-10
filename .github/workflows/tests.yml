@@ -34,7 +34,14 @@ jobs:
         uv sync --all-extras --dev
 
     - name: Run tests
-      run: uv run pytest -q
+      run: uv run pytest -q --cov --cov-report=xml
+
+    - name: Upload coverage to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./coverage.xml
 
     - name: Lint
       run: |
