@@ -181,3 +181,8 @@ The key findings are:
 * for each :math:`n` there is an empirical lower and upper bound on the ratio,
 * the more qubits are used, the smaller the range of the ratio,
 * the most frequent ratio increases with :math:`n` and appears to approach :math:`\approx 2.5`.
+
+Acknowledgements
+----------------
+
+The experimental procedure in this tutorial follows the work of Franziska Neuhof and Wadhah Zai.
