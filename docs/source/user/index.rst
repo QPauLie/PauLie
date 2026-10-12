@@ -9,3 +9,4 @@ User Guide
    optimal_universal_generators
    pauli_compiler
    kazi_reproduction
+   quantum_fourier_entropy-influence_conjecture
